@@ -1,131 +1,145 @@
 <script setup lang="ts">
-import { onClickOutside } from "@vueuse/core";
-import { computed, ref, watch } from "vue";
+import { onClickOutside } from "@vueuse/core"
+import { computed, ref, watch, toRefs } from "vue"
 
 type Option = {
-  label: string;
-  value: any;
-};
-
-interface Props {
-  label?: string;
-  icon?: string;
-  placeholder?: string;
-  multiple?: boolean;
-  options?: Array<Option | string> | null | undefined;
-  selected: Array<string> | string | null | undefined;
-  cantclear?: boolean;
-  required?: boolean;
+  label: string
+  value: any
 }
 
-const {
-  label,
-  placeholder,
-  multiple,
-  options,
-  selected,
-  cantclear = false,
-  required = false,
-  icon,
-} = defineProps<Props>();
-const open = ref(false);
-const self = ref(null);
-const search = ref("");
+// REVIEW: possible syntax like this?
+// const _options = {
+//   kilmanio: "Kilmanoi",
+//   "dolanske_!": "JANSKEPANSKE",
+//   "zeals-prince 420": "ANDRUSHKLA"
+// }
+
+interface Props {
+  icon?: string
+  placeholder?: string
+  multiple?: boolean
+  options?: Array<Option | string> | null | undefined
+  selected: Array<string> | string | null | undefined
+  cantclear?: boolean
+  required?: boolean
+}
+
+const props = defineProps<Props>()
+const open = ref(false)
+const self = ref(null)
+const search = ref("")
 
 onClickOutside(self, () => {
-  open.value = false;
-});
+  open.value = false
+})
 
 watch(open, (val) => {
   if (!val) {
-    search.value = "";
+    search.value = ""
   }
-});
+})
 
 const emit = defineEmits<{
-  (e: "update:selected", value: any): void;
-}>();
+  (e: "update:selected", value: any): void
+}>()
 
 const formattedOptions = computed(() => {
-  if (!options || options.length === 0) return null;
+  if (!props.options || props.options.length === 0) return null
 
-  return options
+  return props.options
     .map((item) => {
       if (typeof item === "string" || typeof item === "number") {
         return {
           label: item,
-          value: item,
-        };
+          value: item
+        }
       } else {
-        return item;
+        return item
       }
     })
-    .filter((option) => option.label.toString().toLowerCase().includes(search.value.toLowerCase()));
-});
+    .filter((option) =>
+      option.label.toString().toLowerCase().includes(search.value.toLowerCase())
+    )
+})
 
 const selectedLabels = computed(() => {
-  if (!selected || selected.length === 0 || !formattedOptions.value) return null;
+  if (!props.selected || props.selected.length === 0 || !formattedOptions.value)
+    return null
 
-  if (typeof selected === "string") {
-    const item = formattedOptions.value.find((item) => item.value === selected);
-    if (item) return item.label;
+  if (typeof props.selected === "string") {
+    const item = formattedOptions.value.find((item) => item.value === props.selected)
+    if (item) return item.label
   } else {
-    return selected
-      .map((select) => {
-        const item = formattedOptions.value?.find((item) => item.value === select);
-        if (item) return item.label;
-        return select;
+    return props.selected
+      .map((select: string | Option) => {
+        const item = formattedOptions.value?.find((item) => item.value === select)
+        if (item) return item.label
+        return select
       })
-      .join(", ");
+      .join(", ")
   }
-});
+})
 
 function setValue(item: Option) {
   // Multiple
-  if (multiple && Array.isArray(selected)) {
-    if (selected.find((sel) => sel === item.value)) {
+  if (props.multiple && Array.isArray(props.selected)) {
+    if (props.selected.find((sel) => sel === item.value)) {
       // Clearing
-      if (cantclear && selected.length === 1) return;
+      if (props.cantclear && props.selected.length === 1) return
 
-      const filtered = selected.filter((sel) => sel !== item.value);
-      emit("update:selected", filtered);
+      const filtered = props.selected.filter((sel) => sel !== item.value)
+      emit("update:selected", filtered)
     } else {
       // Setting
-      emit("update:selected", [...selected, item.value]);
+      emit("update:selected", [...props.selected, item.value])
     }
   } else {
     // Single
 
-    if (selected && selected === item.value) {
+    if (props.selected && props.selected === item.value) {
       //Clearing
-      if (cantclear) return;
+      if (props.cantclear) return
 
-      emit("update:selected", null);
+      emit("update:selected", null)
     } else {
       // Setting
-      emit("update:selected", item.value);
-    }
+      emit("update:selected", item.value)
 
-    // Only close if you can select just 1 item
-    open.value = false;
+      // Only close if you multiple=false and you just set an item
+      open.value = false
+    }
   }
 }
 </script>
 
 <template>
-  <div class="form-select" ref="self" :class="{ 'is-open': open, required: required, 'has-icon': icon }">
-    <label v-if="label">
-      <Icon v-if="icon" :code="icon" />
-      {{ label }}
+  <div
+    class="form-select"
+    ref="self"
+    :class="{ 'is-open': open, required: required, 'has-icon': icon }"
+  >
+    <label v-if="icon">
+      <Icon :code="icon" />
     </label>
 
-    <button class="select-button" @click="open = !open">
+    <button
+      class="select-button"
+      @click="open = !open"
+      :class="{ 'has-selected': selected && selected.length > 0 }"
+    >
       <input
+        size="1"
         type="text"
-        :placeholder="selected && selected.length > 0 ? `${selectedLabels}` : `${placeholder}`"
+        :placeholder="
+          selected && selected.length > 0 ? `${selectedLabels}` : `${placeholder}`
+        "
         v-model="search"
       />
     </button>
+
+    <div class="dropdown-icon">
+      <Icon :code="open ? 'e5c5' : 'e5c7'" />
+    </div>
 
     <div class="select-dropdown">
       <template v-if="formattedOptions && formattedOptions.length > 0">
@@ -138,7 +152,12 @@ function setValue(item: Option) {
           <div v-html="item.label" />
 
           <template v-if="!cantclear">
-            <span class="remove-item material-icons" v-if="selected && selected.includes(item.value)"> &#xe5cd; </span>
+            <span
+              class="remove-item material-icons"
+              v-if="selected && selected.includes(item.value)"
+            >
+              &#xe5cd;
+            </span>
             <span class="add-item material-icons" v-else>&#xe145;</span>
           </template>
         </button>

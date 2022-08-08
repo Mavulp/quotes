@@ -29,7 +29,14 @@ function clear() {
 <template>
   <div class="form-search" :class="{ 'has-input': value }">
     <span class="material-icons">&#xe8b6;</span>
-    <input v-bind="$attrs" tabindex="0" type="text" @input="updateValue" ref="input" />
+    <input
+      v-bind="$attrs"
+      tabindex="0"
+      type="text"
+      @input="updateValue"
+      ref="input"
+      size="1"
+    />
     <button v-if="value" @click="clear">
       <span class="material-icons">&#xe5cd;</span>
     </button>

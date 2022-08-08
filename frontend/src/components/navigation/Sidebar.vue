@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref } from "vue"
 
-const username = computed(() => "dolanske");
+const username = computed(() => "dolanske")
 </script>
 
 <template>
   <div class="quote-sidebar">
-    <router-link data-title-right="Add a new quote" :to="{ name: 'QuoteAdd' }" class="sidebar-add">
-      <Icon code="edit_note" />
+    <router-link
+      data-title-right="Add a new quote"
+      :to="{ name: 'QuoteAdd' }"
+      class="sidebar-add"
+    >
+      <Icon code="e745" />
     </router-link>
 
     <router-link class="sidebar-link" :to="{ name: 'Home' }">Home</router-link>
@@ -19,7 +23,7 @@ const username = computed(() => "dolanske");
       class="sidebar-add sidebar-user"
       :to="{ name: 'UserProfile', params: { username: username } }"
     >
-      <Icon code="person" />
+      <Icon code="e7fd" />
     </router-link>
   </div>
 </template>

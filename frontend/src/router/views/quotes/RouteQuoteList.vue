@@ -1,13 +1,30 @@
 <script setup lang="ts">
-import InputCheckbox from "../../../components/form/InputCheckbox.vue";
-import InputSelect from "../../../components/form/InputSelect.vue";
-import InputText from "../../../components/form/InputText.vue";
-import InputTextarea from "../../../components/form/InputTextarea.vue";
-import Search from "../../../components/form/Search.vue";
+import InputSelect from "../../../components/form/InputSelect.vue"
+import InputText from "../../../components/form/InputText.vue"
+import InputTextarea from "../../../components/form/InputTextarea.vue"
+import Search from "../../../components/form/Search.vue"
 
-import { reactive, ref } from "vue";
+import { ref } from "vue"
 
-const search = ref("");
+const search = ref("")
+
+const options = [
+  {
+    value: "kilmanio",
+    label: "Kilmanoi"
+  },
+  {
+    value: "dolanske",
+    label: "JANSKEPANSKE"
+  },
+  {
+    value: "zealsprince",
+    label: "ANDRUSHKLA"
+  }
+]
+
+const quotee = ref("")
+const author = ref("")
 </script>
 
 <template>
@@ -22,7 +39,19 @@ const search = ref("");
         <div class="quote-title-wrap">
           <Search placeholder="Search for a quote" v-model:value="search" />
 
-          <!-- <InputCheckbox placeholder="Select" v-model:select="" /> -->
+          <InputSelect
+            v-model:selected="quotee"
+            :multiple="true"
+            :options="options"
+            placeholder="Filter by quotee"
+            icon="e91f"
+          />
+          <InputSelect
+            v-model:selected="author"
+            :options="options"
+            placeholder="Filter by author"
+            icon="ea4d"
+          />
         </div>
       </div>
     </div>
