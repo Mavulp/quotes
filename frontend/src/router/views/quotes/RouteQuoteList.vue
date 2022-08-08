@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import InputSelect from "../../../components/form/InputSelect.vue"
-import InputText from "../../../components/form/InputText.vue"
-import InputTextarea from "../../../components/form/InputTextarea.vue"
 import Search from "../../../components/form/Search.vue"
-
-import { ref } from "vue"
+import InputRadio from "../../../components/form/InputRadio.vue"
+import { ref, watch } from "vue"
 
 const search = ref("")
-
 const options = [
   {
     value: "kilmanio",
@@ -25,11 +22,21 @@ const options = [
 
 const quotee = ref("")
 const author = ref("")
+
+/**
+ * List type
+ */
+
+const expanded = ref<boolean>(localStorage.getItem("is-list-expanded") === "false" ? false : true)
+
+watch(expanded, (value: boolean) => {
+  localStorage.setItem("is-list-expanded", value.toString())
+})
 </script>
 
 <template>
   <div class="quote-route-list">
-    <div class="quote-list-header">
+    <section class="quote-list-header">
       <div class="quote-container">
         <div class="quote-title-wrap">
           <h1>Quote list</h1>
@@ -54,6 +61,35 @@ const author = ref("")
           />
         </div>
       </div>
-    </div>
+    </section>
+
+    <section class="quote-list">
+      <div class="quote-container">
+        <div class="quote-list-context">
+          <p><b>479</b> quotes by <b>17</b> people</p>
+
+          <div class="quote-list-display-switch">
+            <span class="type-title">Render list</span>
+
+            <InputRadio
+              data-title-top="Expanded"
+              group="list"
+              value="true"
+              v-model:check="expanded"
+              icon="e3c1"
+            />
+            <InputRadio
+              data-title-top="Consolidated"
+              group="list"
+              value="false"
+              v-model:check="expanded"
+              icon="f101"
+            />
+          </div>
+        </div>
+
+        <div class="quote-list-items">{{ expanded }}</div>
+      </div>
+    </section>
   </div>
 </template>

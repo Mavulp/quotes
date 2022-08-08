@@ -10,5 +10,5 @@
   "proseWrap": "preserve",
   "quote-props": "consistent",
   "endOfLine": "auto",
-  "printWidth": 90
+  "printWidth": 100
 }

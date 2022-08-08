@@ -138,7 +138,7 @@ function setValue(item: Option) {
     </button>
 
     <div class="dropdown-icon">
-      <Icon :code="open ? 'e5c5' : 'e5c7'" />
+      <Icon :code="open ? 'e5c7' : 'e5c5'" />
     </div>
 
     <div class="select-dropdown">

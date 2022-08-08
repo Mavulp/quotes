@@ -66,25 +66,6 @@ input {
   padding: 0 50px;
 }
 
-.form-checkbox {
-  input[type="checkbox"] {
-    display: none;
-
-    & + label {
-      @include flex($gap: 16px);
-      cursor: pointer;
-
-      p {
-        font-size: 1.4rem;
-      }
-
-      .icon {
-        color: var(--color-highlight);
-      }
-    }
-  }
-}
-
 ::placeholder {
   color: var(--color-text-lighter);
 }
@@ -144,13 +125,6 @@ input:-webkit-autofill:active {
   position: relative;
   z-index: 6;
 
-  // &.required {
-  //   label:after {
-  //     content: "*";
-  //     color: var(--color-error);
-  //   }
-  // }
-
   &.is-open {
     z-index: 100;
 
@@ -200,6 +174,7 @@ input:-webkit-autofill:active {
     @include t(0.1s);
     @include radius(6px);
     position: absolute;
+    padding: 10px;
     top: 100%;
     left: 0;
     right: 0;
@@ -227,6 +202,7 @@ input:-webkit-autofill:active {
     }
 
     button {
+      @include radius(6px);
       text-align: left;
       position: relative;
       border-bottom: 1px solid var(--color-border-light);
@@ -268,6 +244,49 @@ input:-webkit-autofill:active {
 
       &:last-child {
         border-bottom: 0;
+      }
+    }
+  }
+}
+
+.form-checkbox {
+  input[type="checkbox"] {
+    display: none;
+
+    & + label {
+      @include flex($gap: 16px);
+      cursor: pointer;
+
+      p {
+        font-size: 1.4rem;
+      }
+
+      .icon {
+        color: var(--color-highlight);
+      }
+    }
+  }
+}
+
+// TODO: Create component if needed
+.form-radio {
+  input[type="radio"] {
+    display: none;
+
+    & + label {
+      // font-size: 1.4rem;
+      // color: ;
+      cursor: pointer;
+
+      .material-icons {
+        font-size: 1.8rem;
+        color: var(--color-text);
+      }
+    }
+
+    &:checked + label {
+      .material-icons {
+        color: var(--color-highlight);
       }
     }
   }
