@@ -1,0 +1,19 @@
+.quote-route-list {
+  .quote-list-header {
+    padding-bottom: 20px;
+    margin-bottom: 60px;
+    border-bottom: 1px solid var(--color-border);
+
+    .quote-title-wrap {
+      @include flex($align: center, $gap: 40px);
+
+      &:first-of-type {
+        margin-bottom: 40px;
+      }
+
+      &:nth-of-type(2) {
+        gap: 20px;
+      }
+    }
+  }
+}

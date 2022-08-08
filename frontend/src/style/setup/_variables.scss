@@ -1,0 +1,23 @@
+:root {
+  /* Color properties */
+
+  --color-bg: #181818;
+  --color-bg-light: #242424;
+  // --color-bg-light: #1F1F1F;
+  --color-border: #404040;
+
+  --color-text: #ffffff;
+  --color-text-dark: #181818;
+  --color-text-light: #949494;
+  --color-text-lighter: #787878;
+
+  --color-highlight: #f9be27;
+  --color-highlight-tint: #facb52;
+
+  --color-highlight-shade: #312607;
+  // --color-highlight-shade: #4A390B;
+  --color-red: #b72a3b;
+
+  /* Shadow properties */
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}

@@ -1,0 +1,18 @@
+.button {
+  @include radius(3px);
+  @include font(700);
+  display: block;
+  height: 36px;
+  line-height: 36px;
+  width: 104px;
+  padding: 0 4px;
+  text-align: center;
+  color: var(--color-text-dark);
+  background-color: var(--color-highlight);
+  font-size: 1.4rem;
+
+  &:hover {
+    // filter: brightness(90%);
+    background-color: var(--color-highlight-tint);
+  }
+}
