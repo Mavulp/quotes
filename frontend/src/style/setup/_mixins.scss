@@ -52,7 +52,7 @@
   -moz-border-radius: $radius;
 }
 
-@mixin flex($wrap: nowrap, $gap: 16px, $justify: flex-start, $align: center, $dir: row) {
+@mixin flex($gap: 16px, $wrap: nowrap, $justify: flex-start, $align: center, $dir: row) {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

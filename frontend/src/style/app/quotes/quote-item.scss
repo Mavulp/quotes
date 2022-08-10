@@ -1,0 +1,96 @@
+.quote-item {
+  @include radius(12px);
+  padding: 10px 20px 20px;
+  border: 1px solid var(--color-border);
+  margin-bottom: 40px;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  // &:hover {
+  // background-color: var(--color-bg-light);
+  // }
+
+  .quote-item-header {
+    @include flex(8px);
+    margin-bottom: 10px;
+
+    .quote-text {
+      @include font(400);
+      color: var(--color-text);
+      font-size: 1.6rem;
+
+      a {
+        @include font(900);
+        font-size: inherit;
+        color: var(--color-highlight);
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+          text-decoration-thickness: 3px;
+          text-decoration-color: rgb(var(--color-highlight));
+        }
+      }
+
+      &.quote-author {
+        margin-left: 20px;
+        color: var(--color-text-lighter);
+
+        a {
+          color: var(--color-text-lighter);
+        }
+      }
+    }
+
+    .quote-divider {
+      display: block;
+      @include radius(50%);
+      width: 6px;
+      height: 6px;
+      background-color: var(--color-border);
+      margin: 0 5px;
+      transform: translateY(-1px);
+    }
+
+    .quote-padder {
+      flex: 1;
+    }
+  }
+
+  .quote-item-content {
+    display: block;
+
+    &.quote-item-simple {
+      strong {
+        @include bebas();
+        word-wrap: break-word;
+        line-height: 1.1em;
+      }
+    }
+  }
+}
+
+// This will also be used in quote detail
+.quote-item-interact {
+  @include flex($gap: 5px);
+
+  .flag {
+    margin-right: 15px;
+    .material-icons {
+      color: var(--color-red);
+    }
+  }
+
+  p {
+    @include font(700);
+    color: var(--color-text);
+  }
+
+  .upvote {
+    .material-icons {
+      color: var(--color-highlight);
+    }
+  }
+}

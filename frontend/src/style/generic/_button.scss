@@ -16,3 +16,40 @@
     background-color: var(--color-highlight-tint);
   }
 }
+
+.btn-round {
+  position: relative;
+  z-index: 1;
+
+  &:after {
+    @include t();
+    @include radius(50%);
+    content: "";
+    display: block;
+    position: absolute;
+    pointer-events: none;
+    // inset: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    width: 32px;
+    height: 32px;
+    z-index: -1;
+  }
+
+  &.btn-round-24:after {
+    width: 24px;
+    height: 24px;
+  }
+
+  &.btn-red:hover:after {
+    background-color: var(--color-red);
+    opacity: 0.25;
+  }
+
+  &.btn-highlight:hover:after {
+    background-color: var(--color-highlight);
+    opacity: 0.25;
+  }
+}

@@ -1,10 +1,16 @@
 <script setup lang="ts">
+import { ref, watch } from "vue"
+
 import InputSelect from "../../../components/form/InputSelect.vue"
 import Search from "../../../components/form/Search.vue"
 import InputRadio from "../../../components/form/InputRadio.vue"
-import { ref, watch } from "vue"
+import QuoteListItem from "../../../components/quotes/quote-item/QuoteListItem.vue"
 
 const search = ref("")
+
+/**
+ * PLACEHOLERS
+ */
 const options = [
   {
     value: "kilmanio",
@@ -19,6 +25,41 @@ const options = [
     label: "ANDRUSHKLA"
   }
 ]
+
+type PlainQuoteContent = {
+  type: "plain"
+  index: number
+  text: string
+}
+
+type ImageQuoteContent = {
+  type: "img"
+  index: number
+  url: string
+}
+
+type SubQuoteContent = {
+  type: "sub-quote"
+  index: number
+  text: string
+  author: string
+}
+
+type Quote = {
+  id: number
+  quotee: string
+  author: string
+  created: number
+  votes: number
+  content: Array<PlainQuoteContent | ImageQuoteContent | SubQuoteContent>
+}
+
+// const data: Quote[] = [
+//   {
+//     id:0,
+
+//   }
+// ]
 
 const quotee = ref("")
 const author = ref("")
@@ -88,7 +129,9 @@ watch(expanded, (value: boolean) => {
           </div>
         </div>
 
-        <div class="quote-list-items">{{ expanded }}</div>
+        <div class="quote-list-items">
+          <QuoteListItem v-for="item in 3" :key="item" :id="item" />
+        </div>
       </div>
     </section>
   </div>
