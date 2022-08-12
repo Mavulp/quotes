@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, computed, useAttrs, useSlots, reactive, watch, onMounted } from "vue"
-import { isNil } from "lodash"
 
 const attrs = useAttrs()
 const slots = useSlots()
