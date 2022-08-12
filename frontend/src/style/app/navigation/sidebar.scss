@@ -1,3 +1,5 @@
+$sidebar-width: 88px;
+
 .quote-sidebar {
   @include flex($dir: column, $gap: 0);
   width: 88px;

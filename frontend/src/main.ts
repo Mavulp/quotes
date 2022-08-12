@@ -10,8 +10,8 @@ import Icon from "./components/global/Icon.vue"
 const app = createApp(App)
 
 // Plugins and setup
-app.use(router)
 app.use(createPinia())
+app.use(router)
 
 // Register global components
 app.component("Icon", Icon)

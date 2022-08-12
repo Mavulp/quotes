@@ -62,7 +62,8 @@
     /* IE6-IE8 */ url("../fonts/bebas-neue-v9-latin-regular.woff2") format("woff2"),
     /* Super Modern Browsers */ url("../fonts/bebas-neue-v9-latin-regular.woff") format("woff"),
     /* Modern Browsers */ url("../fonts/bebas-neue-v9-latin-regular.ttf") format("truetype"),
-    /* Safari, Android, iOS */ url("../fonts/bebas-neue-v9-latin-regular.svg#BebasNeue") format("svg"); /* Legacy iOS */
+    /* Safari, Android, iOS */ url("../fonts/bebas-neue-v9-latin-regular.svg#BebasNeue")
+      format("svg"); /* Legacy iOS */
 }
 
 /*
@@ -80,4 +81,5 @@
 @mixin bebas {
   font-family: "Bebas Neue", cursive;
   font-weight: 400;
+  letter-spacing: 0.025em;
 }

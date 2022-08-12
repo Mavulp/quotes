@@ -8,6 +8,20 @@
     margin-bottom: 0;
   }
 
+  a {
+    @include font(700);
+    font-size: inherit;
+    font-size: 1.6rem;
+    color: var(--color-highlight);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+      text-decoration-thickness: 3px;
+      text-decoration-color: rgb(var(--color-highlight));
+    }
+  }
+
   // &:hover {
   // background-color: var(--color-bg-light);
   // }
@@ -16,20 +30,31 @@
     @include flex(8px);
     margin-bottom: 10px;
 
+    .quote-quotees {
+      display: block;
+
+      .quote-text {
+        display: inline-block;
+        margin-right: 10px;
+
+        &:last-of-type {
+          margin-right: 0;
+        }
+      }
+    }
+
     .quote-text {
       @include font(400);
       color: var(--color-text);
-      font-size: 1.6rem;
+      font-size: 1.4rem;
 
       a {
-        @include font(900);
-        font-size: inherit;
         color: var(--color-highlight);
-        text-decoration: none;
+        font-size: inherit;
 
         &:hover {
-          text-decoration: underline;
-          text-decoration-thickness: 3px;
+          // text-decoration: underline;
+          // text-decoration-thickness: 3px;
           text-decoration-color: rgb(var(--color-highlight));
         }
       }
@@ -50,7 +75,7 @@
       width: 6px;
       height: 6px;
       background-color: var(--color-border);
-      margin: 0 5px;
+      margin: 0 10px;
       transform: translateY(-1px);
     }
 
@@ -62,11 +87,96 @@
   .quote-item-content {
     display: block;
 
-    &.quote-item-simple {
-      strong {
-        @include bebas();
-        word-wrap: break-word;
-        line-height: 1.1em;
+    // TODO
+    // Add special cases for these items, when only 1 of the blocks is present
+    // in said quote (remove quote-item-quotee) for example and / or remove any
+    // special highlight styling, as only 1 item is present
+
+    .quote-item-content-block {
+      display: block;
+      margin-bottom: 25px;
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+
+      @mixin highlight {
+        position: relative;
+        z-index: 2;
+
+        &:after {
+          content: "";
+          @include radius(12px);
+          display: block;
+          position: absolute;
+          inset: 0 -10px -10px;
+          z-index: -1;
+          background-color: var(--color-highlight-shade);
+        }
+      }
+
+      .quote-item-quotee {
+        @include flex($gap: 5px);
+        width: 100%;
+        padding-left: 5px;
+        padding-top: 5px;
+        // text-align: right;
+
+        a,
+        .material-icons {
+          color: var(--color-text-lighter);
+        }
+
+        a {
+          @include font(400);
+          font-size: 1.5rem;
+        }
+      }
+
+      /* HIGHLIGHT COMPONENT */
+
+      &.quote-item-highlight {
+        @include highlight();
+        position: relative;
+
+        strong {
+          @include bebas();
+          word-wrap: break-word;
+        }
+      }
+
+      /* CONTEXT COMPONENT */
+
+      &.quote-item-context {
+        strong {
+          @include bebas();
+          word-wrap: break-word;
+          font-size: 3rem;
+        }
+      }
+
+      /* IMAGE COMPONENT */
+
+      &.quote-item-image {
+        display: block;
+
+        &.is-highlight {
+          @include highlight();
+
+          &:after {
+            top: -10px;
+          }
+        }
+
+        img {
+          @include radius(6px);
+          display: block;
+          max-width: 75%;
+          max-height: 1024px;
+          object-fit: contain;
+          object-position: center;
+          box-shadow: var(--shadow);
+        }
       }
     }
   }
@@ -77,13 +187,14 @@
   @include flex($gap: 5px);
 
   .flag {
-    margin-right: 15px;
     .material-icons {
       color: var(--color-red);
     }
   }
 
   p {
+    margin-left: 15px;
+
     @include font(700);
     color: var(--color-text);
   }

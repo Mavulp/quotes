@@ -3,8 +3,10 @@
 @import "./quotes/quote-item";
 
 @import "./routes/home";
+
 @import "./routes/quote-detail";
 @import "./routes/quote-list";
+@import "./routes/quote-create";
 
 .quote-app {
   @include flex($gap: 0px, $justify: flex-start, $align: flex-start);

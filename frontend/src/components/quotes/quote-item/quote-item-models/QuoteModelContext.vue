@@ -1,20 +1,18 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from "vue"
-import { ImageQuoteContent } from "../../../../types/quote-types"
+import { ContextQuoteContent } from "../../../../types/quote-types"
 
 interface Props {
-  data: ImageQuoteContent
+  data: ContextQuoteContent
 }
 
 const props = defineProps<Props>()
 </script>
 
 <template>
-  <div
-    class="quote-item-content-block quote-item-image"
-    :class="{ 'is-highlight': props.data.highlight }"
-  >
-    <img :src="props.data.url" alt="" />
+  <div class="quote-item-content-block quote-item-context">
+    <strong>{{ props.data.text }}</strong>
+
     <div class="quote-item-quotee">
       <Icon size="1.6" code="e244" />
       <a :href="props.data.quotee">{{ props.data.quotee }}</a>
