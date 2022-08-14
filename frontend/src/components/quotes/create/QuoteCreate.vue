@@ -78,9 +78,9 @@ function append(type: string) {
   <div class="quote-create">
     <div class="quote-blocks">
       <template v-for="[index, block] in blocks">
-        <BlockContext v-if="block.type === 'context'" :index="index" />
-        <BlockHighlight v-else-if="block.type === 'highlight'" :index="index" />
-        <BlockImage v-else-if="block.type === 'image'" :index="index" />
+        <BlockContext v-if="block.type === 'context'" :data="block" :index="index" />
+        <BlockHighlight v-else-if="block.type === 'highlight'" :data="block" :index="index" />
+        <BlockImage v-else-if="block.type === 'image'" :data="block" :index="index" />
       </template>
     </div>
 
