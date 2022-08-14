@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onBeforeMount, ref, watch, computed, onMounted } from "vue"
 import { useQuote } from "../../../store/quote"
-import { $ } from "../../../bin/utils"
+import { $, toBool } from "../../../bin/utils"
 
 import InputRadio from "../../../components/form/InputRadio.vue"
 import QuoteListItem from "../../../components/quotes/quote-item/QuoteListItem.vue"
@@ -13,7 +13,7 @@ const quote = useQuote()
  * List type
  */
 
-const expanded = ref<boolean>(localStorage.getItem("is-list-expanded") === "false" ? false : true)
+const expanded = ref<boolean>(toBool(localStorage.getItem("is-list-expanded")))
 watch(expanded, (value: boolean) => {
   localStorage.setItem("is-list-expanded", value.toString())
 })

@@ -2,4 +2,30 @@
   h1 {
     margin-bottom: 50px;
   }
+
+  .quote-create {
+    display: block;
+
+    .quote-blocks {
+      display: block;
+      margin-bottom: 40px;
+    }
+
+    .quote-publish {
+      width: 75%;
+
+      .form-input {
+        margin-bottom: 40px;
+      }
+
+      .form-checkbox {
+        margin-bottom: 10px;
+      }
+
+      .form-select {
+        margin-top: 40px;
+        margin-bottom: 40px;
+      }
+    }
+  }
 }

@@ -27,6 +27,13 @@ input {
     }
   }
 
+  &.has-error {
+    textarea,
+    input {
+      border-color: var(--color-red);
+    }
+  }
+
   textarea,
   input {
     @include radius(28px);
@@ -106,8 +113,7 @@ input:-webkit-autofill:active {
 
   label {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 15px;
     font-size: 1.2rem;
     left: 20px;
     color: var(--color-text-light);
@@ -124,6 +130,16 @@ input:-webkit-autofill:active {
   display: block;
   position: relative;
   z-index: 6;
+
+  &.has-error {
+    .select-button {
+      border-color: var(--color-red);
+    }
+
+    label .material-icons {
+      color: var(--color-red);
+    }
+  }
 
   &.is-open {
     z-index: 100;
@@ -165,8 +181,9 @@ input:-webkit-autofill:active {
     position: absolute;
     right: 10px;
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    // top: 50%;
+    top: 15px;
+    // transform: translateY(-50%);
     font-size: 1.2rem;
   }
 
@@ -254,7 +271,7 @@ input:-webkit-autofill:active {
     display: none;
 
     & + label {
-      @include flex($gap: 16px);
+      @include flex($gap: 25px);
       cursor: pointer;
 
       p {
@@ -289,5 +306,23 @@ input:-webkit-autofill:active {
         color: var(--color-highlight);
       }
     }
+  }
+}
+
+.error-item {
+  @include font(500);
+  font-size: 1.4rem;
+  color: var(--color-red);
+  margin-bottom: 4px;
+  padding-left: 30px;
+
+  &:first-of-type {
+    // margin-top: 8px;
+    padding-top: 8px;
+  }
+
+  &:only-of-type,
+  &:last-of-type {
+    margin-bottom: 0;
   }
 }

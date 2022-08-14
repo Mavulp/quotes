@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onClickOutside } from "@vueuse/core"
 import { computed, ref, watch, toRefs } from "vue"
+import { Error } from "../../bin/validation"
 
 type Option = {
   label: string
@@ -22,9 +23,12 @@ interface Props {
   selected: Array<string> | string | null | undefined
   cantclear?: boolean
   required?: boolean
+  error?: Error
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  cantclear: true
+})
 const open = ref(false)
 const self = ref(null)
 const search = ref("")
@@ -57,14 +61,11 @@ const formattedOptions = computed(() => {
         return item
       }
     })
-    .filter((option) =>
-      option.label.toString().toLowerCase().includes(search.value.toLowerCase())
-    )
+    .filter((option) => option.label.toString().toLowerCase().includes(search.value.toLowerCase()))
 })
 
 const selectedLabels = computed(() => {
-  if (!props.selected || props.selected.length === 0 || !formattedOptions.value)
-    return null
+  if (!props.selected || props.selected.length === 0 || !formattedOptions.value) return null
 
   if (typeof props.selected === "string") {
     const item = formattedOptions.value.find((item) => item.value === props.selected)
@@ -116,7 +117,12 @@ function setValue(item: Option) {
   <div
     class="form-select"
     ref="self"
-    :class="{ 'is-open': open, required: required, 'has-icon': icon }"
+    :class="{
+      'is-open': open,
+      required: required,
+      'has-icon': icon,
+      'has-error': props.error?.invalid
+    }"
   >
     <label v-if="icon">
       <Icon :code="icon" />
@@ -131,7 +137,9 @@ function setValue(item: Option) {
         size="1"
         type="text"
         :placeholder="
-          selected && selected.length > 0 ? `${selectedLabels}` : `${placeholder}`
+          selected && selected.length > 0
+            ? `${selectedLabels ?? props.placeholder}`
+            : `${placeholder ?? props.placeholder}`
         "
         v-model="search"
       />
@@ -151,18 +159,21 @@ function setValue(item: Option) {
         >
           <div v-html="item.label" />
 
-          <template v-if="!cantclear">
+          <template v-if="!props.cantclear">
             <span
               class="remove-item material-icons"
               v-if="selected && selected.includes(item.value)"
             >
               &#xe5cd;
             </span>
-            <span class="add-item material-icons" v-else>&#xe145;</span>
+            <span class="add-item material-icons" v-else-if="props.multiple">&#xe145;</span>
           </template>
         </button>
       </template>
       <span class="select-no-options" v-else>Nothing to select.</span>
     </div>
+    <template v-if="props.error?.invalid">
+      <p class="error-item" v-for="item in props.error.errors">{{ item }}</p>
+    </template>
   </div>
 </template>

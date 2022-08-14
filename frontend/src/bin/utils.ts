@@ -1,3 +1,5 @@
+import { isEmpty, isNil } from "lodash"
+
 // Select the first matching element in DOM
 export const $ = (selector: string): Element | null => document.querySelector(selector)
 
@@ -45,4 +47,8 @@ export const date = {
       day: "numeric"
     })}`
   }
+}
+
+export function toBool(value: any): boolean {
+  return value === "true" ? true : false
 }

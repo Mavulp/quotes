@@ -1,3 +1,5 @@
+export type Blocks = "image" | "context" | "highlight"
+
 export type ImageQuoteContent = {
   type: "image"
   url: string
@@ -24,21 +26,28 @@ export type Quotee = {
   index: number
 }
 
-interface BaseQuote {
-  id: number
+export interface Quote {
   quotees: Quotee[]
+  id: number
+  author: string
   offensive: boolean
+  createdAt: number
   location?: string
   blocks: Array<HighlightQuoteContent | ContextQuoteContent | ImageQuoteContent>
 }
 
-export interface Quote extends BaseQuote {
-  author: string
-  createdAt: number
-}
-
-export interface NewQuote extends BaseQuote {
+interface BaseCreateQuote {
+  location?: string
+  offensive: boolean | null
   comments: boolean
   anonymous: boolean
   anonymousQuotees: boolean
+}
+
+export interface CreateQuote extends BaseCreateQuote {
+  blocks: Map<number, HighlightQuoteContent | ContextQuoteContent | ImageQuoteContent>
+}
+
+export interface NewQuote extends BaseCreateQuote {
+  blocks: Array<HighlightQuoteContent | ContextQuoteContent | ImageQuoteContent>
 }

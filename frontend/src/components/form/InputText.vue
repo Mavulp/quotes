@@ -4,7 +4,7 @@ import { Error } from "../../bin/validation"
 interface Props {
   // label?: string
   icon?: string
-  value: string | number | undefined
+  value?: string | number | null
   type?: string
   error?: Error
   required?: boolean
