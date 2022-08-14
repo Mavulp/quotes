@@ -8,7 +8,48 @@
 
     .quote-blocks {
       display: block;
+    }
+    .add-block {
+      @include t();
+      @include radius(12px);
+      background-color: var(--color-bg-light);
+      height: 128px;
+      display: block;
+      width: 100%;
+      position: relative;
+      border: 1px solid transparent;
       margin-bottom: 40px;
+
+      &.has-blocks {
+        height: 64px;
+        border-color: var(--color-border);
+        background-color: transparent;
+
+        &:hover {
+          background-color: var(--color-bg-light);
+        }
+      }
+
+      &:hover {
+        background-color: var(--color-bg-light-hover);
+      }
+
+      & > span {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      span {
+        @include flex(10px);
+        font-size: 1.4rem;
+        color: var(--color-text);
+
+        .material-icons {
+          color: var(--color-highlight);
+        }
+      }
     }
 
     .quote-publish {

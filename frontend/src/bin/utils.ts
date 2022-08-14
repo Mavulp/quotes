@@ -52,3 +52,5 @@ export const date = {
 export function toBool(value: any): boolean {
   return value === "true" ? true : false
 }
+
+export type ValueOf<T> = T[keyof T]

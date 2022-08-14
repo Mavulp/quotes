@@ -24,6 +24,7 @@ const defaultQuote: CreateQuote = {
   anonymousQuotees: false
 }
 
+// Tuple of available blocks
 const defaultBlocks: [ImageQuoteContent, ContextQuoteContent, HighlightQuoteContent] = [
   { type: "image", url: "", quotee: "", highlight: false },
   { type: "context", text: "", quotee: "", highlight: false },
@@ -39,6 +40,7 @@ export const useCreate = defineStore("create", {
   actions: {
     reset() {
       this.form = structuredClone(defaultQuote)
+      this._index = 0
     },
     appendBlock(type: Blocks) {
       const block = structuredClone(defaultBlocks.find((block) => block.type === type))
@@ -53,28 +55,10 @@ export const useCreate = defineStore("create", {
       updated: ImageQuoteContent | ContextQuoteContent | HighlightQuoteContent
     ) {
       this.form.blocks.set(index, updated)
-      this._index--
     },
     delBlock(index: number) {
       this.form.blocks.delete(index)
+      this._index--
     }
-    // // Want to edit a field withing an interface
-    // // @key is straightforward, just a keyof said interface
-    // // @value should use the type it has within the interface at @key
-    // editForm<T>(
-    //   key: keyof BaseCreateQuote,
-    //   /**
-    //    * I guess I could provide the type as a parameter, but is there a way to infer the
-    //    * type based on the key within the interface?
-    //    */
-    //   value: T
-    // ) {
-
-    //   if (T instanceof BaseCreateQuote) {
-    //     // Want to be able to edit all of the interface except the excluded terms
-    //     this.form[key] = value
-
-    //   }
-    // }
   }
 })

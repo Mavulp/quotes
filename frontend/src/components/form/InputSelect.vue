@@ -149,7 +149,7 @@ function setValue(item: Option) {
       <Icon :code="open ? 'e5c7' : 'e5c5'" />
     </div>
 
-    <div class="select-dropdown">
+    <div class="select-dropdown dropdown-element">
       <template v-if="formattedOptions && formattedOptions.length > 0">
         <button
           v-for="item in formattedOptions"

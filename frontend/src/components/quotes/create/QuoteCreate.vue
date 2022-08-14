@@ -1,19 +1,26 @@
 <script setup lang="ts">
-import { ref, reactive, computed, onBeforeMount } from "vue"
+import { reactive, computed } from "vue"
 import { useCreate } from "../../../store/create"
 import { writableComputed } from "../../../bin/composables"
 import { required, useFormValidation } from "../../../bin/validation"
 import { toBool } from "../../../bin/utils"
+import {
+  Blocks,
+  ContextQuoteContent,
+  HighlightQuoteContent,
+  ImageQuoteContent
+} from "../../../types/quote-types"
 
 import InputText from "../../form/InputText.vue"
 import InputCheckbox from "../../form/InputCheckbox.vue"
 import InputSelect from "../../form/InputSelect.vue"
+import Dropdown from "../../Dropdown.vue"
+
+import BlockContext from "./blocks/BlockContext.vue"
+import BlockHighlight from "./blocks/BlockHighlight.vue"
+import BlockImage from "./blocks/BlockImage.vue"
 
 const create = useCreate()
-
-onBeforeMount(() => {
-  create.reset()
-})
 
 /**
  * Form editable fields
@@ -49,11 +56,42 @@ async function submit() {
       console.log(e)
     })
 }
+
+/**
+ * Block Creation
+ */
+const blocks = computed(() => create.form.blocks)
+
+// Select a block
+const dropdownOptions = [
+  { value: "context", label: "Context", icon: "e23f" },
+  { value: "highlight", label: "Highlight", icon: "e244" },
+  { value: "image", label: "Image", icon: "e3f4" }
+]
+
+function append(type: string) {
+  create.appendBlock(type as Blocks)
+}
 </script>
 
 <template>
   <div class="quote-create">
-    <div class="quote-blocks"></div>
+    <div class="quote-blocks">
+      <template v-for="[index, block] in blocks">
+        <BlockContext v-if="block.type === 'context'" :index="index" />
+        <BlockHighlight v-else-if="block.type === 'highlight'" :index="index" />
+        <BlockImage v-else-if="block.type === 'image'" :index="index" />
+      </template>
+    </div>
+
+    <Dropdown @set="append" :buttons="dropdownOptions">
+      <button class="add-block" :class="{ 'has-blocks': blocks.size > 0 }">
+        <span>
+          <Icon code="e146" />
+          {{ blocks.size > 0 ? "Add another block" : "Add a block" }}
+        </span>
+      </button>
+    </Dropdown>
 
     <div class="quote-publish">
       <InputText
