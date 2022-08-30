@@ -1,0 +1,32 @@
+.quote-block.block-create-image {
+  // padding: 32px;
+  padding: 0;
+  border: none;
+
+  input {
+    display: none;
+
+    & + label {
+      @include radius(12px);
+      // display: block;
+      @include flex($align: center, $justify: center);
+      height: 156px;
+      border: 3px dashed var(--color-highlight);
+
+      color: var(--color-text-light);
+      cursor: pointer;
+
+      span {
+        font-size: 1.4rem;
+      }
+
+      &:hover {
+        background-color: var(--color-highlight-shade);
+
+        span {
+          color: var(--color-highlight);
+        }
+      }
+    }
+  }
+}

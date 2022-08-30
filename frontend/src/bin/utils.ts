@@ -1,4 +1,4 @@
-import { isEmpty, isNil } from "lodash"
+// import { isEmpty, isNil } from "lodash"
 
 // Select the first matching element in DOM
 export const $ = (selector: string): Element | null => document.querySelector(selector)

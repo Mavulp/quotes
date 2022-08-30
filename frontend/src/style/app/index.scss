@@ -8,6 +8,10 @@
 @import "./routes/quote-list";
 @import "./routes/quote-create";
 
+@import "./create/create-block-context";
+@import "./create/create-block-highlight";
+@import "./create/create-block-image";
+
 .quote-app {
   @include flex($gap: 0px, $justify: flex-start, $align: flex-start);
   position: relative;
