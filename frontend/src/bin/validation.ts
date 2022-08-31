@@ -1,4 +1,4 @@
-import { defineComponent, h, reactive, watch } from "vue"
+import { reactive, watch } from "vue"
 import { isEmpty, isNil } from "lodash"
 
 /**
@@ -135,12 +135,30 @@ export function useFormValidation(
 }
 
 /**
- * Validations
- *
- * @Rule Returns FALSE if failed, returns TRUE if passed
+ * Helpers
  */
 
-export const required = {
+export const withMessage = (message: string, validator: ValidationRule): ValidationRule => {
+  const { _validate } = validator
+
+  return {
+    _validate,
+    _message: () => message
+  }
+}
+
+export const validateIf = () => {
+  // This will only validate if condition is met
+}
+
+/**
+ * Validations
+ */
+
+/**
+ * @Rule Input must not be empty, null or undefined
+ */
+export const required: ValidationRule = {
   _validate(value: any) {
     console.log(typeof value)
 
@@ -157,6 +175,9 @@ export const required = {
   }
 }
 
+/**
+ * @Rule Input must be equal or greater than the provided amount
+ */
 export const minLength = (len: number) => {
   return {
     _validate(value: any) {
@@ -170,16 +191,9 @@ export const minLength = (len: number) => {
   }
 }
 
-export const asyncValidation = (executable: Function) => {
-  return {
-    async _validate(value: any) {
-      return await executable(value)
-    },
-    _message() {
-      return "not implemented"
-    }
-  }
-}
+/**
+ * @Rule Input must be equal or lesser than the provided amount
+ */
 
 export const maxLength = (len: number) => {
   return {
@@ -194,6 +208,10 @@ export const maxLength = (len: number) => {
   }
 }
 
+/**
+ * @Rule Input must be a valid email address
+ */
+
 export const email = {
   _validate(value: any) {
     return /^\S+@\S+\.\S+$/.test(value)
@@ -203,6 +221,11 @@ export const email = {
   }
 }
 
+/**
+ * @Rule Input must match the provided `compared` value, either by value or by type & value
+ *
+ */
+
 export const sameAs = (compared: any, leanient: boolean = false) => {
   return {
     _validate(value: any) {
@@ -210,6 +233,38 @@ export const sameAs = (compared: any, leanient: boolean = false) => {
     },
     _message() {
       return "Values do not match"
+    }
+  }
+}
+
+/**
+ * TODO methods
+ *
+ * isNum
+ * isStr
+ * isUrl
+ *
+ */
+
+// SECTION: Unfinished functions
+
+const matchRegex = (regex: RegExp) => {
+  return {
+    _validate(value: any) {},
+    _message() {
+      return "Value does not match the provided rule."
+    }
+  }
+}
+
+// IMPLEMENT
+const asyncValidation = (executable: Function) => {
+  return {
+    async _validate(value: any) {
+      return await executable(value)
+    },
+    _message() {
+      return "not implemented"
     }
   }
 }

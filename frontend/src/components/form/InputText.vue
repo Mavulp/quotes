@@ -39,15 +39,7 @@ function updateValue(e: any) {
     <label v-if="icon">
       <Icon :code="icon" />
     </label>
-    <input
-      v-bind="$attrs"
-      tabindex="0"
-      class="border-smoke font-14"
-      :type="type"
-      @input="updateValue"
-      :value="value"
-      size="1"
-    />
+    <input v-bind="$attrs" tabindex="0" :type="type" @input="updateValue" :value="value" size="1" />
     <div class="input-error-list" v-if="error && error.invalid">
       <p v-for="item in error.errors">{{ item }}</p>
     </div>

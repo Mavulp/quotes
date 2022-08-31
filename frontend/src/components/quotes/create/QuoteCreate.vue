@@ -2,14 +2,9 @@
 import { reactive, computed } from "vue"
 import { useCreate } from "../../../store/create"
 import { writableComputed } from "../../../bin/composables"
-import { required, useFormValidation } from "../../../bin/validation"
+import { required, useFormValidation, withMessage } from "../../../bin/validation"
 import { toBool } from "../../../bin/utils"
-import {
-  Blocks,
-  ContextQuoteContent,
-  HighlightQuoteContent,
-  ImageQuoteContent
-} from "../../../types/quote-types"
+import { Blocks } from "../../../types/quote-types"
 
 import InputText from "../../form/InputText.vue"
 import InputCheckbox from "../../form/InputCheckbox.vue"
@@ -42,7 +37,14 @@ const options = [
   { value: "false", label: "No, it does not" }
 ]
 
-const rules = computed(() => ({ offensive: { required } }))
+const rules = computed(() => ({
+  offensive: {
+    required: withMessage(
+      "It is required to specify wether the quote contains offensive content or not.",
+      required
+    )
+  }
+}))
 const { validate, errors } = useFormValidation(reactive({ offensive }), rules, {
   autoclear: true
 })
@@ -77,10 +79,15 @@ function append(type: string) {
 <template>
   <div class="quote-create">
     <div class="quote-blocks">
-      <template v-for="[index, block] in blocks">
-        <BlockContext v-if="block.type === 'context'" :data="block" :index="index" />
-        <BlockHighlight v-else-if="block.type === 'highlight'" :data="block" :index="index" />
-        <BlockImage v-else-if="block.type === 'image'" :data="block" :index="index" />
+      <template v-for="([id, block], index) in blocks" :key="id">
+        <BlockContext v-if="block.type === 'context'" :data="block" :index="index" :id="id" />
+        <BlockHighlight
+          v-else-if="block.type === 'highlight'"
+          :data="block"
+          :index="index"
+          :id="id"
+        />
+        <BlockImage v-else-if="block.type === 'image'" :data="block" :index="index" :id="id" />
       </template>
     </div>
 

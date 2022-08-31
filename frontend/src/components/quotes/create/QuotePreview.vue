@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from "vue"
+import { useCreate } from "../../../store/create"
 
-const open = ref(false)
+const create = useCreate()
 </script>
 
 <template>
-  <div></div>
+  <div>
+    <pre>
+      {{ create.form }}
+    </pre>
+  </div>
 </template>

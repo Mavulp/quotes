@@ -25,8 +25,8 @@ onBeforeMount(() => {
         </button>
       </div>
 
-      <Tabs :tabs="['Write', 'Preview']">
-        <template #Write> <QuoteCreate /> </template>
+      <Tabs :tabs="['Create', 'Preview']">
+        <template #Create> <QuoteCreate /> </template>
         <template #Preview> <QuotePreview /> </template>
       </Tabs>
     </div>

@@ -38,9 +38,19 @@
     z-index: -1;
   }
 
+  .material-icons {
+    transform: translateY(1px);
+    line-height: none;
+  }
+
   &.btn-round-24:after {
     width: 24px;
     height: 24px;
+  }
+
+  &.btn-round-40:after {
+    width: 40px;
+    height: 40px;
   }
 
   &.btn-red:hover:after {
@@ -51,5 +61,10 @@
   &.btn-highlight:hover:after {
     background-color: var(--color-highlight);
     opacity: 0.25;
+  }
+
+  &.btn-gray:hover:after {
+    background-color: var(--color-bg-light-hover);
+    opacity: 0.5;
   }
 }
