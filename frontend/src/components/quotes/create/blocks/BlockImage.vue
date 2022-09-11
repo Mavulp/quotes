@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from "vue"
+import { ref, computed, onMounted } from "vue"
 import { delay } from "../../../../bin/utils"
 import { useCreate } from "../../../../store/create"
 import { ImageQuoteContent } from "../../../../types/quote-types"
 
 import LoadingBar from "../../../loading/LoadingBar.vue"
 import InputText from "../../../form/InputText.vue"
+import BlockButtons from "../BlockButtons.vue"
 
 const formats = [
   ".jpeg",
@@ -55,7 +56,18 @@ onMounted(() => {
 
 const file = ref<File>()
 const loading = ref(false)
-const url = ref<string>()
+// const url = ref<string>()
+
+const url = computed({
+  get: () => props.data.url,
+  set: (url) => {
+    create.editBlock(props.id, {
+      ...props.data,
+      url
+    })
+  }
+})
+
 const quotee = computed({
   get: () => props.data.quotee,
   set: (quotee) => {
@@ -90,8 +102,8 @@ function remove() {
 }
 
 function manualUpload() {
-  file.value = undefined
-  url.value = undefined
+  // file.value = undefined
+  // url.value = ""
 
   if (inputEl.value) {
     inputEl.value.click()
@@ -108,34 +120,20 @@ function setHighlight() {
 
 <template>
   <div class="quote-block block-create-image" :class="{ 'is-loading': loading }">
-    <div class="quote-buttons">
-      <span class="quote-number"
-        >#<b>{{ index + 1 }}</b></span
-      >
-      <button
-        class="btn-round btn-highlight btn-hover-40"
-        data-title-right="Highlight"
-        @click="setHighlight"
-      >
-        <Icon :code="props.data.highlight ? 'e834' : 'e835'" />
-      </button>
-
-      <button
+    <BlockButtons
+      :highlight="props.data.highlight"
+      :index="index"
+      @remove="remove"
+      @highlight="setHighlight"
+    />
+    <!-- <button
         class="btn-round btn-gray btn-hover-40"
         data-title-right="Upload"
         @click="manualUpload"
       >
         <Icon code="e43e" />
-      </button>
-
-      <button
-        class="btn-round btn-gray btn-hover-40"
-        data-title-right="Remove block"
-        @click="remove"
-      >
-        <Icon code="e5cd" />
-      </button>
-    </div>
+      </button> -->
+    <!-- </BlockButtons> -->
 
     <div class="image-loading" v-if="loading">
       <LoadingBar />
@@ -143,7 +141,14 @@ function setHighlight() {
     </div>
 
     <div class="image-preview" v-else-if="url">
-      <img :src="url" alt="" />
+      <div class="image-wrap">
+        <button class="upload-new-overlay">
+          <Icon code="e43e" />
+          <span>Upload a different photo</span>
+        </button>
+
+        <img :src="url" alt="" @click="manualUpload" />
+      </div>
     </div>
     <template v-else>
       <div class="form-file" :id="dropId">

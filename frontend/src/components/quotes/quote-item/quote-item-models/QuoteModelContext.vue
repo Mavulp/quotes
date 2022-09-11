@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from "vue"
 import { ContextQuoteContent } from "../../../../types/quote-types"
 
 interface Props {
@@ -13,9 +12,10 @@ const props = defineProps<Props>()
   <div class="quote-item-content-block quote-item-context">
     <strong>{{ props.data.text }}</strong>
 
-    <div class="quote-item-quotee">
+    <div class="quote-item-quotee" v-if="props.data.quotee">
       <Icon size="1.6" code="e244" />
-      <a :href="props.data.quotee">{{ props.data.quotee }}</a>
+      <span v-if="props.data.quotee === 'Anonymous'">Anonymous</span>
+      <a v-else :href="props.data.quotee">{{ props.data.quotee }}</a>
     </div>
   </div>
 </template>

@@ -20,7 +20,7 @@
   transform-origin: center top;
 
   &.is-active {
-    top: calc(100% + 16px);
+    // top: calc(100% + 16px);
     z-index: 100;
     opacity: 1;
     visibility: visible;

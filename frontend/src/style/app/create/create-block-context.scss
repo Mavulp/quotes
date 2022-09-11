@@ -1,0 +1,28 @@
+.quote-block.block-create-context {
+  padding: 0;
+
+  &.is-highlight {
+    border-color: var(--color-highlight);
+  }
+
+  div.form-quotee {
+    margin: 0;
+
+    input {
+      height: 48px;
+      line-height: 48px;
+      border: none;
+
+      padding: 0 24px;
+    }
+  }
+
+  .form-textarea {
+    border-bottom: 1px solid var(--color-border);
+
+    textarea {
+      border: none;
+      resize: none;
+    }
+  }
+}

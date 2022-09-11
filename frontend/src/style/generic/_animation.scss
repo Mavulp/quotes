@@ -8,3 +8,21 @@
 .fade-leave-to {
   opacity: 0;
 }
+
+/* -------------------------------- */
+
+.tab-enter-from {
+  transform: translateY(-12px);
+  opacity: 0;
+}
+
+.tab-move,
+.tab-enter-active,
+.tab-leave-active {
+  transition: 0.15s all ease;
+}
+
+.tab-leave-to {
+  transform: translateY(12px);
+  opacity: 0;
+}

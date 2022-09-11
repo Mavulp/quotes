@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Quote } from "../../../types/quote-types"
 import { date } from "../../../bin/utils"
-import { computed } from "vue"
+import { computed, provide } from "vue"
 
 import QuoteModelHighlight from "./quote-item-models/QuoteModelHighlight.vue"
 import QuoteModelContext from "./quote-item-models/QuoteModelContext.vue"
@@ -26,6 +26,11 @@ const otherUsers = computed(() =>
     .map((quotee) => `${quotee.username} #${quotee.index}`)
     .join(", ")
 )
+
+provide(
+  "quote",
+  computed<Quote>(() => props.data)
+)
 </script>
 
 <template>
@@ -35,7 +40,8 @@ const otherUsers = computed(() =>
 
       <div class="quote-quotees">
         <span class="quote-text quote-quotee" v-for="item in highlightUsers" :key="item.username">
-          <a :href="item.username">{{ item.username }}</a> {{ `#${item.index}` }}
+          <a :href="item.username">{{ item.username }}</a>
+          {{ highlightUsers.length === 1 ? "" : `#${item.index}` }}
         </span>
 
         <span v-if="props.data.quotees.length > 2" :data-title-bottom="otherUsers">...</span>

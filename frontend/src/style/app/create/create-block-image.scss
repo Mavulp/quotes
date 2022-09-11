@@ -5,12 +5,12 @@
 
   $height: 156px;
 
-  .form-input {
+  div.form-quotee {
     width: 30%;
   }
 
   .form-file {
-    margin-bottom: 16px;
+    margin-bottom: 24px;
   }
 
   input[type="file"] {
@@ -58,15 +58,61 @@
     display: block;
     position: relative;
 
-    img {
-      @include radius(6px);
-      overflow: hidden;
-      display: block;
-      max-width: 100%;
-      max-height: 512px;
-      object-position: top left;
-      object-fit: contain;
-      box-shadow: var(--shadow);
+    .image-wrap {
+      display: inline-block;
+      position: relative;
+
+      &:hover {
+        .upload-new-overlay {
+          gap: 12px;
+          opacity: 1;
+          z-index: 10;
+          visibility: visible;
+        }
+      }
+
+      .upload-new-overlay {
+        @include t();
+        @include flex(4px, $align: center, $justify: center, $dir: column);
+        position: absolute;
+        // top: 50%;
+        // left: 50%;
+        // transform: translate(-50%, -50%);
+        inset: 0;
+        width: 100%;
+        padding: 12px;
+        z-index: -1;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+
+        &:before {
+          @include radius(6px);
+          content: "";
+          display: block;
+          position: absolute;
+          inset: 0;
+          z-index: -1;
+          opacity: 0.6;
+          background-color: var(--color-bg);
+        }
+
+        span {
+          color: var(--color-highlight);
+        }
+      }
+
+      img {
+        @include radius(6px);
+        cursor: pointer;
+        overflow: hidden;
+        display: block;
+        max-width: 100%;
+        max-height: 512px;
+        object-position: top left;
+        object-fit: contain;
+        box-shadow: var(--shadow);
+      }
     }
   }
 }

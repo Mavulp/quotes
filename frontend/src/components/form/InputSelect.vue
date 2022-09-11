@@ -131,7 +131,7 @@ function setValue(item: Option) {
     <button
       class="select-button"
       @click="open = !open"
-      :class="{ 'has-selected': selected && selected.length > 0 }"
+      :class="{ 'has-selected': selected && selected.length > 0 && selected !== 'null' }"
     >
       <input
         size="1"

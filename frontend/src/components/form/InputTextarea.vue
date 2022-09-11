@@ -30,7 +30,7 @@ function updateValue(e: any) {
 <template>
   <div
     class="form-textarea"
-    :class="{ 'input-error': error && error.invalid, required: required }"
+    :class="{ 'input-error': error && error.invalid, required: required, 'has-icon': icon }"
   >
     <label v-if="icon">
       <Icon :code="icon" />

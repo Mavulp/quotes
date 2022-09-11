@@ -1,0 +1,14 @@
+.quote-block.block-create-highlight {
+  .form-textarea {
+    textarea {
+      @include font(700);
+      font-size: 2.2rem;
+    }
+  }
+
+  .quote-buttons {
+    .btn-highlight {
+      display: none;
+    }
+  }
+}

@@ -1,10 +1,12 @@
 .quote-route-create {
+  padding-bottom: 64px;
+
   h1 {
     margin-bottom: 50px;
   }
 
   .quote-create {
-    display: block;
+    // display: block;
 
     .quote-blocks {
       display: block;
@@ -26,12 +28,12 @@
 
       &.has-blocks {
         height: 64px;
-        border-color: var(--color-border);
-        background-color: transparent;
+        // border-color: var(--color-border);
+        // background-color: transparent;
 
-        &:hover {
-          background-color: var(--color-bg-light);
-        }
+        // &:hover {
+        // background-color: var(--color-bg-light);
+        // }
       }
 
       &:hover {
@@ -60,22 +62,39 @@
       width: 75%;
 
       .form-input {
-        margin-bottom: 40px;
+        margin-bottom: 24px;
       }
 
       .form-checkbox {
         margin-bottom: 10px;
+        margin-left: 20px;
       }
 
       .form-select {
-        margin-top: 40px;
+        // margin-top: 40px;
         margin-bottom: 40px;
       }
+
+      .button {
+        margin-top: 32px;
+        margin-left: 20px;
+      }
+    }
+  }
+
+  .quote-preview {
+    .quote-preview-empty {
+      @include radius(12px);
+      display: block;
+      text-align: center;
+      padding: 32px;
+      background-color: var(--color-bg-light);
     }
   }
 }
 
 .quote-block {
+  @include t();
   @include radius(12px);
   display: block;
   position: relative;
@@ -94,6 +113,11 @@
   }
 
   &:hover {
+    &.block-create-highlight,
+    &.block-create-context {
+      box-shadow: var(--shadow);
+    }
+
     .quote-buttons {
       opacity: 1;
 
@@ -130,7 +154,7 @@
 
   .form-input.form-quotee {
     display: block;
-    margin-top: 12px;
+    margin-top: 8px;
     margin-bottom: 24px;
 
     input {

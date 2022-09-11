@@ -79,9 +79,13 @@ onMounted(() => {
     </div>
   </div>
 
-  <template v-for="(_, slot) in slots" :key="slot">
-    <slot v-if="active === slot" :name="slot" />
-  </template>
+  <transition name="tab" mode="out-in">
+    <div :key="active">
+      <template v-for="(_, slot) in slots" :key="slot">
+        <slot v-if="active === slot" :name="slot" />
+      </template>
+    </div>
+  </transition>
 </template>
 
 <style scoped lang="scss">

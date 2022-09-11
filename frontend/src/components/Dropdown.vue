@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from "vue"
+import { ref } from "vue"
 import { onClickOutside } from "@vueuse/core"
-import { Blocks } from "../types/quote-types"
 
 type Button =
   | {
@@ -46,7 +45,9 @@ function setValue(btn: Button) {
     <div @click="open = !open">
       <slot />
     </div>
-    <div class="dropdown-element is-active" v-if="open">
+
+    <!-- <transition name="fade" mode="out-in"> -->
+    <div class="dropdown-element" :class="{ 'is-active': open }">
       <button v-for="btn in buttons" @click="setValue(btn)">
         <template v-if="typeof btn !== 'string' && btn.icon">
           <Icon :code="btn.icon" />
@@ -55,6 +56,7 @@ function setValue(btn: Button) {
         {{ typeof btn === "string" ? btn : btn.label }}
       </button>
     </div>
+    <!-- </transition> -->
   </div>
 </template>
 
@@ -62,9 +64,12 @@ function setValue(btn: Button) {
 .dropdown-wrapper-el {
   position: relative;
 
-  .dropdown-element.is-active {
-    left: 50%;
+  .dropdown-element {
+    left: 45%;
     top: 75%;
+    &.is-active {
+      top: 75%;
+    }
   }
 }
 </style>

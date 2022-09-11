@@ -106,9 +106,6 @@ function append(type: string) {
         v-model:value="location"
         placeholder="Location (IRL, TeamSpeak, IRC ...)"
       />
-      <InputCheckbox label="Enable comment section" v-model:check="comments" />
-      <InputCheckbox label="Hide author username (you)" v-model:check="anonymous" />
-      <InputCheckbox label="Hide quotee username" v-model:check="anonymousQuotees" />
 
       <InputSelect
         icon="e031"
@@ -117,6 +114,10 @@ function append(type: string) {
         placeholder="Does this quote contain offensive content? *"
         :error="errors.offensive"
       />
+
+      <InputCheckbox label="Enable comment section" v-model:check="comments" />
+      <InputCheckbox label="Hide author username (you)" v-model:check="anonymous" />
+      <InputCheckbox label="Hide quotee username" v-model:check="anonymousQuotees" />
 
       <button class="button" @click="submit">Post</button>
     </div>

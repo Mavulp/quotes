@@ -73,7 +73,7 @@ input {
 }
 
 ::placeholder {
-  color: var(--color-text-lighter);
+  color: var(--color-text-light);
 }
 
 input:-webkit-autofill,
@@ -93,13 +93,19 @@ input:-webkit-autofill:active {
     line-height: 36px;
   }
 
+  &.has-icon {
+    textarea {
+      padding-left: 56px;
+    }
+  }
+
   textarea {
-    padding: 20px;
-    min-height: 80px;
+    @include radius(6px);
+    padding: 24px;
+    min-height: 128px;
+    max-height: 256px;
     resize: vertical;
-    padding-left: 56px;
-    padding-top: 25px;
-    line-height: 25px;
+    line-height: 20px;
     overflow-y: auto;
 
     ::-webkit-scrollbar {
@@ -170,6 +176,8 @@ input:-webkit-autofill:active {
     }
 
     &.has-selected {
+      border-color: var(--color-highlight);
+
       ::placeholder {
         color: var(--color-text);
       }

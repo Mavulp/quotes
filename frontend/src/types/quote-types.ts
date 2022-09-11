@@ -27,12 +27,13 @@ export type Quotee = {
 }
 
 export interface Quote {
-  quotees: Quotee[]
   id: number
   author: string
+  quotees: Quotee[]
   offensive: boolean
   createdAt: number
   location?: string
+  legacy?: boolean
   blocks: Array<HighlightQuoteContent | ContextQuoteContent | ImageQuoteContent>
 }
 

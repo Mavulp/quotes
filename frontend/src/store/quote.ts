@@ -15,9 +15,9 @@ export const useQuote = defineStore("quotes", {
     } as State),
   actions: {
     async fetchQuotes() {
-      const { addLoading, delLoading } = useLoading()
+      const loading = useLoading()
 
-      addLoading("quote-list")
+      loading.add("quote-list")
 
       this.quotes = [
         {
@@ -88,7 +88,7 @@ export const useQuote = defineStore("quotes", {
       // return get("/api/quotes", { signal })
       //   .then((response) => {})
       //   .catch((e: FetchError) => {})
-      //   .finally(() => delLoading("quote-list"))
+      //   .finally(() => loading.del("quote-list"))
     }
   },
   getters: {}

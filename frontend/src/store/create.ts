@@ -60,5 +60,19 @@ export const useCreate = defineStore("create", {
       this.form.blocks.delete(index)
       this._index--
     }
+  },
+  getters: {
+    getBlockValue:
+      (state) =>
+      (
+        id: number,
+        field: keyof ImageQuoteContent | keyof ContextQuoteContent | keyof HighlightQuoteContent
+      ) => {
+        const block = state.form.blocks.get(id)
+
+        if (!block) return null
+
+        return Reflect.get(block, field)
+      }
   }
 })
