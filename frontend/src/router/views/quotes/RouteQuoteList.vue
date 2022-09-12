@@ -3,7 +3,7 @@ import { onBeforeMount, ref, watch, computed, onMounted } from "vue"
 import { useQuote } from "../../../store/quote"
 import { $, toBool } from "../../../bin/utils"
 
-import InputRadio from "../../../components/form/InputRadio.vue"
+// import InputRadio from "../../../components/form/InputRadio.vue"
 import QuoteListItem from "../../../components/quotes/quote-item/QuoteListItem.vue"
 import QuoteFilters from "../../../components/quotes/filters/QuoteFilters.vue"
 
@@ -83,12 +83,12 @@ onMounted(() => {
       </div>
     </section>
 
-    <section class="quote-list-header is-sticky" v-if="stickHeader">
+    <!-- <section class="quote-list-header is-sticky" v-if="stickHeader">
       <div class="quote-container">
         <QuoteFilters />
       </div>
       <button class="button">Random</button>
-    </section>
+    </section> -->
 
     <section class="quote-list">
       <div class="quote-container">

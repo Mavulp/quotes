@@ -54,7 +54,7 @@ function remove() {
 <template>
   <div class="quote-block block-create-context block-create-highlight is-highlight">
     <BlockButtons :index="props.index" :highlight="props.data.highlight" @remove="remove" />
-    <InputTextarea v-model:value="context" placeholder="Provide quote highlight" />
+    <InputTextarea v-model:value="context" placeholder="Provide a highlight" />
     <InputText class="form-quotee" v-model:value="quotee" placeholder="Add a quotee (optional)" />
   </div>
 </template>

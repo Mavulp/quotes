@@ -7,20 +7,18 @@
     margin-bottom: 60px;
     border-bottom: 1px solid var(--color-border);
 
-    &.is-sticky {
-      @include flex($align: center);
-      position: fixed;
-      top: 0;
-      left: $sidebar-width;
-      right: 0;
-      z-index: 1000;
-      background-color: var(--color-bg);
-      margin-bottom: 0;
-      padding: 10px 0;
-      width: auto;
-      // padding-right: 10em;
-      padding-right: 40px;
-    }
+    // &.is-sticky {
+    //   @include flex($align: center);
+    //   position: fixed;
+    //   top: $header;
+    //   left: $sidebar-width;
+    //   right: 0;
+    //   z-index: 1000;
+    //   margin-bottom: 0;
+    //   padding: 10px 0;
+    //   width: auto;
+    //   padding-right: 40px;
+    // }
   }
 
   .quote-list {

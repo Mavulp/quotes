@@ -1,4 +1,5 @@
 @import "./navigation/sidebar";
+@import "./navigation/header";
 
 @import "./quotes/quote-item";
 
@@ -16,6 +17,7 @@
   @include flex($gap: 0px, $justify: flex-start, $align: flex-start);
   position: relative;
   min-height: 100vh;
+  padding-top: $header;
 
   .quote-content-wrap {
     flex: 1;
