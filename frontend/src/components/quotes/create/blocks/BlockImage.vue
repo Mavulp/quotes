@@ -119,7 +119,7 @@ function setHighlight() {
 </script>
 
 <template>
-  <div class="quote-block block-create-image" :class="{ 'is-loading': loading }">
+  <div class="quote-block block-create-image" :class="{ 'is-loading': loading }" draggable="true">
     <BlockButtons
       :highlight="props.data.highlight"
       :index="index"

@@ -1,8 +1,10 @@
 import { merge } from "lodash"
 
 // Setup endpoint base
-export const rootUrl = "localhost:5173"
-export const url = process.env.NODE_ENV === "development" ? "localhost:5173" : rootUrl
+// export const rootUrl = "localhost:5173/api"
+const rootUrl = "https://quotes.hivecom.net/api"
+
+// export const url = process.env.NODE_ENV === "development" ? "localhost:5173" : rootUrl
 
 // Controller used to abort requests
 export const controller = new AbortController()
@@ -75,13 +77,13 @@ export function del(url: string, options?: object) {
 // Private handler functions
 
 async function _handleFetch(url: string, options: object) {
-  // const token = localStorage.getItem("bearer_token")
+  const token = localStorage.getItem("bearer_token")
 
   merge(options, {
-    mode: "cors"
-    // headers: {
-    // Authorization: `Bearer ${token}`
-    // }
+    mode: "cors",
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
   })
 
   return fetch(rootUrl + url, options).then(_handleResponse)

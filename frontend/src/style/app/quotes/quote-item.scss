@@ -150,7 +150,8 @@
         position: relative;
 
         strong {
-          @include bebas();
+          @include font(900);
+          text-transform: uppercase;
           word-wrap: break-word;
         }
       }
@@ -159,7 +160,8 @@
 
       &.quote-item-context {
         strong {
-          @include bebas();
+          @include font(900);
+          text-transform: uppercase;
           word-wrap: break-word;
           font-size: 3rem;
         }

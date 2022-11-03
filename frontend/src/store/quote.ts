@@ -85,10 +85,16 @@ export const useQuote = defineStore("quotes", {
         }
       ]
 
-      // return get("/api/quotes", { signal })
-      //   .then((response) => {})
-      //   .catch((e: FetchError) => {})
-      //   .finally(() => loading.del("quote-list"))
+      return get("/test", { signal })
+        .then((response) => {
+          console.log(response)
+
+          return response
+        })
+        .catch((e: FetchError) => {
+          console.log(e)
+        })
+        .finally(() => loading.del("quote-list"))
     }
   },
   getters: {}

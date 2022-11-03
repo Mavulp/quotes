@@ -8,7 +8,7 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const contentSize = computed(() => clamp(3, (30 / props.data.text.length) * 10, 15))
+const contentSize = computed(() => clamp(1.5, (25 / props.data.text.length) * 10, 10))
 </script>
 
 <template>

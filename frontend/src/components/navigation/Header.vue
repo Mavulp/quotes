@@ -19,7 +19,6 @@ document.addEventListener("scroll", () => {
       <router-link class="header-link" :to="{ name: 'Home' }">Home</router-link>
       <router-link class="header-link" :to="{ name: 'QuoteList' }">Quotes</router-link>
       <router-link class="header-link" :to="{ name: 'Admin' }">Admin</router-link>
-
       <router-link class="header-link" :to="{ name: 'QuoteAdd' }">
         <Icon code="e745" /> Create
       </router-link>

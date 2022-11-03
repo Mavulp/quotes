@@ -59,7 +59,11 @@ function setHighlight() {
 </script>
 
 <template>
-  <div class="quote-block block-create-context" :class="{ 'is-highlight': props.data.highlight }">
+  <div
+    class="quote-block block-create-context"
+    :class="{ 'is-highlight': props.data.highlight }"
+    draggable="true"
+  >
     <BlockButtons
       :index="props.index"
       :highlight="props.data.highlight"

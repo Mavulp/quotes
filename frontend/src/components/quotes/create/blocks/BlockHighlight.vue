@@ -52,7 +52,10 @@ function remove() {
 </script>
 
 <template>
-  <div class="quote-block block-create-context block-create-highlight is-highlight">
+  <div
+    class="quote-block block-create-context block-create-highlight is-highlight"
+    draggable="true"
+  >
     <BlockButtons :index="props.index" :highlight="props.data.highlight" @remove="remove" />
     <InputTextarea v-model:value="context" placeholder="Provide a highlight" />
     <InputText class="form-quotee" v-model:value="quotee" placeholder="Add a quotee (optional)" />
