@@ -4,16 +4,18 @@
   top: 0;
   left: 0;
   width: 100%;
-  backdrop-filter: blur(5px);
-  background-color: rgba(#181818, 0.75);
+  backdrop-filter: blur(10px);
+  background-color: rgba(#181818, 0.7);
   z-index: 1000;
   height: $header;
   @include flex($align: center);
   border-bottom: 1px solid transparent;
 
-  &.show-border {
-    border-color: var(--color-border);
-  }
+  // border-color: var(--color-border);
+
+  // &.disable-border {
+  //   border-color: transparent;
+  // }
 
   .logo {
     position: absolute;

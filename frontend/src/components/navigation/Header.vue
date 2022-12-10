@@ -10,7 +10,7 @@ document.addEventListener("scroll", () => {
 </script>
 
 <template>
-  <div class="quote-navigation" :class="{ 'show-border': show }">
+  <div class="quote-navigation" :class="{ 'disable-border': show }">
     <router-link class="logo" :to="{ name: 'Home' }">
       <img src="/quotes-logo.svg" alt="" />
     </router-link>
