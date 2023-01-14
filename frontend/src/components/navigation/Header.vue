@@ -1,11 +1,20 @@
 <script setup lang="ts">
-import { computed, ref } from "vue"
+import { computed, ref, onBeforeMount } from "vue"
+import {useUser} from "../../store/user"
+
 const username = computed(() => "dolanske")
 
 const show = ref(true)
 
 document.addEventListener("scroll", () => {
   show.value = window.scrollY <= 5
+})
+
+// Fetch user data
+const user = useUser()
+
+onBeforeMount(() => {
+  user.fetchUser()
 })
 </script>
 

@@ -90,20 +90,9 @@ async function _handleFetch(url: string, options: object) {
 }
 
 async function _handleResponse(response: Response) {
-  // Reset on 403
-  // if ([401, 403].includes(response.status)) {
-  //   localStorage.removeItem("user")
-  //   localStorage.removeItem("bearer_token")
-
-  //   setTimeout(() => {
-  //     if (window.location.href === "/login") {
-  //       window.location.href = "/login"
-  //     }
-
-  //     return Promise.reject({
-  //       message: "Unexpected issue. Please clear site data, reload and try again."
-  //     })
-  //   }, 50)
+  // if (response.status && response.url) {
+  //   window.location.href = response.url
+  //   return
   // }
 
   if (response.status !== 200) {

@@ -79,7 +79,7 @@ export const useQuote = defineStore("quotes", {
               type: "image",
               quotee: "chantaro",
               url: "https://i.imgur.com/nKhJQGw.png",
-              highlight: true
+              highlight: false
             }
           ]
         }

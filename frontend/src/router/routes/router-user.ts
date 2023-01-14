@@ -21,12 +21,12 @@ export default [
       requiresAuth: true,
     },
   },
-  {
-    path: "/login",
-    name: "Login",
-    component: RouteLoginVue,
-    meta: {
-      title: "Login",
-    },
-  },
+  // {
+  //   path: "/login",
+  //   name: "Login",
+  //   component: RouteLoginVue,
+  //   meta: {
+  //     title: "Login",
+  //   },
+  // },
 ];

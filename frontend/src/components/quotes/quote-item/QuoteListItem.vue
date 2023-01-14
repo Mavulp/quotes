@@ -36,8 +36,6 @@ provide(
 <template>
   <div class="quote-item">
     <div class="quote-item-header">
-      <!-- TODO: quotees -->
-
       <div class="quote-quotees">
         <span class="quote-text quote-quotee" v-for="item in highlightUsers" :key="item.username">
           <a :href="item.username">{{ item.username }}</a>
@@ -51,9 +49,10 @@ provide(
 
       <span class="quote-text"> {{ date.simple(props.data.createdAt) }} </span>
 
+      <div class="quote-divider"></div>
+
       <span class="quote-text quote-author">
         reported by
-
         <a href="/kilmanio">{{ props.data.author }}</a>
       </span>
 

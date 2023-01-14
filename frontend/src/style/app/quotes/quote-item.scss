@@ -3,6 +3,7 @@
   // padding: 10px 20px 20px;
   border: 1px solid var(--color-border);
   margin-bottom: 40px;
+  overflow: hidden;
 
   &:last-of-type {
     margin-bottom: 0;
@@ -55,7 +56,7 @@
 
     .quote-text {
       @include font(400);
-      color: var(--color-text);
+      color: var(--color-text-light);
       font-size: 1.4rem;
 
       a {
@@ -70,7 +71,6 @@
       }
 
       &.quote-author {
-        margin-left: 20px;
         color: var(--color-text-lighter);
 
         a {
@@ -120,7 +120,7 @@
           // @include radius(6px);
           display: block;
           position: absolute;
-          inset: 0 -20px -16px;
+          inset: -16px -20px;
           z-index: -1;
           background-color: var(--color-highlight-shade);
         }
@@ -130,7 +130,7 @@
         @include flex($gap: 5px);
         width: 100%;
         padding-left: 5px;
-        padding-top: 5px;
+        padding-top: 8px;
         // text-align: right;
 
         span,
@@ -153,8 +153,7 @@
         position: relative;
 
         strong {
-          @include font(600);
-          text-transform: uppercase;
+          @include font(400);
           word-wrap: break-word;
         }
       }
@@ -163,10 +162,9 @@
 
       &.quote-item-context {
         strong {
-          @include font(600);
-          text-transform: uppercase;
+          @include font(400);
           word-wrap: break-word;
-          font-size: 2.4rem;
+          font-size: 2rem;
         }
       }
 
