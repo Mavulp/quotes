@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from "vue"
-import { useFilters } from "../../../store/filters"
+import { computed, reactive, ref } from 'vue'
+import { useFilters } from '../../../store/filters'
 
-import InputSelect from "../../../components/form/InputSelect.vue"
-import Search from "../../../components/form/Search.vue"
+import InputSelect from '../../../components/form/InputSelect.vue'
+import Search from '../../../components/form/Search.vue'
 
 const filters = useFilters()
 
@@ -12,18 +12,18 @@ const filters = useFilters()
  */
 const options = [
   {
-    value: "kilmanio",
-    label: "Kilmanoi"
-  }
+    value: 'kilmanio',
+    label: 'Kilmanoi',
+  },
 ]
-const search = ref("")
-const quotee = ref("")
-const author = ref("")
+const search = ref('')
+const quotee = ref('')
+const author = ref('')
 </script>
 
 <template>
   <div class="quote-title-wrap quote-filters">
-    <Search placeholder="Search for a quote" v-model:value="search" />
+    <Search v-model:value="search" placeholder="Search for a quote" />
 
     <InputSelect
       v-model:selected="quotee"

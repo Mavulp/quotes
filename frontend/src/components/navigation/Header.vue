@@ -1,43 +1,42 @@
 <script setup lang="ts">
-import { computed, ref, onBeforeMount } from "vue"
-import {useUser} from "../../store/user"
+import { computed, onBeforeMount, ref } from 'vue'
+import { useUser } from '../../store/user'
 
-const username = computed(() => "dolanske")
+const username = computed(() => 'dolanske')
 
 const show = ref(true)
 
-document.addEventListener("scroll", () => {
+document.addEventListener('scroll', () => {
   show.value = window.scrollY <= 5
-})
-
-// Fetch user data
-const user = useUser()
-
-onBeforeMount(() => {
-  user.fetchUser()
 })
 </script>
 
 <template>
   <div class="quote-navigation" :class="{ 'disable-border': show }">
-    <router-link class="logo" :to="{ name: 'Home' }">
-      <img src="/quotes-logo.svg" alt="" />
+    <router-link class="logo" :to="{ name: 'RouteHome' }">
+      <img src="/quotes-logo.svg" alt="">
     </router-link>
 
     <div class="quote-container">
-      <router-link class="header-link" :to="{ name: 'Home' }">Home</router-link>
-      <router-link class="header-link" :to="{ name: 'QuoteList' }">Quotes</router-link>
-      <router-link class="header-link" :to="{ name: 'Admin' }">Admin</router-link>
-      <router-link class="header-link" :to="{ name: 'QuoteAdd' }">
+      <router-link class="header-link" :to="{ name: 'RouteHome' }">
+        Home
+      </router-link>
+      <router-link class="header-link" :to="{ name: 'RouteQuoteList' }">
+        Quotes
+      </router-link>
+      <router-link class="header-link" :to="{ name: 'RouteAdmin' }">
+        Admin
+      </router-link>
+      <router-link class="header-link" :to="{ name: 'RouteQuoteAdd' }">
         <Icon code="e745" /> Create
       </router-link>
 
-      <div style="flex: 1"></div>
+      <div style="flex: 1" />
 
       <router-link
         data-title-bottom="Your quotes"
         class="header-link header-user"
-        :to="{ name: 'UserProfile', params: { username: username } }"
+        :to="{ name: 'RouteUserProfile', params: { username } }"
       >
         <Icon code="e7fd" />
         {{ username }}

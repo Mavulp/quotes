@@ -1,8 +1,8 @@
-import { merge } from "lodash"
+import { merge } from 'lodash'
 
 // Setup endpoint base
 // export const rootUrl = "localhost:5173/api"
-const rootUrl = "https://quotes.hivecom.net/api"
+export const rootUrl = 'https://quotes.hivecom.net/api'
 
 // export const url = process.env.NODE_ENV === "development" ? "localhost:5173" : rootUrl
 
@@ -15,10 +15,10 @@ export function get(url: string, options?: object) {
     url,
     merge(
       {
-        method: "GET"
+        method: 'GET',
       },
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -27,12 +27,12 @@ export function post(url: string, body: object | string, options?: object) {
     url,
     merge(
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
       },
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -41,12 +41,12 @@ export function put(url: string, body: object | string, options?: object) {
     url,
     merge(
       {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
       },
-      options
-    )
+      options,
+    ),
   )
 }
 
@@ -56,9 +56,9 @@ export function put(url: string, body: object | string, options?: object) {
 
 export function upload(url: string, body: object | string, options?: object) {
   return _handleFetch(url, {
-    method: "POST",
+    method: 'POST',
     body,
-    ...options
+    ...options,
   })
 }
 
@@ -67,23 +67,23 @@ export function del(url: string, options?: object) {
     url,
     merge(
       {
-        method: "DELETE"
+        method: 'DELETE',
       },
-      options
-    )
+      options,
+    ),
   )
 }
 
 // Private handler functions
 
 async function _handleFetch(url: string, options: object) {
-  const token = localStorage.getItem("bearer_token")
+  const token = localStorage.getItem('bearer_token')
 
   merge(options, {
-    mode: "cors",
+    mode: 'cors',
     headers: {
-      Authorization: `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+    },
   })
 
   return fetch(rootUrl + url, options).then(_handleResponse)
@@ -102,23 +102,25 @@ async function _handleResponse(response: Response) {
       try {
         const parsed = JSON.parse(text)
         message = parsed.message
-      } catch (e) {
+      }
+      catch (e) {
         message = text
       }
 
-      return Promise.reject({
-        status: response.status,
-        message: message ? message : "An unexpected error occured: " + response.statusText
-      })
+      return { message }
+
+      // return Promise.reject(new Error({
+      //   status: response.status,
+      //   message: message || `An unexpected error occured: ${response.statusText}`,
+      // }))
     })
   }
 
   return response.text().then((text: string) => {
     const data = text && JSON.parse(text)
 
-    if (!response.ok) {
+    if (!response.ok)
       return Promise.reject(data)
-    }
 
     return data
   })

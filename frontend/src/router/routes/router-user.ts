@@ -1,25 +1,31 @@
-import RouteUserProfileVue from "../views/user/RouteUserProfile.vue";
-import RouteUserSettingsVue from "../views/user/RouteUserSettings.vue";
-import RouteLoginVue from "../views/RouteLogin.vue";
+import RouteUserProfileVue from '../views/user/RouteUserProfile.vue'
+import RouteUserSettingsVue from '../views/user/RouteUserSettings.vue'
+// import RouteLoginVue from "../views/RoutźeLogin.vue";
+import RouteAuth from '../views/RouteAuth.vue'
 
 export default [
   {
-    path: "/:username",
-    name: "UserProfile",
+    path: '/:username',
+    name: 'RouteUserProfile',
     component: RouteUserProfileVue,
     meta: {
-      title: "User profile",
+      title: 'User profile',
       requiresAuth: true,
     },
   },
   {
-    path: "/settings",
-    name: "UserSettings",
+    path: '/settings',
+    name: 'RouteUserSettings',
     component: RouteUserSettingsVue,
     meta: {
-      title: "User settings",
+      title: 'User settings',
       requiresAuth: true,
     },
+  },
+  {
+    path: '/authorize',
+    name: 'RouteAuthorize',
+    component: RouteAuth,
   },
   // {
   //   path: "/login",
@@ -29,4 +35,4 @@ export default [
   //     title: "Login",
   //   },
   // },
-];
+]
