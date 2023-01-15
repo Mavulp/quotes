@@ -4,6 +4,6 @@
 
 <template>
   <div>
-     quote detail
+    quote detail
   </div>
 </template>

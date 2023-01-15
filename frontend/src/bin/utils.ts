@@ -8,12 +8,12 @@ export const $$ = (selector: string): NodeList | null => document.querySelectorA
 
 // Returns a promise resolved after provided amount of ms
 export function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(() => resolve(true), ms))
+  return new Promise(resolve => setTimeout(() => resolve(true), ms))
 }
 
 // Takes a number and if it is only 1 digit, prepends a 0
 export function padTo2Digits(num: number) {
-  return num.toString().padStart(2, "0")
+  return num.toString().padStart(2, '0')
 }
 
 // Clamps the provided value between the provided min and max
@@ -28,11 +28,11 @@ export function clamp(min: number, value: number, max: number) {
 export const date = {
   simple: (date: number) => {
     const _date = new Date(date)
-    return _date.toLocaleDateString("en-GB", {
-      weekday: "short",
-      year: "numeric",
-      month: "long",
-      day: "numeric"
+    return _date.toLocaleDateString('en-GB', {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
     })
   },
   time: (date: number) => {
@@ -40,17 +40,17 @@ export const date = {
     const _date = new Date(date)
 
     return `${padTo2Digits(_date.getUTCHours())}:${padTo2Digits(
-      _date.getUTCMinutes()
-    )}, ${_date.toLocaleDateString("en-GB", {
-      year: "numeric",
-      month: "short",
-      day: "numeric"
+      _date.getUTCMinutes(),
+    )}, ${_date.toLocaleDateString('en-GB', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
     })}`
-  }
+  },
 }
 
 export function toBool(value: any): boolean {
-  return value === "true" ? true : false
+  return value === 'true'
 }
 
 export type ValueOf<T> = T[keyof T]

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { onBeforeMount, ref, watch, computed, onMounted } from "vue"
-import { useQuote } from "../../../store/quote"
-import { $, toBool } from "../../../bin/utils"
+import { computed, onBeforeMount, onMounted, ref, watch } from 'vue'
+import { useQuote } from '../../../store/quote'
+import { $, toBool } from '../../../bin/utils'
 
 // import InputRadio from "../../../components/form/InputRadio.vue"
-import QuoteListItem from "../../../components/quotes/quote-item/QuoteListItem.vue"
-import QuoteFilters from "../../../components/quotes/filters/QuoteFilters.vue"
+import QuoteListItem from '../../../components/quotes/quote-item/QuoteListItem.vue'
+import QuoteFilters from '../../../components/quotes/filters/QuoteFilters.vue'
 
 const quote = useQuote()
 
@@ -13,9 +13,9 @@ const quote = useQuote()
  * List type
  */
 
-const expanded = ref<boolean>(toBool(localStorage.getItem("is-list-expanded")))
+const expanded = ref<boolean>(toBool(localStorage.getItem('is-list-expanded')))
 watch(expanded, (value: boolean) => {
-  localStorage.setItem("is-list-expanded", value.toString())
+  localStorage.setItem('is-list-expanded', value.toString())
 })
 
 /**
@@ -31,8 +31,8 @@ const authors = computed(() =>
   Array.from(
     quote.quotes.reduce((a, b) => {
       return a.add(b.author)
-    }, new Set())
-  )
+    }, new Set()),
+  ),
 )
 
 /**
@@ -42,10 +42,10 @@ const authors = computed(() =>
 const stickHeader = ref(false)
 
 onMounted(() => {
-  const header = $("#header")
+  const header = $('#header')
   const height = header?.scrollHeight ?? 0
 
-  window.addEventListener("scroll", () => {
+  window.addEventListener('scroll', () => {
     stickHeader.value = window.scrollY > height
   })
 })
@@ -73,11 +73,13 @@ onMounted(() => {
 
 <template>
   <div class="quote-route-list">
-    <section class="quote-list-header" id="header">
+    <section id="header" class="quote-list-header">
       <div class="quote-container">
         <div class="quote-title-wrap text">
           <h1>Quote list</h1>
-          <button class="button">Random</button>
+          <button class="button">
+            Random
+          </button>
         </div>
         <QuoteFilters />
       </div>
@@ -119,7 +121,7 @@ onMounted(() => {
         </div>
 
         <div class="quote-list-items">
-          <QuoteListItem v-for="quote in data" :key="quote.id" :data="quote" />
+          <QuoteListItem v-for="item in data" :key="item.id" :data="item" />
         </div>
       </div>
     </section>

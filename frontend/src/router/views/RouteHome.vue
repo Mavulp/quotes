@@ -2,12 +2,9 @@
 //
 
 import { onBeforeMount } from 'vue'
-import { useUser } from '../../store/user'
-
-const user = useUser()
 
 onBeforeMount(() => {
-  user.fetchUser()
+
 })
 </script>
 

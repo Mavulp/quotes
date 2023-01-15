@@ -2,21 +2,20 @@
 import './style/index.scss'
 
 import { onBeforeMount } from 'vue'
-import Sidebar from './components/navigation/Sidebar.vue'
+import { useQuote } from './store/quote'
+import { useUser } from './store/user'
 import Header from './components/navigation/Header.vue'
-import { get } from './bin/fetch'
+
+const quote = useQuote()
+const user = useUser()
 
 onBeforeMount(async () => {
-  // get('/account/login')
-  //   .then(() => {
-  //     console.log('ok');
-
-  //   })
-  //   .catch(() => {
-  //     console.log('not ok');
-  //   })
-
-  // get()
+  if (localStorage.getItem('quotes_bearer_token')) {
+    user.fetchUsers()
+    user.fetchMe()
+    user.fetchSettings()
+    // quote.fetchQuotes()
+  }
 })
 </script>
 

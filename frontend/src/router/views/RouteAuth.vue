@@ -11,11 +11,11 @@ const router = useRouter()
 onBeforeMount(() => {
   const query = route.query as { token: string }
 
-  if (isEmpty(query) || !localStorage.getItem('bearer_token')) {
+  if (isEmpty(query)) {
     user.redirectToSignIn()
   }
   else {
-    localStorage.setItem('bearer_token', query.token)
+    localStorage.setItem('quotes_bearer_token', query.token)
     router.push({ name: 'RouteHome' })
   }
 })

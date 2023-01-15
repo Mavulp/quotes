@@ -10,9 +10,9 @@ interface State {
 
 export const useQuote = defineStore('quotes', {
   state: () =>
-    ({
-      quotes: [],
-    } as State),
+  ({
+    quotes: [],
+  } as State),
   actions: {
     async fetchQuotes() {
       const loading = useLoading()
@@ -85,11 +85,11 @@ export const useQuote = defineStore('quotes', {
       //   },
       // ]
 
-      return get('/test', { signal })
-        .then((response) => {
-          console.log(response)
+      return get('/quote/random/', { signal })
+        .then((res) => {
+          console.log(res)
 
-          return response
+          return res
         })
         .catch((e: FetchError) => {
           console.log(e)

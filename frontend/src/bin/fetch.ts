@@ -77,7 +77,7 @@ export function del(url: string, options?: object) {
 // Private handler functions
 
 async function _handleFetch(url: string, options: object) {
-  const token = localStorage.getItem('bearer_token')
+  const token = localStorage.getItem('quotes_bearer_token')
 
   merge(options, {
     mode: 'cors',
@@ -107,12 +107,9 @@ async function _handleResponse(response: Response) {
         message = text
       }
 
-      return { message }
-
-      // return Promise.reject(new Error({
-      //   status: response.status,
-      //   message: message || `An unexpected error occured: ${response.statusText}`,
-      // }))
+      return Promise.reject(new Error(
+        message || `An unexpected error occured: ${response.statusText}`,
+      ))
     })
   }
 
