@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { onClickOutside } from "@vueuse/core"
-import { computed, ref, watch, toRefs } from "vue"
-import { Error } from "../../bin/validation"
+import { onClickOutside } from '@vueuse/core'
+import { computed, ref, toRefs, watch } from 'vue'
+import type { Error } from '../../bin/validation'
 
-type Option = {
+interface Option {
   label: string
   value: any
 }
@@ -27,84 +27,95 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  cantclear: true
+  cantclear: true,
 })
+const emit = defineEmits<{
+  (e: 'update:selected', value: any): void
+}>()
 const open = ref(false)
 const self = ref(null)
-const search = ref("")
+const search = ref('')
 
 onClickOutside(self, () => {
   open.value = false
 })
 
 watch(open, (val) => {
-  if (!val) {
-    search.value = ""
-  }
+  if (!val)
+    search.value = ''
 })
 
-const emit = defineEmits<{
-  (e: "update:selected", value: any): void
-}>()
-
 const formattedOptions = computed(() => {
-  if (!props.options || props.options.length === 0) return null
+  if (!props.options || props.options.length === 0)
+    return null
 
   return props.options
     .map((item) => {
-      if (typeof item === "string" || typeof item === "number") {
+      if (typeof item === 'string' || typeof item === 'number') {
         return {
           label: item,
-          value: item
+          value: item,
         }
-      } else {
+      }
+      else {
         return item
       }
     })
-    .filter((option) => option.label.toString().toLowerCase().includes(search.value.toLowerCase()))
+    .filter(option => option.label.toString().toLowerCase().includes(search.value.toLowerCase()))
 })
 
 const selectedLabels = computed(() => {
-  if (!props.selected || props.selected.length === 0 || !formattedOptions.value) return null
+  if (!props.selected || props.selected.length === 0 || !formattedOptions.value)
+    return null
 
-  if (typeof props.selected === "string") {
-    const item = formattedOptions.value.find((item) => item.value === props.selected)
-    if (item) return item.label
-  } else {
+  if (typeof props.selected === 'string') {
+    const item = formattedOptions.value.find(item => item.value === props.selected)
+    if (item)
+      return item.label
+  }
+  else {
     return props.selected
       .map((select: string | Option) => {
-        const item = formattedOptions.value?.find((item) => item.value === select)
-        if (item) return item.label
+        const item = formattedOptions.value?.find(item => item.value === select)
+        if (item)
+          return item.label
         return select
       })
-      .join(", ")
+      .join(', ')
   }
+
+  return ''
 })
 
 function setValue(item: Option) {
   // Multiple
   if (props.multiple && Array.isArray(props.selected)) {
-    if (props.selected.find((sel) => sel === item.value)) {
+    if (props.selected.find(sel => sel === item.value)) {
       // Clearing
-      if (props.cantclear && props.selected.length === 1) return
+      if (props.cantclear && props.selected.length === 1)
+        return
 
-      const filtered = props.selected.filter((sel) => sel !== item.value)
-      emit("update:selected", filtered)
-    } else {
-      // Setting
-      emit("update:selected", [...props.selected, item.value])
+      const filtered = props.selected.filter(sel => sel !== item.value)
+      emit('update:selected', filtered)
     }
-  } else {
+    else {
+      // Setting
+      emit('update:selected', [...props.selected, item.value])
+    }
+  }
+  else {
     // Single
 
     if (props.selected && props.selected === item.value) {
-      //Clearing
-      if (props.cantclear) return
+      // Clearing
+      if (props.cantclear)
+        return
 
-      emit("update:selected", null)
-    } else {
+      emit('update:selected', null)
+    }
+    else {
       // Setting
-      emit("update:selected", item.value)
+      emit('update:selected', item.value)
 
       // Only close if you multiple=false and you just set an item
       open.value = false
@@ -115,13 +126,13 @@ function setValue(item: Option) {
 
 <template>
   <div
-    class="form-select"
     ref="self"
+    class="form-select"
     :class="{
       'is-open': open,
-      required: required,
+      'required': required,
       'has-icon': icon,
-      'has-error': props.error?.invalid
+      'has-error': props.error?.invalid,
     }"
   >
     <label v-if="icon">
@@ -130,10 +141,11 @@ function setValue(item: Option) {
 
     <button
       class="select-button"
-      @click="open = !open"
       :class="{ 'has-selected': selected && selected.length > 0 && selected !== 'null' }"
+      @click="open = !open"
     >
       <input
+        v-model="search"
         size="1"
         type="text"
         :placeholder="
@@ -141,8 +153,7 @@ function setValue(item: Option) {
             ? `${selectedLabels ?? props.placeholder}`
             : `${placeholder ?? props.placeholder}`
         "
-        v-model="search"
-      />
+      >
     </button>
 
     <div class="dropdown-icon">
@@ -159,21 +170,23 @@ function setValue(item: Option) {
         >
           <div v-html="item.label" />
 
-          <template v-if="!props.cantclear">
+          <!-- <template v-if="!props.cantclear">
             <span
-              class="remove-item material-icons"
               v-if="selected && selected.includes(item.value)"
+              class="remove-item material-icons"
             >
               &#xe5cd;
             </span>
-            <span class="add-item material-icons" v-else-if="props.multiple">&#xe145;</span>
-          </template>
+            <span v-else-if="props.multiple" class="add-item material-icons">&#xe145;</span>
+          </template> -->
         </button>
       </template>
-      <span class="select-no-options" v-else>Nothing to select.</span>
+      <span v-else class="select-no-options">Nothing to select.</span>
     </div>
     <template v-if="props.error?.invalid">
-      <p class="error-item" v-for="item in props.error.errors">{{ item }}</p>
+      <p v-for="item in props.error.errors" :key="item" class="error-item">
+        {{ item }}
+      </p>
     </template>
   </div>
 </template>

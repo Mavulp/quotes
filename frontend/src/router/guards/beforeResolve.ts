@@ -7,15 +7,18 @@ const key = 'quotes_bearer_token'
 export default async function (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) {
   const token = localStorage.getItem(key)
 
-  if (to.meta.requiresAuth) {
+  if (to.meta.requiresAuth || to.name === 'RouteAuthorize') {
     if (!token) {
-      const { token } = from.query as { token: string }
+      const { token } = to.query as { token: string }
 
       if (isEmpty(token)) {
-        localStorage.deleteItem(key)
+        localStorage.removeItem(key)
         window.location.replace(`${rootUrl}/account/login`)
       }
-      else { localStorage.setItem(key, token) }
+      else {
+        localStorage.setItem(key, token)
+        return next({ name: 'RouteHome' })
+      }
     }
   }
 

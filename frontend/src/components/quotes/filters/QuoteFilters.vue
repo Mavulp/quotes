@@ -5,20 +5,39 @@ import { useFilters } from '../../../store/filters'
 import InputSelect from '../../../components/form/InputSelect.vue'
 import Search from '../../../components/form/Search.vue'
 
+// const props = defineProps<{
+//   search: string
+//   author: string
+//   quotee: string
+// }>()
+
+// const emit = defineEmits<{
+//   (e: 'update:author', value: string): void
+//   (e: 'update:quotee', value: string): void
+// }>()
+
 const filters = useFilters()
 
 /**
  * FILTERING
  */
-const options = [
-  {
-    value: 'kilmanio',
-    label: 'Kilmanoi',
-  },
-]
-const search = ref('')
-const quotee = ref('')
-const author = ref('')
+const quoteeOptions = computed(() => filters.getOptionsByKey('quotee'))
+const authorOptions = computed(() => filters.getOptionsByKey('author'))
+
+const quotee = computed({
+  get: () => filters.getFiltersByKey('quotee'),
+  set: (value: string[]) => filters.setFilter('quotee', value),
+})
+
+const author = computed({
+  get: () => filters.getFiltersByKey('author'),
+  set: (value: string[]) => filters.setFilter('author', value),
+})
+
+const search = computed({
+  get: () => filters.search,
+  set: value => filters.setSearch(value),
+})
 </script>
 
 <template>
@@ -27,16 +46,19 @@ const author = ref('')
 
     <InputSelect
       v-model:selected="quotee"
-      :multiple="true"
-      :options="options"
+      :options="quoteeOptions"
       placeholder="Filter by quotee"
       icon="e91f"
+      multiple
+      :cantclear="false"
     />
     <InputSelect
       v-model:selected="author"
-      :options="options"
+      :options="authorOptions"
       placeholder="Filter by author"
       icon="ea4d"
+      multiple
+      :cantclear="false"
     />
   </div>
 </template>

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { get, signal } from '../bin/fetch'
 // import type { FetchError } from '../types/fetch-types'
 import type { Quote } from '../types/quote-types'
+import { useFilters } from './filters'
 import { useLoading } from './loading'
 
 interface State {
@@ -86,6 +87,9 @@ export const useQuote = defineStore('quotes', {
 
       return get('/quote', { signal })
         .then((res) => {
+          const filters = useFilters()
+          filters.init(res)
+
           this.quotes = res
           return res
         })

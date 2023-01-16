@@ -7,9 +7,11 @@ import { $, toBool } from '../../../bin/utils'
 import QuoteListItem from '../../../components/quotes/quote-item/QuoteListItem.vue'
 import QuoteFilters from '../../../components/quotes/filters/QuoteFilters.vue'
 import { useLoading } from '../../../store/loading'
+import { useFilters } from '../../../store/filters'
 
 const loading = useLoading()
 const quote = useQuote()
+const filters = useFilters()
 
 /**
  * List type
@@ -66,6 +68,10 @@ onMounted(() => {
         <QuoteFilters />
       </div>
     </section>
+
+    <pre>
+      {{ filters }}
+    </pre>
 
     <!-- <section class="quote-list-header is-sticky" v-if="stickHeader">
       <div class="quote-container">
