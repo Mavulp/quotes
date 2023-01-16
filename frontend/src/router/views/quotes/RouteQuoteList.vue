@@ -30,7 +30,13 @@ onBeforeMount(() => {
   quote.fetchQuotes()
 })
 
-const data = computed(() => quote.quotes)
+const data = computed(() => {
+  const unfiltered = quote.quotes
+
+  // #1 First filter data from active filters
+
+  // #2 Apply searching
+})
 const authors = computed(() =>
   Array.from(
     quote.quotes.reduce((a, b) => {
@@ -68,10 +74,10 @@ onMounted(() => {
         <QuoteFilters />
       </div>
     </section>
-
+    <!--
     <pre>
       {{ filters }}
-    </pre>
+    </pre> -->
 
     <!-- <section class="quote-list-header is-sticky" v-if="stickHeader">
       <div class="quote-container">
