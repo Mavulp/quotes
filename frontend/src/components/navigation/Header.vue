@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import { useUser } from '../../store/user'
 
+const route = useRoute()
 const username = computed(() => 'dolanske')
-
 const show = ref(true)
 
 document.addEventListener('scroll', () => {
@@ -12,7 +13,7 @@ document.addEventListener('scroll', () => {
 </script>
 
 <template>
-  <div class="quote-navigation" :class="{ 'disable-border': show }">
+  <div class="quote-navigation" :class="{ 'disable-border': show, 'user': route.name === 'RouteUserProfile' }">
     <router-link class="logo" :to="{ name: 'RouteHome' }">
       <img src="/quotes-logo.svg" alt="">
     </router-link>

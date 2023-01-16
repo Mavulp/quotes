@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { get, signal } from '../bin/fetch'
-import type { FetchError } from '../types/fetch-types'
+// import type { FetchError } from '../types/fetch-types'
 import type { Quote } from '../types/quote-types'
 import { useLoading } from './loading'
 
@@ -9,8 +9,7 @@ interface State {
 }
 
 export const useQuote = defineStore('quotes', {
-  state: () =>
-  ({
+  state: () => ({
     quotes: [],
   } as State),
   actions: {
@@ -85,14 +84,14 @@ export const useQuote = defineStore('quotes', {
       //   },
       // ]
 
-      return get('/quote/random/', { signal })
+      return get('/quote', { signal })
         .then((res) => {
-          console.log(res)
-
+          this.quotes = res
           return res
         })
-        .catch((e: FetchError) => {
-          console.log(e)
+        .catch(() => {
+          // Do err
+          // e
         })
         .finally(() => loading.del('quote-list'))
     },

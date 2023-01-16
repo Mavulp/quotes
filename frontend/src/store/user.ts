@@ -19,10 +19,12 @@ interface State {
   user: User
   settings: UserSettings
   users: User[]
+  signedIn: boolean
 }
 
 export const useUser = defineStore('user', {
   state: () => ({
+    signedIn: false,
     user: {},
     settings: {},
     users: [{}],
@@ -32,36 +34,26 @@ export const useUser = defineStore('user', {
     async redirectToSignIn() {
       window.location.replace(`${rootUrl}/account/login`)
     },
-    async fetchUsers() {
-      get('/user')
-        .then((res) => {
-          console.log(res)
-          this.users = res
-        })
-        .catch((e) => {
-          console.log(e)
-        })
-    },
+    // async fetchUsers() {
+    //   get('/user')
+    //     .then((res) => {
+    //       console.log(res)
+    //       this.users = res
+    //     })
+    //     .catch((e) => {
+    //       console.log(e)
+    //     })
+    // },
 
     async fetchSettings() {
       get('/account/settings')
         .then((res) => {
           this.settings = res
         })
-        .catch((res) => {
-          console.log(res)
+        .catch(() => {
+          // console.log(res)
         })
     },
-
-    // async fetchMe() {
-    //   get('/account/settings')
-    //     .then((res) => {
-    //       this.settings = res
-    //     })
-    //     .catch((res) => {
-    //       console.log(res)
-    //     })
-    // },
   },
   getters: {
     // getUser: (state) => (username: string) => state.

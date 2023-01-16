@@ -18,6 +18,7 @@ export default [
     component: RouteQuoteDetailVue,
     meta: {
       title: 'Quote Detail',
+      requiresAuth: true,
     },
   },
   {
@@ -26,6 +27,7 @@ export default [
     component: RouteQuoteListVue,
     meta: {
       title: 'Quote List',
+      requiresAuth: true,
     },
   },
 ]

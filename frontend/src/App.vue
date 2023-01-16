@@ -1,27 +1,15 @@
 <script setup lang="ts">
 import './style/index.scss'
 
-import { onBeforeMount } from 'vue'
-import { useQuote } from './store/quote'
-import { useUser } from './store/user'
+import { useRoute } from 'vue-router'
 import Header from './components/navigation/Header.vue'
 
-const quote = useQuote()
-const user = useUser()
-
-onBeforeMount(async () => {
-  if (localStorage.getItem('quotes_bearer_token')) {
-    user.fetchUsers()
-    user.fetchMe()
-    user.fetchSettings()
-    // quote.fetchQuotes()
-  }
-})
+const route = useRoute()
 </script>
 
 <template>
   <div class="quote-app">
-    <Header v-if="$route.name !== 'Login'" />
+    <Header v-if="route.name !== 'RouteAuthorize'" />
 
     <div class="quote-content-wrap">
       <router-view v-slot="{ Component }">

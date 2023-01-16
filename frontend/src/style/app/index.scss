@@ -21,14 +21,15 @@
   position: relative;
   min-height: 100vh;
   padding-top: $header;
+  overflow: hidden;
 
   .quote-content-wrap {
     flex: 1;
-    padding-top: 4em;
+    // padding-top: 2em;
   }
 
   h1 {
-    // padding-top: 4em;
+    // padding-top: 2em;
     font-size: 4rem;
   }
 }

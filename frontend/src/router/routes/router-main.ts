@@ -12,6 +12,7 @@ export default [
     component: RouteHomeVue,
     meta: {
       title: 'Home',
+      requiresAuth: true,
     },
   },
   {
@@ -20,6 +21,7 @@ export default [
     component: RouteAdminVue,
     meta: {
       title: 'Admin',
+      requiresAuth: true,
     },
   },
 ]

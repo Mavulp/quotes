@@ -6,7 +6,9 @@ import { $, toBool } from '../../../bin/utils'
 // import InputRadio from "../../../components/form/InputRadio.vue"
 import QuoteListItem from '../../../components/quotes/quote-item/QuoteListItem.vue'
 import QuoteFilters from '../../../components/quotes/filters/QuoteFilters.vue'
+import { useLoading } from '../../../store/loading'
 
+const loading = useLoading()
 const quote = useQuote()
 
 /**
@@ -49,26 +51,6 @@ onMounted(() => {
     stickHeader.value = window.scrollY > height
   })
 })
-
-// onMounted(() => {
-//   const options = {
-//     root: null,
-//     rootMargin: "0px",
-//     threshold: 0.1
-//   }
-
-//   const observer = new IntersectionObserver((entries) => {
-//     entries.map((entry) => {
-//       stickHeader.value = !entry.isIntersecting
-//     })
-//   }, options)
-
-//   const header = $("#header")
-
-//   if (header) {
-//     observer.observe(header)
-//   }
-// })
 </script>
 
 <template>
@@ -94,11 +76,15 @@ onMounted(() => {
 
     <section class="quote-list">
       <div class="quote-container">
-        <div class="quote-list-context">
-          <p>
-            <b>{{ data.length }}</b> {{ data.length === 1 ? "quote" : "quotes" }} by
-            <b>{{ authors.length }}</b> {{ authors.length === 1 ? "person" : "people" }}
-          </p>
+        <template v-if="loading.get('quote-list')">
+          loading
+        </template>
+        <template v-else>
+          <div class="quote-list-context">
+            <p>
+              <b>{{ data.length }}</b> {{ data.length === 1 ? "quote" : "quotes" }} by
+              <b>{{ authors.length }}</b> {{ authors.length === 1 ? "person" : "people" }}
+            </p>
 
           <!-- <div class="quote-list-display-switch">
             <span class="type-title">Render list</span>
@@ -118,11 +104,12 @@ onMounted(() => {
               icon="f101"
             />
           </div> -->
-        </div>
+          </div>
 
-        <div class="quote-list-items">
-          <QuoteListItem v-for="item in data" :key="item.id" :data="item" />
-        </div>
+          <div class="quote-list-items">
+            <QuoteListItem v-for="item in data" :key="item.id" :data="item" />
+          </div>
+        </template>
       </div>
     </section>
   </div>

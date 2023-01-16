@@ -1,0 +1,104 @@
+.quote-profile {
+  @include flex(0, $align: center);
+  height: calc(100vh - $header);
+  // overflow: hidden;
+  padding-bottom: 10em;
+  padding-top: 40px;
+
+  .quote-profile-bg {
+    margin-bottom: 30px;
+
+    .bg-wrap {
+      height: 128px;
+      width: 100%;
+      overflow: hidden;
+
+      svg {
+        width: 100%;
+      }
+    }
+  }
+
+  .quote-user-highlight {
+    display: block;
+    padding: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--color-border);
+
+    p {
+      @include bebas();
+      font-size: 6rem;
+      line-height: 1em;
+      margin-bottom: 20px;
+
+      &:before,
+      &:after {
+        content: '"';
+        color: var(--color-highlight);
+      }
+    }
+  }
+
+  .quote-user-info {
+    @include flex(80px);
+    // width: 60%;
+    position: relative;
+    z-index: 1;
+    height: 100%;
+
+    .profile-bg {
+      display: block;
+      position: absolute;
+      width: 2248px;
+      height: 2248px;
+      left: -612px;
+      top: -856px;
+      z-index: -1;
+
+      animation-name: spin;
+      animation: spin 800s linear infinite;
+
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      svg {
+        opacity: 0.1;
+      }
+    }
+
+    .image-wrap {
+      @include radius(24px);
+      width: 256px;
+      height: 256px;
+      min-width: 256px;
+      min-height: 256px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contian;
+        object-position: center;
+      }
+    }
+
+    h2 {
+      font-size: 6.2rem;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 2rem;
+      line-height: 1.6em;
+    }
+  }
+}

@@ -6,17 +6,21 @@
   width: 100%;
   backdrop-filter: blur(20px);
   background-color: rgba(#181818, 0.92);
-  // background-color: var(--color-bg);
   z-index: 1000;
   height: $header;
   @include flex($align: center);
   border-bottom: 1px solid transparent;
-
   border-color: var(--color-border);
 
   // &.disable-border {
   //   border-color: transparent;
   // }
+
+  &.user {
+    background-color: transparent;
+    border-bottom-color: transparent;
+    // backdrop-filter: none;
+  }
 
   .logo {
     position: absolute;

@@ -27,7 +27,7 @@ export function clamp(min: number, value: number, max: number) {
 // Date object
 export const date = {
   simple: (date: number) => {
-    const _date = new Date(date)
+    const _date = new Date(date * 1000)
     return _date.toLocaleDateString('en-GB', {
       weekday: 'short',
       year: 'numeric',
@@ -36,8 +36,7 @@ export const date = {
     })
   },
   time: (date: number) => {
-    // date *= 1000
-    const _date = new Date(date)
+    const _date = new Date(date * 1000)
 
     return `${padTo2Digits(_date.getUTCHours())}:${padTo2Digits(
       _date.getUTCMinutes(),
@@ -54,3 +53,7 @@ export function toBool(value: any): boolean {
 }
 
 export type ValueOf<T> = T[keyof T]
+
+export function getRanMinMax(min: number, max: number) {
+  return Math.random() * (max - min) + min
+}

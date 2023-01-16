@@ -1,27 +1,26 @@
-export type Blocks = "image" | "context" | "highlight"
+export type Fragments = 'image' | 'context' | 'highlight'
 
-export type ImageQuoteContent = {
-  type: "image"
+export interface ImageQuoteContent {
+  type: 'image'
   url: string
   quotee: string
   highlight: boolean
 }
 
-export type ContextQuoteContent = {
-  type: "context"
+export interface ContextQuoteContent {
+  type: 'context'
   text: string
   quotee: string
   highlight: boolean
 }
 
-export type HighlightQuoteContent = {
-  type: "highlight"
-  text: string
+export interface HighlightQuoteContent {
+  type: 'highlight'
+  content: string
   quotee: string
-  highlight: boolean
 }
 
-export type Quotee = {
+export interface Quotee {
   username: string
   index: number
 }
@@ -29,12 +28,12 @@ export type Quotee = {
 export interface Quote {
   id: number
   author: string
-  quotees: Quotee[]
+  // quotees: Quotee[]
   offensive: boolean
   createdAt: number
   location?: string
   legacy?: boolean
-  blocks: Array<HighlightQuoteContent | ContextQuoteContent | ImageQuoteContent>
+  fragments: Array<HighlightQuoteContent | ContextQuoteContent | ImageQuoteContent>
 }
 
 interface BaseCreateQuote {
@@ -46,9 +45,9 @@ interface BaseCreateQuote {
 }
 
 export interface CreateQuote extends BaseCreateQuote {
-  blocks: Map<number, HighlightQuoteContent | ContextQuoteContent | ImageQuoteContent>
+  fragments: Map<number, HighlightQuoteContent | ContextQuoteContent | ImageQuoteContent>
 }
 
 export interface NewQuote extends BaseCreateQuote {
-  blocks: Array<HighlightQuoteContent | ContextQuoteContent | ImageQuoteContent>
+  fragments: Array<HighlightQuoteContent | ContextQuoteContent | ImageQuoteContent>
 }

@@ -26,13 +26,8 @@ export default [
     path: '/authorize',
     name: 'RouteAuthorize',
     component: RouteAuth,
+    meta: {
+      title: 'You are being authorized',
+    },
   },
-  // {
-  //   path: "/login",
-  //   name: "Login",
-  //   component: RouteLoginVue,
-  //   meta: {
-  //     title: "Login",
-  //   },
-  // },
 ]

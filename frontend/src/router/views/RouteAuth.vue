@@ -9,15 +9,15 @@ const route = useRoute()
 const router = useRouter()
 
 onBeforeMount(() => {
-  const query = route.query as { token: string }
+  // const query = route.query as { token: string }
 
-  if (isEmpty(query)) {
-    user.redirectToSignIn()
-  }
-  else {
-    localStorage.setItem('quotes_bearer_token', query.token)
-    router.push({ name: 'RouteHome' })
-  }
+  // if (isEmpty(query)) {
+  //   user.redirectToSignIn()
+  // }
+  // else {
+  //   localStorage.setItem('quotes_bearer_token', query.token)
+  //   router.push({ name: 'RouteHome' })
+  // }
 })
 </script>
 
