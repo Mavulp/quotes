@@ -44,6 +44,7 @@ pub struct AppState {
     components(schemas(
         user::User,
         quote::Quote,
+        quote::QuoteIndex,
         quote::PostQuote,
         quote::Fragment,
         quote::FragmentType,

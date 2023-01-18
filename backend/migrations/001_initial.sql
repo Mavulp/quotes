@@ -60,6 +60,20 @@ CREATE TABLE quote_fragments (
         REFERENCES quote_fragment_types (id)
 ) STRICT;
 
+CREATE TABLE user_quote_index (
+    idx INTEGER NOT NULL,
+    quotee TEXT NOT NULL COLLATE NOCASE,
+    quote_id TEXT NOT NULL,
+
+    UNIQUE(quotee, quote_id),
+    UNIQUE(quotee, idx),
+
+    CONSTRAINT fk_quote_id_assoc
+        FOREIGN KEY (quote_id)
+        REFERENCES quotes (id)
+        ON DELETE CASCADE
+) STRICT;
+
 CREATE TABLE tags (
     id INTEGER PRIMARY KEY NOT NULL,
     name TEXT NOT NULL UNIQUE COLLATE NOCASE

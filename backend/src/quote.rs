@@ -31,13 +31,14 @@ use crate::AppState;
 //        FOREIGN KEY ("type")
 //        REFERENCES quote_fragment_types (id)
 
-#[derive(Debug, Serialize, Deserialize, ToSchema)]
+#[derive(Debug, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Quote {
     pub id: i64,
     #[schema(example = "Alice")]
     pub author: String,
     pub offensive: bool,
+    pub indices: Vec<QuoteIndex>,
     pub fragments: Vec<Fragment>,
     #[schema(example = json!(["fake", "implied"]))]
     pub tags: Vec<String>,
@@ -47,15 +48,13 @@ pub struct Quote {
     pub created_at: u64,
 }
 
-#[derive(Debug, Deserialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
-pub struct PostQuote {
-    pub offensive: bool,
-    pub fragments: Vec<Fragment>,
-    #[schema(example = json!(["fake", "implied"]))]
-    pub tags: Vec<String>,
-    #[schema(example = "#fishstick")]
-    pub location: Option<String>,
+pub struct QuoteIndex {
+    #[schema(example = "Bob")]
+    pub quotee: String,
+    #[schema(example = 1)]
+    pub index: i64,
 }
 
 #[derive(Deserialize, Debug, PartialEq)]
@@ -73,12 +72,24 @@ impl From<DbQuote> for Quote {
             id: quote.id,
             author: quote.author,
             offensive: quote.offensive,
+            indices: Vec::new(),
             fragments: Vec::new(),
             tags: Vec::new(),
             location: quote.location,
             created_at: quote.created_at,
         }
     }
+}
+
+#[derive(Debug, Deserialize, ToSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct PostQuote {
+    pub offensive: bool,
+    pub fragments: Vec<Fragment>,
+    #[schema(example = json!(["fake", "implied"]))]
+    pub tags: Vec<String>,
+    #[schema(example = "#fishstick")]
+    pub location: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
@@ -163,6 +174,26 @@ pub fn get_all(conn: &Connection) -> Result<Vec<Quote>, Error> {
         .context("Failed to collect quotes")?;
 
     for quote in &mut quotes {
+        let mut stmt = conn
+            .prepare(
+                "SELECT \
+                    quotee, \
+                    idx as \"index\" \
+                FROM user_quote_index \
+                WHERE quote_id = $1",
+            )
+            .context("Failed to prepare statement for quote index query")?;
+
+        let indices = stmt
+            .query_map(params![quote.id], |row| {
+                Ok(QuoteIndex::from(from_row::<QuoteIndex>(row).unwrap()))
+            })
+            .context("Failed to query quote fragments")?
+            .collect::<Result<Vec<_>, _>>()
+            .context("Failed to collect quote fragments")?;
+
+        quote.indices = indices;
+
         let mut stmt = conn
             .prepare(
                 "SELECT \
@@ -284,10 +315,10 @@ pub fn get_by_id(conn: &Connection, id: i64) -> Result<Quote, Error> {
     let mut stmt = conn
         .prepare(
             "SELECT \
-                    tags.name \
-                FROM tags \
-                JOIN quote_tag_associations qta ON qta.tag_id = tags.id \
-                WHERE qta.quote_id = $1",
+                tags.name \
+            FROM tags \
+            JOIN quote_tag_associations qta ON qta.tag_id = tags.id \
+            WHERE qta.quote_id = $1",
         )
         .context("Failed to prepare statement for quote fragments query")?;
 
@@ -331,13 +362,16 @@ pub async fn post_quote(
         .await
 }
 
-pub fn insert_quote(conn: &Connection, quote: PostQuote, author: &str) -> Result<(), Error> {
+pub fn insert_quote(conn: &mut Connection, quote: PostQuote, author: &str) -> Result<(), Error> {
     if quote.fragments.is_empty() {
         return Err(Error::MissingQuoteFragments);
     }
 
     let created_at = SystemTime::UNIX_EPOCH.elapsed().unwrap().as_secs();
-    let quote_id = conn
+
+    let tx = conn.transaction().context("Failed to create transaction")?;
+
+    let quote_id = tx
         .query_row(
             "INSERT INTO quotes ( \
                 author, \
@@ -357,7 +391,7 @@ pub fn insert_quote(conn: &Connection, quote: PostQuote, author: &str) -> Result
         .context("Failed to insert quote")?;
 
     for (idx, fragment) in quote.fragments.iter().enumerate() {
-        let type_id = conn
+        let type_id = tx
             .query_row(
                 "SELECT id \
                 FROM quote_fragment_types \
@@ -367,7 +401,7 @@ pub fn insert_quote(conn: &Connection, quote: PostQuote, author: &str) -> Result
             )
             .context("Failed to get fragment id")?;
 
-        conn.execute(
+        tx.execute(
             "INSERT INTO quote_fragments ( \
                 quote_id, \
                 idx, \
@@ -378,10 +412,31 @@ pub fn insert_quote(conn: &Connection, quote: PostQuote, author: &str) -> Result
             to_params((quote_id, idx, type_id, &fragment.content, &fragment.quotee)).unwrap(),
         )
         .context("Failed to insert fragment")?;
+
+        let max_idx = tx
+            .query_row(
+                "SELECT COALESCE(max(idx), 0) \
+                FROM user_quote_index \
+                WHERE
+                    quotee = $1",
+                params![&fragment.quotee],
+                |row| Ok(from_row::<i64>(row).unwrap()),
+            )
+            .context("Failed to get current max quote index")?;
+
+        tx.execute(
+            "INSERT INTO user_quote_index ( \
+                idx, \
+                quotee, \
+                quote_id \
+            ) VALUES ($1, $2, $3)",
+            to_params((max_idx + 1, &fragment.quotee, quote_id)).unwrap(),
+        )
+        .context("Failed to insert quote index")?;
     }
 
     for tag in &quote.tags {
-        conn.execute(
+        tx.execute(
             "INSERT OR IGNORE INTO tags ( \
                 name \
             ) VALUES ( \
@@ -391,7 +446,7 @@ pub fn insert_quote(conn: &Connection, quote: PostQuote, author: &str) -> Result
         )
         .context("Failed to insert tag")?;
 
-        let tag_id = conn
+        let tag_id = tx
             .query_row(
                 "SELECT id \
                 FROM tags \
@@ -401,7 +456,7 @@ pub fn insert_quote(conn: &Connection, quote: PostQuote, author: &str) -> Result
             )
             .context("Failed to get tag id")?;
 
-        conn.execute(
+        tx.execute(
             "INSERT INTO quote_tag_associations ( \
                 quote_id, \
                 tag_id \
@@ -413,6 +468,8 @@ pub fn insert_quote(conn: &Connection, quote: PostQuote, author: &str) -> Result
         )
         .context("Failed to insert fragment")?;
     }
+
+    tx.commit().context("Failed to commit transaction")?;
 
     Ok(())
 }
