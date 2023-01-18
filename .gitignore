@@ -1,9 +1,12 @@
+/backend/target
+.env
 !**/glob-import/dir/node_modules
 .DS_Store
 .idea
 *.cpuprofile
 *.local
 *.log
+*.db
 /.vscode/
 /packages/vite/LICENSE
 dist
