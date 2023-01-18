@@ -47,11 +47,11 @@ pub struct AppState {
     components(schemas(
         user::User,
         quote::Quote,
-        quote::PostQuoteRequest,
+        quote::PostQuote,
         quote::Fragment,
         quote::FragmentType,
         account::Settings,
-        account::PutSettingsRequest
+        account::PutSettings
     ))
 )]
 struct ApiDoc;

@@ -113,7 +113,7 @@ pub async fn get_settings(
 
 #[derive(Debug, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
-pub struct PutSettingsRequest {
+pub struct PutSettings {
     #[schema(example = "Alice")]
     #[serde(default, deserialize_with = "non_empty_str")]
     pub display_name: Option<String>,
@@ -141,7 +141,7 @@ pub struct PutSettingsRequest {
 #[utoipa::path(
     put,
     path = "/api/account/settings",
-    request_body = PutSettingsRequest,
+    request_body = PutSettings,
     responses(
         (status = 200, description = "The settings were successfully updated"),
         (status = 400, description = "One of the values sent in is invalid"),
@@ -150,7 +150,7 @@ pub struct PutSettingsRequest {
 pub async fn put_settings(
     AuthorizeCookie(payload, maybe_token, ..): AuthorizeCookie<idlib::NoGroups>,
     Extension(state): Extension<Arc<AppState>>,
-    request: Result<Json<PutSettingsRequest>, JsonRejection>,
+    request: Result<Json<PutSettings>, JsonRejection>,
 ) -> impl IntoResponse {
     maybe_token
         .wrap_future(async move {
@@ -189,12 +189,12 @@ pub async fn put_settings(
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct PutPasswordRequest {
+pub struct PutPassword {
     pub old: String,
     pub new: String,
 }
 
-impl PutSettingsRequest {
+impl PutSettings {
     fn update_str(&self) -> String {
         let mut result = Vec::new();
 

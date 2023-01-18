@@ -49,7 +49,7 @@ pub struct Quote {
 
 #[derive(Debug, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
-pub struct PostQuoteRequest {
+pub struct PostQuote {
     pub offensive: bool,
     pub fragments: Vec<Fragment>,
     #[schema(example = json!(["fake", "implied"]))]
@@ -211,7 +211,7 @@ pub fn get_all(conn: &Connection) -> Result<Vec<Quote>, Error> {
     Ok(quotes)
 }
 
-/// Get a list of all quotes
+/// Get a quote by its id
 #[utoipa::path(
     get,
     path = "/api/quote/{id}",
@@ -305,11 +305,11 @@ pub fn get_by_id(conn: &Connection, id: i64) -> Result<Quote, Error> {
     Ok(quote)
 }
 
-/// Get a list of all quotes
+/// Creates a quote from the request body
 #[utoipa::path(
     post,
     path = "/api/quote",
-    request_body = PostQuoteRequest,
+    request_body = PostQuote,
     responses(
         (status = 200, description = "The quote was created"),
     )
@@ -317,7 +317,7 @@ pub fn get_by_id(conn: &Connection, id: i64) -> Result<Quote, Error> {
 pub async fn post_quote(
     AuthorizeCookie(payload, maybe_token, ..): AuthorizeCookie<idlib::NoGroups>,
     Extension(state): Extension<Arc<AppState>>,
-    request: Result<Json<PostQuoteRequest>, JsonRejection>,
+    request: Result<Json<PostQuote>, JsonRejection>,
 ) -> impl IntoResponse {
     maybe_token
         .wrap_future(async move {
@@ -331,7 +331,7 @@ pub async fn post_quote(
         .await
 }
 
-pub fn insert_quote(conn: &Connection, quote: PostQuoteRequest, author: &str) -> Result<(), Error> {
+pub fn insert_quote(conn: &Connection, quote: PostQuote, author: &str) -> Result<(), Error> {
     if quote.fragments.is_empty() {
         return Err(Error::MissingQuoteFragments);
     }
