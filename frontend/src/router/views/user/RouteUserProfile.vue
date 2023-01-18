@@ -28,29 +28,34 @@ const { light, normal, dark } = colorOfTheDay()
 
 <template>
   <div class="quote-profile">
-    <!-- <div class="quote-profile-bg">
-      <div class="bg-wrap">
-        <svg :style="{ transform: `translateY(${-(y / 3)}px)` }" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" width="1440" height="560" preserveAspectRatio="none" viewBox="0 0 1440 560">
-          <g mask="url(&quot;#SvgjsMask1012&quot;)" fill="none">
-            <rect width="1440" height="560" x="0" y="0" :fill="normal" />
-            <path d="M0,629.936C118.344,642.65,238.185,589.152,329.767,513.128C416.342,441.26,451.26,329.371,489.535,223.563C525.012,125.488,558.256,25.101,543.659,-78.166C529.042,-181.573,471.632,-270.72,407.966,-353.505C341.007,-440.572,268.947,-527.714,166.827,-568.159C59.82,-610.539,-72.455,-642.084,-171.144,-582.862C-270.391,-523.305,-253.115,-371.603,-319.141,-276.537C-374.828,-196.357,-499.243,-169.809,-523.665,-75.292C-548.268,19.927,-483.427,112.658,-442.851,202.243C-402.151,292.102,-358.128,378.319,-287.171,446.847C-203.824,527.341,-115.208,617.559,0,629.936" :fill="dark" />
-            <path d="M1440 979.683C1519.027 995.798 1601.821 960.875 1667.998 914.7719999999999 1732.888 869.566 1769.275 797.289 1803.884 726.1800000000001 1839.281 653.452 1887.616 577.177 1870.813 498.058 1854.181 419.746 1768.202 381.502 1717.519 319.529 1664.876 255.16000000000003 1641.632 163.88 1567.196 126.81200000000001 1488.733 87.73899999999998 1392.988 88.947 1309.771 116.47899999999998 1227.845 143.58499999999998 1157.877 203.04000000000002 1113.359 276.964 1072.333 345.09000000000003 1091.268 429.723 1074.341 507.426 1055.661 593.178 964.44 681.197 1008.806 756.92 1054.723 835.289 1184.1399999999999 790.869 1264.837 832.559 1333.982 868.281 1363.742 964.1320000000001 1440 979.683" :fill="light" />
-          </g>
-        </svg>
-      </div>
-    </div> -->
-
     <div class="quote-container">
       <div class="quote-side">
+        <svg width="1000" height="1100" viewBox="0 0 1000 1100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g filter="url(#filter0_f_408_13)">
+            <path d="M534.771 367.406C541.154 402.542 525.515 441.511 545.303 468.981C565.411 496.452 620.945 512.103 619.988 519.769C618.711 527.435 560.1100 527.116 539.239 564.808C517.536 602.819 531.579 678.841 522.962 685.549C514.344 691.937 482.428 629.011 462.959 592.278C443.809 555.225 436.787 544.684 409.977 537.657C382.848 530.63 336.25 527.435 304.014 503.798C272.098 480.161 254.225 435.762 256.14 387.529C258.374 339.297 279.758 287.231 319.015 266.788C357.953 246.345 414.126 257.525 456.894 278.926C499.343 300.647 528.387 332.269 534.771 367.406Z" fill="#2762F9" fill-opacity="0.5" />
+          </g>
+          <defs>
+            <filter id="filter0_f_408_13" x="0" y="0" width="876" height="942" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+              <feGaussianBlur stdDeviation="128" result="effect1_foregroundBlur_408_13" />
+            </filter>
+          </defs>
+        </svg>
+
         <div class="quote-side-content">
           <div class="image-wrap">
             <img src="https://i.imgur.com/4K5rYum.png" alt="">
           </div>
 
           <ul>
-            <li>Added <span>15</span></li>
+            <li data-title-top="View quotes added by this user">
+              <a href="">Added <span>15</span></a>
+            </li>
             <li><div class="circle" /></li>
-            <li>Quoted <span>16</span></li>
+            <li data-title-top="View quotes by this user">
+              <a href="">Quoted <span>16</span></a>
+            </li>
           </ul>
         </div>
       </div>
@@ -66,7 +71,6 @@ const { light, normal, dark } = colorOfTheDay()
             <p>My plan worked, we didnt get APH!</p>
             <div class="flex-wrap">
               <span class="tag highlight">Highlighted</span>
-
               <span class="tag gray">Quote #62</span>
             </div>
           </router-link>

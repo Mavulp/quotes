@@ -1,20 +1,7 @@
 .quote-profile {
   @include flex(0, $align: flex-start);
   padding-top: 10em;
-
-  // .quote-profile-bg {
-  //   margin-bottom: 30px;
-
-  //   .bg-wrap {
-  //     height: 128px;
-  //     width: 100%;
-  //     // overflow: hidden;
-
-  //     svg {
-  //       width: 100%;
-  //     }
-  //   }
-  // }
+  z-index: 1;
 
   .quote-container {
     @include grid(80px, 192px 1fr);
@@ -22,6 +9,17 @@
 
     .quote-side {
       position: relative;
+      z-index: 10;
+
+      svg {
+        position: fixed;
+        left: -256px;
+        top: -64px;
+        opacity: 0.35;
+        transform-origin: top left;
+        // animation: 120s scl infinite alternate;
+        z-index: -1;
+      }
 
       .quote-side-content {
         top: calc(24%);
@@ -51,10 +49,21 @@
           list-style: none;
 
           li {
-            @include font(400);
             font-size: 1.2rem;
-            color: var(--color-text-light);
             text-align: center;
+
+            a {
+              @include font(400);
+              font-size: inherit;
+              color: var(--color-text-light);
+              text-decoration: none;
+
+              &:hover {
+                text-decoration: underline;
+                text-decoration-thickness: 3px;
+                text-decoration-color: rgb(var(--color-highlight));
+              }
+            }
 
             .circle {
               @include radius(50%);
@@ -78,31 +87,6 @@
       position: relative;
       z-index: 1;
       padding-bottom: 10em;
-
-      .profile-bg {
-        display: block;
-        position: absolute;
-        width: 2248px;
-        height: 2248px;
-        left: -612px;
-        top: -856px;
-        z-index: -1;
-        animation-name: spin;
-        animation: spin 800s linear infinite;
-
-        @keyframes spin {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
-        }
-
-        svg {
-          opacity: 0.1;
-        }
-      }
 
       h2 {
         font-size: 6.2rem;
@@ -160,6 +144,8 @@
         }
 
         p {
+          color: var(--color-text);
+          opacity: 0.8;
           font-size: 3.6rem;
         }
       }
