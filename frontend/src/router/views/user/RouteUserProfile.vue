@@ -61,6 +61,10 @@ const { light, normal, dark } = colorOfTheDay()
       </div>
 
       <div class="quote-user-info">
+        <button class="edit-btn" data-title-top="Edit Profile">
+          <Icon code="e8b8" />
+        </button>
+
         <div>
           <h2>dolanske</h2>
           <p>Can't we use the usernames and just make sure people use the same usernames when they sign up to idbin so that they automatically get their quotes assigned.</p>

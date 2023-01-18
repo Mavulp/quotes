@@ -24,13 +24,13 @@
 
   .logo {
     position: absolute;
-    left: calc($from-left - 32px);
+    left: calc($from-left - 40px);
     top: 50%;
     transform: translate(-100%, -50%);
 
     img {
       display: block;
-      height: 32px;
+      height: 26px;
       // max-height: 40px;
       object-fit: contain;
       object-position: center;
@@ -38,16 +38,18 @@
   }
 
   .quote-container {
-    @include flex(32px);
+    @include flex(15px);
     transform: translateX(-12px);
     // margin-left: -16px;
+    max-width: unset;
+    margin-right: 15em;
 
     .header-link {
       @include flex(8px, $align: center);
       @include font(700);
-      @include t(0.15s);
-      font-size: 1.4rem;
-      color: var(--color-text);
+      @include t();
+      font-size: 1.3rem;
+      color: var(--color-text-light);
       text-decoration: none;
       padding: 0 12px;
       height: $header;
@@ -68,8 +70,11 @@
       }
 
       &:after {
-        @include radius(2px);
-        @include t(0.15s);
+        // @include radius(2px);
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+
+        @include t();
         content: "";
         display: block;
         position: absolute;
@@ -85,7 +90,7 @@
       }
 
       &:hover {
-        color: var(--color-highlight);
+        color: var(--color-text);
       }
 
       &.router-link-active {

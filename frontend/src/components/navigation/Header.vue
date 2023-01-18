@@ -25,14 +25,24 @@ document.addEventListener('scroll', () => {
       <router-link class="header-link" :to="{ name: 'RouteQuoteList' }">
         Quotes
       </router-link>
-      <router-link class="header-link" :to="{ name: 'RouteAdmin' }">
+      <router-link class="header-link" :to="{ name: 'RouteUsers' }">
+        Users
+      </router-link>
+      <router-link class="header-link" :to="{ name: 'RouteStatistics' }">
+        Statistics
+      </router-link>
+      <router-link class="header-link" :to="{ name: 'RouteGuessQuote' }">
+        Guess The Quote
+      </router-link>
+      <!-- <router-link class="header-link" :to="{ name: 'RouteAdmin' }">
         Admin
-      </router-link>
-      <router-link class="header-link" :to="{ name: 'RouteQuoteAdd' }">
-        <Icon code="e745" /> Create
-      </router-link>
+      </router-link> -->
 
       <div style="flex: 1" />
+
+      <router-link class="header-link" :to="{ name: 'RouteQuoteAdd' }">
+        <Icon code="e745" /> Post
+      </router-link>
 
       <router-link
         data-title-bottom="Your quotes"
