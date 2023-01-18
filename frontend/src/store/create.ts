@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
 import type {
-  ContextQuoteContent,
+  ContextFragment,
   CreateQuote,
   Fragments,
-  HighlightQuoteContent,
-  ImageQuoteContent,
+  HighlightFragment,
+  ImageFragment,
 } from '../types/quote-types'
 
 interface State {
@@ -25,7 +25,7 @@ const defaultQuote: CreateQuote = {
 }
 
 // Tuple of available blocks
-const defaultFragments: [ImageQuoteContent, ContextQuoteContent, HighlightQuoteContent] = [
+const defaultFragments: [ImageFragment, ContextFragment, HighlightFragment] = [
   { type: 'image', url: '', quotee: '', highlight: false },
   { type: 'context', text: '', quotee: '', highlight: false },
   { type: 'highlight', text: '', quotee: '', highlight: false },
@@ -51,7 +51,7 @@ export const useCreate = defineStore('create', {
     },
     editBlock(
       index: number,
-      updated: ImageQuoteContent | ContextQuoteContent | HighlightQuoteContent,
+      updated: ImageFragment | ContextFragment | HighlightFragment,
     ) {
       this.form.fragments.set(index, updated)
     },
@@ -65,7 +65,7 @@ export const useCreate = defineStore('create', {
       state =>
         (
           id: number,
-          field: keyof ImageQuoteContent | keyof ContextQuoteContent | keyof HighlightQuoteContent,
+          field: keyof ImageFragment | keyof ContextFragment | keyof HighlightFragment,
         ) => {
           const block = state.form.fragments.get(id)
 

@@ -1,30 +1,15 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue"
-import { delay } from "../../../../bin/utils"
-import { useCreate } from "../../../../store/create"
-import { ImageQuoteContent } from "../../../../types/quote-types"
+import { computed, onMounted, ref } from 'vue'
+import { delay } from '../../../../bin/utils'
+import { useCreate } from '../../../../store/create'
+import type { ImageFragment } from '../../../../types/quote-types'
 
-import LoadingBar from "../../../loading/LoadingBar.vue"
-import InputText from "../../../form/InputText.vue"
-import BlockButtons from "../BlockButtons.vue"
+import LoadingBar from '../../../loading/LoadingBar.vue'
+import InputText from '../../../form/InputText.vue'
+import BlockButtons from '../BlockButtons.vue'
 
-const formats = [
-  ".jpeg",
-  ".gif",
-  ".png",
-  ".apng",
-  ".svg",
-  ".bmp",
-  ".bmp",
-  ".ico",
-  ".jpg",
-  ".webp",
-  ".HEIC"
-]
-
-const create = useCreate()
 const props = defineProps<{
-  data: ImageQuoteContent
+  data: ImageFragment
   // FIXME: Should only use index of the map, but for some reason that went to -2 before
   // so I am using the _actual_ iteration index as well as the supposed ID of the block
   // In perfect world both would be the same
@@ -32,21 +17,36 @@ const props = defineProps<{
   index: number
 }>()
 
-const inputId = computed(() => props.data.type + "-" + props.id)
-const dropId = computed(() => inputId.value + "-drop")
+const formats = [
+  '.jpeg',
+  '.gif',
+  '.png',
+  '.apng',
+  '.svg',
+  '.bmp',
+  '.bmp',
+  '.ico',
+  '.jpg',
+  '.webp',
+  '.HEIC',
+]
+
+const create = useCreate()
+const inputId = computed(() => `${props.data.type}-${props.id}`)
+const dropId = computed(() => `${inputId.value}-drop`)
 const dragging = ref(false)
 const inputEl = ref<HTMLDivElement | null>()
 
 onMounted(() => {
-  const el = document.querySelector<HTMLDivElement>("#" + dropId.value)
-  inputEl.value = document.querySelector<HTMLInputElement>("#" + inputId.value)
+  const el = document.querySelector<HTMLDivElement>(`#${dropId.value}`)
+  inputEl.value = document.querySelector<HTMLInputElement>(`#${inputId.value}`)
 
   if (el) {
-    el.addEventListener("dragenter", submit, false)
-    el.addEventListener("dragleave", submit, false)
-    el.addEventListener("dragover", submit, false)
-    el.addEventListener("drop", submit, false)
-    el.addEventListener("input", submit, false)
+    el.addEventListener('dragenter', submit, false)
+    el.addEventListener('dragleave', submit, false)
+    el.addEventListener('dragover', submit, false)
+    el.addEventListener('drop', submit, false)
+    el.addEventListener('input', submit, false)
   }
 })
 
@@ -63,9 +63,9 @@ const url = computed({
   set: (url) => {
     create.editBlock(props.id, {
       ...props.data,
-      url
+      url,
     })
-  }
+  },
 })
 
 const quotee = computed({
@@ -73,9 +73,9 @@ const quotee = computed({
   set: (quotee) => {
     create.editBlock(props.id, {
       ...props.data,
-      quotee
+      quotee,
     })
-  }
+  },
 })
 
 async function submit(e: any) {
@@ -83,7 +83,8 @@ async function submit(e: any) {
   e.stopPropagation()
 
   file.value = e.target?.files ? e.target.files[0] : e.dataTransfer?.files[0]
-  if (!file.value) return
+  if (!file.value)
+    return
 
   loading.value = true
 
@@ -105,15 +106,14 @@ function manualUpload() {
   // file.value = undefined
   // url.value = ""
 
-  if (inputEl.value) {
+  if (inputEl.value)
     inputEl.value.click()
-  }
 }
 
 function setHighlight() {
   create.editBlock(props.id, {
     ...props.data,
-    highlight: !props.data.highlight
+    highlight: !props.data.highlight,
   })
 }
 </script>
@@ -135,33 +135,33 @@ function setHighlight() {
       </button> -->
     <!-- </BlockButtons> -->
 
-    <div class="image-loading" v-if="loading">
+    <div v-if="loading" class="image-loading">
       <LoadingBar />
       <p>Uploading...</p>
     </div>
 
-    <div class="image-preview" v-else-if="url">
+    <div v-else-if="url" class="image-preview">
       <div class="image-wrap">
         <button class="upload-new-overlay">
           <Icon code="e43e" />
           <span>Upload a different photo</span>
         </button>
 
-        <img :src="url" alt="" @click="manualUpload" />
+        <img :src="url" alt="" @click="manualUpload">
       </div>
     </div>
     <template v-else>
-      <div class="form-file" :id="dropId">
-        <input type="file" :id="inputId" :name="inputId" :accept="formats.join(',')" />
+      <div :id="dropId" class="form-file">
+        <input :id="inputId" type="file" :name="inputId" :accept="formats.join(',')">
         <label :for="inputId" @dragenter="dragging = true" @mouseleave="dragging = false">
           <span>{{ dragging ? "Drop it!" : "Click me / Drag file onto me" }}</span>
         </label>
       </div>
     </template>
     <InputText
-      class="form-quotee"
       v-if="!loading"
       v-model:value="quotee"
+      class="form-quotee"
       placeholder="Add a quotee (optional)"
     />
   </div>

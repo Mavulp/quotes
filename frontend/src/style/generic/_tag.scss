@@ -1,4 +1,5 @@
 .tag {
+  @include t();
   @include radius(15px);
   display: inline-block;
   height: 30px;
@@ -9,5 +10,10 @@
   &.gray {
     background-color: var(--color-bg-light);
     color: var(--color-text-light);
+  }
+
+  &.highlight {
+    background-color: var(--color-bg-light);
+    color: var(--color-highlight);
   }
 }

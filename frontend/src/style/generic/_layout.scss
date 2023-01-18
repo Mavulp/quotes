@@ -5,3 +5,11 @@
   width: 100%;
   // padding-top: 2.5em;
 }
+
+.flex-wrap {
+  @include flex(20px, $justify: flex-start, $align: center);
+
+  &.center {
+    justify-content: center;
+  }
+}

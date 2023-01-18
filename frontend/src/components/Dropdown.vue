@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref } from "vue"
-import { onClickOutside } from "@vueuse/core"
+import { ref } from 'vue'
+import { onClickOutside } from '@vueuse/core'
 
 type Button =
   | {
-      value: any
-      label: string
-      icon?: string
-    }
+    value: any
+    label: string
+    icon?: string
+  }
   | string
 
 interface Props {
@@ -15,12 +15,11 @@ interface Props {
 }
 
 interface Emits {
-  (e: "set", value: string): void
+  (e: 'set', value: string): void
 }
 
-const emit = defineEmits<Emits>()
 defineProps<Props>()
-
+const emit = defineEmits<Emits>()
 // Wrapper stuff
 const open = ref(false)
 const wrapper = ref()
@@ -34,7 +33,7 @@ onClickOutside(wrapper, () => {
 // Emitting
 function setValue(btn: Button) {
   open.value = false
-  emit("set", typeof btn === "string" ? btn : btn.value)
+  emit('set', typeof btn === 'string' ? btn : btn.value)
 }
 </script>
 
@@ -48,7 +47,7 @@ function setValue(btn: Button) {
 
     <!-- <transition name="fade" mode="out-in"> -->
     <div class="dropdown-element" :class="{ 'is-active': open }">
-      <button v-for="btn in buttons" @click="setValue(btn)">
+      <button v-for="btn in buttons" :key="btn.toString()" @click="setValue(btn)">
         <template v-if="typeof btn !== 'string' && btn.icon">
           <Icon :code="btn.icon" />
         </template>

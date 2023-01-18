@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, provide } from 'vue'
+import { useRouter } from 'vue-router'
 import type { Quote, Quotee } from '../../../types/quote-types'
 import { date } from '../../../bin/utils'
 
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+const router = useRouter()
 
 /**
  * User display
@@ -35,11 +37,15 @@ provide(
   'quote',
   computed<Quote>(() => props.data),
 )
+
+function goToQuote() {
+  router.push({ name: 'RouteQuoteDetail', params: { id: props.data.id } })
+}
 </script>
 
 <template>
   <div class="quote-item">
-    <div class="quote-item-header">
+    <div class="quote-item-header" @click.self="goToQuote()">
       <div class="quote-quotees">
         <span v-for="quotee in highlightUsers" :key="quotee.username" class="quote-text quote-quotee">
           <a :href="quotee.username">{{ quotee.username }}</a>
@@ -60,12 +66,12 @@ provide(
       <QuoteItemInteract :id="props.data.id" />
     </div>
 
-    <div class="quote-item-content">
+    <button class="quote-item-content" @click.self="goToQuote()">
       <template v-for="item in props.data.fragments" :key="item.index">
         <QuoteModelHighlight v-if="item.type === 'highlight'" :data="item" />
         <!-- <QuoteModelContext v-else-if="item.type === 'context'" :data="item" />
         <QuoteModelImage v-else-if="item.type === 'image'" :data="item" /> -->
       </template>
-    </div>
+    </button>
   </div>
 </template>

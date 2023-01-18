@@ -1,20 +1,20 @@
 export type Fragments = 'image' | 'context' | 'highlight'
 
-export interface ImageQuoteContent {
+export interface ImageFragment {
   type: 'image'
-  url: string
+  content: string
   quotee: string
   highlight: boolean
 }
 
-export interface ContextQuoteContent {
+export interface ContextFragment {
   type: 'context'
-  text: string
+  content: string
   quotee: string
   highlight: boolean
 }
 
-export interface HighlightQuoteContent {
+export interface HighlightFragment {
   type: 'highlight'
   content: string
   quotee: string
@@ -28,12 +28,12 @@ export interface Quotee {
 export interface Quote {
   id: number
   author: string
-  // quotees: Quotee[]
+  // quotees: Quotee[] TODO: JOkler needs to add that
   offensive: boolean
   createdAt: number
   location?: string
   legacy?: boolean
-  fragments: Array<HighlightQuoteContent | ContextQuoteContent | ImageQuoteContent>
+  fragments: Array<HighlightFragment | ContextFragment | ImageFragment>
 }
 
 interface BaseCreateQuote {
@@ -45,9 +45,9 @@ interface BaseCreateQuote {
 }
 
 export interface CreateQuote extends BaseCreateQuote {
-  fragments: Map<number, HighlightQuoteContent | ContextQuoteContent | ImageQuoteContent>
+  fragments: Map<number, HighlightFragment | ContextFragment | ImageFragment>
 }
 
 export interface NewQuote extends BaseCreateQuote {
-  fragments: Array<HighlightQuoteContent | ContextQuoteContent | ImageQuoteContent>
+  fragments: Array<HighlightFragment | ContextFragment | ImageFragment>
 }

@@ -13,7 +13,7 @@ document.addEventListener('scroll', () => {
 </script>
 
 <template>
-  <div class="quote-navigation" :class="{ 'disable-border': show, 'user': route.name === 'RouteUserProfile' }">
+  <div class="quote-navigation" :class="{ 'disable-border': show }">
     <router-link class="logo" :to="{ name: 'RouteHome' }">
       <img src="/quotes-logo.svg" alt="">
     </router-link>

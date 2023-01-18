@@ -13,7 +13,7 @@ export default [
     },
   },
   {
-    path: '/quote/:username/:number',
+    path: '/quote/:id',
     name: 'RouteQuoteDetail',
     component: RouteQuoteDetailVue,
     meta: {

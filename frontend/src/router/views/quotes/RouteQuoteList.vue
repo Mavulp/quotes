@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, onMounted, ref, watch } from 'vue'
 import { useQuote } from '../../../store/quote'
-import { $, toBool } from '../../../bin/utils'
+import { $, getRanMinMax, searchInStr, toBool } from '../../../bin/utils'
 
 // import InputRadio from "../../../components/form/InputRadio.vue"
 import QuoteListItem from '../../../components/quotes/quote-item/QuoteListItem.vue'
@@ -31,15 +31,34 @@ onBeforeMount(() => {
 })
 
 const data = computed(() => {
-  const unfiltered = quote.quotes
+  // TODO: searchbox to only show offensive / only non-offensive / all
+  // TODO: sort quotes by date
 
   // #1 First filter data from active filters
+  const filtered = quote.quotes.filter((q) => {
+    return filters.isPassingFilter('author', q.author)
+    // TODO enable when quotes contain toip level quotees
+    // || filters.isPassingFilter('quotee', q.quotees)
+  })
 
-  // #2 Apply searching
+  // #2 Apply search string
+  return filtered.filter((q) => {
+    if (!filters.search || filters.search.length === 0)
+      return true
+
+    // TODO: add quotee search
+    return searchInStr([
+      q.author,
+      q.location ?? '',
+      ...q.fragments.map(fragment => fragment.content),
+      ...q.fragments.map(fragment => fragment.quotee),
+    ], filters.search)
+  })
 })
+
 const authors = computed(() =>
   Array.from(
-    quote.quotes.reduce((a, b) => {
+    data.value.reduce((a, b) => {
       return a.add(b.author)
     }, new Set()),
   ),
@@ -59,6 +78,12 @@ onMounted(() => {
     stickHeader.value = window.scrollY > height
   })
 })
+
+// Get random quote
+function random() {
+  const id = quote.randomQuoteId()
+  console.log(id)
+}
 </script>
 
 <template>
@@ -67,7 +92,7 @@ onMounted(() => {
       <div class="quote-container">
         <div class="quote-title-wrap text">
           <h1>Quote list</h1>
-          <button class="button">
+          <button class="button" @click="random()">
             Random
           </button>
         </div>

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from "vue"
-import { ImageQuoteContent } from "../../../../types/quote-types"
+import { computed, reactive, ref } from 'vue'
+import type { ImageFragment } from '../../../../types/quote-types'
 
 interface Props {
-  data: ImageQuoteContent
+  data: ImageFragment
 }
 
 const props = defineProps<Props>()
@@ -14,7 +14,7 @@ const props = defineProps<Props>()
     class="quote-item-content-block quote-item-image"
     :class="{ 'is-highlight': props.data.highlight }"
   >
-    <img :src="props.data.url" alt="" />
+    <img :src="props.data.url" alt="">
     <div class="quote-item-quotee">
       <Icon size="1.6" code="e244" />
       <a :href="props.data.quotee">{{ props.data.quotee }}</a>

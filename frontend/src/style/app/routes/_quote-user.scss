@@ -1,104 +1,168 @@
 .quote-profile {
-  @include flex(0, $align: center);
-  height: calc(100vh - $header);
-  // overflow: hidden;
-  padding-bottom: 10em;
-  padding-top: 40px;
+  @include flex(0, $align: flex-start);
+  padding-top: 10em;
 
-  .quote-profile-bg {
-    margin-bottom: 30px;
+  // .quote-profile-bg {
+  //   margin-bottom: 30px;
 
-    .bg-wrap {
-      height: 128px;
-      width: 100%;
-      overflow: hidden;
+  //   .bg-wrap {
+  //     height: 128px;
+  //     width: 100%;
+  //     // overflow: hidden;
 
-      svg {
-        width: 100%;
-      }
-    }
-  }
+  //     svg {
+  //       width: 100%;
+  //     }
+  //   }
+  // }
 
-  .quote-user-highlight {
-    display: block;
-    padding: 20px;
-    padding-bottom: 20px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid var(--color-border);
-
-    p {
-      @include bebas();
-      font-size: 6rem;
-      line-height: 1em;
-      margin-bottom: 20px;
-
-      &:before,
-      &:after {
-        content: '"';
-        color: var(--color-highlight);
-      }
-    }
-  }
-
-  .quote-user-info {
-    @include flex(80px);
-    // width: 60%;
+  .quote-container {
+    @include grid(80px, 192px 1fr);
     position: relative;
-    z-index: 1;
-    height: 100%;
 
-    .profile-bg {
+    .quote-side {
+      position: relative;
+
+      .quote-side-content {
+        top: calc(24%);
+        position: sticky;
+
+        .image-wrap {
+          @include radius(50%);
+          width: 192px;
+          height: 192px;
+          min-width: 192px;
+          min-height: 192px;
+          box-shadow: var(--shadow);
+          margin-bottom: 30px;
+
+          img {
+            @include radius(50%);
+            width: 100%;
+            height: 100%;
+            object-fit: contian;
+            object-position: center;
+          }
+        }
+
+        ul {
+          @include flex(15px, $justify: center);
+          width: 100%;
+          list-style: none;
+
+          li {
+            @include font(400);
+            font-size: 1.2rem;
+            color: var(--color-text-light);
+            text-align: center;
+
+            .circle {
+              @include radius(50%);
+              width: 5px;
+              height: 5px;
+              background-color: var(--color-border);
+            }
+
+            span {
+              @include font(600);
+              color: var(--color-highlight);
+              font-size: inherit;
+            }
+          }
+        }
+      }
+    }
+
+    .quote-user-info {
       display: block;
-      position: absolute;
-      width: 2248px;
-      height: 2248px;
-      left: -612px;
-      top: -856px;
-      z-index: -1;
+      position: relative;
+      z-index: 1;
+      padding-bottom: 10em;
 
-      animation-name: spin;
-      animation: spin 800s linear infinite;
+      .profile-bg {
+        display: block;
+        position: absolute;
+        width: 2248px;
+        height: 2248px;
+        left: -612px;
+        top: -856px;
+        z-index: -1;
+        animation-name: spin;
+        animation: spin 800s linear infinite;
 
-      @keyframes spin {
-        from {
-          transform: rotate(0deg);
+        @keyframes spin {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
         }
-        to {
-          transform: rotate(360deg);
+
+        svg {
+          opacity: 0.1;
         }
       }
 
-      svg {
-        opacity: 0.1;
+      h2 {
+        font-size: 6.2rem;
+        margin-bottom: 20px;
       }
-    }
 
-    .image-wrap {
-      @include radius(24px);
-      width: 256px;
-      height: 256px;
-      min-width: 256px;
-      min-height: 256px;
-      overflow: hidden;
-      margin-bottom: 20px;
-      box-shadow: var(--shadow);
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: contian;
-        object-position: center;
+      p {
+        font-size: 2rem;
+        line-height: 1.6em;
       }
-    }
 
-    h2 {
-      font-size: 6.2rem;
-      margin-bottom: 20px;
-    }
+      hr {
+        // margin: 40px 0;
+        margin-top: 40px;
+        border: none;
+        border-bottom: 1px solid var(--color-border);
+      }
 
-    p {
-      font-size: 2rem;
-      line-height: 1.6em;
+      .quote-user-normal,
+      .quote-user-highlight {
+        @include t();
+        display: block;
+        padding: 0 20px;
+        padding-bottom: 40px;
+        padding-top: 40px;
+        border-bottom: 1px solid var(--color-border-light);
+        text-decoration: none !important;
+
+        &:hover {
+          background-color: var(--color-bg-light);
+
+          .tag.gray {
+            background-color: var(--color-bg);
+          }
+        }
+
+        p {
+          @include bebas();
+          font-size: 6rem;
+          line-height: 1em;
+          margin-bottom: 20px;
+          color: var(--color-text);
+
+          &:before,
+          &:after {
+            content: '"';
+            color: var(--color-highlight);
+          }
+        }
+      }
+
+      .quote-user-normal {
+        &:last-of-type {
+          margin-bottom: 20px;
+        }
+
+        p {
+          font-size: 3.6rem;
+        }
+      }
     }
   }
 }

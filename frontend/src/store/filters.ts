@@ -55,5 +55,15 @@ export const useFilters = defineStore('filters', {
       const filters = state.filters.get(key) ?? []
       return [...filters]
     },
+    isPassingFilter() {
+      return (key: FilterKey, value: string) => {
+        const active = this.getFiltersByKey(key)
+
+        if (active.length === 0)
+          return true
+
+        return active.includes(value)
+      }
+    },
   },
 })

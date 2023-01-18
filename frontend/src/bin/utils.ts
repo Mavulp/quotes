@@ -1,5 +1,7 @@
 // import { isEmpty, isNil } from "lodash"
 
+import { isArray } from 'lodash'
+
 // Select the first matching element in DOM
 export const $ = (selector: string): Element | null => document.querySelector(selector)
 
@@ -55,5 +57,15 @@ export function toBool(value: any): boolean {
 export type ValueOf<T> = T[keyof T]
 
 export function getRanMinMax(min: number, max: number) {
-  return Math.random() * (max - min) + min
+  return Math.floor(Math.random() * (max - min) + min)
+}
+
+export function searchInStr(match: string | string[], search: string) {
+  if (!match)
+    return false
+
+  const joint: string = isArray(match) ? match.join(' ') : match
+
+  const split = search.trim().split(/\s+/)
+  return split.every(s => joint.toLowerCase().includes(s.toLowerCase()))
 }
