@@ -18,7 +18,6 @@ pub mod util;
 pub mod account;
 pub mod error;
 pub mod quote;
-pub mod test;
 pub mod user;
 
 // https://i.imgur.com/kiv5f8T.png
@@ -36,8 +35,6 @@ pub struct AppState {
         account::get_settings,
         account::put_settings,
         health,
-        test::get_permitted,
-        test::get_forbidden,
         user::get_users,
         user::get_user_by_username,
         quote::get_quotes,
@@ -47,11 +44,12 @@ pub struct AppState {
     components(schemas(
         user::User,
         quote::Quote,
-        quote::PostQuoteRequest,
+        quote::QuoteIndex,
+        quote::PostQuote,
         quote::Fragment,
         quote::FragmentType,
         account::Settings,
-        account::PutSettingsRequest
+        account::PutSettings
     ))
 )]
 struct ApiDoc;
@@ -70,8 +68,6 @@ pub async fn api_route(db: tokio_rusqlite::Connection) -> anyhow::Result<Router>
     Ok(Router::new()
         .merge(SwaggerUi::new("/swagger").url("/api-doc/openapi.json", ApiDoc::openapi()))
         .route("/api/health", get(health))
-        .route("/api/test/permitted", get(test::get_permitted))
-        .route("/api/test/forbidden", get(test::get_forbidden))
         .route("/api/account/settings", get(account::get_settings))
         .route("/api/account/settings", put(account::put_settings))
         .route("/api/account/login", get(account::get_login))
