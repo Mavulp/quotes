@@ -1,11 +1,11 @@
-import { createApp } from "vue"
-import { createPinia } from "pinia"
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 
-import App from "./App.vue"
-import router from "./router"
+import App from './App.vue'
+import router from './router'
 
 // Global Components
-import Icon from "./components/global/Icon.vue"
+import Icon from './components/global/Icon.vue'
 
 const app = createApp(App)
 
@@ -14,7 +14,7 @@ app.use(createPinia())
 app.use(router)
 
 // Register global components
-app.component("Icon", Icon)
+app.component('Icon', Icon)
 
 // Final mount
-app.mount("#app")
+app.mount('#app')

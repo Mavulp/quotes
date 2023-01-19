@@ -48,6 +48,7 @@ export const useUser = defineStore('user', {
     async fetchSettings() {
       get('/account/settings')
         .then((res) => {
+          console.log(res)
           this.settings = res
         })
         .catch(() => {

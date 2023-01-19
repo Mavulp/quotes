@@ -172,3 +172,42 @@
     }
   }
 }
+
+.quote-user-settings {
+  h2 {
+    font-size: 3.2rem;
+    margin-bottom: 20px;
+  }
+
+  .input-img {
+    @include grid(40px, 184px 1fr);
+    // align-items: center;
+    margin-bottom: 20px;
+
+    strong {
+      @include font(400);
+      display: block;
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      color: var(--color-text-light);
+      margin-top: 30px;
+
+      &:first-of-type {
+        margin-top: 0;
+      }
+    }
+
+    img {
+      @include radius(50%);
+      display: block;
+      width: 184px;
+      height: 184px;
+      border: none;
+      overflow: hidden;
+      background-color: var(--color-bg);
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+}

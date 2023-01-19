@@ -34,6 +34,10 @@ input {
     }
   }
 
+  &.has-round textarea {
+    @include radius(28px);
+  }
+
   textarea,
   input {
     @include radius(28px);

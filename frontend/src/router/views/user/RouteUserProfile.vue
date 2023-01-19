@@ -1,9 +1,14 @@
 <script setup lang='ts'>
-import { computed } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 import { useUser } from '../../../store/user'
 import { getRanMinMax } from '../../../bin/utils'
+import ModalSettings from '../../../components/modal/ModalSettings.vue'
 
 const user = useUser()
+
+onBeforeMount(() => {
+  user.fetchSettings()
+})
 
 function colorOfTheDay() {
   const date = new Date()
@@ -24,6 +29,8 @@ const { light, normal, dark } = colorOfTheDay()
 
 // Name
 // const name = computed(() => user.settings.displayName ?? )
+
+const editing = ref(false)
 </script>
 
 <template>
@@ -61,9 +68,13 @@ const { light, normal, dark } = colorOfTheDay()
       </div>
 
       <div class="quote-user-info">
-        <button class="edit-btn" data-title-top="Edit Profile">
+        <button class="edit-btn" data-title-top="Edit Profile" @click="editing = true">
           <Icon code="e8b8" />
         </button>
+
+        <Teleport v-if="editing" to="body">
+          <ModalSettings @close="editing = false" />
+        </Teleport>
 
         <div>
           <h2>dolanske</h2>

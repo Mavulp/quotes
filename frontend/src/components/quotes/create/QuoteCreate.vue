@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, reactive } from 'vue'
+import { required, useFormValidation, withMessage } from '../../../bin/validation'
 import { useCreate } from '../../../store/create'
 import { writableComputed } from '../../../bin/composables'
-import { required, useFormValidation, withMessage } from '../../../bin/validation'
 import { toBool } from '../../../bin/utils'
 import type { Fragments } from '../../../types/quote-types'
 
@@ -52,10 +52,10 @@ const { validate, errors } = useFormValidation(reactive({ offensive }), rules, {
 async function submit() {
   validate()
     .then(() => {
-      console.log('form ok')
+      // console.log('form ok')
     })
     .catch((e) => {
-      console.log(e)
+      // console.log(e)
     })
 }
 
