@@ -1,21 +1,25 @@
-export type Fragments = 'image' | 'context' | 'highlight'
+export type Fragments = 'image' | 'context' | 'highlight' | 'imageHighlight '
 
 export interface ImageFragment {
   type: 'image'
   content: string
   quotee: string
-  highlight: boolean
+}
+
+export interface HighlightFragment {
+  type: 'imageHighlight'
+  content: string
+  quotee: string
+}
+
+export interface HighlightImageFragment {
+  type: 'image'
+  content: string
+  quotee: string
 }
 
 export interface ContextFragment {
   type: 'context'
-  content: string
-  quotee: string
-  highlight: boolean
-}
-
-export interface HighlightFragment {
-  type: 'highlight'
   content: string
   quotee: string
 }
