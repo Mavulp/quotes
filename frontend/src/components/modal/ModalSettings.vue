@@ -18,7 +18,9 @@ const form = reactive<EditableSettings>({
   profilePicture: '',
 })
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
+  await user.fetchSettings()
+
   document.body.style.overflow = 'hidden'
 
   // Assign to form

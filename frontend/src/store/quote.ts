@@ -1,35 +1,41 @@
+import { shuffle } from 'lodash'
 import { defineStore } from 'pinia'
 import { get, signal } from '../bin/fetch'
-import { getRanMinMax } from '../bin/utils'
 // import type { FetchError } from '../types/fetch-types'
 import type { Quote } from '../types/quote-types'
 import { useFilters } from './filters'
 import { useLoading } from './loading'
+import { useToast } from './toast'
 
 interface State {
   quotes: Quote[]
-  random: Set<number>
+  // random: () number
 }
 
 export const useQuote = defineStore('quotes', {
   state: () => ({
     quotes: [],
-    random: new Set(),
+    // randomQuoteId: fn,
   } as State),
   actions: {
     async fetchQuotes(): Promise<Quote[]> {
       const loading = useLoading()
+      const toast = useToast()
+
       loading.add('quote-list')
 
       return get('/quote', { signal })
-        .then((res) => {
+        .then((res: Quote[]) => {
           const filters = useFilters()
           filters.init(res)
 
-          this.quotes = res
+          this.quotes = res.sort((a, b) => a.createdAt > b.createdAt ? -1 : 1)
           return res
         })
         .catch(() => {
+          toast.push({ type: 'error', message: 'Error fetching quotes' })
+
+          return []
         })
         .finally(() => loading.del('quote-list'))
     },
@@ -45,17 +51,9 @@ export const useQuote = defineStore('quotes', {
         .finally(() => loading.del('quote-detail'))
     },
 
-    randomQuoteId() {
-      let id = -1
-
-      do
-        id = getRanMinMax(0, this.quotes.length)
-      while (this.random.has(id))
-
-      this.random.add(id)
-      return id
+    getRandomQuoteId() {
+      return shuffle(this.quotes)[0].id
     },
-
   },
-  getters: {},
+  // getters: {},
 })

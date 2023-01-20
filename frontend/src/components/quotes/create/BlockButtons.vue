@@ -1,24 +1,24 @@
 <script setup lang="ts">
 interface Props {
   index: number
-  highlight: boolean
+  highlight?: boolean
 }
 
-const emit = defineEmits<{
-  (e: "remove"): void
-  (e: "highlight"): void
-  (e: "startdrag", event: any): void
-}>()
-
 defineProps<Props>()
+
+const emit = defineEmits<{
+  (e: 'remove'): void
+  (e: 'highlight'): void
+  (e: 'startdrag', event: any): void
+}>()
 </script>
 
 <template>
   <div class="quote-buttons">
-    <span class="quote-number"
-      >#<b>{{ index + 1 }}</b></span
-    >
+    <span class="quote-number">#<b>{{ index + 1 }}</b></span>
     <button
+      v-if="highlight
+      "
       class="btn-round btn-highlight btn-hover-40"
       data-title-right="Highlight"
       @click="emit('highlight')"

@@ -42,6 +42,10 @@ const search = computed({
 
 <template>
   <div class="quote-title-wrap quote-filters">
+    <!-- <pre>
+      {{ filters }}
+    </pre> -->
+
     <Search v-model:value="search" placeholder="Search for a quote" />
 
     <InputSelect

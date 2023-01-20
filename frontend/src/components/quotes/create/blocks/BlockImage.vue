@@ -59,11 +59,11 @@ const loading = ref(false)
 // const url = ref<string>()
 
 const url = computed({
-  get: () => props.data.url,
-  set: (url) => {
-    create.editBlock(props.id, {
+  get: () => props.data.content,
+  set: (content) => {
+    create.editFragment(props.id, {
       ...props.data,
-      url,
+      content,
     })
   },
 })
@@ -71,7 +71,7 @@ const url = computed({
 const quotee = computed({
   get: () => props.data.quotee,
   set: (quotee) => {
-    create.editBlock(props.id, {
+    create.editFragment(props.id, {
       ...props.data,
       quotee,
     })
@@ -99,7 +99,7 @@ async function submit(e: any) {
 // function delImage
 
 function remove() {
-  create.delBlock(props.id)
+  create.delFragment(props.id)
 }
 
 function manualUpload() {
@@ -111,7 +111,7 @@ function manualUpload() {
 }
 
 function setHighlight() {
-  create.editBlock(props.id, {
+  create.editFragment(props.id, {
     ...props.data,
     highlight: !props.data.highlight,
   })

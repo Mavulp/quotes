@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, onMounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { useQuote } from '../../../store/quote'
 import { $, getRanMinMax, searchInStr, toBool } from '../../../bin/utils'
 
@@ -11,6 +12,7 @@ import { useFilters } from '../../../store/filters'
 
 const loading = useLoading()
 const quote = useQuote()
+const router = useRouter()
 const filters = useFilters()
 
 /**
@@ -36,7 +38,8 @@ const data = computed(() => {
 
   // #1 First filter data from active filters
   const filtered = quote.quotes.filter((q) => {
-    return filters.isPassingFilter('author', q.author)
+    const quotees = q.indices.map(indice => indice.quotee)
+    return filters.isPassingFilter('author', q.author) && filters.isPassingFilter('quotee', quotees)
     // TODO enable when quotes contain toip level quotees
     // || filters.isPassingFilter('quotee', q.quotees)
   })
@@ -49,9 +52,8 @@ const data = computed(() => {
     // TODO: add quotee search
     return searchInStr([
       q.author,
-      q.location ?? '',
       ...q.fragments.map(fragment => fragment.content),
-      ...q.fragments.map(fragment => fragment.quotee),
+      ...q.indices.map(item => item.quotee),
     ], filters.search)
   })
 })
@@ -81,7 +83,8 @@ onMounted(() => {
 
 // Get random quote
 function random() {
-  const id = quote.randomQuoteId()
+  const id = quote.getRandomQuoteId()
+  router.push({ name: 'RouteQuoteDetail', params: { id } })
 }
 </script>
 
@@ -112,9 +115,7 @@ function random() {
 
     <section class="quote-list">
       <div class="quote-container">
-        <template v-if="loading.get('quote-list')">
-          loading
-        </template>
+        <Spinner v-if="loading.get('quote-list')" />
         <template v-else>
           <div class="quote-list-context">
             <p>

@@ -29,3 +29,10 @@ post /comment/
 - [] Adding a highlighted quote
 - [] Showing last 3 quotes from this user
 - [] Showing how many quotes person added and is quoted on
+
+## Create
+
+- [] Tags front-end input
+- [] Tags endpoint (get all tags)
+- [] Add anonymous, anonymouseQuotee and option to enalbe / disable comments
+- [] Add option

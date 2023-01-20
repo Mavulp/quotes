@@ -25,7 +25,7 @@ const create = useCreate()
 const quotee = computed({
   get: () => props.data.quotee,
   set: (quotee) => {
-    create.editBlock(props.id, {
+    create.editFragment(props.id, {
       ...props.data,
       quotee,
     })
@@ -33,11 +33,11 @@ const quotee = computed({
 })
 
 const context = computed({
-  get: () => props.data.text,
-  set: (text) => {
-    create.editBlock(props.id, {
+  get: () => props.data.content,
+  set: (content) => {
+    create.editFragment(props.id, {
       ...props.data,
-      text,
+      content,
     })
   },
 })
@@ -47,11 +47,11 @@ const context = computed({
  */
 
 function remove() {
-  create.delBlock(props.id)
+  create.delFragment(props.id)
 }
 
 function setHighlight() {
-  create.editBlock(props.id, {
+  create.editFragment(props.id, {
     ...props.data,
     highlight: !props.data.highlight,
   })

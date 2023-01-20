@@ -31,17 +31,17 @@ export interface Quote {
   indices: Quotee[]
   offensive: boolean
   createdAt: number
-  location?: string
+  tags?: string
   legacy?: boolean
   fragments: Array<HighlightFragment | ContextFragment | ImageFragment>
 }
 
 interface BaseCreateQuote {
-  location?: string
-  offensive: boolean | null
+  tags?: string
+  offensive: 'yes' | 'no' | null
   comments: boolean
-  anonymous: boolean
-  anonymousQuotees: boolean
+  // anonymous: boolean
+  // anonymousQuotees: boolean
 }
 
 export interface CreateQuote extends BaseCreateQuote {

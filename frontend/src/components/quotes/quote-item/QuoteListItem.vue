@@ -53,21 +53,22 @@ function goToQuote() {
       </div>
 
       <div class="quote-divider" />
-      <span class="quote-text"> {{ date.simple(props.data.createdAt) }} </span>
-      <div class="quote-divider" />
+
       <span class="quote-text quote-author">
         reported by
         <router-link :to="{ name: 'RouteUserProfile', params: { username: props.data.author } }">{{ props.data.author }}</router-link>
       </span>
       <div class="quote-padder" />
+      <span class="quote-text"> {{ date.simple(props.data.createdAt) }} </span>
+      <div class="quote-divider" />
       <QuoteItemInteract :id="props.data.id" />
     </div>
 
     <button class="quote-item-content" @click.self="goToQuote()">
       <template v-for="item in props.data.fragments" :key="item.index">
         <QuoteModelHighlight v-if="item.type === 'highlight'" :data="item" />
-        <!-- <QuoteModelContext v-else-if="item.type === 'context'" :data="item" />
-        <QuoteModelImage v-else-if="item.type === 'image'" :data="item" /> -->
+        <QuoteModelContext v-else-if="item.type === 'context'" :data="item" />
+        <QuoteModelImage v-else-if="item.type === 'image'" :data="item" />
       </template>
     </button>
   </div>

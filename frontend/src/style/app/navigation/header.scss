@@ -38,7 +38,7 @@
   }
 
   .quote-container {
-    @include flex(15px);
+    @include flex(30px);
     transform: translateX(-12px);
     // margin-left: -16px;
     max-width: unset;
@@ -51,7 +51,7 @@
       font-size: 1.3rem;
       color: var(--color-text-light);
       text-decoration: none;
-      padding: 0 12px;
+      padding: 0 5px;
       height: $header;
       line-height: $header;
       overflow: hidden;

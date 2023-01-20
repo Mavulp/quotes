@@ -20,7 +20,11 @@ const profile = ref<User>()
 
 // onBeforeMount(query)
 watch(() => route.params, async (value) => {
-  profile.value = await user.fetchUser(value.username.toString())
+  if (!value.username)
+    return
+
+  const username = value.username.toString()
+  profile.value = await user.fetchUser(username)
 
   // Fetch highlighted quote
   const quoteId = profile.value?.highlightedQuoteId
@@ -49,7 +53,7 @@ const editing = ref(false)
 </script>
 
 <template>
-  <div :key="route.params.username.toString()" class="quote-profile">
+  <div class="quote-profile">
     <div class="quote-container">
       <div v-if="loading.get('user')">
         <Spinner />

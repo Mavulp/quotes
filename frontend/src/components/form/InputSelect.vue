@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core'
+import { isNil } from 'lodash'
 import { computed, ref, toRefs, watch } from 'vue'
 import type { Error } from '../../bin/validation'
 
@@ -149,9 +150,9 @@ function setValue(item: Option) {
         size="1"
         type="text"
         :placeholder="
-          selected && selected.length > 0
+          !isNil(selected)
             ? `${selectedLabels ?? props.placeholder}`
-            : `${placeholder ?? props.placeholder}`
+            : `${props.placeholder}`
         "
       >
     </button>

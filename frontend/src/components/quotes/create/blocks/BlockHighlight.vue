@@ -25,7 +25,7 @@ const create = useCreate()
 const quotee = computed({
   get: () => props.data.quotee,
   set: (quotee) => {
-    create.editBlock(props.id, {
+    create.editFragment(props.id, {
       ...props.data,
       quotee,
     })
@@ -33,11 +33,11 @@ const quotee = computed({
 })
 
 const context = computed({
-  get: () => props.data.text,
-  set: (text) => {
-    create.editBlock(props.id, {
+  get: () => props.data.content,
+  set: (content) => {
+    create.editFragment(props.id, {
       ...props.data,
-      text,
+      content,
     })
   },
 })
@@ -47,7 +47,7 @@ const context = computed({
  */
 
 function remove() {
-  create.delBlock(props.id)
+  create.delFragment(props.id)
 }
 </script>
 
@@ -56,7 +56,7 @@ function remove() {
     class="quote-block block-create-context block-create-highlight is-highlight"
     draggable="true"
   >
-    <BlockButtons :index="props.index" :highlight="props.data.highlight" @remove="remove" />
+    <BlockButtons :index="props.index" @remove="remove" />
     <InputTextarea v-model:value="context" placeholder="Provide a highlight" />
     <InputText v-model:value="quotee" class="form-quotee" placeholder="Add a quotee (optional)" />
   </div>

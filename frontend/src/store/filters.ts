@@ -1,3 +1,4 @@
+import { isArray } from 'lodash'
 import { defineStore } from 'pinia'
 import type { Quote } from '../types/quote-types'
 
@@ -56,13 +57,13 @@ export const useFilters = defineStore('filters', {
       return [...filters]
     },
     isPassingFilter() {
-      return (key: FilterKey, value: string) => {
+      return (key: FilterKey, value: string | string[]) => {
         const active = this.getFiltersByKey(key)
 
         if (active.length === 0)
           return true
 
-        return active.includes(value)
+        return isArray(value) ? value.some(val => active.includes(val)) : active.includes(value)
       }
     },
   },

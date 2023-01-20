@@ -48,7 +48,7 @@ export const useUser = defineStore('user', {
     async fetchSettings() {
       const toast = useToast()
 
-      get('/account/settings')
+      return get('/account/settings')
         .then((res) => {
           this.settings = res
         })

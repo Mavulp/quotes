@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { post } from '../bin/fetch'
 import type {
   ContextFragment,
   CreateQuote,
@@ -6,6 +7,7 @@ import type {
   HighlightFragment,
   ImageFragment,
 } from '../types/quote-types'
+import { useToast } from './toast'
 
 interface State {
   form: CreateQuote
@@ -16,12 +18,12 @@ interface State {
 // Before submitting, this object will get serialized to
 // correctly match the NewQuote interface
 const defaultQuote: CreateQuote = {
-  location: '',
+  tags: '',
   fragments: new Map(),
   offensive: null,
   comments: true,
-  anonymous: false,
-  anonymousQuotees: false,
+  // anonymous: false,
+  // anonymousQuotees: false,
 }
 
 // Tuple of available blocks
@@ -41,23 +43,47 @@ export const useCreate = defineStore('create', {
       this.form = structuredClone(defaultQuote)
       this._index = 0
     },
-    appendBlock(type: Fragments) {
-      const block = structuredClone(defaultFragments.find(block => block.type === type))
+    addFragment(type: Fragments) {
+      const fragment = structuredClone(defaultFragments.find(fragment => fragment.type === type))
 
-      if (block) {
-        this.form.fragments.set(this._index, block)
+      if (fragment) {
+        this.form.fragments.set(this._index, fragment)
         this._index++
       }
     },
-    editBlock(
+    editFragment(
       index: number,
       updated: ImageFragment | ContextFragment | HighlightFragment,
     ) {
       this.form.fragments.set(index, updated)
     },
-    delBlock(index: number) {
+    delFragment(index: number) {
       this.form.fragments.delete(index)
       this._index--
+    },
+
+    async submitQuote() {
+      const { push } = useToast()
+
+      const {
+        offensive,
+        fragments,
+        tags,
+      } = this.form
+
+      const body = {
+        fragments: [...fragments.values()],
+        offensive: offensive === 'yes',
+        tags: tags?.trim().split(',') ?? [],
+      }
+
+      return post('/quote', body)
+        .then(() => {
+          push({ type: 'success', message: 'Succesfully added new quote' })
+        })
+        .catch(() => {
+          push({ type: 'error', message: 'Error adding new quote' })
+        })
     },
   },
   getters: {

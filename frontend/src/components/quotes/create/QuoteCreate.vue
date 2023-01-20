@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, reactive } from 'vue'
 import { required, useFormValidation, withMessage } from '../../../bin/validation'
+// import { required, useFormValidation, withMessage } from '@dolanske/v-valid'
 import { useCreate } from '../../../store/create'
 import { writableComputed } from '../../../bin/composables'
 import { toBool } from '../../../bin/utils'
@@ -11,30 +12,33 @@ import InputCheckbox from '../../form/InputCheckbox.vue'
 import InputSelect from '../../form/InputSelect.vue'
 import Dropdown from '../../Dropdown.vue'
 
+import { useToast } from '../../../store/toast'
+
 import BlockContext from './blocks/BlockContext.vue'
 import BlockHighlight from './blocks/BlockHighlight.vue'
 import BlockImage from './blocks/BlockImage.vue'
 
 const create = useCreate()
+const toast = useToast()
 
 /**
  * Form editable fields
  */
 
-const location = writableComputed(create, 'form.location')
+const tags = writableComputed(create, 'form.tags')
 const comments = writableComputed(create, 'form.comments')
-const anonymous = writableComputed(create, 'form.anonymous')
-const anonymousQuotees = writableComputed(create, 'form.anonymousQuotees')
+// const anonymous = writableComputed(create, 'form.anonymous')
+// const anonymousQuotees = writableComputed(create, 'form.anonymousQuotees')
 const offensive = computed({
-  get: () => String(create.form.offensive),
+  get: () => create.form.offensive,
   set: (value) => {
-    create.form.offensive = toBool(value)
+    create.form.offensive = value
   },
 })
 
 const options = [
-  { value: 'true', label: 'Yes, it does' },
-  { value: 'false', label: 'No, it does not' },
+  { value: 'yes', label: 'Yes, it does' },
+  { value: 'no', label: 'No, it does not' },
 ]
 
 const rules = computed(() => ({
@@ -52,10 +56,11 @@ const { validate, errors } = useFormValidation(reactive({ offensive }), rules, {
 async function submit() {
   validate()
     .then(() => {
+      create.submitQuote()
       // console.log('form ok')
     })
-    .catch((e) => {
-      // console.log(e)
+    .catch(() => {
+      toast.push({ type: 'error', message: 'Error creating Quote. Check for errors in the form.' })
     })
 }
 
@@ -72,7 +77,7 @@ const dropdownOptions = [
 ]
 
 function append(type: string) {
-  create.appendBlock(type as Fragments)
+  create.addFragment(type as Fragments)
 }
 </script>
 
@@ -102,9 +107,9 @@ function append(type: string) {
 
     <div class="quote-publish">
       <InputText
-        v-model:value="location"
-        icon="e0c8"
-        placeholder="Location (IRL, TeamSpeak, IRC ...)"
+        v-model:value="tags"
+        icon="e867"
+        placeholder="Tags (comma separated)"
       />
 
       <InputSelect
@@ -116,8 +121,8 @@ function append(type: string) {
       />
 
       <InputCheckbox v-model:check="comments" label="Enable comment section" />
-      <InputCheckbox v-model:check="anonymous" label="Hide author username (you)" />
-      <InputCheckbox v-model:check="anonymousQuotees" label="Hide quotee username" />
+      <!-- <InputCheckbox v-model:check="anonymous" label="Hide author username (you)" /> -->
+      <!-- <InputCheckbox v-model:check="anonymousQuotees" label="Hide quotee username" /> -->
 
       <button class="button" @click="submit">
         Post

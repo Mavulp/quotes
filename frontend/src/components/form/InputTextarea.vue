@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { Error } from "../../bin/validation"
+import type { Error } from '../../bin/validation'
 
 interface Props {
   // label?: string
   icon?: string
-  value: string | undefined
+  value?: string | undefined
   type?: string
   error?: Error
   required?: boolean
@@ -13,24 +13,24 @@ interface Props {
 const {
   // label,
   value,
-  type = "text",
+  type = 'text',
   error,
   required = false,
-  icon = null
+  icon = null,
 } = defineProps<Props>()
 const emit = defineEmits<{
-  (e: "update:value", value: string): void
+  (e: 'update:value', value: string): void
 }>()
 
 function updateValue(e: any) {
-  emit("update:value", e.target.value)
+  emit('update:value', e.target.value)
 }
 </script>
 
 <template>
   <div
     class="form-textarea"
-    :class="{ 'input-error': error && error.invalid, required: required, 'has-icon': icon }"
+    :class="{ 'input-error': error && error.invalid, 'required': required, 'has-icon': icon }"
   >
     <label v-if="icon">
       <Icon :code="icon" />
@@ -40,12 +40,14 @@ function updateValue(e: any) {
       tabindex="0"
       class="border-smoke font-14"
       :type="type"
+      :value="value"
       @input="updateValue"
       @keydown="(e) => e.stopPropagation()"
-      :value="value"
     />
-    <div class="input-error-list" v-if="error && error.invalid">
-      <p v-for="item in error.errors">{{ item }}</p>
+    <div v-if="error && error.invalid" class="input-error-list">
+      <p v-for="item in error.errors" :key="item">
+        {{ item }}
+      </p>
     </div>
   </div>
 </template>

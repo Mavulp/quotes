@@ -10,7 +10,7 @@ const props = defineProps<Props>()
 
 <template>
   <div class="quote-item-content-block quote-item-context">
-    <strong>{{ props.data.text }}</strong>
+    <strong>{{ props.data.content }}</strong>
 
     <div v-if="props.data.quotee" class="quote-item-quotee">
       <Icon size="1.6" code="e244" />
