@@ -119,7 +119,7 @@ function random() {
         <template v-else>
           <div class="quote-list-context">
             <p>
-              <b>{{ data.length }}</b> {{ data.length === 1 ? "quote" : "quotes" }} by
+              <b>{{ data.length }}</b> {{ data.length === 1 ? "quote" : "quotes" }} uploaded by
               <b>{{ authors.length }}</b> {{ authors.length === 1 ? "person" : "people" }}
             </p>
 

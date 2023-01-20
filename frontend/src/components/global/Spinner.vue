@@ -9,8 +9,9 @@
 
 <style scoped>
 .lds-ring {
-  display: inline-block;
+  display: block;
   position: relative;
+  margin: 0 auto;
   width: 24px;
   height: 24px;
 }

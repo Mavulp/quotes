@@ -46,7 +46,7 @@ function goToQuote() {
       <div class="quote-quotees">
         <span v-for="user in highlightUsers" :key="user.quotee" class="quote-text quote-quotee">
           <router-link :to="{ name: 'RouteUserProfile', params: { username: user.quotee } }">{{ user.quotee }}</router-link>
-          {{ highlightUsers.length === 1 ? "" : `#${user.index}` }}
+          {{ `#${user.index}` }}
         </span>
 
         <span v-if="highlightUsers.length > 2" :data-title-bottom="otherUsers">...</span>
