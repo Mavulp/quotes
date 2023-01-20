@@ -1,0 +1,8 @@
+.quote-detail {
+  display: block;
+
+  .quote-detail-top {
+    padding-top: 3em;
+    @include flex(40px);
+  }
+}

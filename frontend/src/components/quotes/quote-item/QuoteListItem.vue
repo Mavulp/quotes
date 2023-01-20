@@ -41,7 +41,7 @@ function goToQuote() {
 </script>
 
 <template>
-  <div class="quote-item">
+  <div :id="props.data.id.toString()" class="quote-item">
     <div class="quote-item-header" @click.self="goToQuote()">
       <div class="quote-quotees">
         <span v-for="user in highlightUsers" :key="user.quotee" class="quote-text quote-quotee">

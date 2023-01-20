@@ -5,16 +5,17 @@
   left: 0;
   width: 100%;
   backdrop-filter: blur(20px);
-  background-color: rgba(#181818, 0.92);
+  background-color: rgba(#181818, 0.5);
   z-index: 1000;
   height: $header;
   @include flex($align: center);
   border-bottom: 1px solid transparent;
   border-color: var(--color-border);
 
-  // &.disable-border {
-  //   border-color: transparent;
-  // }
+  &.disable-border {
+    // border-color: transparent;
+    // background-color: var(--color-bg-light);
+  }
 
   &.user {
     background-color: transparent;
@@ -24,7 +25,7 @@
 
   .logo {
     position: absolute;
-    left: calc($from-left - 40px);
+    left: calc($from-left - 30px);
     top: 50%;
     transform: translate(-100%, -50%);
 
@@ -62,6 +63,14 @@
       .material-icons {
         height: 24px;
         line-height: 24px;
+      }
+
+      &.post {
+        color: var(--color-text);
+
+        .material-icons {
+          color: var(--color-highlight);
+        }
       }
 
       &.header-user {

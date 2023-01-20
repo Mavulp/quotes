@@ -20,9 +20,21 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div>
-    <pre>
-      {{ quote }}
-    </pre>
+  <div class="quote-detail">
+    <div class="quote-container">
+      <div class="quote-detail-top">
+        <button class="button btn-white">
+          <Icon code="e5c4" size="1.6" />
+          Back
+        </button>
+
+        <button class="button">
+          Random
+        </button>
+      </div>
+
+      <h2 />
+      <pre>{{ quote }}</pre>
+    </div>
   </div>
 </template>

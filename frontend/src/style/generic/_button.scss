@@ -1,7 +1,11 @@
 .button {
+  @include t();
   @include radius(3px);
   @include font(700);
-  display: block;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
   height: 36px;
   line-height: 36px;
   min-width: 104px;
@@ -28,6 +32,15 @@
   &.btn-gray-dark {
     color: var(--color-text);
     background-color: var(--color-bg);
+  }
+
+  &.btn-white {
+    color: var(--color-text);
+    background-color: transparent;
+
+    &:hover {
+      background-color: var(--color-bg-light);
+    }
   }
 }
 
