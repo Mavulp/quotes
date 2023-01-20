@@ -2,9 +2,18 @@
 import './style/index.scss'
 
 import { useRoute } from 'vue-router'
+import { onMounted } from 'vue'
 import Header from './components/navigation/Header.vue'
+import ToastWrap from './components/ToastWrap.vue'
+import { useUser } from './store/user'
 
 const route = useRoute()
+const user = useUser()
+
+onMounted(() => {
+  if (user.signedIn)
+    user.fetchUsers()
+})
 </script>
 
 <template>
@@ -18,5 +27,9 @@ const route = useRoute()
         </transition>
       </router-view>
     </div>
+
+    <Teleport to="body">
+      <ToastWrap />
+    </Teleport>
   </div>
 </template>

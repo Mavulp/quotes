@@ -27,7 +27,7 @@ export const useFilters = defineStore('filters', {
       // Iterate over all quotes and extract unique filterable values
       for (const quote of quotes) {
         this.options.author.add(quote.author)
-        const quotees = quote.fragments.map(fragment => fragment.quotee)
+        const quotees = quote.indices.map(user => user.quotee)
         quotees.map(q => this.options.quotee.add(q))
       }
     },

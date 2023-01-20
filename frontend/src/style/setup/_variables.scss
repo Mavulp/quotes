@@ -14,8 +14,8 @@
   --color-text-light: #949494;
   --color-text-lighter: #787878;
 
-  --color-highlight: #f9be27;
-  --color-highlight-tint: #facb52;
+  --color-highlight: #f29b41;
+  --color-highlight-tint: #f3a554;
 
   --color-secondary: #2762f9;
 
@@ -26,6 +26,9 @@
 
   /* Shadow properties */
   --shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+
+  --radius-lg: 12px;
+  --radius-sm: 6px;
 }
 
 $header: 56px;

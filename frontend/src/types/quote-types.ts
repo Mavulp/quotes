@@ -21,14 +21,14 @@ export interface HighlightFragment {
 }
 
 export interface Quotee {
-  username: string
+  quotee: string
   index: number
 }
 
 export interface Quote {
   id: number
   author: string
-  // quotees: Quotee[] TODO: JOkler needs to add that
+  indices: Quotee[]
   offensive: boolean
   createdAt: number
   location?: string

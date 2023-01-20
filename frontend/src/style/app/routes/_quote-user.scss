@@ -19,6 +19,7 @@
         top: -64px;
         opacity: 0.35;
         transform-origin: top left;
+        pointer-events: none;
         // animation: 120s scl infinite alternate;
         z-index: -1;
       }
@@ -40,8 +41,9 @@
             @include radius(50%);
             width: 100%;
             height: 100%;
-            object-fit: contian;
+            object-fit: cover;
             object-position: center;
+            background-color: var(--color-bg-light);
           }
         }
 
@@ -135,6 +137,10 @@
         border-bottom: 1px solid var(--color-border-light);
         text-decoration: none !important;
 
+        &:last-of-type {
+          margin-bottom: 20px;
+        }
+
         &:hover {
           background-color: var(--color-bg-light);
 
@@ -159,10 +165,6 @@
       }
 
       .quote-user-normal {
-        &:last-of-type {
-          margin-bottom: 20px;
-        }
-
         p {
           color: var(--color-text);
           opacity: 0.8;

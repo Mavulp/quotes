@@ -26,9 +26,9 @@ const defaultQuote: CreateQuote = {
 
 // Tuple of available blocks
 const defaultFragments: [ImageFragment, ContextFragment, HighlightFragment] = [
-  { type: 'image', url: '', quotee: '', highlight: false },
-  { type: 'context', text: '', quotee: '', highlight: false },
-  { type: 'highlight', text: '', quotee: '', highlight: false },
+  { type: 'image', content: '', quotee: '', highlight: false },
+  { type: 'context', content: '', quotee: '', highlight: false },
+  { type: 'highlight', content: '', quotee: '' },
 ]
 
 export const useCreate = defineStore('create', {

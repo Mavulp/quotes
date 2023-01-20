@@ -50,7 +50,7 @@
   }
 
   .modal-content {
-    @include radius(12px);
+    @include radius(var(--radius-lg));
     display: block;
     width: 100%;
     z-index: 10;

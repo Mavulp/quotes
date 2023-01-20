@@ -1,5 +1,9 @@
 <script setup lang='ts'>
+import { useEventListener } from '@vueuse/core'
 import { onBeforeMount, onBeforeUnmount, reactive } from 'vue'
+import { useUser } from '../../store/user'
+import type { EditableSettings } from '../../types/user-types'
+
 import InputText from '../form/InputText.vue'
 import InputTextarea from '../form/InputTextarea.vue'
 
@@ -7,7 +11,8 @@ const emit = defineEmits<{
   (e: 'close'): void
 }>()
 
-const form = reactive({
+const user = useUser()
+const form = reactive<EditableSettings>({
   displayName: '',
   bio: '',
   profilePicture: '',
@@ -16,17 +21,24 @@ const form = reactive({
 onBeforeMount(() => {
   document.body.style.overflow = 'hidden'
 
-  // Fetch settings
-
   // Assign to form
+  form.displayName = user.settings.displayName
+  form.bio = user.settings.bio
+  form.profilePicture = user.settings.profilePicture
 })
 
 onBeforeUnmount(() => {
   document.body.style.overflow = 'unset'
 })
 
-function submit() {
+useEventListener('keydown', ({ key }) => {
+  if (key === 'Escape')
+    emit('close')
+})
 
+// Submit form
+function submit() {
+  user.updateSettings(form)
 }
 </script>
 

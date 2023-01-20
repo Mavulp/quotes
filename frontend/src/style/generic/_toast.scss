@@ -1,0 +1,96 @@
+.toasts-wrap {
+  --toast-max-width: 592px;
+  --toast-min-width: 256px;
+
+  display: block;
+  position: fixed;
+  bottom: 40px;
+  right: 20px;
+  max-width: var(--toast-max-width);
+  z-index: 1000000;
+
+  ul {
+    display: block;
+    width: 100%;
+
+    li {
+      @include flex(0, $justify: flex-end);
+      width: 100%;
+      margin-bottom: 10px;
+
+      .toast-item {
+        @include radius(var(--radius-sm));
+        display: block;
+        padding: 10px 15px;
+        min-width: var(--toast-min-width);
+        max-width: var(--toast-max-width);
+        position: relative;
+        background-color: var(--color-bg-light);
+        padding-left: 22px;
+        box-shadow: var(--shadow2);
+
+        &.type-text,
+        &.has-action {
+          padding-left: 15px;
+
+          &:before {
+            display: none;
+          }
+        }
+
+        &:before {
+          content: "";
+          @include radius(var(--radius-sm));
+          display: block;
+          position: absolute;
+          left: 10px;
+          top: 12px;
+          height: 15px;
+          width: 5px;
+        }
+
+        &.type-error {
+          &:before {
+            background-color: var(--color-red);
+          }
+        }
+        &.type-success {
+          &:before {
+            background-color: var(--color-green);
+          }
+        }
+        &.type-info {
+          &:before {
+            background-color: var(--color-secondary);
+          }
+        }
+
+        p {
+          display: block;
+          margin-bottom: 5px;
+          color: rgb(var(--color-static-text-white));
+
+          &:only-child {
+            margin-bottom: 0;
+          }
+        }
+
+        .button {
+          @include font(600);
+          font-size: 1.3rem;
+          letter-spacing: 0.05em;
+          padding: 0 10px;
+          height: 30px;
+          line-height: 30px;
+          // margin-right: -10px;
+          text-transform: uppercase;
+          color: rgb(var(--color-purple-light));
+
+          &:before {
+            background-color: rgb(var(--color-static-text-white), 0.075);
+          }
+        }
+      }
+    }
+  }
+}

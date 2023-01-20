@@ -6,6 +6,7 @@ import router from './router'
 
 // Global Components
 import Icon from './components/global/Icon.vue'
+import Spinner from './components/global/Spinner.vue'
 
 const app = createApp(App)
 
@@ -15,6 +16,7 @@ app.use(router)
 
 // Register global components
 app.component('Icon', Icon)
+app.component('Spinner', Spinner)
 
 // Final mount
 app.mount('#app')

@@ -82,7 +82,6 @@ onMounted(() => {
 // Get random quote
 function random() {
   const id = quote.randomQuoteId()
-  console.log(id)
 }
 </script>
 
@@ -92,7 +91,7 @@ function random() {
       <div class="quote-container">
         <div class="quote-title-wrap text">
           <h1>Quote list</h1>
-          <button class="button" @click="random()">
+          <button class="button btn-gray" @click="random()">
             Random
           </button>
         </div>

@@ -17,7 +17,7 @@
     display: none;
 
     & + label {
-      @include radius(12px);
+      @include radius(var(--radius-lg));
       @include flex($align: center, $justify: center);
       height: $height;
       border: 3px dashed var(--color-highlight);

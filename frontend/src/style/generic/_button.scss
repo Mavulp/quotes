@@ -15,6 +15,20 @@
     // filter: brightness(90%);
     background-color: var(--color-highlight-tint);
   }
+
+  &.btn-gray {
+    color: var(--color-text);
+    background-color: var(--color-bg-light);
+
+    &:hover {
+      background-color: var(--color-bg-light-hover);
+    }
+  }
+
+  &.btn-gray-dark {
+    color: var(--color-text);
+    background-color: var(--color-bg);
+  }
 }
 
 .btn-round {

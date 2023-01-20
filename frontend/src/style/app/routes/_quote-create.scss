@@ -16,7 +16,7 @@
 
     .add-block {
       @include t();
-      @include radius(12px);
+      @include radius(var(--radius-lg));
       background-color: var(--color-bg-light);
       height: 128px;
       display: block;
@@ -85,7 +85,7 @@
 
   .quote-preview {
     .quote-preview-empty {
-      @include radius(12px);
+      @include radius(var(--radius-lg));
       display: block;
       text-align: center;
       padding: 32px;
@@ -96,7 +96,7 @@
 
 .quote-block {
   @include t();
-  @include radius(12px);
+  @include radius(var(--radius-lg));
   display: block;
   position: relative;
   margin-bottom: 40px;

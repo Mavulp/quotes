@@ -1,62 +1,82 @@
 import { defineStore } from 'pinia'
-import { get, rootUrl } from '../bin/fetch'
-import type flags from '../bin/flags'
-
-interface UserSettings {
-  bio: string
-  colorTheme: 'light-theme' | 'dark-theme'
-  country: keyof typeof flags
-  displayName: string
-  highlightedQuoteId: number
-  profilePicture: string
-}
-
-interface User extends UserSettings {
-  username: string
-}
+import { isNil } from 'lodash'
+import { get, put } from '../bin/fetch'
+import type { EditableSettings, Settings, User } from '../types/user-types'
+import { useToast } from '../store/toast'
+import { useLoading } from '../store/loading'
 
 interface State {
   user: User
-  settings: UserSettings
+  settings: Settings
   users: User[]
   signedIn: boolean
 }
 
 export const useUser = defineStore('user', {
   state: () => ({
-    signedIn: false,
-    user: {},
+    signedIn: !isNil(localStorage.getItem('quotes_bearer_token')),
+    user: {
+      // TODO: need to get this from somewhere
+      username: 'dolanske',
+    },
     settings: {},
     users: [{}],
   } as State),
   actions: {
+    async fetchUsers() {
+      const toast = useToast()
 
-    async redirectToSignIn() {
-      window.location.replace(`${rootUrl}/account/login`)
+      get('/user')
+        .then((res) => {
+          this.users = res
+        })
+        .catch(() => toast.push({ type: 'error', message: 'Error fetching users' }))
     },
-    // async fetchUsers() {
-    //   get('/user')
-    //     .then((res) => {
-    //       console.log(res)
-    //       this.users = res
-    //     })
-    //     .catch((e) => {
-    //       console.log(e)
-    //     })
-    // },
+
+    async fetchUser(username: string) {
+      const toast = useToast()
+      const loading = useLoading()
+
+      loading.add('user')
+
+      return get(`/user/${username}`)
+        .then(res => res)
+        .catch(() => toast.push({ type: 'error', message: 'Error fetching user data' }))
+        .finally(() => loading.del('user'))
+    },
 
     async fetchSettings() {
+      const toast = useToast()
+
       get('/account/settings')
         .then((res) => {
-          console.log(res)
           this.settings = res
         })
-        .catch(() => {
-          // console.log(res)
+        .catch(() => toast.push({ type: 'error', message: 'Error fetching user settings' }))
+    },
+
+    async updateSettings(form: EditableSettings) {
+      const toast = useToast()
+
+      return put('/account/settings', form)
+        .then(() => {
+          Object.assign(this.settings, form)
+          toast.push({ type: 'success', message: 'Succesfully updating settings' })
         })
+        .catch(() => toast.push({ type: 'error', message: 'Error updating settings' }))
     },
   },
   getters: {
-    // getUser: (state) => (username: string) => state.
+    getUsername: state => (username?: string) => {
+      // No username means the currently signed in user
+      if (!username)
+        return state.settings.displayName ?? state.user.username
+
+      // Query user by username
+      const exists = state.users.find(user => user.username === username)
+
+      // Return displayname OR normal username
+      return exists?.displayName ?? exists?.username
+    },
   },
 })

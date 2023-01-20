@@ -3,8 +3,8 @@ import { computed, onBeforeMount, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useUser } from '../../store/user'
 
+const user = useUser()
 const route = useRoute()
-const username = computed(() => 'dolanske')
 const show = ref(true)
 
 document.addEventListener('scroll', () => {
@@ -15,7 +15,7 @@ document.addEventListener('scroll', () => {
 <template>
   <div class="quote-navigation" :class="{ 'disable-border': show }">
     <router-link class="logo" :to="{ name: 'RouteHome' }">
-      <img src="/quotes-logo.svg" alt="">
+      <img src="/logo.svg" alt="">
     </router-link>
 
     <div class="quote-container">
@@ -47,10 +47,10 @@ document.addEventListener('scroll', () => {
       <router-link
         data-title-bottom="Your quotes"
         class="header-link header-user"
-        :to="{ name: 'RouteUserProfile', params: { username } }"
+        :to="{ name: 'RouteUserProfile', params: { username: user.user.username } }"
       >
         <Icon code="e7fd" />
-        {{ username }}
+        {{ user.getUsername() }}
       </router-link>
     </div>
   </div>

@@ -22,5 +22,10 @@ post /comment/
 
 ## Todo
 
-- [Quote preview] [] Properly test all ways a quote can exist
 - [Quote creator] [] Add drag re-ordering
+
+## User
+
+- [] Adding a highlighted quote
+- [] Showing last 3 quotes from this user
+- [] Showing how many quotes person added and is quoted on

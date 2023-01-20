@@ -21,15 +21,12 @@ const router = useRouter()
  */
 
 const USER_THRESHOLD = 3
-const highlightUsers = computed<Quotee[]>(() => props.data.fragments.map((fragment, index) => ({
-  username: fragment.quotee,
-  index: index + 1,
-})).slice(0, USER_THRESHOLD))
+const highlightUsers = computed<Quotee[]>(() => props.data.indices.slice(0, USER_THRESHOLD))
 
 const otherUsers = computed(() =>
   highlightUsers.value
     .slice(USER_THRESHOLD)
-    .map(quotee => `${quotee.username} #${quotee.index}`)
+    .map(user => `${user.quotee} #${user.index}`)
     .join(', '),
 )
 
@@ -47,9 +44,9 @@ function goToQuote() {
   <div class="quote-item">
     <div class="quote-item-header" @click.self="goToQuote()">
       <div class="quote-quotees">
-        <span v-for="quotee in highlightUsers" :key="quotee.username" class="quote-text quote-quotee">
-          <a :href="quotee.username">{{ quotee.username }}</a>
-          {{ highlightUsers.length === 1 ? "" : `#${quotee.index}` }}
+        <span v-for="user in highlightUsers" :key="user.quotee" class="quote-text quote-quotee">
+          <router-link :to="{ name: 'RouteUserProfile', params: { username: user.quotee } }">{{ user.quotee }}</router-link>
+          {{ highlightUsers.length === 1 ? "" : `#${user.index}` }}
         </span>
 
         <span v-if="highlightUsers.length > 2" :data-title-bottom="otherUsers">...</span>
@@ -60,7 +57,7 @@ function goToQuote() {
       <div class="quote-divider" />
       <span class="quote-text quote-author">
         reported by
-        <a href="/kilmanio">{{ props.data.author }}</a>
+        <router-link :to="{ name: 'RouteUserProfile', params: { username: props.data.author } }">{{ props.data.author }}</router-link>
       </span>
       <div class="quote-padder" />
       <QuoteItemInteract :id="props.data.id" />

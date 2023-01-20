@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@dolanske/v-valid": "github:dolanske/v-valid",
     "@vueuse/core": "^9.6.0",
     "lodash": "^4.17.21",
     "pinia": "^2.0.28",

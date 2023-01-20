@@ -20,7 +20,7 @@
 }
 
 // Adds transition to the element,
-@mixin t($time: 0.1s, $type: linear) {
+@mixin t($time: 0.1s, $type: cubic-bezier(0.5, 0, 0.5, 1)) {
   -webkit-transition: all $time $type;
   -moz-transition: all $time $type;
   -o-transition: all $time $type;
