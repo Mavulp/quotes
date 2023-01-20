@@ -60,8 +60,8 @@ function goToQuote() {
       </span>
       <div class="quote-padder" />
       <span class="quote-text"> {{ date.simple(props.data.createdAt) }} </span>
-      <div class="quote-divider" />
-      <QuoteItemInteract :id="props.data.id" />
+      <!-- <div class="quote-divider" /> -->
+      <!-- <QuoteItemInteract :id="props.data.id" /> -->
     </div>
 
     <button class="quote-item-content" @click.self="goToQuote()">

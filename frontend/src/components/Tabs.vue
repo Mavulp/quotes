@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, useAttrs, useSlots, reactive, watch, onMounted } from "vue"
+import { computed, onMounted, reactive, ref, useAttrs, useSlots, watch } from 'vue'
 
+const props = defineProps<Props>()
 const attrs = useAttrs()
 const slots = useSlots()
 
-type Tab = {
+interface Tab {
   key: string
   label: string
 }
@@ -15,13 +16,12 @@ interface Props {
   tabs: PropsTab[]
 }
 
-const props = defineProps<Props>()
-
 // Serialize the tab buttons to use the same format
 const formattedButtons = computed<Tab[]>(() => {
   return props.tabs.map((tab: PropsTab) => {
     // If type is Tab do nothing, else convert to <Tab>
-    if (typeof tab !== "string") return tab
+    if (typeof tab !== 'string')
+      return tab
     return { key: tab, label: tab }
   })
 })
@@ -30,41 +30,40 @@ const formattedButtons = computed<Tab[]>(() => {
 const active = ref<string>(formattedButtons.value[0].key)
 
 function setActive(key: string) {
-  if (active.value !== key) {
+  if (active.value !== key)
     active.value = key
-  }
 }
 
 // Calculate position of active element
 // Save buttons as template ref so we can read their width
 const buttons = ref<Element[]>()
 const tabswrap = ref<Element>()
-const underline = reactive({ width: "0px", left: "0px" })
+const underline = reactive({ width: '0px', left: '0px' })
 
 onMounted(() => {
   watch(
     active,
     (activeKey) => {
-      const index = formattedButtons.value.findIndex((tab) => tab.key === activeKey)
+      const index = formattedButtons.value.findIndex(tab => tab.key === activeKey)
 
       if (buttons.value && tabswrap.value) {
         const { width, left } = buttons.value[index].getBoundingClientRect()
         const parent = tabswrap.value.getBoundingClientRect().left
 
         Object.assign(underline, {
-          width: width + "px",
-          left: left - parent + "px"
+          width: `${width}px`,
+          left: `${left - parent}px`,
         })
       }
     },
-    { immediate: true }
+    { immediate: true },
   )
 })
 </script>
 
 <template>
   <div class="fusion-tabs" v-bind="attrs">
-    <div class="fusion-tabs-buttons" ref="tabswrap">
+    <div ref="tabswrap" class="fusion-tabs-buttons">
       <button
         v-for="btn in formattedButtons"
         ref="buttons"
@@ -73,9 +72,9 @@ onMounted(() => {
         class="fusion-tab-button"
         @click="setActive(btn.key)"
         v-html="btn.label"
-      ></button>
+      />
 
-      <div class="fusion-tabs-underline" :style="underline"></div>
+      <div class="fusion-tabs-underline" :style="underline" />
     </div>
   </div>
 

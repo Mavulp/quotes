@@ -16,6 +16,10 @@
     background-color: var(--color-bg-light);
   }
 
+  &.quote-disabled {
+    pointer-events: none;
+  }
+
   .quote-item-empty {
     display: block;
     text-align: center;
