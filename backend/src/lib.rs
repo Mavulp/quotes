@@ -18,6 +18,7 @@ pub mod util;
 pub mod account;
 pub mod error;
 pub mod quote;
+pub mod tag;
 pub mod user;
 
 // https://i.imgur.com/kiv5f8T.png
@@ -39,7 +40,10 @@ pub struct AppState {
         user::get_user_by_username,
         quote::get_quotes,
         quote::get_quote_by_id,
-        quote::post_quote
+        quote::post_quote,
+        tag::get_tags,
+        tag::get_tag_by_id,
+        tag::put_tag_by_id
     ),
     components(schemas(
         user::User,
@@ -48,6 +52,8 @@ pub struct AppState {
         quote::PostQuote,
         quote::Fragment,
         quote::FragmentType,
+        tag::Tag,
+        tag::PutTag,
         account::Settings,
         account::PutSettings
     ))
@@ -76,11 +82,12 @@ pub async fn api_route(db: tokio_rusqlite::Connection) -> anyhow::Result<Router>
         .route("/api/quote", get(quote::get_quotes))
         .route("/api/quote", post(quote::post_quote))
         .route("/api/quote/:id", get(quote::get_quote_by_id))
+        .route("/api/tag", get(tag::get_tags))
+        .route("/api/tag/:id", get(tag::get_tag_by_id))
+        .route("/api/tag/:id", put(tag::put_tag_by_id))
         // GET /quote/:quotee (allow multiple?)
         // GET /quote/:author
-        // POST /quote
         // PUT /quote/:tag(?)
-        // GET /tag
         // GET /comment/:quoteId
         // POST /comment
         // DEL /comment/:id
