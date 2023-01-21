@@ -15,22 +15,6 @@ use std::time::SystemTime;
 use crate::error::Error;
 use crate::AppState;
 
-//    idx INTEGER PRIMARY KEY NOT NULL,
-//    quote_id INTEGER NOT NULL,
-//    "type" INTEGER NOT NULL,
-//    content TEXT NOT NULL,
-//    quotee TEXT NOT NULL COLLATE NOCASE,
-//    highlight INTEGER NOT NULL, -- bool - what does this do?
-//
-//    CONSTRAINT fk_quote_id_assoc
-//        FOREIGN KEY (quote_id)
-//        REFERENCES quotes (id)
-//        ON DELETE CASCADE,
-//
-//    CONSTRAINT fk_type_assoc
-//        FOREIGN KEY ("type")
-//        REFERENCES quote_fragment_types (id)
-
 #[derive(Debug, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Quote {
@@ -42,8 +26,6 @@ pub struct Quote {
     pub fragments: Vec<Fragment>,
     #[schema(example = json!(["fake", "implied"]))]
     pub tags: Vec<String>,
-    #[schema(example = "#fishstick")]
-    pub location: Option<String>,
     #[schema(example = 1670802822)]
     pub created_at: u64,
 }
@@ -62,7 +44,6 @@ struct DbQuote {
     id: i64,
     author: String,
     offensive: bool,
-    location: Option<String>,
     created_at: u64,
 }
 
@@ -88,8 +69,6 @@ pub struct PostQuote {
     pub fragments: Vec<Fragment>,
     #[schema(example = json!(["fake", "implied"]))]
     pub tags: Vec<String>,
-    #[schema(example = "#fishstick")]
-    pub location: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize, ToSchema)]

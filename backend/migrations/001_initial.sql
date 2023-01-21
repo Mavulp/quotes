@@ -3,7 +3,6 @@ CREATE TABLE users (
     display_name TEXT NULL,
     profile_picture TEXT NULL,
     bio TEXT NULL,
-    country TEXT NULL,
     highlighted_quote_id INTEGER NULL,
     created_at INTEGER NOT NULL, -- unix ts
 
@@ -21,7 +20,6 @@ CREATE TABLE quotes (
     author TEXT NOT NULL,
     offensive INTEGER NOT NULL, -- bool
     created_at INTEGER NOT NULL, -- unix ts
-    location TEXT NULL,
 
     CONSTRAINT fk_author_assoc
         FOREIGN KEY (author)

@@ -28,6 +28,15 @@ pub enum Error {
     #[error("A quote needs to have at least one quote fragment")]
     MissingQuoteFragments,
 
+    #[error("One of the quote fragments is empty")]
+    EmptyFragmentContent,
+
+    #[error("One of the quotees is empty")]
+    EmptyFragmentQuotee,
+
+    #[error("One of the tags is empty")]
+    EmptyTag,
+
     #[error("Invalid argument(s): {0}")]
     InvalidArguments(anyhow::Error),
 
@@ -55,6 +64,9 @@ impl IntoResponse for Error {
             Error::TooManyCharacters { .. }
             | Error::JsonRejection(_)
             | Error::InvalidQuoteId
+            | Error::EmptyFragmentContent
+            | Error::EmptyFragmentQuotee
+            | Error::EmptyTag
             | Error::MissingQuoteFragments
             | Error::InvalidArguments(_) => StatusCode::BAD_REQUEST,
         };

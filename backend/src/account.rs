@@ -37,8 +37,6 @@ pub struct Settings {
     pub profile_picture: Option<String>,
     #[schema(example = "Welcome to my profile")]
     pub bio: Option<String>,
-    #[schema(example = "DE")]
-    pub country: Option<String>,
     pub highlighted_quote_id: Option<i64>,
     #[schema(example = "light-theme")]
     pub color_theme: String,
@@ -49,7 +47,6 @@ pub struct DbSettings {
     pub display_name: Option<String>,
     pub profile_picture: Option<String>,
     pub bio: Option<String>,
-    pub country: Option<String>,
     pub highlighted_quote_id: Option<i64>,
     pub color_theme: String,
 }
@@ -61,7 +58,6 @@ impl From<DbSettings> for Settings {
             profile_picture: settings.profile_picture,
             bio: settings.bio,
             highlighted_quote_id: settings.highlighted_quote_id,
-            country: settings.country,
             color_theme: settings.color_theme,
         }
     }
@@ -90,7 +86,6 @@ pub async fn get_settings(
                             display_name, \
                             profile_picture, \
                             bio, \
-                            country, \
                             highlighted_quote_id, \
                             color_theme \
                         FROM users WHERE username = ?1",
@@ -125,10 +120,6 @@ pub struct PutSettings {
     #[schema(example = "Welcome to my profile")]
     #[serde(default, deserialize_with = "non_empty_str")]
     pub bio: Option<String>,
-
-    #[schema(example = "DE")]
-    #[serde(default, deserialize_with = "non_empty_str")]
-    pub country: Option<String>,
 
     pub highlighted_quote_id: Option<i64>,
 
@@ -210,10 +201,6 @@ impl PutSettings {
             result.push("bio = ?")
         }
 
-        if self.country.is_some() {
-            result.push("country = ?")
-        }
-
         if self.highlighted_quote_id.is_some() {
             result.push("highlighted_quote_id = ?")
         }
@@ -238,10 +225,6 @@ impl PutSettings {
 
         if let Some(bio) = self.bio.take() {
             params.push(Box::new(bio));
-        }
-
-        if let Some(country) = self.country.take() {
-            params.push(Box::new(country));
         }
 
         if let Some(highlighted_quote_id) = self.highlighted_quote_id.take() {

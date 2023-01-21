@@ -26,8 +26,6 @@ pub struct User {
     pub profile_picture: Option<String>,
     #[schema(example = "Welcome to my profile")]
     pub bio: Option<String>,
-    #[schema(example = "DE")]
-    pub country: Option<String>,
     pub highlighted_quote_id: Option<i64>,
     #[schema(example = 1670802822)]
     pub created_at: u64,
@@ -39,7 +37,6 @@ struct DbUser {
     display_name: Option<String>,
     profile_picture: Option<String>,
     bio: Option<String>,
-    country: Option<String>,
     highlighted_quote_id: Option<i64>,
     created_at: u64,
 }
@@ -51,7 +48,6 @@ impl From<DbUser> for User {
             display_name: user.display_name,
             profile_picture: user.profile_picture,
             bio: user.bio,
-            country: user.country,
             highlighted_quote_id: user.highlighted_quote_id,
             created_at: user.created_at,
         }
@@ -59,14 +55,13 @@ impl From<DbUser> for User {
 }
 
 pub fn get_all(conn: &Connection) -> Result<Vec<User>, Error> {
-    let query = "SELECT \
-                    username, \
-                    display_name, \
-                    profile_picture, \
-                    bio, \
-                    country, \
-                    highlighted_quote_id, \
-                    created_at \
+    let query = "SELECT
+                    username,
+                    display_name,
+                    profile_picture,
+                    bio,
+                    highlighted_quote_id,
+                    created_at
                 FROM users"
         .to_string();
 
@@ -132,13 +127,12 @@ pub async fn get_user_by_username(
                 .call(move |conn| {
                     conn.query_row(
                         "SELECT
-                            username, \
-                            display_name, \
-                            profile_picture, \
-                            bio, \
-                            country, \
-                            highlighted_quote_id, \
-                            created_at \
+                            username,
+                            display_name,
+                            profile_picture,
+                            bio,
+                            highlighted_quote_id,
+                            created_at
                         FROM users WHERE username = ?1",
                         params![username],
                         |row| Ok(Json(User::from(from_row::<DbUser>(row).unwrap()))),
