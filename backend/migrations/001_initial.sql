@@ -34,15 +34,14 @@ CREATE TABLE quote_fragment_types (
 
 INSERT INTO quote_fragment_types (id, name)
 VALUES
-(1, "highlight"),
-(2, "context"),
-(3, "image"),
-(4, "imageHighlight");
+(1, "text"),
+(2, "image");
 
 CREATE TABLE quote_fragments (
     quote_id INTEGER NOT NULL,
     idx INTEGER NOT NULL,
     "type" INTEGER NOT NULL,
+    highlight INTEGER NOT NULL,
     content TEXT NOT NULL,
     quotee TEXT NOT NULL COLLATE NOCASE,
 

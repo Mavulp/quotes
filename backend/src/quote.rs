@@ -56,9 +56,79 @@ impl From<DbQuote> for Quote {
             indices: Vec::new(),
             fragments: Vec::new(),
             tags: Vec::new(),
-            location: quote.location,
             created_at: quote.created_at,
         }
+    }
+}
+
+impl Quote {
+    fn fill_arrays(&mut self, conn: &Connection) -> Result<(), Error> {
+        let mut stmt = conn
+            .prepare(
+                "SELECT
+                    quotee,
+                    idx as \"index\"
+                FROM user_quote_index
+                WHERE quote_id = $1",
+            )
+            .context("Failed to prepare statement for quote index query")?;
+
+        let indices = stmt
+            .query_map(params![self.id], |row| {
+                Ok(QuoteIndex::from(from_row::<QuoteIndex>(row).unwrap()))
+            })
+            .context("Failed to query quote fragments")?
+            .collect::<Result<Vec<_>, _>>()
+            .context("Failed to collect quote fragments")?;
+
+        self.indices = indices;
+
+        let mut stmt = conn
+            .prepare(
+                "
+                    SELECT
+                        qft.name as type,
+                        highlight,
+                        content,
+                        quotee
+                    FROM quote_fragments qf
+                    JOIN quote_fragment_types qft ON qft.id = qf.type
+                    WHERE quote_id = $1
+                    ORDER BY idx
+                ",
+            )
+            .context("Failed to prepare statement for quote fragments query")?;
+
+        let fragments = stmt
+            .query_map(params![self.id], |row| {
+                Ok(Fragment::from(from_row::<DbFragment>(row).unwrap()))
+            })
+            .context("Failed to query quote fragments")?
+            .collect::<Result<Vec<_>, _>>()
+            .context("Failed to collect quote fragments")?;
+
+        self.fragments = fragments;
+
+        let mut stmt = conn
+            .prepare(
+                "SELECT
+                    tags.name
+                FROM tags
+                JOIN quote_tag_associations qta ON qta.tag_id = tags.id
+                WHERE qta.quote_id = $1
+            ",
+            )
+            .context("Failed to prepare statement for quote fragments query")?;
+
+        let tags = stmt
+            .query_map(params![self.id], |row| Ok(from_row::<String>(row).unwrap()))
+            .context("Failed to query quote tags")?
+            .collect::<Result<Vec<_>, _>>()
+            .context("Failed to collect quote tags")?;
+
+        self.tags = tags;
+
+        Ok(())
     }
 }
 
@@ -76,6 +146,7 @@ pub struct PostQuote {
 pub struct Fragment {
     #[serde(rename = "type")]
     pub typ: FragmentType,
+    pub highlight: bool,
     #[schema(example = "I love eating green potatoes!")]
     pub content: String,
     #[schema(example = "Bob")]
@@ -86,6 +157,7 @@ pub struct Fragment {
 pub struct DbFragment {
     #[serde(rename = "type")]
     typ: FragmentType,
+    highlight: bool,
     content: String,
     quotee: String,
 }
@@ -94,6 +166,7 @@ impl From<DbFragment> for Fragment {
     fn from(fragment: DbFragment) -> Self {
         Self {
             typ: fragment.typ,
+            highlight: fragment.highlight,
             content: fragment.content,
             quotee: fragment.quotee,
         }
@@ -103,10 +176,8 @@ impl From<DbFragment> for Fragment {
 #[derive(Debug, Serialize, ToSchema, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub enum FragmentType {
-    Highlight,
-    Context,
+    Text,
     Image,
-    ImageHighlight,
 }
 
 /// Get a list of all quotes
@@ -134,12 +205,11 @@ pub async fn get_quotes(
 pub fn get_all(conn: &Connection) -> Result<Vec<Quote>, Error> {
     let mut stmt = conn
         .prepare(
-            "SELECT \
-                id, \
-                author, \
-                offensive, \
-                created_at, \
-                location \
+            "SELECT
+                id,
+                author,
+                offensive,
+                created_at
             FROM quotes",
         )
         .context("Failed to prepare statement for quotes query")?;
@@ -153,69 +223,7 @@ pub fn get_all(conn: &Connection) -> Result<Vec<Quote>, Error> {
         .context("Failed to collect quotes")?;
 
     for quote in &mut quotes {
-        let mut stmt = conn
-            .prepare(
-                "SELECT \
-                    quotee, \
-                    idx as \"index\" \
-                FROM user_quote_index \
-                WHERE quote_id = $1",
-            )
-            .context("Failed to prepare statement for quote index query")?;
-
-        let indices = stmt
-            .query_map(params![quote.id], |row| {
-                Ok(QuoteIndex::from(from_row::<QuoteIndex>(row).unwrap()))
-            })
-            .context("Failed to query quote fragments")?
-            .collect::<Result<Vec<_>, _>>()
-            .context("Failed to collect quote fragments")?;
-
-        quote.indices = indices;
-
-        let mut stmt = conn
-            .prepare(
-                "SELECT \
-                    qft.name as type, \
-                    content, \
-                    quotee \
-                FROM quote_fragments qf \
-                JOIN quote_fragment_types qft ON qft.id = qf.type \
-                WHERE quote_id = $1 \
-                ORDER BY idx",
-            )
-            .context("Failed to prepare statement for quote fragments query")?;
-
-        let fragments = stmt
-            .query_map(params![quote.id], |row| {
-                Ok(Fragment::from(from_row::<DbFragment>(row).unwrap()))
-            })
-            .context("Failed to query quote fragments")?
-            .collect::<Result<Vec<_>, _>>()
-            .context("Failed to collect quote fragments")?;
-
-        quote.fragments = fragments;
-
-        let mut stmt = conn
-            .prepare(
-                "SELECT \
-                    tags.name \
-                FROM tags \
-                JOIN quote_tag_associations qta ON qta.tag_id = tags.id \
-                WHERE qta.quote_id = $1",
-            )
-            .context("Failed to prepare statement for quote fragments query")?;
-
-        let tags = stmt
-            .query_map(
-                params![quote.id],
-                |row| Ok(from_row::<String>(row).unwrap()),
-            )
-            .context("Failed to query quote tags")?
-            .collect::<Result<Vec<_>, _>>()
-            .context("Failed to collect quote tags")?;
-
-        quote.tags = tags;
+        quote.fill_arrays(conn)?;
     }
 
     Ok(quotes)
@@ -250,13 +258,12 @@ pub async fn get_quote_by_id(
 pub fn get_by_id(conn: &Connection, id: i64) -> Result<Quote, Error> {
     let mut stmt = conn
         .prepare(
-            "SELECT \
-                id, \
-                author, \
-                offensive, \
-                created_at, \
-                location \
-            FROM quotes \
+            "SELECT
+                id,
+                author,
+                offensive,
+                created_at
+            FROM quotes
             WHERE id = $1",
         )
         .context("Failed to prepare statement for quotes query")?;
@@ -269,48 +276,7 @@ pub fn get_by_id(conn: &Connection, id: i64) -> Result<Quote, Error> {
         .context("Failed to query quotes")?
         .ok_or(Error::NotFound)?;
 
-    let mut stmt = conn
-        .prepare(
-            "SELECT \
-                    type, \
-                    content, \
-                    quotee \
-                FROM quote_fragments \
-                WHERE quote_id = $1 \
-                ORDER BY idx",
-        )
-        .context("Failed to prepare statement for quote fragments query")?;
-
-    let fragments = stmt
-        .query_map(params![quote.id], |row| {
-            Ok(Fragment::from(from_row::<DbFragment>(row).unwrap()))
-        })
-        .context("Failed to query quote fragments")?
-        .collect::<Result<Vec<_>, _>>()
-        .context("Failed to collect quote fragments")?;
-
-    quote.fragments = fragments;
-
-    let mut stmt = conn
-        .prepare(
-            "SELECT \
-                tags.name \
-            FROM tags \
-            JOIN quote_tag_associations qta ON qta.tag_id = tags.id \
-            WHERE qta.quote_id = $1",
-        )
-        .context("Failed to prepare statement for quote fragments query")?;
-
-    let tags = stmt
-        .query_map(
-            params![quote.id],
-            |row| Ok(from_row::<String>(row).unwrap()),
-        )
-        .context("Failed to query quote tags")?
-        .collect::<Result<Vec<_>, _>>()
-        .context("Failed to collect quote tags")?;
-
-    quote.tags = tags;
+    quote.fill_arrays(conn)?;
 
     Ok(quote)
 }
@@ -352,28 +318,34 @@ pub fn insert_quote(conn: &mut Connection, quote: PostQuote, author: &str) -> Re
 
     let quote_id = tx
         .query_row(
-            "INSERT INTO quotes ( \
-                author, \
-                offensive, \
-                created_at, \
-                location \
-            ) VALUES ( \
-                :author, \
-                :offensive, \
-                :created_at, \
-                :location \
+            "INSERT INTO quotes (
+                author,
+                offensive,
+                created_at
+            ) VALUES (
+                :author,
+                :offensive,
+                :created_at
             )
             RETURNING id",
-            params![author, quote.offensive, created_at, quote.location],
+            params![author, quote.offensive, created_at],
             |row| Ok(from_row::<i64>(row).unwrap()),
         )
         .context("Failed to insert quote")?;
 
     for (idx, fragment) in quote.fragments.iter().enumerate() {
+        if fragment.content.is_empty() {
+            return Err(Error::EmptyFragmentContent);
+        }
+
+        if fragment.quotee.is_empty() {
+            return Err(Error::EmptyFragmentQuotee);
+        }
+
         let type_id = tx
             .query_row(
-                "SELECT id \
-                FROM quote_fragment_types \
+                "SELECT id
+                FROM quote_fragment_types
                 WHERE name = $1",
                 to_params(&fragment.typ).unwrap(),
                 |row| Ok(from_row::<i64>(row).unwrap()),
@@ -381,21 +353,30 @@ pub fn insert_quote(conn: &mut Connection, quote: PostQuote, author: &str) -> Re
             .context("Failed to get fragment id")?;
 
         tx.execute(
-            "INSERT INTO quote_fragments ( \
-                quote_id, \
-                idx, \
-                type, \
-                content, \
-                quotee \
-            ) VALUES ($1, $2, $3, $4, $5)",
-            to_params((quote_id, idx, type_id, &fragment.content, &fragment.quotee)).unwrap(),
+            "INSERT INTO quote_fragments (
+                quote_id,
+                idx,
+                type,
+                highlight,
+                content,
+                quotee
+            ) VALUES ($1, $2, $3, $4, $5, $6)",
+            to_params((
+                quote_id,
+                idx,
+                type_id,
+                &fragment.highlight,
+                &fragment.content,
+                &fragment.quotee,
+            ))
+            .unwrap(),
         )
         .context("Failed to insert fragment")?;
 
         let max_idx = tx
             .query_row(
-                "SELECT COALESCE(max(idx), 0) \
-                FROM user_quote_index \
+                "SELECT COALESCE(max(idx), 0)
+                FROM user_quote_index
                 WHERE
                     quotee = $1",
                 params![&fragment.quotee],
@@ -404,10 +385,10 @@ pub fn insert_quote(conn: &mut Connection, quote: PostQuote, author: &str) -> Re
             .context("Failed to get current max quote index")?;
 
         tx.execute(
-            "INSERT INTO user_quote_index ( \
-                idx, \
-                quotee, \
-                quote_id \
+            "INSERT INTO user_quote_index (
+                idx,
+                quotee,
+                quote_id
             ) VALUES ($1, $2, $3)",
             to_params((max_idx + 1, &fragment.quotee, quote_id)).unwrap(),
         )
@@ -415,11 +396,15 @@ pub fn insert_quote(conn: &mut Connection, quote: PostQuote, author: &str) -> Re
     }
 
     for tag in &quote.tags {
+        if tag.is_empty() {
+            return Err(Error::EmptyTag);
+        }
+
         tx.execute(
-            "INSERT OR IGNORE INTO tags ( \
-                name \
-            ) VALUES ( \
-                $1 \
+            "INSERT OR IGNORE INTO tags (
+                name
+            ) VALUES (
+                $1
             )",
             params![tag],
         )
@@ -427,8 +412,8 @@ pub fn insert_quote(conn: &mut Connection, quote: PostQuote, author: &str) -> Re
 
         let tag_id = tx
             .query_row(
-                "SELECT id \
-                FROM tags \
+                "SELECT id
+                FROM tags
                 WHERE name = $1",
                 params![tag],
                 |row| Ok(from_row::<i64>(row).unwrap()),
@@ -436,12 +421,12 @@ pub fn insert_quote(conn: &mut Connection, quote: PostQuote, author: &str) -> Re
             .context("Failed to get tag id")?;
 
         tx.execute(
-            "INSERT INTO quote_tag_associations ( \
-                quote_id, \
-                tag_id \
-            ) VALUES ( \
-                $1, \
-                $2 \
+            "INSERT INTO quote_tag_associations (
+                quote_id,
+                tag_id
+            ) VALUES (
+                $1,
+                $2
             )",
             params![quote_id, tag_id],
         )
