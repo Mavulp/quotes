@@ -76,6 +76,15 @@
       &.header-user {
         @include font(400);
         text-transform: none;
+
+        img {
+          @include radius(50%);
+          display: block;
+          width: 24px;
+          height: 24px;
+          object-fit: cover;
+          object-position: center;
+        }
       }
 
       &:after {

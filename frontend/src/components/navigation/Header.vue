@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, ref } from 'vue'
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useUser } from '../../store/user'
 
@@ -49,7 +49,8 @@ document.addEventListener('scroll', () => {
         class="header-link header-user"
         :to="{ name: 'RouteUserProfile', params: { username: user.user.username } }"
       >
-        <Icon code="e7fd" />
+        <img v-if="user.user.profilePicture" :src="user.user.profilePicture">
+        <Icon v-else code="e7fd" />
         {{ user.getUsername() }}
       </router-link>
     </div>

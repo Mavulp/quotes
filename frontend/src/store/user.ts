@@ -28,6 +28,8 @@ export const useUser = defineStore('user', {
 
       get('/user')
         .then((res) => {
+          // TODO: not do this later
+          this.user = res.find((u: User) => u.username === this.user.username)
           this.users = res
         })
         .catch(() => toast.push({ type: 'error', message: 'Error fetching users' }))
@@ -64,7 +66,8 @@ export const useUser = defineStore('user', {
 
       return put('/account/settings', form)
         .then(() => {
-          Object.assign(this.settings, form)
+          // Object.assign(this.settings, form)
+          this.fetchUsers()
           toast.push({ type: 'success', message: 'Succesfully updating settings' })
         })
         .catch(() => toast.push({ type: 'error', message: 'Error updating settings' }))
