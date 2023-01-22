@@ -69,6 +69,18 @@ input {
   button {
     left: unset;
     right: 20px;
+
+    &:hover {
+      .material-icons {
+        color: var(--color-text);
+      }
+    }
+
+    .material-icons {
+      @include t();
+      font-size: 2rem !important;
+      color: var(--color-text-light);
+    }
   }
 }
 

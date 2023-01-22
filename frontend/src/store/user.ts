@@ -47,12 +47,16 @@ export const useUser = defineStore('user', {
 
     async fetchSettings() {
       const toast = useToast()
+      const loading = useLoading()
+
+      loading.add('settings')
 
       return get('/account/settings')
         .then((res) => {
           this.settings = res
         })
         .catch(() => toast.push({ type: 'error', message: 'Error fetching user settings' }))
+        .finally(() => loading.del('settings'))
     },
 
     async updateSettings(form: EditableSettings) {

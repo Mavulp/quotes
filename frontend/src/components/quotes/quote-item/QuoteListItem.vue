@@ -7,7 +7,7 @@ import { date } from '../../../bin/utils'
 import QuoteModelHighlight from './quote-item-models/QuoteModelHighlight.vue'
 import QuoteModelContext from './quote-item-models/QuoteModelContext.vue'
 import QuoteModelImage from './quote-item-models/QuoteModelImage.vue'
-import QuoteItemInteract from './QuoteItemInteract.vue'
+// import QuoteItemInteract from './QuoteItemInteract.vue'
 
 interface Props {
   data: Quote

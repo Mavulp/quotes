@@ -113,6 +113,10 @@
     display: block;
   }
 
+  &.quote-block-image-url {
+    padding: 0;
+  }
+
   &:hover {
     &.block-create-highlight,
     &.block-create-context {

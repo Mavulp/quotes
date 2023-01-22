@@ -6,7 +6,7 @@ import type { ImageFragment } from '../../../../types/quote-types'
 
 import LoadingBar from '../../../loading/LoadingBar.vue'
 import InputText from '../../../form/InputText.vue'
-import BlockButtons from '../BlockButtons.vue'
+import FragmentButtons from '../FragmentButtons.vue'
 
 const props = defineProps<{
   data: ImageFragment
@@ -120,7 +120,7 @@ function setHighlight() {
 
 <template>
   <div class="quote-block block-create-image" :class="{ 'is-loading': loading }" draggable="true">
-    <BlockButtons
+    <FragmentButtons
       :highlight="props.data.highlight"
       :index="index"
       @remove="remove"

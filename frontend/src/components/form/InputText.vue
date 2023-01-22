@@ -2,12 +2,12 @@
 import type { Error } from '../../bin/validation'
 
 interface Props {
-  // label?: string
   icon?: string
   value?: string | number | null
   type?: string
   error?: Error
   required?: boolean
+  canClear?: boolean
 }
 
 const {
@@ -17,6 +17,7 @@ const {
   error,
   required = false,
   icon = null,
+  canClear = false,
 } = defineProps<Props>()
 
 const emit = defineEmits<{
@@ -41,6 +42,9 @@ function updateValue(e: any) {
       <Icon :code="icon" />
     </label>
     <input v-bind="$attrs" tabindex="0" :type="type" :value="value" size="1" @input="updateValue">
+    <button v-if="value && canClear" @click="emit('update:value', '')">
+      <span class="material-icons">&#xe5cd;</span>
+    </button>
     <div v-if="error && error.invalid" class="input-error-list">
       <p v-for="item in error.errors" :key="item">
         {{ item }}

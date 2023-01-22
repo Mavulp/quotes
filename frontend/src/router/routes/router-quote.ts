@@ -4,7 +4,7 @@ import RouteQuoteListVue from '../views/quotes/RouteQuoteList.vue'
 
 export default [
   {
-    path: '/quote/add',
+    path: '/quotes/add',
     name: 'RouteQuoteAdd',
     component: RouteQuoteCreate,
     meta: {
@@ -22,7 +22,7 @@ export default [
     },
   },
   {
-    path: '/quote/list',
+    path: '/quotes',
     name: 'RouteQuoteList',
     component: RouteQuoteListVue,
     meta: {

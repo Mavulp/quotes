@@ -13,6 +13,10 @@
   width: 100%;
 }
 
+.flex-1 {
+  flex: 1;
+}
+
 .flex-wrap {
   @include flex(20px, $justify: flex-start, $align: center);
 

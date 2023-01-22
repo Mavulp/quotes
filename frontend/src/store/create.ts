@@ -1,11 +1,9 @@
 import { defineStore } from 'pinia'
 import { post } from '../bin/fetch'
 import type {
-  ContextFragment,
   CreateQuote,
-  Fragments,
-  HighlightFragment,
   ImageFragment,
+  TextFragment,
 } from '../types/quote-types'
 import { useToast } from './toast'
 
@@ -26,13 +24,6 @@ const defaultQuote: CreateQuote = {
   // anonymousQuotees: false,
 }
 
-// Tuple of available blocks
-const defaultFragments: [ImageFragment, ContextFragment, HighlightFragment] = [
-  { type: 'image', content: '', quotee: '', highlight: false },
-  { type: 'context', content: '', quotee: '', highlight: false },
-  { type: 'highlight', content: '', quotee: '' },
-]
-
 export const useCreate = defineStore('create', {
   state: () => ({
     form: {},
@@ -43,8 +34,15 @@ export const useCreate = defineStore('create', {
       this.form = structuredClone(defaultQuote)
       this._index = 0
     },
-    addFragment(type: Fragments) {
-      const fragment = structuredClone(defaultFragments.find(fragment => fragment.type === type))
+    addFragment(fragmentType: string) {
+      const [type, highlight] = fragmentType.split('-')
+
+      const fragment: ImageFragment | TextFragment = {
+        type: type as 'text' | 'image',
+        content: '',
+        quotee: '',
+        highlight: highlight === 'highlight',
+      }
 
       if (fragment) {
         this.form.fragments.set(this._index, fragment)
@@ -53,7 +51,7 @@ export const useCreate = defineStore('create', {
     },
     editFragment(
       index: number,
-      updated: ImageFragment | ContextFragment | HighlightFragment,
+      updated: ImageFragment | TextFragment,
     ) {
       this.form.fragments.set(index, updated)
     },
@@ -91,7 +89,7 @@ export const useCreate = defineStore('create', {
       state =>
         (
           id: number,
-          field: keyof ImageFragment | keyof ContextFragment | keyof HighlightFragment,
+          field: keyof TextFragment | keyof ImageFragment,
         ) => {
           const block = state.form.fragments.get(id)
 

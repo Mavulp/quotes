@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useCreate } from '../../../../store/create'
-import type { HighlightFragment } from '../../../../types/quote-types'
+import type { TextFragment } from '../../../../types/quote-types'
 
 import InputText from '../../../form/InputText.vue'
-import BlockButtons from '../BlockButtons.vue'
+import FragmentButtons from '../FragmentButtons.vue'
 import InputTextarea from '../../../form/InputTextarea.vue'
 
 const props = defineProps<{
-  data: HighlightFragment
+  data: TextFragment
   // FIXME: Should only use index of the map, but for some reason that went to -2 before
   // so I am using the _actual_ iteration index as well as the supposed ID of the block
   // In perfect world both would be the same
@@ -49,15 +49,27 @@ const context = computed({
 function remove() {
   create.delFragment(props.id)
 }
+
+function setHighlight() {
+  create.editFragment(props.id, {
+    ...props.data,
+    highlight: !props.data.highlight,
+  })
+}
 </script>
 
 <template>
   <div
-    class="quote-block block-create-context block-create-highlight is-highlight"
+    class="quote-block block-create-context"
     draggable="true"
   >
-    <BlockButtons :index="props.index" @remove="remove" />
-    <InputTextarea v-model:value="context" placeholder="Provide a highlight" />
+    <FragmentButtons
+      :index="props.index"
+      :highlight="props.data.highlight"
+      @remove="remove"
+      @highlight="setHighlight"
+    />
+    <InputTextarea v-model:value="context" placeholder="Provide context for quote" />
     <InputText v-model:value="quotee" class="form-quotee" placeholder="Add a quotee (optional)" />
   </div>
 </template>

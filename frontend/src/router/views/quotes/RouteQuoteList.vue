@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, onMounted, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useQuote } from '../../../store/quote'
 import { $, getRanMinMax, searchInStr, toBool } from '../../../bin/utils'
 
@@ -13,6 +13,7 @@ import { useFilters } from '../../../store/filters'
 const loading = useLoading()
 const quote = useQuote()
 const router = useRouter()
+const route = useRoute()
 const filters = useFilters()
 
 /**
@@ -89,7 +90,7 @@ function random() {
 </script>
 
 <template>
-  <div class="quote-route-list">
+  <div :key="route.path" class="quote-route-list">
     <section id="header" class="quote-list-header">
       <div class="quote-container">
         <div class="quote-title-wrap text">

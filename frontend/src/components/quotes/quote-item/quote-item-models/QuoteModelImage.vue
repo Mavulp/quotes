@@ -12,9 +12,9 @@ const props = defineProps<Props>()
 <template>
   <div
     class="quote-item-content-block quote-item-image"
-    :class="{ 'is-highlight': props.data.highlight }"
   >
-    <img :src="props.data.url" alt="">
+    <!-- :class="{ 'is-highlight': props.data.highlight }" -->
+    <img :src="props.data.content" alt="">
     <div class="quote-item-quotee">
       <Icon size="1.6" code="e244" />
       <a :href="props.data.quotee">{{ props.data.quotee }}</a>

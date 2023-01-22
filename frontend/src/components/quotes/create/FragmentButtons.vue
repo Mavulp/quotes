@@ -16,15 +16,13 @@ const emit = defineEmits<{
 <template>
   <div class="quote-buttons">
     <span class="quote-number">#<b>{{ index + 1 }}</b></span>
-    <button
-      v-if="highlight
-      "
+    <!-- <button
       class="btn-round btn-highlight btn-hover-40"
       data-title-right="Highlight"
       @click="emit('highlight')"
     >
       <Icon :code="highlight ? 'e838' : 'e83a'" />
-    </button>
+    </button> -->
 
     <button
       class="btn-round btn-highlight btn-hover-40"

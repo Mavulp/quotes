@@ -3,6 +3,13 @@
 
   .quote-detail-top {
     padding-top: 3em;
-    @include flex(40px);
+    @include flex(20px);
+    margin-bottom: 40px;
+  }
+
+  .quote-item-content {
+    @include radius(var(--radius-lg));
+    padding: 20px;
+    border: 1px solid var(--color-border);
   }
 }

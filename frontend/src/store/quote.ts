@@ -1,6 +1,6 @@
 import { shuffle } from 'lodash'
 import { defineStore } from 'pinia'
-import { get, signal } from '../bin/fetch'
+import { get } from '../bin/fetch'
 // import type { FetchError } from '../types/fetch-types'
 import type { Quote } from '../types/quote-types'
 import { useFilters } from './filters'
@@ -24,7 +24,7 @@ export const useQuote = defineStore('quotes', {
 
       loading.add('quote-list')
 
-      return get('/quote', { signal })
+      return get('/quote')
         .then((res: Quote[]) => {
           const filters = useFilters()
           filters.init(res)

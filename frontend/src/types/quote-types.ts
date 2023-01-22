@@ -1,27 +1,17 @@
-export type Fragments = 'image' | 'context' | 'highlight' | 'imageHighlight '
+export type Fragments = 'image' | 'text'
 
 export interface ImageFragment {
   type: 'image'
   content: string
   quotee: string
+  highlight: boolean
 }
 
-export interface HighlightFragment {
-  type: 'imageHighlight'
+export interface TextFragment {
+  type: 'text'
   content: string
   quotee: string
-}
-
-export interface HighlightImageFragment {
-  type: 'image'
-  content: string
-  quotee: string
-}
-
-export interface ContextFragment {
-  type: 'context'
-  content: string
-  quotee: string
+  highlight: boolean
 }
 
 export interface Quotee {
@@ -37,7 +27,7 @@ export interface Quote {
   createdAt: number
   tags?: string
   legacy?: boolean
-  fragments: Array<HighlightFragment | ContextFragment | ImageFragment>
+  fragments: Array<TextFragment | ImageFragment>
 }
 
 interface BaseCreateQuote {
@@ -49,9 +39,9 @@ interface BaseCreateQuote {
 }
 
 export interface CreateQuote extends BaseCreateQuote {
-  fragments: Map<number, HighlightFragment | ContextFragment | ImageFragment>
+  fragments: Map<number, TextFragment | ImageFragment>
 }
 
 export interface NewQuote extends BaseCreateQuote {
-  fragments: Array<HighlightFragment | ContextFragment | ImageFragment>
+  fragments: Array<TextFragment | ImageFragment>
 }

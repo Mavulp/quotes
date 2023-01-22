@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 import { useEventListener } from '@vueuse/core'
 import { onBeforeMount, onBeforeUnmount, reactive } from 'vue'
+import { useLoading } from '../../store/loading'
 import { useUser } from '../../store/user'
 import type { EditableSettings } from '../../types/user-types'
 
@@ -12,6 +13,7 @@ const emit = defineEmits<{
 }>()
 
 const user = useUser()
+const loading = useLoading()
 const form = reactive<EditableSettings>({
   displayName: '',
   bio: '',
@@ -52,25 +54,30 @@ function submit() {
 
     <div class="quote-container-small">
       <div class="modal-content quote-user-settings">
-        <h2>Settings</h2>
-        <div class="input-img">
-          <img :src="form.profilePicture" alt=" ">
-          <div>
-            <strong>Profile Picture URL</strong>
-            <InputText v-model:value="form.displayName" placeholder="Display Name" />
-            <strong>Display Name</strong>
-            <InputText v-model:value="form.profilePicture" placeholder="Profile Picture URL" />
-            <strong>Bio</strong>
-            <InputTextarea v-model:value="form.bio" placeholder="Bio" class="has-round" />
+        <div v-if="loading.get('settings')" style="height:256px">
+          <Spinner />
+        </div>
+        <template v-else>
+          <h2>Settings</h2>
+          <div class="input-img">
+            <img :src="form.profilePicture" alt=" ">
+            <div>
+              <strong>Profile Picture URL</strong>
+              <InputText v-model:value="form.displayName" placeholder="Display Name" />
+              <strong>Display Name</strong>
+              <InputText v-model:value="form.profilePicture" placeholder="Profile Picture URL" />
+              <strong>Bio</strong>
+              <InputTextarea v-model:value="form.bio" placeholder="Bio" class="has-round" />
+            </div>
           </div>
-        </div>
 
-        <br>
-        <div class="flex-wrap right">
-          <button class="button" @click="submit">
-            Save
-          </button>
-        </div>
+          <br>
+          <div class="flex-wrap right">
+            <button class="button" @click="submit">
+              Save
+            </button>
+          </div>
+        </template>
       </div>
     </div>
   </div>
