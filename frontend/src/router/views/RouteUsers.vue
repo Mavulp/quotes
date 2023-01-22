@@ -1,9 +1,13 @@
 <script setup lang='ts'>
+import { useUser } from '../../store/user'
 
+const user = useUser()
 </script>
 
 <template>
   <div>
-    users
+    <pre>
+      {{ user.users }}
+    </pre>
   </div>
 </template>

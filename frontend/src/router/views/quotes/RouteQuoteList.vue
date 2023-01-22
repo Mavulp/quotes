@@ -95,7 +95,7 @@ function random() {
       <div class="quote-container">
         <div class="quote-title-wrap text">
           <h1>Quote list</h1>
-          <button class="button btn-gray" @click="random()">
+          <button v-if="data.length > 1" class="button btn-gray" @click="random()">
             Random
           </button>
         </div>

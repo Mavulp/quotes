@@ -88,22 +88,16 @@
       }
 
       &:after {
-        // @include radius(2px);
-        border-top-left-radius: 2px;
-        border-top-right-radius: 2px;
-
         @include t();
         content: "";
         display: block;
         position: absolute;
-        // inset: 0;
-        left: 0;
-        right: 0;
-        bottom: -4px;
-        height: 4px;
+        left: 10px;
+        right: 10px;
+        bottom: 0;
+        opacity: 0;
+        height: 1px;
         z-index: -1;
-        // transform: translateY(100%);
-        // opacity: 0.25;
         background-color: var(--color-highlight);
       }
 
@@ -115,7 +109,10 @@
         color: var(--color-highlight);
 
         &:after {
-          bottom: 0px;
+          left: 0;
+          right: 0;
+          opacity: 1;
+          // bottom: 0px;
         }
       }
     }
