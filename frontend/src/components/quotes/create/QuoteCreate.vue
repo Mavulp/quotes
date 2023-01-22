@@ -13,8 +13,6 @@ import { useToast } from '../../../store/toast'
 
 import FragmentText from './fragments/FragmentText.vue'
 import FragmentImage from './fragments/FragmentImage.vue'
-import FragmentImageHighlight from './fragments/FragmentImageHighlight.vue'
-import FragmentHighlight from './fragments/FragmentHighlight.vue'
 
 const create = useCreate()
 const toast = useToast()
@@ -81,26 +79,16 @@ const dropdownOptions = [
     <div class="quote-blocks">
       <template v-for="([id, fragment], index) in blocks" :key="id">
         <FragmentText
-          v-if="fragment.type === 'text' && !fragment.highlight"
+          v-if="fragment.type === 'text'"
           :id="id"
-          :data="fragment"
-          :index="index"
-        />
-        <FragmentHighlight
-          v-else-if="fragment.type === 'text' && fragment.highlight"
-          :id="id"
+          :class="{ 'block-create-highlight': fragment.highlight }"
           :data="fragment"
           :index="index"
         />
         <FragmentImage
-          v-else-if="fragment.type === 'image' && !fragment.highlight"
+          v-else-if="fragment.type === 'image'"
           :id="id"
-          :data="fragment"
-          :index="index"
-        />
-        <FragmentImageHighlight
-          v-else-if="fragment.type === 'image' && fragment.highlight"
-          :id="id"
+          :class="{ 'is-highlight': fragment.highlight }"
           :data="fragment"
           :index="index"
         />

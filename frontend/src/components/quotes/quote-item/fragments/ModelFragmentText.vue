@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { ContextFragment } from '../../../../types/quote-types'
+import type { TextFragment } from '../../../../types/quote-types'
 
 interface Props {
-  data: ContextFragment
+  data: TextFragment
 }
 
 const props = defineProps<Props>()

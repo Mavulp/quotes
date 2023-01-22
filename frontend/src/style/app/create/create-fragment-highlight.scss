@@ -1,4 +1,6 @@
 .quote-block.block-create-highlight {
+  border-color: var(--color-highlight);
+
   .form-textarea {
     textarea {
       @include font(700);

@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash'
 import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
-import { rootUrl } from '../../bin/fetch'
+import { get, rootUrl } from '../../bin/fetch'
 import { useUser } from '../../store/user'
 
 const key = 'quotes_bearer_token'
@@ -11,7 +11,7 @@ export default async function (to: RouteLocationNormalized, from: RouteLocationN
 
   if (to.meta.requiresAuth || to.name === 'RouteAuthorize') {
     if (!token) {
-      const { token } = to.query as { token: string }
+      const { token, redirect_uri } = to.query as { token: string; redirect_uri: string }
 
       if (isEmpty(token)) {
         localStorage.removeItem(key)
@@ -19,6 +19,9 @@ export default async function (to: RouteLocationNormalized, from: RouteLocationN
       }
       else {
         localStorage.setItem(key, token)
+
+        await get(`/auth/authorize?redirect_uri=${redirect_uri}&token=${token}`)
+
         user.$patch({ signedIn: true })
         return next({ name: 'RouteHome' })
       }

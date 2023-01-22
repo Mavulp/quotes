@@ -4,10 +4,9 @@ import { useRouter } from 'vue-router'
 import type { Quote, Quotee } from '../../../types/quote-types'
 import { date } from '../../../bin/utils'
 
-import QuoteModelHighlight from './quote-item-models/QuoteModelHighlight.vue'
-import QuoteModelContext from './quote-item-models/QuoteModelContext.vue'
-import QuoteModelImage from './quote-item-models/QuoteModelImage.vue'
-// import QuoteItemInteract from './QuoteItemInteract.vue'
+import ModelFragmentText from './fragments/ModelFragmentText.vue'
+import ModelFragmentHighlight from './fragments/ModelFragmentHighlight.vue'
+import ModelFragmentImage from './fragments/ModelFragmentImage.vue'
 
 interface Props {
   data: Quote
@@ -66,9 +65,19 @@ function goToQuote() {
 
     <button class="quote-item-content" @click.self="goToQuote()">
       <template v-for="item in props.data.fragments" :key="item.index">
-        <QuoteModelHighlight v-if="item.type === 'highlight'" :data="item" />
-        <QuoteModelContext v-else-if="item.type === 'context'" :data="item" />
-        <QuoteModelImage v-else-if="item.type === 'image'" :data="item" />
+        <ModelFragmentText
+          v-if="item.type === 'text' && !item.highlight"
+          :data="item"
+        />
+        <ModelFragmentHighlight
+          v-if="item.type === 'text' && item.highlight"
+          :data="item"
+        />
+        <ModelFragmentImage
+          v-else-if="item.type === 'image'"
+          :class="{ 'is-highlight': item.highlight }"
+          :data="item"
+        />
       </template>
     </button>
   </div>

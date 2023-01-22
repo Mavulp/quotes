@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { HighlightFragment } from '../../../../types/quote-types'
+import type { TextFragment } from '../../../../types/quote-types'
 import { clamp } from '../../../../bin/utils'
 
 interface Props {
-  data: HighlightFragment
+  data: TextFragment
 }
 
 const props = defineProps<Props>()

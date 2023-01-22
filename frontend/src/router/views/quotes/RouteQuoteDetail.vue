@@ -3,9 +3,9 @@ import { onBeforeMount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type { Quote } from '../../../types/quote-types'
 import { useQuote } from '../../../store/quote'
-import QuoteModelHighlight from '../../../components/quotes/quote-item/quote-item-models/QuoteModelHighlight.vue'
-import QuoteModelContext from '../../../components/quotes/quote-item/quote-item-models/QuoteModelContext.vue'
-import QuoteModelImage from '../../../components/quotes/quote-item/quote-item-models/QuoteModelImage.vue'
+import ModelFragmentHighlight from '../../../components/quotes/quote-item/fragments/ModelFragmentHighlight.vue'
+import ModelFragmentText from '../../../components/quotes/quote-item/fragments/ModelFragmentText.vue'
+import ModelFragmentImage from '../../../components/quotes/quote-item/fragments/ModelFragmentImage.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -56,9 +56,19 @@ function goBack() {
 
       <div class="quote-item-content">
         <template v-for="item in quote.fragments" :key="item.index">
-          <QuoteModelHighlight v-if="item.type === 'highlight'" :data="item" />
-          <QuoteModelContext v-else-if="item.type === 'context'" :data="item" />
-          <QuoteModelImage v-else-if="item.type === 'image'" :data="item" />
+          <ModelFragmentText
+            v-if="item.type === 'text' && !item.highlight"
+            :data="item"
+          />
+          <ModelFragmentHighlight
+            v-if="item.type === 'text' && item.highlight"
+            :data="item"
+          />
+          <ModelFragmentImage
+            v-else-if="item.type === 'image'"
+            :class="{ 'is-highlight': item.highlight }"
+            :data="item"
+          />
         </template>
       </div>
       <pre>{{ quote }}</pre>

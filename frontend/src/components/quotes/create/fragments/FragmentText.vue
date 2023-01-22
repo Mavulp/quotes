@@ -62,10 +62,12 @@ function setHighlight() {
   <div
     class="quote-block block-create-context"
     draggable="true"
+    tabindex="0"
   >
     <FragmentButtons
       :index="props.index"
       :highlight="props.data.highlight"
+      tabindex="-1"
       @remove="remove"
       @highlight="setHighlight"
     />
