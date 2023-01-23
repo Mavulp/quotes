@@ -15,15 +15,12 @@ use std::sync::Arc;
 
 pub mod util;
 
-pub mod account;
-pub mod error;
-pub mod quote;
-pub mod tag;
-pub mod user;
-
-// https://i.imgur.com/kiv5f8T.png
-// https://i.imgur.com/YRbmT7n.png
-// https://i.imgur.com/Kpg4vKT.png
+mod account;
+mod auth;
+mod error;
+mod quote;
+mod tag;
+mod user;
 
 pub struct AppState {
     db: tokio_rusqlite::Connection,
@@ -43,7 +40,10 @@ pub struct AppState {
         quote::post_quote,
         tag::get_tags,
         tag::get_tag_by_id,
-        tag::put_tag_by_id
+        tag::put_tag_by_id,
+        auth::_authorize_dummy,
+        auth::_revoke_dummy,
+        auth::_logout_dummy
     ),
     components(schemas(
         user::User,

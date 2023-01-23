@@ -333,6 +333,7 @@ pub fn insert_quote(conn: &mut Connection, quote: PostQuote, author: &str) -> Re
         )
         .context("Failed to insert quote")?;
 
+    let mut inserted_index_users = Vec::new();
     for (idx, fragment) in quote.fragments.iter().enumerate() {
         if fragment.content.is_empty() {
             return Err(Error::EmptyFragmentContent);
@@ -373,26 +374,30 @@ pub fn insert_quote(conn: &mut Connection, quote: PostQuote, author: &str) -> Re
         )
         .context("Failed to insert fragment")?;
 
-        let max_idx = tx
-            .query_row(
-                "SELECT COALESCE(max(idx), 0)
-                FROM user_quote_index
-                WHERE
-                    quotee = $1",
-                params![&fragment.quotee],
-                |row| Ok(from_row::<i64>(row).unwrap()),
-            )
-            .context("Failed to get current max quote index")?;
+        if !inserted_index_users.contains(&&fragment.quotee) {
+            let max_idx = tx
+                .query_row(
+                    "SELECT COALESCE(max(idx), 0)
+                    FROM user_quote_index
+                    WHERE
+                        quotee = $1",
+                    params![&fragment.quotee],
+                    |row| Ok(from_row::<i64>(row).unwrap()),
+                )
+                .context("Failed to get current max quote index")?;
 
-        tx.execute(
-            "INSERT INTO user_quote_index (
-                idx,
-                quotee,
-                quote_id
-            ) VALUES ($1, $2, $3)",
-            to_params((max_idx + 1, &fragment.quotee, quote_id)).unwrap(),
-        )
-        .context("Failed to insert quote index")?;
+            tx.execute(
+                "INSERT INTO user_quote_index (
+                    idx,
+                    quotee,
+                    quote_id
+                ) VALUES ($1, $2, $3)",
+                to_params((max_idx + 1, &fragment.quotee, quote_id)).unwrap(),
+            )
+            .context("Failed to insert quote index")?;
+
+            inserted_index_users.push(&fragment.quotee);
+        }
     }
 
     for tag in &quote.tags {
