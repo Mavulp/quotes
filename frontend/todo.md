@@ -1,44 +1,34 @@
-# Endpoints
+# Todo
 
-get /quotes
-get /quotes/:qutee (allow multiple)
-get /quotes/:author
-
-get /quote/:id
-get /quote/random
-put /quote/:id
-del /quote/:id
-
-post /quote
-
-post /image
-get /image/:key
-del /image/:key
-
-get /comments/:quoteId
-
-del /comment/:id
-post /comment/
-
-## Todo
+[https://quotes.hivecom.net/swagger/]
 
 - [Quote creator] [] Add drag re-ordering
+- [Router] Update page title on each route
+- [Router] Fix error when entering route detail which breaks evetything
 
 ## User
 
 - [] Adding a highlighted quote
 - [] Showing last 3 quotes from this user
-- [] Showing how many quotes person added and is quoted on
+- [x] Showing how many quotes person added and is quoted on
 
 ## Create
 
 - [] Add tag component
+- [] Implement rearrange
 - [] Tags endpoint (get all tags)
+
+## Detail
+
+- [] Display tags somewhere
+- [] Add author, quotees, other info
+- [] Copy url to clipboard
+- [] Make quotees indices names clickable ( to their profile / their quotes)
 
 ## List
 
-- [] Create ok ways to filter on quotes to get amounts by user etc
+- [] Consolidated mode (all quotes are max 256px tall) (default)
+- [x] Create ok ways to filter on quotes to get amounts by user etc
 - [] Add functionality to prefill filters from URL
-
-
-<!-- https://quotes.hivecom.net/swagger/ -->
+- [] Add option to add your indiced or authored quote as a highligh
+- [] Tag filtering

@@ -16,10 +16,10 @@ interface State {
 // Before submitting, this object will get serialized to
 // correctly match the NewQuote interface
 const defaultQuote: CreateQuote = {
-  tags: '',
+  tags: null,
   fragments: new Map(),
   offensive: null,
-  comments: true,
+  // comments: true,
   // anonymous: false,
   // anonymousQuotees: false,
 }
@@ -59,7 +59,6 @@ export const useCreate = defineStore('create', {
       this.form.fragments.delete(index)
       this._index--
     },
-
     async submitQuote() {
       const { push } = useToast()
 
@@ -72,7 +71,7 @@ export const useCreate = defineStore('create', {
       const body = {
         fragments: [...fragments.values()],
         offensive: offensive === 'yes',
-        tags: tags?.trim().split(',') ?? [],
+        tags: tags ? tags?.trim().split(',') : [],
       }
 
       return post('/quote', body)

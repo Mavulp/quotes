@@ -41,6 +41,10 @@ export const useFilters = defineStore('filters', {
     setFilter(key: FilterKey, values: string[]) {
       this.filters.set(key, new Set(values))
     },
+    clear() {
+      this.search = ''
+      this.filters = new Map()
+    },
   },
   getters: {
     getOptionsByKey: state => (key: FilterKey): OptionValue[] => {
@@ -54,7 +58,7 @@ export const useFilters = defineStore('filters', {
     },
     getFiltersByKey: state => (key: FilterKey) => {
       const filters = state.filters.get(key) ?? []
-      return [...filters]
+      return Array.from(filters)
     },
     isPassingFilter() {
       return (key: FilterKey, value: string | string[]) => {
@@ -66,5 +70,6 @@ export const useFilters = defineStore('filters', {
         return isArray(value) ? value.some(val => active.includes(val)) : active.includes(value)
       }
     },
+    active: state => [...state.filters.values()].some(data => data.size > 0) || state.search.length > 0,
   },
 })

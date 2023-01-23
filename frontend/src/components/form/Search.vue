@@ -36,6 +36,7 @@ function clear() {
       tabindex="0"
       type="text"
       size="1"
+      :value="value"
       @input="updateValue"
     >
     <button v-if="value" @click="clear">

@@ -119,7 +119,7 @@ const dropdownOptions = [
         :error="errors.offensive"
       />
 
-      <InputCheckbox v-model:check="comments" label="Enable comment section" />
+      <!-- <InputCheckbox v-model:check="comments" label="Enable comment section" /> -->
       <!-- <InputCheckbox v-model:check="anonymous" label="Hide author username (you)" /> -->
       <!-- <InputCheckbox v-model:check="anonymousQuotees" label="Hide quotee username" /> -->
 

@@ -30,6 +30,8 @@ function goBack() {
     // hash: `#${quote.value.id}`,
   })
 }
+
+const highlightLabel = 'The Funny'
 </script>
 
 <template>
@@ -62,10 +64,12 @@ function goBack() {
           />
           <ModelFragmentHighlight
             v-if="item.type === 'text' && item.highlight"
+            :data-title-right="highlightLabel"
             :data="item"
           />
           <ModelFragmentImage
             v-else-if="item.type === 'image'"
+            :data-title-right="item.highlight ? highlightLabel : null"
             :class="{ 'is-highlight': item.highlight }"
             :data="item"
           />

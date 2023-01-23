@@ -25,14 +25,17 @@ export const useUser = defineStore('user', {
   actions: {
     async fetchUsers() {
       const toast = useToast()
+      const loading = useLoading()
+
+      loading.add('users')
 
       get('/user')
         .then((res) => {
-          // TODO: not do this later
           this.user = res.find((u: User) => u.username === this.user.username)
           this.users = res
         })
         .catch(() => toast.push({ type: 'error', message: 'Error fetching users' }))
+        .finally(() => loading.del('users'))
     },
 
     async fetchUser(username: string) {
@@ -66,7 +69,6 @@ export const useUser = defineStore('user', {
 
       return put('/account/settings', form)
         .then(() => {
-          // Object.assign(this.settings, form)
           this.fetchUsers()
           toast.push({ type: 'success', message: 'Succesfully updating settings' })
         })
@@ -77,7 +79,7 @@ export const useUser = defineStore('user', {
     getUsername: state => (username?: string) => {
       // No username means the currently signed in user
       if (!username)
-        return state.settings.displayName ?? state.user.username
+        return state.user.displayName ?? state.user.username
 
       // Query user by username
       const exists = state.users.find(user => user.username === username)
@@ -85,5 +87,6 @@ export const useUser = defineStore('user', {
       // Return displayname OR normal username
       return exists?.displayName ?? exists?.username
     },
+
   },
 })

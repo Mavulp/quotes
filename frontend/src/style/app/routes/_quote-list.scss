@@ -61,5 +61,54 @@
 
   &.quote-filters {
     @include grid(20px, 1.5fr 1fr 1fr);
+    position: relative;
+
+    .form-search {
+      input {
+        height: 48px;
+        line-height: 48px;
+      }
+
+      & > .material-icons {
+        top: 13px;
+        left: 18px;
+      }
+    }
+
+    .form-select {
+      .dropdown-icon {
+        top: 10px;
+      }
+
+      .select-button {
+        height: 48px;
+        line-height: 48px;
+
+        input {
+          height: 48px;
+          line-height: 48px;
+        }
+      }
+
+      label {
+        top: 13px;
+
+        .material-icons {
+          font-size: 2rem !important;
+        }
+      }
+    }
+
+    .filters-clear {
+      position: absolute;
+      left: calc(100% + 20px);
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--color-text-light);
+
+      &:hover {
+        color: var(--color-text);
+      }
+    }
   }
 }

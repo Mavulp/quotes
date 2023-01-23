@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUser } from '../../../store/user'
 import { getRanMinMax } from '../../../bin/utils'
@@ -7,7 +7,6 @@ import ModalSettings from '../../../components/modal/ModalSettings.vue'
 import type { Quote } from '../../../types/quote-types'
 import { useQuote } from '../../../store/quote'
 import { useLoading } from '../../../store/loading'
-import type { User } from '../../../types/user-types'
 
 const user = useUser()
 const quote = ref<Quote>()
@@ -16,21 +15,8 @@ const loading = useLoading()
 const route = useRoute()
 const router = useRouter()
 
-const profile = ref<User>()
-
-// onBeforeMount(query)
-watch(() => route.params, async (value) => {
-  if (!value.username)
-    return
-
-  const username = value.username.toString()
-  profile.value = await user.fetchUser(username)
-
-  // Fetch highlighted quote
-  const quoteId = profile.value?.highlightedQuoteId
-  if (quoteId)
-    quote.value = await quotes.fetchQuote(quoteId)
-}, { deep: true, immediate: true })
+const profile = computed(() => user.users.find(u => u.username === route.params.username))
+const quoteHighlight = computed(() => quotes.getQuoteById(profile.value?.highlightedQuoteId))
 
 function colorOfTheDay() {
   const date = new Date()
@@ -55,7 +41,7 @@ const editing = ref(false)
 <template>
   <div class="quote-profile">
     <div class="quote-container">
-      <div v-if="loading.get('user')">
+      <div v-if="loading.get('users')">
         <Spinner />
       </div>
 
@@ -81,11 +67,11 @@ const editing = ref(false)
 
             <ul>
               <li data-title-top="View quotes added by this user">
-                <a href="">Added <span>15</span></a>
+                <a href="">Added <span>{{ quotes.getAuthoredQuotes(profile.username).length }}</span></a>
               </li>
               <li><div class="circle" /></li>
               <li data-title-top="View quotes by this user">
-                <a href="">Quoted <span>16</span></a>
+                <a href="">Quoted <span>{{ quotes.getQuotedQuotes(profile.username).length }}</span></a>
               </li>
             </ul>
           </div>
@@ -101,14 +87,12 @@ const editing = ref(false)
           </Teleport>
 
           <div>
-            <h2>{{ user.getUsername(profile.username) }}</h2>
+            <h2>{{ profile.displayName ?? profile.username }}</h2>
             <p>{{ profile.bio }}</p>
-
-            <!--  -->
 
             <hr>
 
-            <router-link :to="{ name: 'RouteQuoteDetail', params: { id: 1 } }" class="quote-user-highlight">
+            <router-link v-if="quoteHighlight" :to="{ name: 'RouteQuoteDetail', params: { id: quoteHighlight.id } }" class="quote-user-highlight">
               <p>My plan worked, we didnt get APH!</p>
               <div class="flex-wrap">
                 <span class="tag highlight">Highlighted</span>
@@ -128,7 +112,7 @@ const editing = ref(false)
 
             <div class="flex-wrap" style="padding-left:20px">
               <button class="button">
-                View All
+                All
               </button>
             </div>
           </div>

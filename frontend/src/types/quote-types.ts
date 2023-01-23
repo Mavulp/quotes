@@ -25,15 +25,15 @@ export interface Quote {
   indices: Quotee[]
   offensive: boolean
   createdAt: number
-  tags?: string
+  tags: string[]
   legacy?: boolean
   fragments: Array<TextFragment | ImageFragment>
 }
 
 interface BaseCreateQuote {
-  tags?: string
+  tags: string | null
   offensive: 'yes' | 'no' | null
-  comments: boolean
+  // comments: boolean
   // anonymous: boolean
   // anonymousQuotees: boolean
 }

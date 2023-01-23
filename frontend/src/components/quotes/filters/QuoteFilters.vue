@@ -41,11 +41,7 @@ const search = computed({
 </script>
 
 <template>
-  <div class="quote-title-wrap quote-filters">
-    <!-- <pre>
-      {{ filters }}
-    </pre> -->
-
+  <div :key="filters.active.toString()" class="quote-title-wrap quote-filters">
     <Search v-model:value="search" placeholder="Search for a quote" />
 
     <InputSelect
@@ -64,5 +60,9 @@ const search = computed({
       multiple
       :cantclear="false"
     />
+
+    <button v-if="filters.active" class="filters-clear button btn-white" @click="filters.clear()">
+      Clear Filters
+    </button>
   </div>
 </template>

@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useUser } from '../../store/user'
 
 const user = useUser()
 const route = useRoute()
 const show = ref(true)
+
+const profile = computed(() => user.user)
 
 document.addEventListener('scroll', () => {
   show.value = window.scrollY <= 5
@@ -47,9 +49,9 @@ document.addEventListener('scroll', () => {
       <router-link
         data-title-bottom="Your quotes"
         class="header-link header-user"
-        :to="{ name: 'RouteUserProfile', params: { username: user.user.username } }"
+        :to="{ name: 'RouteUserProfile', params: { username: profile.username } }"
       >
-        <img v-if="user.user.profilePicture" :src="user.user.profilePicture">
+        <img v-if="profile.profilePicture" :src="profile.profilePicture">
         <Icon v-else code="e7fd" />
         {{ user.getUsername() }}
       </router-link>

@@ -29,6 +29,7 @@ const formatted = computed<Quote>(() => {
     createdAt: Date.now() / 1000,
     // ...(form.location && { location: form.location }),
     fragments,
+    tags: [],
   }
 })
 </script>
@@ -36,7 +37,7 @@ const formatted = computed<Quote>(() => {
 <template>
   <div class="quote-preview">
     <p v-if="create.form.fragments.size === 0" class="quote-preview-empty">
-      There's nothing to preview. Add and fill a quote block first.
+      There's nothing to preview. Add at least one block.
     </p>
 
     <QuoteListItem v-else class="quote-disabled" :data="formatted" />

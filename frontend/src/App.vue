@@ -6,13 +6,16 @@ import { onMounted } from 'vue'
 import Header from './components/navigation/Header.vue'
 import ToastWrap from './components/ToastWrap.vue'
 import { useUser } from './store/user'
+import { useQuote } from './store/quote'
 
 const route = useRoute()
+const quotes = useQuote()
 const user = useUser()
 
 onMounted(() => {
   if (user.signedIn)
     user.fetchUsers()
+  quotes.fetchQuotes()
 })
 </script>
 

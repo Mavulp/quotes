@@ -6,6 +6,7 @@ import type { Quote } from '../types/quote-types'
 import { useFilters } from './filters'
 import { useLoading } from './loading'
 import { useToast } from './toast'
+import { useUser } from './user'
 
 interface State {
   quotes: Quote[]
@@ -56,13 +57,27 @@ export const useQuote = defineStore('quotes', {
     },
   },
   getters: {
-    getAuthoredQuotes(): Quote[] {
-      // Return quotes added by a user
-      //
+    // Return quotes added by a user
+    getAuthoredQuotes: state => (username?: string) => {
+      // No username means current user
+      if (!username) {
+        const user = useUser()
+        username = user.user.username
+      }
+
+      return state.quotes.filter(quote => quote.author === username)
     },
 
-    getQuotedQuotes(): Quote {
-      // Return quotes in which a person is a quotee
+    // Return quotes in which a person is a quotee
+    getQuotedQuotes: state => (username?: string) => {
+      // No username means current user
+      if (!username) {
+        const user = useUser()
+        username = user.user.username
+      }
+
+      return state.quotes.filter(quote => quote.indices.some(indice => indice.quotee === username))
     },
+    getQuoteById: state => (id?: number) => state.quotes.find(quote => quote.id === id),
   },
 })
