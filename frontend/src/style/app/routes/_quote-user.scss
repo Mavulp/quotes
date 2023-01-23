@@ -56,7 +56,7 @@
             font-size: 1.2rem;
             text-align: center;
 
-            a {
+            button {
               @include font(400);
               font-size: inherit;
               color: var(--color-text-light);

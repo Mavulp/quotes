@@ -4,12 +4,12 @@ import { useRoute, useRouter } from 'vue-router'
 import { useUser } from '../../../store/user'
 import { getRanMinMax } from '../../../bin/utils'
 import ModalSettings from '../../../components/modal/ModalSettings.vue'
-import type { Quote } from '../../../types/quote-types'
 import { useQuote } from '../../../store/quote'
 import { useLoading } from '../../../store/loading'
+import { useFilters } from '../../../store/filters'
 
 const user = useUser()
-const quote = ref<Quote>()
+const filters = useFilters()
 const quotes = useQuote()
 const loading = useLoading()
 const route = useRoute()
@@ -36,6 +36,25 @@ const { normal } = colorOfTheDay()
 
 // Name
 const editing = ref(false)
+
+// Redirect back to filters
+function quotesByUser() {
+  if (!profile.value)
+    return
+
+  // Go to quote list and filter to quotes where person is the author
+  filters.setFilter('author', [profile.value.username])
+  router.push({ name: 'RouteQuoteList' })
+}
+
+function quotesFromUser() {
+  if (!profile.value)
+    return
+
+  // Go to quote list and filter to quotes where person is a quotee
+  filters.setFilter('quotee', [profile.value.username])
+  router.push({ name: 'RouteQuoteList' })
+}
 </script>
 
 <template>
@@ -67,11 +86,15 @@ const editing = ref(false)
 
             <ul>
               <li data-title-top="View quotes added by this user">
-                <a href="">Added <span>{{ quotes.getAuthoredQuotes(profile.username).length }}</span></a>
+                <button @click="quotesByUser">
+                  Added <span>{{ quotes.getAuthoredQuotes(profile.username).length }}</span>
+                </button>
               </li>
               <li><div class="circle" /></li>
               <li data-title-top="View quotes by this user">
-                <a href="">Quoted <span>{{ quotes.getQuotedQuotes(profile.username).length }}</span></a>
+                <button @click="quotesFromUser">
+                  Quoted <span>{{ quotes.getQuotedQuotes(profile.username).length }}</span>
+                </button>
               </li>
             </ul>
           </div>
@@ -111,8 +134,8 @@ const editing = ref(false)
           </router-link> -->
 
             <div class="flex-wrap" style="padding-left:20px">
-              <button class="button">
-                All
+              <button class="button" @click="quotesByUser">
+                User Quotes
               </button>
             </div>
           </div>
