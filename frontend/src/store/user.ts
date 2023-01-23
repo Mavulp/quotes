@@ -85,7 +85,7 @@ export const useUser = defineStore('user', {
       const exists = state.users.find(user => user.username === username)
 
       // Return displayname OR normal username
-      return exists?.displayName ?? exists?.username
+      return exists?.displayName ?? username
     },
 
   },

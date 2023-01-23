@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import type { Quote, Quotee } from '../../../types/quote-types'
 import { date } from '../../../bin/utils'
 
+import { useUser } from '../../../store/user'
 import ModelFragmentText from './fragments/ModelFragmentText.vue'
 import ModelFragmentHighlight from './fragments/ModelFragmentHighlight.vue'
 import ModelFragmentImage from './fragments/ModelFragmentImage.vue'
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+const users = useUser()
 const router = useRouter()
 
 /**
@@ -44,7 +46,7 @@ function goToQuote() {
     <div class="quote-item-header" @click.self="goToQuote()">
       <div class="quote-quotees">
         <span v-for="user in highlightUsers" :key="user.quotee" class="quote-text quote-quotee">
-          <router-link :to="{ name: 'RouteUserProfile', params: { username: user.quotee } }">{{ user.quotee }}</router-link>
+          <router-link :to="{ name: 'RouteUserProfile', params: { username: user.quotee } }">{{ users.getUsername(user.quotee) }}</router-link>
           {{ `#${user.index}` }}
         </span>
 

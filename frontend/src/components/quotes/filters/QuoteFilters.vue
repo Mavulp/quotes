@@ -23,6 +23,7 @@ const filters = useFilters()
  */
 const quoteeOptions = computed(() => filters.getOptionsByKey('quotee'))
 const authorOptions = computed(() => filters.getOptionsByKey('author'))
+const tagOptions = computed(() => filters.getOptionsByKey('tag'))
 
 const quotee = computed({
   get: () => filters.getFiltersByKey('quotee'),
@@ -32,6 +33,11 @@ const quotee = computed({
 const author = computed({
   get: () => filters.getFiltersByKey('author'),
   set: (value: string[]) => filters.setFilter('author', value),
+})
+
+const tag = computed({
+  get: () => filters.getFiltersByKey('tag'),
+  set: (value: string[]) => filters.setFilter('tag', value),
 })
 
 const search = computed({
@@ -57,6 +63,14 @@ const search = computed({
       :options="authorOptions"
       placeholder="Filter by author"
       icon="ea4d"
+      multiple
+      :cantclear="false"
+    />
+    <InputSelect
+      v-model:selected="tag"
+      :options="tagOptions"
+      placeholder="Filter by Tags"
+      icon="e867"
       multiple
       :cantclear="false"
     />

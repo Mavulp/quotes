@@ -20,7 +20,7 @@ document.addEventListener('scroll', () => {
       <img src="/logo.svg" alt="">
     </router-link>
 
-    <div class="quote-container">
+    <div class="quote-container container-header">
       <router-link class="header-link" :to="{ name: 'RouteHome' }">
         Home
       </router-link>

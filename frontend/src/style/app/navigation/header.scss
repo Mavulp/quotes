@@ -41,9 +41,8 @@
   .quote-container {
     @include flex(30px);
     transform: translateX(-5px);
-    // margin-left: -16px;
-    max-width: unset;
-    margin-right: 15em;
+    // max-width: unset;
+    // margin-right: 15em;
 
     .header-link {
       @include flex(8px, $align: center);

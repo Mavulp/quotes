@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useQuote } from '../../../store/quote'
 import { $, getRanMinMax, searchInStr, toBool } from '../../../bin/utils'
 
-// import InputRadio from "../../../components/form/InputRadio.vue"
+import InputRadio from '../../../components/form/InputRadio.vue'
 import QuoteListItem from '../../../components/quotes/quote-item/QuoteListItem.vue'
 import QuoteFilters from '../../../components/quotes/filters/QuoteFilters.vue'
 import { useLoading } from '../../../store/loading'
@@ -40,9 +40,9 @@ const data = computed(() => {
   // #1 First filter data from active filters
   const filtered = quote.quotes.filter((q) => {
     const quotees = q.indices.map(indice => indice.quotee)
-    return filters.isPassingFilter('author', q.author) && filters.isPassingFilter('quotee', quotees)
-    // TODO enable when quotes contain toip level quotees
-    // || filters.isPassingFilter('quotee', q.quotees)
+    return filters.isPassingFilter('author', q.author)
+      && filters.isPassingFilter('quotee', quotees)
+      && filters.isPassingFilter('tag', q.tags)
   })
 
   // #2 Apply search string
@@ -92,7 +92,7 @@ function random() {
 <template>
   <div :key="route.path" class="quote-route-list">
     <section id="header" class="quote-list-header">
-      <div class="quote-container">
+      <div class="quote-container container-header">
         <div class="quote-title-wrap text">
           <h1>Quote list</h1>
           <button v-if="data.length > 1" class="button btn-gray" @click="random()">
@@ -124,24 +124,24 @@ function random() {
               <b>{{ authors.length }}</b> {{ authors.length === 1 ? "person" : "people" }}
             </p>
 
-          <!-- <div class="quote-list-display-switch">
-            <span class="type-title">Render list</span>
+            <div class="quote-list-display-switch">
+              <!-- <span class="type-title">Display </span> -->
 
-            <InputRadio
-              data-title-top="Expanded"
-              group="list"
-              value="true"
-              v-model:check="expanded"
-              icon="e3c1"
-            />
-            <InputRadio
-              data-title-top="Consolidated"
-              group="list"
-              value="false"
-              v-model:check="expanded"
-              icon="f101"
-            />
-          </div> -->
+              <InputRadio
+                v-model:check="expanded"
+                data-title-top="Expanded Items"
+                group="list"
+                value="true"
+                icon="e3c1"
+              />
+              <InputRadio
+                v-model:check="expanded"
+                data-title-top="Consolidated Items"
+                group="list"
+                value="false"
+                icon="f101"
+              />
+            </div>
           </div>
 
           <div class="quote-list-items">

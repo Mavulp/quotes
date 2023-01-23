@@ -60,10 +60,13 @@
   }
 
   &.quote-filters {
-    @include grid(20px, 1.5fr 1fr 1fr);
+    @include flex(10px);
+    // @include grid(20px, 1.5fr 1fr 1fr);
     position: relative;
 
     .form-search {
+      width: 264px;
+
       input {
         height: 48px;
         line-height: 48px;
@@ -76,6 +79,8 @@
     }
 
     .form-select {
+      width: 224px;
+
       .dropdown-icon {
         top: 10px;
       }
@@ -93,9 +98,9 @@
       label {
         top: 13px;
 
-        .material-icons {
-          font-size: 2rem !important;
-        }
+        // .material-icons {
+        //   font-size: 2rem !important;
+        // }
       }
     }
 

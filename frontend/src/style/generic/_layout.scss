@@ -3,7 +3,12 @@
   margin-left: $from-left;
   max-width: 920px;
   width: 100%;
-  // padding-top: 2.5em;
+
+  &.container-header {
+    max-width: unset;
+    padding: 0 15em;
+    margin: 0;
+  }
 }
 
 .quote-container-small {

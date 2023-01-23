@@ -1,8 +1,17 @@
 import { isArray } from 'lodash'
 import { defineStore } from 'pinia'
+import { get } from '../bin/fetch'
 import type { Quote } from '../types/quote-types'
+import { useLoading } from './loading'
 
 type FilterKey = 'author' | 'quotee' | 'tag'
+
+interface Tag {
+  id: string
+  name: string
+  description: string
+}
+
 interface OptionValue {
   value: string
   label: string
@@ -12,6 +21,7 @@ interface State {
   search: string
   options: Record<FilterKey, Set<string>>
   filters: Map<FilterKey, Set<string>>
+  tags: Tag[]
 }
 
 export const useFilters = defineStore('filters', {
@@ -20,17 +30,31 @@ export const useFilters = defineStore('filters', {
     options: {
       author: new Set(),
       quotee: new Set(),
+      tag: new Set(),
     },
     filters: new Map(),
+    tags: [],
   } as State),
   actions: {
     init(quotes: Quote[]) {
+      const loading = useLoading()
+      loading.add('filters')
+
       // Iterate over all quotes and extract unique filterable values
       for (const quote of quotes) {
         this.options.author.add(quote.author)
         const quotees = quote.indices.map(user => user.quotee)
         quotees.map(q => this.options.quotee.add(q))
       }
+
+      get('/tag')
+        .then((res: Tag[]) => {
+          // Save tags as full objects
+          this.tags = res
+          // To options, save tag names
+          this.options.tag = new Set(res.map(tag => tag.name))
+        })
+        .finally(() => loading.del('filters'))
     },
     setSearch(value: string) {
       this.search = value
