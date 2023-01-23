@@ -7,19 +7,6 @@
     padding-bottom: 20px;
     margin-bottom: 30px;
     border-bottom: 1px solid var(--color-border);
-
-    // &.is-sticky {
-    //   @include flex($align: center);
-    //   position: fixed;
-    //   top: $header;
-    //   left: $sidebar-width;
-    //   right: 0;
-    //   z-index: 1000;
-    //   margin-bottom: 0;
-    //   padding: 10px 0;
-    //   width: auto;
-    //   padding-right: 40px;
-    // }
   }
 
   .quote-list {
@@ -78,7 +65,7 @@
     }
 
     .form-select {
-      width: 224px;
+      width: 256px;
 
       .dropdown-icon {
         top: 10px;

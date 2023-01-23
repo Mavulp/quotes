@@ -1,6 +1,6 @@
 import RouteQuoteCreate from '../views/quotes/RouteQuoteCreate.vue'
-import RouteQuoteDetailVue from '../views/quotes/RouteQuoteDetail.vue'
-import RouteQuoteListVue from '../views/quotes/RouteQuoteList.vue'
+import RouteQuoteDetail from '../views/quotes/RouteQuoteDetail.vue'
+import RouteQuoteList from '../views/quotes/RouteQuoteList.vue'
 
 export default [
   {
@@ -15,7 +15,7 @@ export default [
   {
     path: '/quote/:id',
     name: 'RouteQuoteDetail',
-    component: RouteQuoteDetailVue,
+    component: RouteQuoteDetail,
     meta: {
       title: 'Quote Detail',
       requiresAuth: true,
@@ -24,7 +24,7 @@ export default [
   {
     path: '/quotes',
     name: 'RouteQuoteList',
-    component: RouteQuoteListVue,
+    component: RouteQuoteList,
     meta: {
       title: 'Quote List',
       requiresAuth: true,

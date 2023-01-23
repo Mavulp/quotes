@@ -61,8 +61,6 @@ function goToQuote() {
       </span>
       <div class="quote-padder" />
       <span class="quote-text"> {{ date.simple(props.data.createdAt) }} </span>
-      <!-- <div class="quote-divider" /> -->
-      <!-- <QuoteItemInteract :id="props.data.id" /> -->
     </div>
 
     <button class="quote-item-content" @click.self="goToQuote()">
@@ -82,5 +80,7 @@ function goToQuote() {
         />
       </template>
     </button>
+
+    <span v-if="props.data.fragments.length > 1" class="parts">{{ props.data.fragments.length - 1 }} more parts...</span>
   </div>
 </template>

@@ -1,3 +1,5 @@
+import type { RemovableRef } from '@vueuse/core'
+import { useLocalStorage } from '@vueuse/core'
 import { isArray } from 'lodash'
 import { defineStore } from 'pinia'
 import { get } from '../bin/fetch'
@@ -22,6 +24,9 @@ interface State {
   options: Record<FilterKey, Set<string>>
   filters: Map<FilterKey, Set<string>>
   tags: Tag[]
+
+  expand: RemovableRef<boolean>
+  offensive: RemovableRef<boolean>
 }
 
 export const useFilters = defineStore('filters', {
@@ -34,6 +39,8 @@ export const useFilters = defineStore('filters', {
     },
     filters: new Map(),
     tags: [],
+    expand: useLocalStorage('quotes_expanded', false),
+    offensive: useLocalStorage('quotes_expanded', false),
   } as State),
   actions: {
     init(quotes: Quote[]) {

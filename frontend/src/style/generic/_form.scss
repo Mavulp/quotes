@@ -42,8 +42,8 @@ input {
   input {
     @include radius(28px);
     @include font(400);
-    height: 56px;
-    line-height: 56px;
+    height: 48px;
+    line-height: 48px;
     font-size: 1.6rem;
     border: 1px solid var(--color-border);
     color: var(--color-text);
@@ -97,15 +97,15 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 56px var(--color-bg) inset !important;
-  box-shadow: 0 0 0 56px var(--color-bg) inset !important;
+  -webkit-box-shadow: 0 0 0 48px var(--color-bg) inset !important;
+  box-shadow: 0 0 0 48px var(--color-bg) inset !important;
 }
 
 .form-select,
 .form-textarea,
 .form-input {
   input {
-    height: 56px;
+    height: 48px;
     width: 100%;
     line-height: 36px;
   }
@@ -225,9 +225,9 @@ input:-webkit-autofill:active {
     .select-no-options {
       display: block;
       width: 100%;
-      height: 56px;
+      height: 48px;
       padding: 0 20px;
-      line-height: 56px;
+      line-height: 48px;
       color: var(--color-text);
     }
 
@@ -262,7 +262,7 @@ input:-webkit-autofill:active {
     display: none;
 
     & + label {
-      @include flex($gap: 15px);
+      @include flex($gap: 10px);
       cursor: pointer;
 
       p {
@@ -273,6 +273,10 @@ input:-webkit-autofill:active {
         color: var(--color-highlight);
       }
     }
+
+    // &:checked + label .icon {
+    //   color: var(--color-text);
+    // }
   }
 }
 

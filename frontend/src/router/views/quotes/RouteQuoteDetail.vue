@@ -15,8 +15,8 @@ const quote = ref<Quote>()
 onBeforeMount(async () => {
   const id = route.params.id
 
-  if (!id)
-    return router.go(-1)
+  // if (!id)
+  //   return router.go(-1)
 
   quote.value = await quotes.fetchQuote(Number(id))
 })

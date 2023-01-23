@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useLocalStorage } from '@vueuse/core'
 import { useFilters } from '../../../store/filters'
 
+import InputCheckbox from '../../../components/form/InputCheckbox.vue'
 import InputSelect from '../../../components/form/InputSelect.vue'
 import Search from '../../../components/form/Search.vue'
 
@@ -44,6 +46,8 @@ const search = computed({
   get: () => filters.search,
   set: value => filters.setSearch(value),
 })
+
+const offensive = useLocalStorage('quotes_offensive', true)
 </script>
 
 <template>
@@ -74,6 +78,10 @@ const search = computed({
       multiple
       :cantclear="false"
     />
+
+    <div style="width:10px" />
+
+    <InputCheckbox v-model:check="offensive" label="Offensive Content" />
 
     <button v-show="filters.active" class="filters-clear button btn-white" @click="filters.clear()">
       Clear Filters

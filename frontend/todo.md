@@ -28,7 +28,4 @@
 ## List
 
 - [] Consolidated mode (all quotes are max 256px tall) (default)
-- [x] Create ok ways to filter on quotes to get amounts by user etc
-- [x] Add functionality to prefill filters from URL
 - [] Add option to add your indiced or authored quote as a highligh
-- [x] Tag filtering

@@ -2,10 +2,8 @@
   @include t();
   @include radius(var(--radius-lg));
   display: block;
-  // padding: 10px 20px 20px;
   border: 1px solid var(--color-border);
   margin-bottom: 40px;
-  // overflow: hidden;
   cursor: pointer;
 
   &:last-of-type {
@@ -15,6 +13,33 @@
   &:hover {
     background-color: var(--color-bg-light);
   }
+
+  .parts {
+    @include font(600);
+    display: none;
+    z-index: 30;
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.4rem;
+    color: var(--color-text-light);
+    pointer-events: none;
+  }
+
+  // &.is-consolidated {
+  //   position: relative;
+
+  //   .parts {
+  //     display: block;
+  //   }
+
+  //   .quote-item-content-block {
+  //     &:not(:first-child) {
+  //       display: none;
+  //     }
+  //   }
+  // }
 
   &.quote-disabled {
     pointer-events: none;
@@ -223,7 +248,7 @@
 
       img {
         max-width: 100%;
-        max-height: calc(100vh - $header);
+        max-height: calc(100vh - $header - 20px);
         box-shadow: var(--shadow-highlight);
       }
     }
