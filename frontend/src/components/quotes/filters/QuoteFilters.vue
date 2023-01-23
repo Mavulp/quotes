@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
+import { computed } from 'vue'
 import { useFilters } from '../../../store/filters'
 
 import InputSelect from '../../../components/form/InputSelect.vue'
@@ -75,7 +75,7 @@ const search = computed({
       :cantclear="false"
     />
 
-    <button v-if="filters.active" class="filters-clear button btn-white" @click="filters.clear()">
+    <button v-show="filters.active" class="filters-clear button btn-white" @click="filters.clear()">
       Clear Filters
     </button>
   </div>

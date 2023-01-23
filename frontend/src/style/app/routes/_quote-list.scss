@@ -60,13 +60,12 @@
   }
 
   &.quote-filters {
+    // @include grid(10px, repeat(4, 1fr));
     @include flex(10px);
-    // @include grid(20px, 1.5fr 1fr 1fr);
     position: relative;
 
     .form-search {
-      width: 264px;
-
+      width: 256px;
       input {
         height: 48px;
         line-height: 48px;
@@ -97,18 +96,14 @@
 
       label {
         top: 13px;
-
-        // .material-icons {
-        //   font-size: 2rem !important;
-        // }
       }
     }
 
     .filters-clear {
-      position: absolute;
-      left: calc(100% + 20px);
-      top: 50%;
-      transform: translateY(-50%);
+      // position: absolute;
+      // left: calc(100% + 20px);
+      // top: 50%;
+      // transform: translateY(-50%);
       color: var(--color-text-light);
 
       &:hover {

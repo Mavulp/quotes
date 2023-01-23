@@ -4,11 +4,13 @@ import { useRoute, useRouter } from 'vue-router'
 import { useQuote } from '../../../store/quote'
 import { $, getRanMinMax, searchInStr, toBool } from '../../../bin/utils'
 
+import InputCheckbox from '../../../components/form/InputCheckbox.vue'
 import InputRadio from '../../../components/form/InputRadio.vue'
 import QuoteListItem from '../../../components/quotes/quote-item/QuoteListItem.vue'
 import QuoteFilters from '../../../components/quotes/filters/QuoteFilters.vue'
 import { useLoading } from '../../../store/loading'
 import { useFilters } from '../../../store/filters'
+import { useLocalStorage } from '../../../bin/composables'
 
 const loading = useLoading()
 const quote = useQuote()
@@ -87,6 +89,8 @@ function random() {
   const id = quote.getRandomQuoteId()
   router.push({ name: 'RouteQuoteDetail', params: { id } })
 }
+
+const { value } = useLocalStorage('show-offensive-quotes', true)
 </script>
 
 <template>
@@ -102,17 +106,6 @@ function random() {
         <QuoteFilters />
       </div>
     </section>
-    <!--
-    <pre>
-      {{ filters }}
-    </pre> -->
-
-    <!-- <section class="quote-list-header is-sticky" v-if="stickHeader">
-      <div class="quote-container">
-        <QuoteFilters />
-      </div>
-      <button class="button">Random</button>
-    </section> -->
 
     <section class="quote-list">
       <div class="quote-container">
@@ -125,7 +118,13 @@ function random() {
             </p>
 
             <div class="quote-list-display-switch">
-              <!-- <span class="type-title">Display </span> -->
+              <!-- <InputCheckbox
+                v-model:check="showOffensive"
+                label="Show offensive quotes"
+                reverse
+              />
+
+              <div style="width:40px;" /> -->
 
               <InputRadio
                 v-model:check="expanded"
