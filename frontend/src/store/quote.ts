@@ -55,5 +55,14 @@ export const useQuote = defineStore('quotes', {
       return shuffle(this.quotes)[0].id
     },
   },
-  // getters: {},
+  getters: {
+    getAuthoredQuotes(): Quote[] {
+      // Return quotes added by a user
+      //
+    },
+
+    getQuotedQuotes(): Quote {
+      // Return quotes in which a person is a quotee
+    },
+  },
 })

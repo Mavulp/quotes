@@ -35,5 +35,10 @@ post /comment/
 - [] Add tag component
 - [] Tags endpoint (get all tags)
 
+## List
+
+- [] Create ok ways to filter on quotes to get amounts by user etc
+- [] Add functionality to prefill filters from URL
+
 
 <!-- https://quotes.hivecom.net/swagger/ -->
