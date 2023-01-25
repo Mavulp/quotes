@@ -16,6 +16,7 @@
 - [x] Add tag component
 - [] Add "add tag" to creation. Redirects to new tags page and includes "bcak to form" button somewhere
 - [] Implement rearrange
+- [] Add loading indicator to when tags are loading
 
 ## Detail
 
