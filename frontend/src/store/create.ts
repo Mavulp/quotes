@@ -19,9 +19,6 @@ const defaultQuote: CreateQuote = {
   tags: null,
   fragments: new Map(),
   offensive: null,
-  // comments: true,
-  // anonymous: false,
-  // anonymousQuotees: false,
 }
 
 export const useCreate = defineStore('create', {

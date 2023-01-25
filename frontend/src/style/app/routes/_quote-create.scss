@@ -17,44 +17,51 @@
     .add-block {
       @include t();
       @include radius(var(--radius-lg));
+      @include flex(10px, $justify: center);
       background-color: var(--color-bg-light);
       height: 128px;
-      display: block;
       width: 100%;
       position: relative;
-      // position: sticky;
-      // bottom: 24px;
       border: 1px solid transparent;
       margin-bottom: 80px;
 
+      .add-block-label {
+        @include font(400);
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        color: var(--color-text-light);
+        font-size: 1rem;
+        text-transform: uppercase;
+      }
+
       &.has-blocks {
         height: 64px;
-        // border-color: var(--color-border);
-        // background-color: transparent;
 
-        // &:hover {
-        // background-color: var(--color-bg-light);
-        // }
+        .add-block-label {
+          display: none;
+        }
       }
 
-      &:hover {
-        background-color: var(--color-bg-light-hover);
-      }
+      .button {
+        @include font(400);
+        height: 48px;
+        line-height: 48px;
+        gap: 10px;
+        padding: 0 25px;
 
-      & > span {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-      }
-
-      span {
-        @include flex(10px);
-        font-size: 1.4rem;
-        color: var(--color-text);
+        background-color: var(--color-bg-light);
+        color: var(--color-text-light);
+        font-size: 1.6rem;
 
         .material-icons {
           color: var(--color-highlight);
+          font-size: 2rem !important;
+        }
+
+        &:hover {
+          color: var(--color-text);
+          background-color: var(--color-bg-light-hover);
         }
       }
     }

@@ -22,9 +22,6 @@ const toast = useToast()
  */
 
 const tags = writableComputed(create, 'form.tags')
-const comments = writableComputed(create, 'form.comments')
-// const anonymous = writableComputed(create, 'form.anonymous')
-// const anonymousQuotees = writableComputed(create, 'form.anonymousQuotees')
 const offensive = computed({
   get: () => create.form.offensive,
   set: (value) => {
@@ -53,7 +50,6 @@ async function submit() {
   validate()
     .then(() => {
       create.submitQuote()
-      // console.log('form ok')
     })
     .catch(() => {
       toast.push({ type: 'error', message: 'Error creating Quote. Check for errors in the form.' })
@@ -95,14 +91,19 @@ const dropdownOptions = [
       </template>
     </div>
 
-    <Dropdown :buttons="dropdownOptions" @set="create.addFragment">
-      <button class="add-block" :class="{ 'has-blocks': blocks.size > 0 }">
-        <span>
-          <Icon code="e146" />
-          {{ blocks.size > 0 ? "Add another block" : "Add a block" }}
-        </span>
+    <div class="add-block" :class="{ 'has-blocks': blocks.size > 0 }">
+      <span class="add-block-label">Choose a block</span>
+      <button
+        v-for="button in dropdownOptions"
+        :key="button.value"
+        class="button"
+        @click="create.addFragment(button.value)"
+      >
+        <Icon :code="button.icon" />
+
+        {{ button.label }}
       </button>
-    </Dropdown>
+    </div>
 
     <div class="quote-publish">
       <InputText
@@ -118,10 +119,6 @@ const dropdownOptions = [
         placeholder="Does this quote contain offensive content? *"
         :error="errors.offensive"
       />
-
-      <!-- <InputCheckbox v-model:check="comments" label="Enable comment section" /> -->
-      <!-- <InputCheckbox v-model:check="anonymous" label="Hide author username (you)" /> -->
-      <!-- <InputCheckbox v-model:check="anonymousQuotees" label="Hide quotee username" /> -->
 
       <button class="button" @click="submit">
         Post

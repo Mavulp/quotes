@@ -61,7 +61,6 @@ function setHighlight() {
 <template>
   <div
     class="quote-block block-create-context"
-    draggable="true"
     tabindex="0"
   >
     <FragmentButtons

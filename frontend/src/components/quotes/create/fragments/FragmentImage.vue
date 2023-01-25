@@ -95,7 +95,6 @@ function loadImage(url: string) {
   <div
     class="quote-block block-create-image-url"
     :class="{ 'is-highlight': props.data.highlight }"
-    draggable="true"
   >
     <FragmentButtons
       :index="props.index"
