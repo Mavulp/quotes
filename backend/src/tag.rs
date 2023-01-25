@@ -141,12 +141,12 @@ pub fn get_by_id(conn: &Connection, id: i64) -> Result<Tag, Error> {
 #[serde(rename_all = "camelCase")]
 pub struct PutTag {
     #[schema(example = "implied")]
-    #[serde(default, deserialize_with = "non_empty_str")]
+    #[serde(default, deserialize_with = "non_empty_trimmed_str")]
     pub name: Option<String>,
     #[schema(
         example = "This quote was not actually said, the author thought it was implied and made this quote up."
     )]
-    #[serde(default, deserialize_with = "non_empty_str")]
+    #[serde(default, deserialize_with = "non_empty_trimmed_str")]
     pub description: Option<String>,
 }
 

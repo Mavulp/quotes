@@ -10,7 +10,7 @@ use utoipa::ToSchema;
 use std::sync::Arc;
 
 use crate::error::Error;
-use crate::util::non_empty_str;
+use crate::util::non_empty_trimmed_str;
 use crate::AppState;
 
 /// Logs in to the site by redirecting to hiveID.
@@ -105,17 +105,17 @@ pub async fn get_settings(
 #[serde(rename_all = "camelCase")]
 pub struct PutSettings {
     #[schema(example = "https://example.com/avatar.png")]
-    #[serde(default, deserialize_with = "non_empty_str")]
+    #[serde(default, deserialize_with = "non_empty_trimmed_str")]
     pub profile_picture: Option<String>,
 
     #[schema(example = "Welcome to my profile")]
-    #[serde(default, deserialize_with = "non_empty_str")]
+    #[serde(default, deserialize_with = "non_empty_trimmed_str")]
     pub bio: Option<String>,
 
     pub highlighted_quote_id: Option<i64>,
 
     #[schema(example = "light-theme")]
-    #[serde(default, deserialize_with = "non_empty_str")]
+    #[serde(default, deserialize_with = "non_empty_trimmed_str")]
     pub color_theme: Option<String>,
 }
 

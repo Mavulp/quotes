@@ -3,9 +3,11 @@ use std::ops::Deref;
 use crate::error::Error;
 use serde::{Deserialize, Deserializer};
 
-pub(super) fn non_empty_str<'de, D: Deserializer<'de>>(d: D) -> Result<Option<String>, D::Error> {
+pub(super) fn non_empty_trimmed_str<'de, D: Deserializer<'de>>(
+    d: D,
+) -> Result<Option<String>, D::Error> {
     let o: Option<String> = Option::deserialize(d)?;
-    Ok(o.filter(|s| !s.is_empty()))
+    Ok(o.map(|s| s.trim().to_owned()).filter(|s| !s.is_empty()))
 }
 
 pub fn comma_string<'de, D>(deserializer: D) -> Result<Option<Vec<String>>, D::Error>

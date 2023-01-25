@@ -401,6 +401,8 @@ pub fn insert_quote(conn: &mut Connection, quote: PostQuote, author: &str) -> Re
     }
 
     for tag in &quote.tags {
+        let tag = tag.trim().to_owned();
+
         if tag.is_empty() {
             return Err(Error::EmptyTag);
         }
