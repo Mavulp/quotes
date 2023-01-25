@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, reactive } from 'vue'
+import { computed, onBeforeMount, reactive, ref } from 'vue'
 import { required, useFormValidation, withMessage } from '../../../bin/validation'
 import { useCreate } from '../../../store/create'
 import { writableComputed } from '../../../bin/composables'
@@ -12,6 +12,8 @@ import Dropdown from '../../Dropdown.vue'
 import { useToast } from '../../../store/toast'
 
 import { useLoading } from '../../../store/loading'
+import { get } from '../../../bin/fetch'
+import type { Tag } from '../../../types/quote-types'
 import FragmentText from './fragments/FragmentText.vue'
 import FragmentImage from './fragments/FragmentImage.vue'
 
@@ -70,6 +72,22 @@ const dropdownOptions = [
   { value: 'image', label: 'Image', icon: 'e3f4' },
   { value: 'image-highlight', label: 'Image Highlight', icon: 'e40b' },
 ]
+
+// Tags
+
+const tagOptions = ref()
+
+onBeforeMount(async () => {
+  tagOptions.value = await get<Tag[]>('/tag')
+    .then((res) => {
+      return res.map(tag => ({
+        value: tag.name,
+        label: tag.name,
+      }))
+    })
+})
+
+// const tagOptions =
 </script>
 
 <template>
@@ -106,10 +124,12 @@ const dropdownOptions = [
     </div>
 
     <div class="quote-publish">
-      <InputText
-        v-model:value="tags"
+      <InputSelect
+        v-model:selected="tags"
         icon="e867"
-        placeholder="Tags (comma separated)"
+        :options="tagOptions"
+        placeholder="Choose tags fitting the quote (optional)"
+        :multiple="true"
       />
 
       <InputSelect

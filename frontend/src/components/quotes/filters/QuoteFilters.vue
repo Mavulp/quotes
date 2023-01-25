@@ -77,7 +77,7 @@ const search = computed({
       :cantclear="false"
     />
 
-    <div style="width:10px" />
+    <!-- <div style="width:10px" /> -->
 
     <InputCheckbox v-model:check="filters.offensive" label="Offensive Content" />
 

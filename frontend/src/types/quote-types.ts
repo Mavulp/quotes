@@ -31,7 +31,13 @@ export interface Quote {
 }
 
 export interface CreateQuote {
-  tags: string | null
+  tags: Tag[]
   offensive: 'yes' | 'no' | null
   fragments: Array<TextFragment | ImageFragment>
+}
+
+export interface Tag {
+  name: string
+  id: string
+  description: string
 }

@@ -14,14 +14,14 @@ interface State {
 }
 
 const defaultQuote: CreateQuote = {
-  tags: null,
+  tags: [],
   fragments: [],
   offensive: null,
 }
 
 export const useCreate = defineStore('create', {
   state: () => ({
-    form: {},
+    form: structuredClone(defaultQuote),
     // _index: 0,
   } as State),
   actions: {
@@ -70,7 +70,7 @@ export const useCreate = defineStore('create', {
       const body = {
         fragments,
         offensive: offensive === 'yes',
-        tags: tags ? tags?.trim().split(',') : [],
+        tags: tags.map(tag => tag.name),
       }
 
       return post('/quote', body)

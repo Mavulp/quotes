@@ -9,9 +9,9 @@ import QuotePreview from '../../../components/quotes/create/QuotePreview.vue'
 
 const create = useCreate()
 
-onBeforeMount(() => {
-  create.reset()
-})
+// onBeforeMount(() => {
+//   create.reset()
+// })
 </script>
 
 <template>

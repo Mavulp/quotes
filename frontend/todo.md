@@ -2,9 +2,8 @@
 
 [https://quotes.hivecom.net/swagger/]
 
-- [Quote creator] [] Add drag re-ordering
-- [Router] Update page title on each route
-- [Router] Fix error when entering route detail which breaks evetything
+- [Router] [] Update page title on each route
+- [Router] [] Fix error when entering route detail which breaks evetything
 
 ## User
 
@@ -14,9 +13,9 @@
 
 ## Create
 
-- [] Add tag component
+- [x] Add tag component
+- [] Add "add tag" to creation. Redirects to new tags page and includes "bcak to form" button somewhere
 - [] Implement rearrange
-- [] Tags endpoint (get all tags)
 
 ## Detail
 

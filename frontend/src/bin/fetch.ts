@@ -10,8 +10,8 @@ export const rootUrl = 'https://quotes.hivecom.net/api'
 export const controller = new AbortController()
 export const signal = controller.signal
 
-export function get(url: string, options?: object) {
-  return _handleFetch(
+export function get<T = any>(url: string, options?: object) {
+  return _handleFetch<T>(
     url,
     merge(
       {
@@ -22,8 +22,8 @@ export function get(url: string, options?: object) {
   )
 }
 
-export function post(url: string, body: object | string, options?: object) {
-  return _handleFetch(
+export function post<T = any>(url: string, body: object | string, options?: object) {
+  return _handleFetch<T>(
     url,
     merge(
       {
@@ -36,8 +36,8 @@ export function post(url: string, body: object | string, options?: object) {
   )
 }
 
-export function put(url: string, body: object | string, options?: object) {
-  return _handleFetch(
+export function put<T = any>(url: string, body: object | string, options?: object) {
+  return _handleFetch<T>(
     url,
     merge(
       {
@@ -54,8 +54,8 @@ export function put(url: string, body: object | string, options?: object) {
  * Special function to handle file uploads
  */
 
-export function upload(url: string, body: object | string, options?: object) {
-  return _handleFetch(url, {
+export function upload<T = any>(url: string, body: object | string, options?: object) {
+  return _handleFetch<T>(url, {
     method: 'POST',
     body,
     ...options,
@@ -76,7 +76,7 @@ export function del(url: string, options?: object) {
 
 // Private handler functions
 
-async function _handleFetch(url: string, options: object) {
+async function _handleFetch<T>(url: string, options: object) {
   const token = localStorage.getItem('quotes_bearer_token')
 
   merge(options, {
@@ -86,7 +86,7 @@ async function _handleFetch(url: string, options: object) {
     },
   })
 
-  return fetch(rootUrl + url, options).then(_handleResponse)
+  return fetch(rootUrl + url, options).then<T>(_handleResponse)
 }
 
 async function _handleResponse(response: Response) {

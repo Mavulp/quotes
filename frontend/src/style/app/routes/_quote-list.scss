@@ -47,9 +47,10 @@
   }
 
   &.quote-filters {
-    // @include grid(10px, repeat(4, 1fr));
-    @include flex(10px);
+    @include grid(10px, repeat(5, 1fr));
+    // @include flex(10px);
     position: relative;
+    align-items: center;
 
     .form-search {
       width: 256px;
