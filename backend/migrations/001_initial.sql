@@ -1,6 +1,5 @@
 CREATE TABLE users (
     username TEXT PRIMARY KEY NOT NULL COLLATE NOCASE,
-    display_name TEXT NULL,
     profile_picture TEXT NULL,
     bio TEXT NULL,
     highlighted_quote_id INTEGER NULL,

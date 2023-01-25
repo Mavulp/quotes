@@ -31,8 +31,6 @@ pub async fn get_login(
 #[derive(Debug, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Settings {
-    #[schema(example = "Alice")]
-    pub display_name: Option<String>,
     #[schema(example = "https://example.com/avatar.png")]
     pub profile_picture: Option<String>,
     #[schema(example = "Welcome to my profile")]
@@ -44,7 +42,6 @@ pub struct Settings {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct DbSettings {
-    pub display_name: Option<String>,
     pub profile_picture: Option<String>,
     pub bio: Option<String>,
     pub highlighted_quote_id: Option<i64>,
@@ -54,7 +51,6 @@ pub struct DbSettings {
 impl From<DbSettings> for Settings {
     fn from(settings: DbSettings) -> Self {
         Self {
-            display_name: settings.display_name,
             profile_picture: settings.profile_picture,
             bio: settings.bio,
             highlighted_quote_id: settings.highlighted_quote_id,
@@ -83,7 +79,6 @@ pub async fn get_settings(
                 .call(move |conn| {
                     conn.query_row(
                         "SELECT
-                            display_name, \
                             profile_picture, \
                             bio, \
                             highlighted_quote_id, \
@@ -109,10 +104,6 @@ pub async fn get_settings(
 #[derive(Debug, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct PutSettings {
-    #[schema(example = "Alice")]
-    #[serde(default, deserialize_with = "non_empty_str")]
-    pub display_name: Option<String>,
-
     #[schema(example = "https://example.com/avatar.png")]
     #[serde(default, deserialize_with = "non_empty_str")]
     pub profile_picture: Option<String>,
@@ -189,10 +180,6 @@ impl PutSettings {
     fn update_str(&self) -> String {
         let mut result = Vec::new();
 
-        if self.display_name.is_some() {
-            result.push("display_name = ?")
-        }
-
         if self.profile_picture.is_some() {
             result.push("profile_picture = ?")
         }
@@ -214,10 +201,6 @@ impl PutSettings {
 
     fn update_params(mut self) -> Vec<Box<dyn ToSql>> {
         let mut params: Vec<Box<dyn ToSql>> = Vec::new();
-
-        if let Some(display_name) = self.display_name.take() {
-            params.push(Box::new(display_name))
-        }
 
         if let Some(profile_picture) = self.profile_picture.take() {
             params.push(Box::new(profile_picture));

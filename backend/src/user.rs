@@ -20,8 +20,6 @@ use crate::AppState;
 pub struct User {
     #[schema(example = "alice")]
     pub username: String,
-    #[schema(example = "Alice")]
-    pub display_name: Option<String>,
     #[schema(example = "https://example.com/avatar.png")]
     pub profile_picture: Option<String>,
     #[schema(example = "Welcome to my profile")]
@@ -34,7 +32,6 @@ pub struct User {
 #[derive(Deserialize, Debug, PartialEq)]
 struct DbUser {
     username: String,
-    display_name: Option<String>,
     profile_picture: Option<String>,
     bio: Option<String>,
     highlighted_quote_id: Option<i64>,
@@ -45,7 +42,6 @@ impl From<DbUser> for User {
     fn from(user: DbUser) -> Self {
         Self {
             username: user.username,
-            display_name: user.display_name,
             profile_picture: user.profile_picture,
             bio: user.bio,
             highlighted_quote_id: user.highlighted_quote_id,
@@ -57,7 +53,6 @@ impl From<DbUser> for User {
 pub fn get_all(conn: &Connection) -> Result<Vec<User>, Error> {
     let query = "SELECT
                     username,
-                    display_name,
                     profile_picture,
                     bio,
                     highlighted_quote_id,
@@ -128,7 +123,6 @@ pub async fn get_user_by_username(
                     conn.query_row(
                         "SELECT
                             username,
-                            display_name,
                             profile_picture,
                             bio,
                             highlighted_quote_id,
