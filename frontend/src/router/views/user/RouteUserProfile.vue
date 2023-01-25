@@ -85,13 +85,13 @@ function quotesFromUser() {
             </div>
 
             <ul>
-              <li data-title-top="View quotes added by this user">
+              <li :data-title-top="`Quotes posted by ${profile.username}`">
                 <button @click="quotesByUser">
-                  Added <span>{{ quotes.getAuthoredQuotes(profile.username).length }}</span>
+                  Posted <span>{{ quotes.getAuthoredQuotes(profile.username).length }}</span>
                 </button>
               </li>
               <li><div class="circle" /></li>
-              <li data-title-top="View quotes by this user">
+              <li :data-title-top="`View quotes by ${profile.username}`">
                 <button @click="quotesFromUser">
                   Quoted <span>{{ quotes.getQuotedQuotes(profile.username).length }}</span>
                 </button>
@@ -110,7 +110,7 @@ function quotesFromUser() {
           </Teleport>
 
           <div>
-            <h2>{{ profile.displayName ?? profile.username }}</h2>
+            <h2>{{ profile.username }}</h2>
             <p>{{ profile.bio }}</p>
 
             <hr>

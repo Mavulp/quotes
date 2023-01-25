@@ -15,7 +15,6 @@ const emit = defineEmits<{
 const user = useUser()
 const loading = useLoading()
 const form = reactive<EditableSettings>({
-  displayName: '',
   bio: '',
   profilePicture: '',
 })
@@ -26,7 +25,6 @@ onBeforeMount(async () => {
   document.body.style.overflow = 'hidden'
 
   // Assign to form
-  form.displayName = user.settings.displayName
   form.bio = user.settings.bio
   form.profilePicture = user.settings.profilePicture
 })
@@ -62,9 +60,7 @@ function submit() {
           <div class="input-img">
             <img :src="form.profilePicture" alt=" ">
             <div>
-              <strong>Profile Picture URL</strong>
-              <InputText v-model:value="form.displayName" placeholder="Display Name" />
-              <strong>Display Name</strong>
+              <strong>Profile Picture</strong>
               <InputText v-model:value="form.profilePicture" placeholder="Profile Picture URL" />
               <strong>Bio</strong>
               <InputTextarea v-model:value="form.bio" placeholder="Bio" class="has-round" />

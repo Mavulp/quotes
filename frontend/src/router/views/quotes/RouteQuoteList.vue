@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useLocalStorage } from '@vueuse/core'
 import { useQuote } from '../../../store/quote'
-import { $, getRanMinMax, searchInStr, toBool } from '../../../bin/utils'
+import { $, searchInStr } from '../../../bin/utils'
 
 import QuoteListItem from '../../../components/quotes/quote-item/QuoteListItem.vue'
 import QuoteFilters from '../../../components/quotes/filters/QuoteFilters.vue'
@@ -24,16 +23,19 @@ onBeforeMount(() => {
   quote.fetchQuotes()
 })
 
-const data = computed(() => {
-  // TODO: searchbox to only show offensive / only non-offensive / all
-  // TODO: sort quotes by date
+onBeforeUnmount(() => {
+  filters.clear()
+})
 
+const data = computed(() => {
   // #1 First filter data from active filters
   const filtered = quote.quotes.filter((q) => {
     const quotees = q.indices.map(indice => indice.quotee)
     return filters.isPassingFilter('author', q.author)
       && filters.isPassingFilter('quotee', quotees)
       && filters.isPassingFilter('tag', q.tags)
+      // NOTE: test
+      && (!filters.offensive && q.offensive)
   })
 
   // #2 Apply search string
@@ -41,7 +43,6 @@ const data = computed(() => {
     if (!filters.search || filters.search.length === 0)
       return true
 
-    // TODO: add quotee search
     return searchInStr([
       q.author,
       ...q.fragments.map(fragment => fragment.content),

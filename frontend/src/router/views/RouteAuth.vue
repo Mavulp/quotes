@@ -23,6 +23,6 @@
 
 <template>
   <div>
-    auth
+    <Spinner />
   </div>
 </template>

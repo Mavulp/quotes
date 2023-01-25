@@ -6,6 +6,7 @@ import { useToast } from '../store/toast'
 import { useLoading } from '../store/loading'
 
 interface State {
+  username: string
   user: User
   settings: Settings
   users: User[]
@@ -15,12 +16,10 @@ interface State {
 export const useUser = defineStore('user', {
   state: () => ({
     signedIn: !isNil(localStorage.getItem('quotes_bearer_token')),
-    user: {
-      // TODO: need to get this from somewhere
-      username: 'dolanske',
-    },
+    user: {},
     settings: {},
     users: [{}],
+    username: '',
   } as State),
   actions: {
     async fetchUsers() {
@@ -31,7 +30,7 @@ export const useUser = defineStore('user', {
 
       get('/user')
         .then((res) => {
-          this.user = res.find((u: User) => u.username === this.user.username)
+          this.user = res.find((u: User) => u.username === this.username)
           this.users = res
         })
         .catch(() => toast.push({ type: 'error', message: 'Error fetching users' }))
@@ -74,19 +73,5 @@ export const useUser = defineStore('user', {
         })
         .catch(() => toast.push({ type: 'error', message: 'Error updating settings' }))
     },
-  },
-  getters: {
-    getUsername: state => (username?: string) => {
-      // No username means the currently signed in user
-      if (!username)
-        return state.user.displayName ?? state.user.username
-
-      // Query user by username
-      const exists = state.users.find(user => user.username === username)
-
-      // Return displayname OR normal username
-      return exists?.displayName ?? username
-    },
-
   },
 })

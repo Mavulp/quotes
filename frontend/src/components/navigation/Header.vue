@@ -15,7 +15,7 @@ document.addEventListener('scroll', () => {
 </script>
 
 <template>
-  <div class="quote-navigation" :class="{ 'disable-border': show }">
+  <div v-if="profile.username" class="quote-navigation" :class="{ 'disable-border': show }">
     <router-link class="logo" :to="{ name: 'RouteHome' }">
       <img src="/logo.svg" alt="">
     </router-link>
@@ -53,7 +53,7 @@ document.addEventListener('scroll', () => {
       >
         <img v-if="profile.profilePicture" :src="profile.profilePicture">
         <Icon v-else code="e7fd" />
-        {{ user.getUsername() }}
+        {{ profile.username }}
       </router-link>
     </div>
   </div>

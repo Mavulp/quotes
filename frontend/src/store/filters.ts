@@ -81,7 +81,6 @@ export const useFilters = defineStore('filters', {
     getOptionsByKey: state => (key: FilterKey): OptionValue[] => {
       return [...state.options[key] ?? []].map((option) => {
         return {
-          // TODO: add usernames x displayNames
           label: option,
           value: option,
         }
