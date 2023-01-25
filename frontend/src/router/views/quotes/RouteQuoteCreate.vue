@@ -20,7 +20,7 @@ onBeforeMount(() => {
       <div class="quote-title-wrap text">
         <h1>Add a quote</h1>
 
-        <button v-if="create.form.fragments.size > 0" class="button" @click="create.reset()">
+        <button v-if="create.form.fragments.length > 0" class="button" @click="create.reset()">
           Start new
         </button>
       </div>
