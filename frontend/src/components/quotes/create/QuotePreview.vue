@@ -11,7 +11,7 @@ const user = useUser()
 
 const formatted = computed<Quote>(() => {
   const form = create.form
-  const fragments = [...form.fragments.values()]
+  const fragments = form.fragments
 
   return {
     id: 1111,
@@ -36,7 +36,7 @@ const formatted = computed<Quote>(() => {
 
 <template>
   <div class="quote-preview">
-    <p v-if="create.form.fragments.size === 0" class="quote-preview-empty">
+    <p v-if="create.form.fragments.length === 0" class="quote-preview-empty">
       There's nothing to preview. Add at least one block.
     </p>
 

@@ -5,31 +5,29 @@ import type {
   ImageFragment,
   TextFragment,
 } from '../types/quote-types'
+import { useLoading } from './loading'
 import { useToast } from './toast'
 
 interface State {
   form: CreateQuote
-  _index: number
+  // _index: number
 }
 
-// TODO: Add a type for CreateQuote
-// Before submitting, this object will get serialized to
-// correctly match the NewQuote interface
 const defaultQuote: CreateQuote = {
   tags: null,
-  fragments: new Map(),
+  fragments: [],
   offensive: null,
 }
 
 export const useCreate = defineStore('create', {
   state: () => ({
     form: {},
-    _index: 0,
+    // _index: 0,
   } as State),
   actions: {
     reset() {
       this.form = structuredClone(defaultQuote)
-      this._index = 0
+      // this._index = 0
     },
     addFragment(fragmentType: string) {
       const [type, highlight] = fragmentType.split('-')
@@ -41,23 +39,27 @@ export const useCreate = defineStore('create', {
         highlight: highlight === 'highlight',
       }
 
-      if (fragment) {
-        this.form.fragments.set(this._index, fragment)
-        this._index++
-      }
+      if (fragment)
+        this.form.fragments.push(fragment)
+      // this.form.fragments.set(this._index, fragment)
+      // this._index++
     },
     editFragment(
       index: number,
       updated: ImageFragment | TextFragment,
     ) {
-      this.form.fragments.set(index, updated)
+      this.form.fragments.splice(index, 1, updated)
     },
     delFragment(index: number) {
-      this.form.fragments.delete(index)
-      this._index--
+      // this.form.fragments.delete(index)
+      this.form.fragments.splice(index, 1)
+      // this._index--
     },
     async submitQuote() {
       const { push } = useToast()
+      const loading = useLoading()
+
+      loading.add('create')
 
       const {
         offensive,
@@ -66,7 +68,7 @@ export const useCreate = defineStore('create', {
       } = this.form
 
       const body = {
-        fragments: [...fragments.values()],
+        fragments,
         offensive: offensive === 'yes',
         tags: tags ? tags?.trim().split(',') : [],
       }
@@ -78,16 +80,19 @@ export const useCreate = defineStore('create', {
         .catch(() => {
           push({ type: 'error', message: 'Error adding new quote' })
         })
+        .finally(() => {
+          loading.del('create')
+        })
     },
   },
   getters: {
     getBlockValue:
       state =>
         (
-          id: number,
+          index: number,
           field: keyof TextFragment | keyof ImageFragment,
         ) => {
-          const block = state.form.fragments.get(id)
+          const block = state.form.fragments.at(index)
 
           if (!block)
             return null

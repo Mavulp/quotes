@@ -1,5 +1,5 @@
 .quote-route-create {
-  padding-bottom: 100px;
+  padding-bottom: 156px;
   padding-top: 3em;
 
   h1 {
@@ -8,6 +8,10 @@
 
   .quote-create {
     // display: block;
+
+    &.is-loading {
+      pointer-events: none !important;
+    }
 
     .quote-blocks {
       display: block;

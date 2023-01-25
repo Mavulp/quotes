@@ -30,18 +30,8 @@ export interface Quote {
   fragments: Array<TextFragment | ImageFragment>
 }
 
-interface BaseCreateQuote {
+export interface CreateQuote {
   tags: string | null
   offensive: 'yes' | 'no' | null
-  // comments: boolean
-  // anonymous: boolean
-  // anonymousQuotees: boolean
-}
-
-export interface CreateQuote extends BaseCreateQuote {
-  fragments: Map<number, TextFragment | ImageFragment>
-}
-
-export interface NewQuote extends BaseCreateQuote {
   fragments: Array<TextFragment | ImageFragment>
 }

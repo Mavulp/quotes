@@ -7,13 +7,17 @@
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .lds-ring {
   display: block;
   position: relative;
   margin: 0 auto;
   width: 24px;
   height: 24px;
+
+  &.white div {
+    border-color: var(--color-text) transparent transparent transparent;
+  }
 }
 .lds-ring div {
   box-sizing: border-box;
@@ -26,6 +30,7 @@
   border-radius: 50%;
   animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   border-color: var(--color-highlight) transparent transparent transparent;
+
 }
 .lds-ring div:nth-child(1) {
   animation-delay: -0.45s;

@@ -46,8 +46,6 @@ const search = computed({
   get: () => filters.search,
   set: value => filters.setSearch(value),
 })
-
-const offensive = useLocalStorage('quotes_offensive', true)
 </script>
 
 <template>
@@ -81,10 +79,10 @@ const offensive = useLocalStorage('quotes_offensive', true)
 
     <div style="width:10px" />
 
-    <InputCheckbox v-model:check="offensive" label="Offensive Content" />
+    <InputCheckbox v-model:check="filters.offensive" label="Offensive Content" />
 
-    <button v-show="filters.active" class="filters-clear button btn-white" @click="filters.clear()">
-      Clear Filters
+    <button v-show="filters.active" data-title-bottom="Clear Filters" class="filters-clear button btn-white" @click="filters.clear()">
+      <Icon code="e5cd" />
     </button>
   </div>
 </template>

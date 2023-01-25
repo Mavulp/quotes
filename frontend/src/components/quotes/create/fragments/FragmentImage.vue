@@ -9,10 +9,6 @@ import InputTextarea from '../../../form/InputTextarea.vue'
 
 const props = defineProps<{
   data: ImageFragment
-  // FIXME: Should only use index of the map, but for some reason that went to -2 before
-  // so I am using the _actual_ iteration index as well as the supposed ID of the block
-  // In perfect world both would be the same
-  id: number
   index: number
 }>()
 
@@ -26,7 +22,7 @@ const preview = ref()
 const quotee = computed({
   get: () => props.data.quotee,
   set: (quotee) => {
-    create.editFragment(props.id, {
+    create.editFragment(props.index, {
       ...props.data,
       quotee,
     })
@@ -36,7 +32,7 @@ const quotee = computed({
 const context = computed({
   get: () => props.data.content,
   set: (content) => {
-    create.editFragment(props.id, {
+    create.editFragment(props.index, {
       ...props.data,
       content,
     })
@@ -50,14 +46,7 @@ const context = computed({
  */
 
 function remove() {
-  create.delFragment(props.id)
-}
-
-function setHighlight() {
-  create.editFragment(props.id, {
-    ...props.data,
-    highlight: !props.data.highlight,
-  })
+  create.delFragment(props.index)
 }
 
 /**
@@ -100,7 +89,6 @@ function loadImage(url: string) {
       :index="props.index"
       :highlight="props.data.highlight"
       @remove="remove"
-      @highlight="setHighlight"
     />
     <!-- <InputTextarea v-model:value="context" placeholder="Provide context for quote" /> -->
     <div class="image-preview">

@@ -31,11 +31,13 @@ const data = computed(() => {
   // #1 First filter data from active filters
   const filtered = quote.quotes.filter((q) => {
     const quotees = q.indices.map(indice => indice.quotee)
+
+    if (!filters.offensive && q.offensive)
+      return false
+
     return filters.isPassingFilter('author', q.author)
       && filters.isPassingFilter('quotee', quotees)
       && filters.isPassingFilter('tag', q.tags)
-      // NOTE: test
-      && (!filters.offensive && q.offensive)
   })
 
   // #2 Apply search string

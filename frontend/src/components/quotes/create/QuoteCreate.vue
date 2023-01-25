@@ -11,10 +11,12 @@ import Dropdown from '../../Dropdown.vue'
 
 import { useToast } from '../../../store/toast'
 
+import { useLoading } from '../../../store/loading'
 import FragmentText from './fragments/FragmentText.vue'
 import FragmentImage from './fragments/FragmentImage.vue'
 
 const create = useCreate()
+const loading = useLoading()
 const toast = useToast()
 
 /**
@@ -71,19 +73,17 @@ const dropdownOptions = [
 </script>
 
 <template>
-  <div class="quote-create">
+  <div class="quote-create" :class="{ 'is-loading': loading.get('create') }">
     <div class="quote-blocks">
-      <template v-for="([id, fragment], index) in blocks" :key="id">
+      <template v-for="(fragment, index) in blocks" :key="index + fragment.type">
         <FragmentText
           v-if="fragment.type === 'text'"
-          :id="id"
           :class="{ 'block-create-highlight': fragment.highlight }"
           :data="fragment"
           :index="index"
         />
         <FragmentImage
           v-else-if="fragment.type === 'image'"
-          :id="id"
           :class="{ 'is-highlight': fragment.highlight }"
           :data="fragment"
           :index="index"
@@ -91,7 +91,7 @@ const dropdownOptions = [
       </template>
     </div>
 
-    <div class="add-block" :class="{ 'has-blocks': blocks.size > 0 }">
+    <div class="add-block" :class="{ 'has-blocks': blocks.length > 0 }">
       <span class="add-block-label">Choose a block</span>
       <button
         v-for="button in dropdownOptions"
@@ -121,7 +121,10 @@ const dropdownOptions = [
       />
 
       <button class="button" @click="submit">
-        Post
+        <Spinner v-if="loading.get('create')" class="white" />
+        <template v-else>
+          Post
+        </template>
       </button>
     </div>
   </div>

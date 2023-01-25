@@ -53,6 +53,7 @@
 
     .form-search {
       width: 256px;
+
       input {
         height: 48px;
         line-height: 48px;
@@ -87,10 +88,13 @@
     }
 
     .filters-clear {
-      // position: absolute;
-      // left: calc(100% + 20px);
-      // top: 50%;
-      // transform: translateY(-50%);
+      position: absolute;
+      left: calc(100% + 10px);
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px !important;
+      min-width: unset;
+      height: 48px;
       color: var(--color-text-light);
 
       &:hover {
