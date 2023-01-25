@@ -18,12 +18,10 @@ input {
 .form-search {
   display: block;
   position: relative;
-  // flex: 1;
 
   &.has-icon {
     input {
-      // padding: 0 50px;
-      padding-left: 55px;
+      padding-left: 40px;
     }
   }
 
