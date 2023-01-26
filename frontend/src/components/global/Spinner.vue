@@ -18,6 +18,10 @@
   &.white div {
     border-color: var(--color-text) transparent transparent transparent;
   }
+
+  &.mg {
+    margin: 256px auto;
+  }
 }
 .lds-ring div {
   box-sizing: border-box;

@@ -126,7 +126,7 @@ onMounted(() => {
 
     .fusion-tabs-underline {
       @include t(0.3s, cubic-bezier(0.83, 0, 0.17, 1));
-      @include radius(4px);
+      @include radius(var(--radius-sm));
       display: block;
       height: 4px;
       bottom: 0;

@@ -82,7 +82,7 @@ const search = computed({
     <InputCheckbox v-model:check="filters.offensive" label="Offensive Content" />
 
     <button v-show="filters.active" data-title-bottom="Clear Filters" class="filters-clear button btn-white" @click="filters.clear()">
-      <Icon code="e5cd" />
+      <Icon code="e5cd" size="1.8" />
     </button>
   </div>
 </template>

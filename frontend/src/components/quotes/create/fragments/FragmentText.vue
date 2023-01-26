@@ -58,7 +58,7 @@ function remove() {
       tabindex="-1"
       @remove="remove"
     />
-    <InputTextarea v-model:value="context" placeholder="Provide context for quote" />
+    <InputTextarea v-model="context" placeholder="Provide context for quote" />
     <InputText v-model:value="quotee" class="form-quotee" placeholder="Add a quotee (optional)" />
   </div>
 </template>

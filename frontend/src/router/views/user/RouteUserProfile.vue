@@ -90,7 +90,7 @@ function quotesFromUser() {
                   Posted <span>{{ quotes.getAuthoredQuotes(profile.username).length }}</span>
                 </button>
               </li>
-              <li><div class="circle" /></li>
+              <li><div class="dot-padder" /></li>
               <li :data-title-top="`View quotes by ${profile.username}`">
                 <button @click="quotesFromUser">
                   Quoted <span>{{ quotes.getQuotedQuotes(profile.username).length }}</span>

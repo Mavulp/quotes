@@ -3,13 +3,13 @@
   @include radius(3px);
   @include font(700);
   display: flex;
-  gap: 5px;
+  gap: 10px;
   align-items: center;
   justify-content: center;
   height: 36px;
   line-height: 36px;
-  min-width: 104px;
-  padding: 0 4px;
+  // min-width: 104px;
+  padding: 0 10px;
   text-align: center;
   color: var(--color-text-dark);
   background-color: var(--color-highlight);
@@ -23,6 +23,10 @@
   // svg {
   //   color: var(--color-text-lighter);
   // }
+
+  &.wide {
+    min-width: 96px;
+  }
 
   &.btn-gray {
     color: var(--color-text);
@@ -97,5 +101,25 @@
   &.btn-gray:hover:after {
     background-color: var(--color-bg-light-hover);
     opacity: 0.5;
+  }
+}
+
+.comment-user-link {
+  @include t();
+  @include radius(var(--radius-sm));
+  display: inline-block;
+  padding: 4px;
+  background-color: var(--color-bg-light);
+  font-size: 1.4rem;
+  color: var(--color-secondary);
+
+  &:before {
+    content: "@";
+    font-size: inherit;
+  }
+
+  &:hover {
+    color: var(--color-text);
+    background-color: var(--color-bg-light-hover);
   }
 }

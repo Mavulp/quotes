@@ -2,11 +2,13 @@
 
 [https://quotes.hivecom.net/swagger/]
 
+- [Quote creator] [] Add drag re-ordering
 - [Router] [] Update page title on each route
 - [Router] [] Fix error when entering route detail which breaks evetything
 
 ## User
 
+- [] Design how quote looks on a user profile
 - [] Adding a highlighted quote
 - [] Showing last 3 quotes from this user
 - [x] Showing how many quotes person added and is quoted on

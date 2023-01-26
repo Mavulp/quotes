@@ -4,50 +4,42 @@ import type { Error } from '../../bin/validation'
 interface Props {
   // label?: string
   icon?: string
-  value?: string | undefined
+  modelValue?: string | undefined
   type?: string
   error?: Error
   required?: boolean
 }
 
-const {
-  // label,
-  value,
-  type = 'text',
-  error,
-  required = false,
-  icon = null,
-} = defineProps<Props>()
+const props = defineProps<Props>()
+
 const emit = defineEmits<{
-  (e: 'update:value', value: string): void
+  (e: 'update:modelValue', value: string): void
 }>()
 
 function updateValue(e: any) {
-  emit('update:value', e.target.value)
+  emit('update:modelValue', e.target.value)
 }
 </script>
 
 <template>
   <div
     class="form-textarea"
-    :class="{ 'input-error': error && error.invalid, 'required': required, 'has-icon': icon }"
+    :class="{ 'input-error': props.error && props.error.invalid, 'has-icon': props.icon }"
   >
-    <label v-if="icon">
-      <Icon :code="icon" />
+    <label v-if="props.icon">
+      <Icon :code="props.icon" />
     </label>
     <textarea
       v-bind="$attrs"
       tabindex="0"
       class="border-smoke font-14"
-      :type="type"
-      :value="value"
+      :value="props.modelValue"
       @input="updateValue"
-      @keydown="(e) => e.stopPropagation()"
     />
-    <div v-if="error && error.invalid" class="input-error-list">
-      <p v-for="item in error.errors" :key="item">
+    <template v-if="props.error?.invalid">
+      <p v-for="item in props.error.errors" :key="item" class="error-item">
         {{ item }}
       </p>
-    </div>
+    </template>
   </div>
 </template>

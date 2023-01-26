@@ -29,7 +29,7 @@
   position: relative;
 
   &:before {
-    @include radius(3px);
+    @include radius(var(--radius-sm));
     @include t();
     @include font(400);
     background-color: var(--color-bg-light);

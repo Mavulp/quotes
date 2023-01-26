@@ -63,7 +63,7 @@ function submit() {
               <strong>Profile Picture</strong>
               <InputText v-model:value="form.profilePicture" placeholder="Profile Picture URL" />
               <strong>Bio</strong>
-              <InputTextarea v-model:value="form.bio" placeholder="Bio" class="has-round" />
+              <InputTextarea v-model="form.bio" placeholder="Bio" class="has-round" />
             </div>
           </div>
 

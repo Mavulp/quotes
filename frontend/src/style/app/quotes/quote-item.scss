@@ -142,31 +142,21 @@
     text-align: left;
     // overflow: hidden;
 
-    // TODO
-    // Add special cases for these items, when only 1 of the blocks is present
-    // in said quote (remove quote-item-quotee) for example and / or remove any
-    // special highlight styling, as only 1 item is present
+    & > * {
+      pointer-events: none;
+    }
   }
 }
 
 .quote-item-content-block {
   display: block;
   margin-bottom: 25px;
-  pointer-events: none;
 
   &:before {
     visibility: visible;
     opacity: 1;
-    left: 100%;
+    left: 100% !important;
     color: var(--color-highlight);
-  }
-
-  &:only-child {
-    padding-bottom: 20px;
-
-    .quote-item-quotee {
-      display: none;
-    }
   }
 
   &:last-of-type {
@@ -182,16 +172,6 @@
         color: var(--color-highlight);
       }
     }
-
-    // &:after {
-    //   content: "";
-    //   // @include radius(6px);
-    //   display: block;
-    //   position: absolute;
-    //   inset: -20px;
-    //   z-index: -1;
-    //   background-color: var(--color-highlight-shade);
-    // }
   }
 
   .quote-item-quotee {
@@ -199,7 +179,6 @@
     width: 100%;
     padding-left: 5px;
     padding-top: 8px;
-    // text-align: right;
 
     span,
     a,
@@ -211,6 +190,16 @@
     a {
       @include font(400);
       font-size: 1.5rem;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      text-decoration-thickness: 3px;
+      text-decoration-color: rgb(var(--color-highlight));
     }
   }
 
@@ -250,13 +239,14 @@
 
       img {
         max-width: 100%;
-        max-height: calc(100vh - $header - 20px);
+        // max-height: calc(100vh - $header - 80px);
+        max-height: 80vh;
         box-shadow: var(--shadow-highlight);
       }
     }
 
     img {
-      @include radius(6px);
+      @include radius(var(--radius-sm));
       display: block;
       max-width: 324px;
       max-height: 324px;

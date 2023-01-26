@@ -44,7 +44,7 @@ export const date = {
       _date.getUTCMinutes(),
     )}, ${_date.toLocaleDateString('en-GB', {
       year: 'numeric',
-      month: 'short',
+      month: 'long',
       day: 'numeric',
     })}`
   },

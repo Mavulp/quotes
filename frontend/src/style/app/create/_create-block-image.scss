@@ -87,7 +87,7 @@
         pointer-events: none;
 
         &:before {
-          @include radius(6px);
+          @include radius(var(--radius-sm));
           content: "";
           display: block;
           position: absolute;
@@ -103,7 +103,7 @@
       }
 
       img {
-        @include radius(6px);
+        @include radius(var(--radius-sm));
         cursor: pointer;
         overflow: hidden;
         display: block;

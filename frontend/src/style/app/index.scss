@@ -2,6 +2,7 @@
 @import "./navigation/header";
 
 @import "./quotes/quote-item";
+@import "./quotes/quote-comments";
 
 @import "./routes/home";
 
@@ -12,7 +13,6 @@
 
 @import "./create/create-fragment-text";
 @import "./create/create-fragment-highlight";
-// @import "./create/create-block-image";
 @import "./create/create-fragment-image";
 
 @import "./sign-in.scss";
@@ -22,15 +22,12 @@
   position: relative;
   min-height: 100vh;
   padding-top: $header;
-  // overflow: hidden;
 
   .quote-content-wrap {
     flex: 1;
-    // padding-top: 3em;
   }
 
   h1 {
-    // padding-top: 3em;
     font-size: 4rem;
   }
 }

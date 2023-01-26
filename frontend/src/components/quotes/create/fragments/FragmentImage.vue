@@ -90,7 +90,7 @@ function loadImage(url: string) {
       :highlight="props.data.highlight"
       @remove="remove"
     />
-    <!-- <InputTextarea v-model:value="context" placeholder="Provide context for quote" /> -->
+    <!-- <InputTextarea v-model="context" placeholder="Provide context for quote" /> -->
     <div class="image-preview">
       <InputText v-model:value="context" class="form-quotee image-url" placeholder="Image URL" can-clear />
 

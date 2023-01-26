@@ -1,6 +1,6 @@
 .dropdown-element {
   @include t(0.1s);
-  @include radius(6px);
+  @include radius(var(--radius-sm));
   position: absolute;
   padding: 10px;
   top: 100%;
@@ -29,7 +29,7 @@
 
   button {
     @include t();
-    @include radius(6px);
+    @include radius(var(--radius-sm));
     text-align: left;
     position: relative;
     display: block;

@@ -5,7 +5,7 @@
   width: 100%;
 
   &.container-header {
-    max-width: unset;
+    max-width: 1920px;
     padding: 0 15em;
     margin: 0;
   }
@@ -69,4 +69,12 @@
     background-color: var(--color-bg-light);
     box-shadow: var(--shadow);
   }
+}
+
+.dot-padder {
+  @include radius(50%);
+  width: 6px;
+  height: 6px;
+  background-color: var(--color-bg-light);
+  // margin: 0 10px;
 }

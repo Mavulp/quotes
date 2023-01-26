@@ -9,7 +9,7 @@ export default [
     name: 'RouteUserProfile',
     component: RouteUserProfileVue,
     meta: {
-      title: 'User profile',
+      title: 'User Profile',
       requiresAuth: true,
     },
   },
@@ -18,7 +18,7 @@ export default [
     name: 'RouteUserSettings',
     component: RouteUserSettingsVue,
     meta: {
-      title: 'User settings',
+      title: 'User Settings',
       requiresAuth: true,
     },
   },
@@ -27,7 +27,7 @@ export default [
     name: 'RouteAuthorize',
     component: RouteAuth,
     meta: {
-      title: 'You are being authorized',
+      title: 'You are being authorized. WAIT!',
     },
   },
 ]

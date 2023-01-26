@@ -1,6 +1,6 @@
 <template>
   <div class="loading-bar">
-    <div class="loading-bar-value"></div>
+    <div class="loading-bar-value" />
   </div>
 </template>
 
@@ -9,7 +9,7 @@
 @import "../../style/setup/mixins";
 
 .loading-bar {
-  @include radius(6px);
+  @include radius(var(--radius-sm));
   height: 6px;
   background-color: var(--color-bg-light);
   width: 100%;

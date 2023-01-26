@@ -33,6 +33,10 @@
         }
       }
     }
+
+    // .quote-list-items {
+    //   @include grid(20px, repeat(2, 1fr));
+    // }
   }
 }
 
@@ -53,7 +57,7 @@
     align-items: center;
 
     .form-search {
-      width: 256px;
+      // width: 256px;
 
       input {
         height: 48px;
@@ -67,7 +71,7 @@
     }
 
     .form-select {
-      width: 256px;
+      // width: 256px;
 
       .dropdown-icon {
         top: 10px;
@@ -89,17 +93,19 @@
     }
 
     .filters-clear {
+      @include radius(50%);
       position: absolute;
       left: calc(100% + 10px);
       top: 50%;
       transform: translateY(-50%);
-      width: 48px !important;
+      width: 36px !important;
       min-width: unset;
-      height: 48px;
-      color: var(--color-text-light);
+      height: 36px;
+      color: var(--color-highlight);
 
       &:hover {
-        color: var(--color-text);
+        background-color: var(--color-highlight-shade);
+        // color: var(--color-text);
       }
     }
   }

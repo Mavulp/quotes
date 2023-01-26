@@ -10,13 +10,13 @@ const create = useCreate()
 const user = useUser()
 
 const formatted = computed<Quote>(() => {
-  const form = create.form
-  const fragments = form.fragments
+  const form = { ...create.form }
+  // const fragments = form.fragments
 
   return {
     id: 1111,
     author: user.user.username,
-    indices: fragments
+    indices: form.fragments
       .filter(block => block.quotee)
       .map(
         (block, index): Quotee => ({
@@ -28,7 +28,7 @@ const formatted = computed<Quote>(() => {
     offensive: form.offensive === 'yes',
     createdAt: Date.now() / 1000,
     // ...(form.location && { location: form.location }),
-    fragments,
+    fragments: form.fragments,
     tags: [],
   }
 })

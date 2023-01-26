@@ -81,10 +81,16 @@ input {
   }
 }
 
-.form-search input {
-  padding: 0;
-  padding-left: 45px;
-  padding-right: 35px;
+.form-search {
+  .material-icons {
+    left: 18px;
+  }
+
+  input {
+    padding: 0;
+    padding-left: 45px;
+    padding-right: 35px;
+  }
 }
 
 ::placeholder {
@@ -115,7 +121,7 @@ input:-webkit-autofill:active {
   }
 
   textarea {
-    @include radius(6px);
+    @include radius(var(--radius-sm));
     padding: 24px;
     min-height: 112px;
     max-height: 256px;

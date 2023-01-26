@@ -1,0 +1,213 @@
+.quote-comments {
+  display: block;
+  width: 60%;
+
+  .comments-title {
+    font-size: 1.6rem;
+    display: block;
+    margin-bottom: 30px;
+    color: var(--color-text-light);
+  }
+
+  .quote-comment-create {
+    form {
+      display: block;
+      margin-bottom: 15px;
+
+      .form-textarea {
+        margin-bottom: 7px;
+      }
+
+      .comment-limit {
+        display: block;
+        text-align: right;
+        font-size: 1.2rem;
+        color: var(--color-text-light);
+      }
+    }
+
+    .comment-post {
+      @include flex(20px, $justify: flex-end);
+    }
+
+    .button {
+      &.picker {
+        @include radius(50%);
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        min-width: unset;
+      }
+    }
+  }
+
+  .comment-item {
+    display: block;
+    margin-bottom: 35px;
+
+    .comment-header {
+      @include flex(0);
+      width: 100%;
+      margin-bottom: 10px;
+
+      .image-wrap {
+        @include radius(50%);
+        width: 24px;
+        height: 24px;
+        overflow: hidden;
+        margin-right: 15px;
+
+        img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+        }
+      }
+
+      a {
+        color: var(--color-highlight);
+        text-decoration: none;
+        font-size: 1.4rem;
+
+        &:hover {
+          text-decoration: underline;
+          text-decoration-thickness: 3px;
+          text-decoration-color: rgb(var(--color-highlight));
+        }
+      }
+
+      span {
+        color: var(--color-text-lighter);
+        font-size: 1.2rem;
+      }
+
+      .remove-comment {
+        .material-icons {
+          color: var(--color-text-light);
+        }
+
+        &:hover {
+          color: var(--color-text);
+        }
+      }
+
+      .dot-padder {
+        margin: 0 10px;
+      }
+    }
+
+    .comment-content {
+      padding-left: 39px;
+
+      p {
+        img {
+          @include radius(4px);
+          max-width: 100%;
+        }
+      }
+    }
+  }
+
+  .comment-alias-picker {
+    position: relative;
+    z-index: 5;
+
+    .alias-list {
+      @include radius(var(--radius-lg));
+      position: absolute;
+      bottom: calc(100% + 16px);
+      transform: translateX(50%);
+      right: 50%;
+      width: 420px;
+      padding: 20px;
+      background-color: var(--color-bg-light);
+      z-index: 100;
+      filter: drop-shadow(--shadow);
+      height: 50vh;
+      overflow-y: auto;
+
+      .form-search {
+        margin-bottom: 15px;
+      }
+
+      &:before {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: calc(50% - 8px);
+        display: block;
+        width: 0;
+        height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-top: 8px solid var(--color-bg-light);
+      }
+
+      .alias-items {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .alias-item {
+        @include radius(var(--radius-lg));
+        @include flex(10px, nowrap, center, $dir: column);
+
+        height: 108px;
+        position: relative;
+        padding: 5px;
+        border: 1px solid var(--color-border);
+
+        &:hover {
+          background-color: var(--color-bg-light-hover);
+        }
+
+        p {
+          display: -webkit-box;
+          -webkit-line-clamp: 5;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          margin: 0;
+          font-size: 1.1rem;
+          color: var(--color-text);
+        }
+
+        .alias-name {
+          font-size: 1.1rem;
+          color: var(--color-text-light);
+        }
+
+        .alias-content {
+          @include flex(16px, $align: center, $justify: center);
+          height: 96px;
+          position: relative;
+          // min-width: 0;
+          width: 100%;
+
+          .alias-image {
+            @include flex(16px, $align: center, $justify: center);
+            border-radius: 4px;
+            overflow: hidden;
+            position: absolute;
+            // inset: 12px;
+            height: 100%;
+            padding-top: 5px;
+
+            color: rgb(var(--color-text));
+
+            img {
+              @include radius(var(--radius-sm));
+              display: block;
+              max-width: 100%;
+              max-height: 100%;
+              object-fit: contain;
+              object-position: center;
+            }
+          }
+        }
+      }
+    }
+  }
+}

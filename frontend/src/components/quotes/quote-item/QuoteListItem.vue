@@ -63,7 +63,7 @@ function goToQuote() {
       <span class="quote-text"> {{ date.simple(props.data.createdAt) }} </span>
     </div>
 
-    <button class="quote-item-content" @click.self="goToQuote()">
+    <div class="quote-item-content" @click="goToQuote()">
       <template v-for="item in props.data.fragments" :key="item.index">
         <ModelFragmentText
           v-if="item.type === 'text' && !item.highlight"
@@ -79,7 +79,7 @@ function goToQuote() {
           :data="item"
         />
       </template>
-    </button>
+    </div>
 
     <span v-if="props.data.fragments.length > 1" class="parts">{{ props.data.fragments.length - 1 }} more parts...</span>
   </div>

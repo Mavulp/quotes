@@ -110,7 +110,6 @@ onBeforeMount(async () => {
     </div>
 
     <div class="add-block" :class="{ 'has-blocks': blocks.length > 0 }">
-      <span class="add-block-label">Choose a block</span>
       <button
         v-for="button in dropdownOptions"
         :key="button.value"
@@ -118,7 +117,6 @@ onBeforeMount(async () => {
         @click="create.addFragment(button.value)"
       >
         <Icon :code="button.icon" />
-
         {{ button.label }}
       </button>
     </div>
@@ -140,7 +138,7 @@ onBeforeMount(async () => {
         :error="errors.offensive"
       />
 
-      <button class="button" @click="submit">
+      <button class="button wide" @click="submit">
         <Spinner v-if="loading.get('create')" class="white" />
         <template v-else>
           Post

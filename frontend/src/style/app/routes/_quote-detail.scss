@@ -2,15 +2,108 @@
   display: block;
   padding-bottom: 156px;
 
+  .quote-container {
+    max-width: 956px;
+  }
+
   .quote-detail-top {
-    padding-top: 3em;
     @include flex(20px);
-    margin-bottom: 40px;
+    padding-top: 3em;
+    margin-bottom: 20px;
+    position: relative;
+
+    .button.btn-white:first-of-type {
+      @include radius(50%);
+      width: 36px;
+      height: 36px;
+      line-height: 36px;
+      min-width: unset;
+      position: absolute;
+      bottom: 0;
+      left: -56px;
+      color: var(--color-text-light);
+
+      &:hover {
+        color: var(--color-text);
+      }
+    }
+
+    .button,
+    span {
+      font-size: 1.4rem;
+      color: var(--color-text-light);
+    }
+
+    .button {
+      @include font(400);
+
+      &:hover {
+        color: var(--color-text);
+
+        .material-icons {
+          color: var(--color-text);
+        }
+      }
+    }
+
+    a {
+      @include font(700);
+      font-size: inherit;
+      color: var(--color-highlight);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+        text-decoration-thickness: 3px;
+        text-decoration-color: rgb(var(--color-highlight));
+      }
+    }
+  }
+
+  .quote-detail-header {
+    @include flex(0, $justify: space-between, $align: center);
+    margin-bottom: 20px;
+
+    h3 {
+      font-size: 2.4rem;
+      color: var(--color-text);
+
+      span {
+        color: var(--color-text-light);
+        font-size: inherit;
+      }
+    }
+
+    .quote p {
+      font-size: 1.2rem;
+      color: var(--color-text-light);
+    }
   }
 
   .quote-item-content {
     @include radius(var(--radius-lg));
     padding: 20px;
-    border: 1px solid var(--color-border);
+    // border: 1px solid var(--color-border);
+    margin-bottom: 60px;
+    background-color: var(--color-bg-light);
+    box-shadow: var(--shadow);
+
+    .quote-item-content-block {
+      &.quote-item-context strong {
+        font-size: 2.6rem;
+      }
+
+      &.quote-item-highlight strong {
+        font-size: 7.2rem;
+      }
+
+      .quote-item-quotee {
+        a {
+          &:hover {
+            color: var(--color-highlight);
+          }
+        }
+      }
+    }
   }
 }

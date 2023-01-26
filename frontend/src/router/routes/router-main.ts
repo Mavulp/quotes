@@ -14,7 +14,7 @@ export default [
     name: 'RouteHome',
     component: RouteHomeVue,
     meta: {
-      title: 'Home',
+      title: 'Homepage',
       requiresAuth: true,
     },
   },
@@ -32,7 +32,7 @@ export default [
     name: 'RouteStatistics',
     component: RouteStatisticsVue,
     meta: {
-      title: 'Statistics',
+      title: 'Quote Statistics',
       requiresAuth: true,
     },
   },
@@ -41,7 +41,7 @@ export default [
     name: 'RouteUsers',
     component: RouteUsersVue,
     meta: {
-      title: 'Users',
+      title: 'User list',
       requiresAuth: true,
     },
   },
@@ -50,7 +50,7 @@ export default [
     name: 'RouteAdmin',
     component: RouteAdminVue,
     meta: {
-      title: 'Admin',
+      title: 'Admin Dashboard',
       requiresAuth: true,
     },
   },
