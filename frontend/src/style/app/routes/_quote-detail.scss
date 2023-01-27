@@ -83,8 +83,8 @@
   .quote-item-content {
     @include radius(var(--radius-lg));
     padding: 20px;
+    margin-bottom: 15px;
     // border: 1px solid var(--color-border);
-    margin-bottom: 60px;
     background-color: var(--color-bg-light);
     box-shadow: var(--shadow);
 
@@ -104,6 +104,37 @@
           }
         }
       }
+    }
+  }
+
+  .quote-item-tags {
+    @include flex(10px, wrap);
+    margin-bottom: 60px;
+    padding-left: 20px;
+
+    a {
+      font-size: 1.4rem;
+      color: var(--color-text-lighter);
+
+      &::first-letter {
+        @include font(600);
+      }
+
+      &:before {
+        content: "#";
+      }
+
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+        text-decoration-thickness: 3px;
+        text-decoration-color: rgb(var(--color-highlight));
+      }
+    }
+
+    .dot-padder:last-of-type {
+      display: none;
     }
   }
 }

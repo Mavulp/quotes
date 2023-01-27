@@ -79,11 +79,11 @@ async function delComment(id: number) {
   if (!id)
     return
 
-  loading.add('del-comment')
+  loading.add(`del-comment-${id}`)
   await del(`/comment/${id}`)
 
   comments.value = comments.value.filter(c => c.id !== id)
-  loading.del('del-comment')
+  loading.del(`del-comment-${id}`)
 }
 
 // Get random quote
@@ -150,6 +150,15 @@ function random() {
               :class="{ 'is-highlight': item.highlight }"
               :data="item"
             />
+          </template>
+        </div>
+
+        <div class="quote-item-tags">
+          <template v-for="tag in quote.tags" :key="tag">
+            <router-link :to="{ name: 'RouteTags', params: { tag } }">
+              {{ tag }}
+            </router-link>
+            <div class="dot-padder" />
           </template>
         </div>
 

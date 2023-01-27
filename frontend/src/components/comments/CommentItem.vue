@@ -52,7 +52,7 @@ const user = computed(() => users.users.find(u => u.username === props.data.auth
       <div class="flex-1" />
 
       <button v-if="users.username === user.username" class="remove-comment" data-title-top="Remove Comment" @click="emit('delete', props.data.id)">
-        <Spinner v-if="loading.get('del-comment')" />
+        <Spinner v-if="loading.get(`del-comment-${props.data.id}`)" />
         <Icon v-else size="1.6" code="e5cd" />
       </button>
     </div>
