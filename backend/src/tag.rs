@@ -1,6 +1,6 @@
 use axum::extract::rejection::JsonRejection;
 use axum::response::IntoResponse;
-use idlib::{AuthorizeCookie, Has};
+use idlib::{AuthorizeCookie, Either, Has};
 
 use anyhow::Context;
 use axum::{extract::Path, Extension, Json};
@@ -148,7 +148,7 @@ pub fn get_by_id(conn: &Connection, id: i64) -> Result<Tag, Error> {
     Ok(tag)
 }
 
-/// A list of fields that can be updated by anyone with the `quotes_edit_tags` permission. To leave
+/// A list of fields that can be updated by anyone with the `edit-tags` permission. To leave
 /// fields as they are they can be skipped, set to null or set to a whitespace only string.
 #[derive(Debug, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
@@ -173,20 +173,20 @@ pub struct PutTag {
     pub description: Option<String>,
 }
 
-type HasEditTags = Has<"quotes_edit_tags">;
+type HasEditTags = Either<Has<"edit-tags">, Has<"moderator">>;
 
 /// Update tag fields for the specified tag id, missing or null values are not updated.
 /// # Note
-/// Requires `quotes_edit_tags` permission.
+/// Requires `edit-tags` or `moderator` permission.
 #[utoipa::path(
     put,
     path = "/api/tag/{id}",
     request_body = PutTag,
     responses(
-        (status = 200, description = "The tag was successfully updated"),
-        (status = 400, description = "One of the values sent in is invalid"),
-        (status = 403, description = "User does not have quotes_edit_tags permission"),
-        (status = 302, description = "Redirects to hiveID if not authenticated"),
+        (status = 200, description = "The tag was successfully updated."),
+        (status = 400, description = "One of the values sent in is invalid."),
+        (status = 403, description = "User does not have the required permissions."),
+        (status = 302, description = "Redirects to hiveID if not authenticated."),
     ),
     params(
         ("id" = i64, Path, description = "Id of the tag to update"),
