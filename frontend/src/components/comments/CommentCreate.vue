@@ -55,7 +55,7 @@ function insertAlias(alias: string) {
     <div class="comment-post">
       <CommentAlias @insert="insertAlias" />
 
-      <button class="button" @click="submit">
+      <button class="button wide" @click="submit">
         <Spinner v-if="loading.get('comment')" class="white" />
         <template v-else>
           Post

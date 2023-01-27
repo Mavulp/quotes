@@ -1,6 +1,7 @@
 import RouteQuoteCreate from '../views/quotes/RouteQuoteCreate.vue'
 import RouteQuoteDetail from '../views/quotes/RouteQuoteDetail.vue'
 import RouteQuoteList from '../views/quotes/RouteQuoteList.vue'
+import RouteTags from '../views/quotes/RouteTags.vue'
 
 export default [
   {
@@ -27,6 +28,15 @@ export default [
     component: RouteQuoteList,
     meta: {
       title: 'Quote List',
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/tags',
+    name: 'RouteTags',
+    component: RouteTags,
+    meta: {
+      title: 'Tags',
       requiresAuth: true,
     },
   },

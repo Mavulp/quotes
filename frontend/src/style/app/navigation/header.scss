@@ -39,7 +39,7 @@
   }
 
   .quote-container {
-    @include flex(30px);
+    @include flex(35px);
     transform: translateX(-5px);
     // max-width: unset;
     // margin-right: 15em;

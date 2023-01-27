@@ -76,10 +76,14 @@ async function postComment(text: string) {
 
 // Remove comment
 async function delComment(id: number) {
-  if (!id || !quote.value)
+  if (!id)
     return
 
-  await del(`/quote/${quote.value.id}/comment/${id}`)
+  loading.add('del-comment')
+  await del(`/comment/${id}`)
+
+  comments.value = comments.value.filter(c => c.id !== id)
+  loading.del('del-comment')
 }
 
 // Get random quote

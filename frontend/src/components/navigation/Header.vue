@@ -27,15 +27,18 @@ document.addEventListener('scroll', () => {
       <router-link class="header-link" :to="{ name: 'RouteQuoteList' }">
         Quotes
       </router-link>
+      <router-link class="header-link" :to="{ name: 'RouteTags' }">
+        Tags
+      </router-link>
       <router-link class="header-link" :to="{ name: 'RouteStatistics' }">
         Statistics
       </router-link>
       <router-link class="header-link" :to="{ name: 'RouteGuessQuote' }">
         Guess The Quote
       </router-link>
-      <router-link class="header-link" :to="{ name: 'RouteUsers' }">
+      <!-- <router-link class="header-link" :to="{ name: 'RouteUsers' }">
         Users
-      </router-link>
+      </router-link> -->
       <!-- <router-link class="header-link" :to="{ name: 'RouteAdmin' }">
         Admin
       </router-link> -->

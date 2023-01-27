@@ -22,10 +22,10 @@
 
 ## Detail
 
-- [] Display tags somewhere
+- [] Display tags under quote wrap as small bubbles, clickable, will open tags page and will highlight said tag
 - [] Add author, quotees, other info
-- [] Copy url to clipboard
-- [] Make quotees indices names clickable ( to their profile / their quotes)
+- [x] Copy url to clipboard
+- [x] Make quotees indices names clickable ( to their profile / their quotes)
 
 ## List
 

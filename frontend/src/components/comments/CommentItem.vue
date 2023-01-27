@@ -4,6 +4,7 @@ import type { Comment } from '../../types/comment-types'
 import { formatCommentContent, formatCommentUsers, sanitize } from '../../bin/comments'
 import { useUser } from '../../store/user'
 import { date } from '../../bin/utils'
+import { useLoading } from '../../store/loading'
 
 const props = defineProps<{
   data: Comment
@@ -13,6 +14,7 @@ const emit = defineEmits<{
   (e: 'delete', text: number): void
 }>()
 
+const loading = useLoading()
 const users = useUser()
 
 const content = computed(() => {
@@ -50,7 +52,8 @@ const user = computed(() => users.users.find(u => u.username === props.data.auth
       <div class="flex-1" />
 
       <button v-if="users.username === user.username" class="remove-comment" data-title-top="Remove Comment" @click="emit('delete', props.data.id)">
-        <Icon size="1.6" code="e5cd" />
+        <Spinner v-if="loading.get('del-comment')" />
+        <Icon v-else size="1.6" code="e5cd" />
       </button>
     </div>
 
