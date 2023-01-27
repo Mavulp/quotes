@@ -111,3 +111,8 @@ CREATE TABLE comments (
         REFERENCES users (username)
         ON DELETE CASCADE
 ) STRICT;
+
+CREATE TABLE aliases (
+    name TEXT PRIMARY KEY NOT NULL,
+    content TEXT NOT NULL
+) STRICT;

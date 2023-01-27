@@ -1,13 +1,16 @@
 use axum::{
     http::StatusCode,
-    routing::{get, post, put, Router},
+    routing::{delete, get, post, put, Router},
     Extension,
 };
 use futures::FutureExt;
 use idlib::{AuthCallback, IdpClient, SecretKey, Variables};
 use rusqlite_migration::{Migrations, M};
 use tower_http::{cors::CorsLayer, trace::TraceLayer};
-use utoipa::OpenApi;
+use utoipa::{
+    openapi::security::{ApiKey, ApiKeyValue, Http, HttpAuthScheme, SecurityScheme},
+    Modify, OpenApi,
+};
 use utoipa_swagger_ui::SwaggerUi;
 
 use std::path::Path;
@@ -17,6 +20,7 @@ pub mod util;
 
 mod account;
 mod auth;
+mod comment;
 mod error;
 mod quote;
 mod tag;
@@ -38,6 +42,9 @@ pub struct AppState {
         quote::get_quotes,
         quote::get_quote_by_id,
         quote::post_quote,
+        comment::get_comments,
+        comment::post_comment,
+        comment::delete_comment,
         tag::get_tags,
         tag::get_tag_by_id,
         tag::put_tag_by_id,
@@ -52,13 +59,37 @@ pub struct AppState {
         quote::PostQuote,
         quote::Fragment,
         quote::FragmentType,
+        comment::Comment,
+        comment::PostComment,
         tag::Tag,
         tag::PutTag,
         account::Settings,
         account::PutSettings
-    ))
+    )),
+    modifiers(&SecurityAddon),
+    security(
+        ("hiveID JWT in cookie" = []),
+        ("hiveID JWT in header" = []),
+    ),
 )]
 struct ApiDoc;
+
+struct SecurityAddon;
+
+impl Modify for SecurityAddon {
+    fn modify(&self, openapi: &mut utoipa::openapi::OpenApi) {
+        if let Some(components) = openapi.components.as_mut() {
+            components.add_security_scheme(
+                "hiveID JWT in cookie",
+                SecurityScheme::ApiKey(ApiKey::Cookie(ApiKeyValue::new("__auth"))),
+            );
+            components.add_security_scheme(
+                "hiveID JWT in header",
+                SecurityScheme::Http(Http::new(HttpAuthScheme::Bearer)),
+            );
+        }
+    }
+}
 
 pub async fn api_route(db: tokio_rusqlite::Connection) -> anyhow::Result<Router> {
     let secret_key = SecretKey::from_env()?;
@@ -82,15 +113,12 @@ pub async fn api_route(db: tokio_rusqlite::Connection) -> anyhow::Result<Router>
         .route("/api/quote", get(quote::get_quotes))
         .route("/api/quote", post(quote::post_quote))
         .route("/api/quote/:id", get(quote::get_quote_by_id))
+        .route("/api/quote/:id/comment", get(comment::get_comments))
+        .route("/api/quote/:id/comment", post(comment::post_comment))
+        .route("/api/comment/:id", delete(comment::delete_comment))
         .route("/api/tag", get(tag::get_tags))
         .route("/api/tag/:id", get(tag::get_tag_by_id))
         .route("/api/tag/:id", put(tag::put_tag_by_id))
-        // GET /quote/:quotee (allow multiple?)
-        // GET /quote/:author
-        // PUT /quote/:tag(?)
-        // GET /comment/:quoteId
-        // POST /comment
-        // DEL /comment/:id
         .nest(
             "/api/auth",
             idlib::api_route(idp_client, Some(auth_callback)),

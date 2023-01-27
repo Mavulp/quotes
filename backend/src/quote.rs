@@ -15,17 +15,32 @@ use std::time::SystemTime;
 use crate::error::Error;
 use crate::AppState;
 
+/// The meat of the service, this is how quotes are presented to users.
 #[derive(Debug, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Quote {
+    /// A unique identifier for the quote, this should never change for a quote.
     pub id: i64,
+
+    /// The username of the account who created the quote.
     #[schema(example = "Alice")]
     pub author: String,
+
+    /// Quote contains offensive content.
     pub offensive: bool,
+
+    /// Quotees in the fragments and their index of this quote.
     pub indices: Vec<QuoteIndex>,
+
+    /// The actual pieces that contain the content of the quote.
     pub fragments: Vec<Fragment>,
+
+    /// Tags that can be used to categorize quotes and be filtered on. Use the `tag` API to get
+    /// more detailed descriptions of these.
     #[schema(example = json!(["fake", "implied"]))]
     pub tags: Vec<String>,
+
+    /// A unix timestamp of when this quote was created.
     #[schema(example = 1670802822)]
     pub created_at: u64,
 }
@@ -186,6 +201,7 @@ pub enum FragmentType {
     path = "/api/quote",
     responses(
         (status = 200, description = "All quotes are returned", body = [Quote]),
+        (status = 302, description = "Redirects to hiveID if not authenticated"),
     )
 )]
 pub async fn get_quotes(
@@ -235,6 +251,7 @@ pub fn get_all(conn: &Connection) -> Result<Vec<Quote>, Error> {
     path = "/api/quote/{id}",
     responses(
         (status = 200, description = "The quote with the matching id is returned", body = Quote),
+        (status = 302, description = "Redirects to hiveID if not authenticated"),
     ),
     params(
         ("id" = i64, Path, description = "Id of the quote to query"),
@@ -288,6 +305,7 @@ pub fn get_by_id(conn: &Connection, id: i64) -> Result<Quote, Error> {
     request_body = PostQuote,
     responses(
         (status = 200, description = "The quote was created"),
+        (status = 302, description = "Redirects to hiveID if not authenticated"),
     )
 )]
 pub async fn post_quote(

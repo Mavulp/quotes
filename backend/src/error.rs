@@ -37,6 +37,9 @@ pub enum Error {
     #[error("One of the tags is empty")]
     EmptyTag,
 
+    #[error("The comment has no text associated with it.")]
+    EmptyComment,
+
     #[error("Invalid argument(s): {0}")]
     InvalidArguments(anyhow::Error),
 
@@ -67,6 +70,7 @@ impl IntoResponse for Error {
             | Error::EmptyFragmentContent
             | Error::EmptyFragmentQuotee
             | Error::EmptyTag
+            | Error::EmptyComment
             | Error::MissingQuoteFragments
             | Error::InvalidArguments(_) => StatusCode::BAD_REQUEST,
         };

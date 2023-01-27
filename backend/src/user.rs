@@ -20,11 +20,15 @@ use crate::AppState;
 pub struct User {
     #[schema(example = "alice")]
     pub username: String,
+
     #[schema(example = "https://example.com/avatar.png")]
     pub profile_picture: Option<String>,
+
     #[schema(example = "Welcome to my profile")]
     pub bio: Option<String>,
+
     pub highlighted_quote_id: Option<i64>,
+
     #[schema(example = 1670802822)]
     pub created_at: u64,
 }
@@ -82,6 +86,7 @@ pub fn get_all(conn: &Connection) -> Result<Vec<User>, Error> {
     path = "/api/user",
     responses(
         (status = 200, description = "User data is returned", body = [User]),
+        (status = 302, description = "Redirects to hiveID if not authenticated"),
     )
 )]
 pub async fn get_users(
@@ -105,6 +110,7 @@ pub async fn get_users(
     responses(
         (status = 200, description = "User data is returned", body = User),
         (status = 404, description = "User does not exist"),
+        (status = 302, description = "Redirects to hiveID if not authenticated"),
     ),
     params(
         ("username" = String, Path, description = "Username of the user to query"),

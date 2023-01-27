@@ -19,7 +19,7 @@ use crate::AppState;
     path = "/api/account/login",
     responses(
         (status = 200, description = "Already signed in"),
-        (status = 302, description = "Redirects to hiveID"),
+        (status = 302, description = "Redirects to hiveID if not authenticated"),
     )
 )]
 pub async fn get_login(
@@ -28,14 +28,24 @@ pub async fn get_login(
     maybe_token.wrap(|| {})
 }
 
+/// Account fields that can be adjusted.
 #[derive(Debug, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Settings {
+    /// An image that can be used to present the user in the UI.
     #[schema(example = "https://example.com/avatar.png")]
     pub profile_picture: Option<String>,
+
+    /// A text that can be displayed on the users profile to make it more personal.
     #[schema(example = "Welcome to my profile")]
     pub bio: Option<String>,
+
+    /// A quote the user wants to attach to their profile for whatever reason, this would probably
+    /// only be shown on the profile page.
     pub highlighted_quote_id: Option<i64>,
+
+    /// The theme of the colors for the UI, this setting is private and can't be seen by other
+    /// users.
     #[schema(example = "light-theme")]
     pub color_theme: String,
 }
@@ -65,6 +75,7 @@ impl From<DbSettings> for Settings {
     path = "/api/account/settings",
     responses(
         (status = 200, description = "The settings and set values", body = Settings),
+        (status = 302, description = "Redirects to hiveID if not authenticated"),
     )
 )]
 pub async fn get_settings(
@@ -104,16 +115,30 @@ pub async fn get_settings(
 #[derive(Debug, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct PutSettings {
+    /// An image that can be used to present the user in the UI.
+    /// # Note
+    /// The input is trimmed and empty inputs are not updated.
     #[schema(example = "https://example.com/avatar.png")]
     #[serde(default, deserialize_with = "non_empty_trimmed_str")]
     pub profile_picture: Option<String>,
 
+    /// A text that can be displayed on the users profile to make it more personal.
+    /// # Note
+    /// The input is trimmed and empty inputs are not updated.
     #[schema(example = "Welcome to my profile")]
     #[serde(default, deserialize_with = "non_empty_trimmed_str")]
     pub bio: Option<String>,
 
+    /// A quote the user wants to attach to their profile for whatever reason. The request will
+    /// fail if this is not a valid quote id.
+    /// # Note
+    /// Empty inputs are not updated.
     pub highlighted_quote_id: Option<i64>,
 
+    /// The theme of the colors for the UI, this setting is private and can't be seen by other
+    /// users.
+    /// # Note
+    /// The input is trimmed and empty inputs are not updated.
     #[schema(example = "light-theme")]
     #[serde(default, deserialize_with = "non_empty_trimmed_str")]
     pub color_theme: Option<String>,
@@ -127,6 +152,7 @@ pub struct PutSettings {
     responses(
         (status = 200, description = "The settings were successfully updated"),
         (status = 400, description = "One of the values sent in is invalid"),
+        (status = 302, description = "Redirects to hiveID if not authenticated"),
     )
 )]
 pub async fn put_settings(

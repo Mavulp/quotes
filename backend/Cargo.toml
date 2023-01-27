@@ -23,6 +23,7 @@ idlib = { "git" = "https://github.com/Mavulp/hiveID" }
 futures = "0.3.25"
 utoipa = { version = "2.4.2", features = ["axum_extras", "openapi_extensions"] }
 utoipa-swagger-ui = { version = "3.0.1", features = ["axum"] }
+itertools = "0.10.5"
 
 [dependencies.rusqlite_migration]
 git = "https://github.com/cljoly/rusqlite_migration"

@@ -1,4 +1,4 @@
-/// Consumes the response from the IdP and stores the received token as a cookie in the client's
+/// Consumes the response from the IDP and stores the received token as a cookie in the client's
 /// browser.
 /// # Note
 /// This will also run service specific code like creating a user account on first login.
@@ -8,7 +8,8 @@
     responses(
         (status = 302, description = "Succes, tries to set cookie and redirects."),
         (status = 403, description = "Missing or invalid parameter."),
-    )
+    ),
+    security(()),
 )]
 async fn _authorize_dummy() {}
 
@@ -18,7 +19,8 @@ async fn _authorize_dummy() {}
     path = "/api/auth/revoke",
     responses(
         (status = 200, description = "Nothing was done?"),
-    )
+    ),
+    security(()),
 )]
 async fn _revoke_dummy() {}
 
@@ -28,6 +30,7 @@ async fn _revoke_dummy() {}
     path = "/api/auth/logout",
     responses(
         (status = 302, description = "Success tries to unset cookie and redirects."),
-    )
+    ),
+    security(()),
 )]
 async fn _logout_dummy() {}

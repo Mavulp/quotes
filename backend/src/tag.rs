@@ -12,15 +12,23 @@ use utoipa::ToSchema;
 use std::sync::Arc;
 
 use crate::error::Error;
-use crate::util::non_empty_str;
+use crate::util::non_empty_trimmed_str;
 use crate::AppState;
 
+/// Tags can be used to categorize quotes and allows for more extensive filtering provided that
+/// quotes are well tagged.
 #[derive(Debug, Serialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Tag {
+    /// A unique identifier for the tag, this should never change for a tag.
     pub id: i64,
+
+    /// A short handle for users to quickly understand what the tag is for.
     #[schema(example = "implied")]
     pub name: String,
+
+    /// A description that can be used for further explanations in case the name is unclear or to
+    /// go into more details on how it should be used.
     #[schema(
         example = "This quote was not actually said, the author thought it was implied and made this quote up."
     )]
@@ -50,6 +58,7 @@ impl From<DbTag> for Tag {
     path = "/api/tag",
     responses(
         (status = 200, description = "All tags are returned", body = [Tag]),
+        (status = 302, description = "Redirects to hiveID if not authenticated"),
     )
 )]
 pub async fn get_tags(
@@ -88,16 +97,18 @@ pub fn get_all(conn: &Connection) -> Result<Vec<Tag>, Error> {
     Ok(tags)
 }
 
-/// Get a tag by its id
+/// Get a tag by its id.
 #[utoipa::path(
     get,
     path = "/api/tag/{id}",
     responses(
         (status = 200, description = "The tag with the matching id is returned", body = Tag),
+        (status = 404, description = "No tag with that id exists"),
+        (status = 302, description = "Redirects to hiveID if not authenticated"),
     ),
     params(
-        ("id" = i64, Path, description = "Id of the tag to query"),
-    )
+        ("id" = i64, Path, description = "ID of the tag to query"),
+    ),
 )]
 pub async fn get_tag_by_id(
     Path(id): Path<i64>,
@@ -137,14 +148,26 @@ pub fn get_by_id(conn: &Connection, id: i64) -> Result<Tag, Error> {
     Ok(tag)
 }
 
+/// A list of fields that can be updated by anyone with the `quotes_edit_tags` permission. To leave
+/// fields as they are they can be skipped, set to null or set to a whitespace only string.
 #[derive(Debug, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct PutTag {
+    /// A short handle for users to quickly understand what the tag is for. This should only be
+    /// updated to fix typos or formatting, changing a name completely would be very confusing for
+    /// users. For this reason updating quotes requires additional permissions.
+    /// # Note
+    /// The input is trimmed and empty inputs are not updated.
     #[schema(example = "implied")]
     #[serde(default, deserialize_with = "non_empty_trimmed_str")]
     pub name: Option<String>,
+
+    /// A description that can be used for further explanations in case the name is unclear or to
+    /// go into more details on how it should be used.
+    /// # Note
+    /// The input is trimmed and empty inputs are not updated.
     #[schema(
-        example = "This quote was not actually said, the author thought it was implied and made this quote up."
+        example = "This quote was not actually said, the author thought it was implied and made it up."
     )]
     #[serde(default, deserialize_with = "non_empty_trimmed_str")]
     pub description: Option<String>,
@@ -163,6 +186,7 @@ type HasEditTags = Has<"quotes_edit_tags">;
         (status = 200, description = "The tag was successfully updated"),
         (status = 400, description = "One of the values sent in is invalid"),
         (status = 403, description = "User does not have quotes_edit_tags permission"),
+        (status = 302, description = "Redirects to hiveID if not authenticated"),
     ),
     params(
         ("id" = i64, Path, description = "Id of the tag to update"),
