@@ -85,7 +85,7 @@ function random() {
 
 <template>
   <div :key="route.path" class="quote-route-list">
-    <section id="header" class="quote-list-header">
+    <section id="header" class="quote-page-header">
       <div class="quote-container container-header">
         <div class="quote-title-wrap text">
           <h1>Quote list</h1>

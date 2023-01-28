@@ -24,8 +24,21 @@
   //   color: var(--color-text-lighter);
   // }
 
+  &.regular {
+    @include font(400);
+  }
+
+  &.btn-small {
+    height: 30px;
+    line-height: 30px;
+  }
+
   &.wide {
     min-width: 96px;
+  }
+
+  &.semiwide {
+    padding: 0 20px;
   }
 
   &.btn-gray {

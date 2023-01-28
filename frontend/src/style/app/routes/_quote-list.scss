@@ -1,13 +1,13 @@
+.quote-page-header {
+  width: 100%;
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--color-border);
+}
+
 .quote-route-list {
   padding-bottom: 156px;
   padding-top: 20px;
-
-  .quote-list-header {
-    width: 100%;
-    padding-bottom: 20px;
-    margin-bottom: 30px;
-    border-bottom: 1px solid var(--color-border);
-  }
 
   .quote-list {
     .quote-list-context {

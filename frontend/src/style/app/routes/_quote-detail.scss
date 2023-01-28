@@ -84,7 +84,6 @@
     @include radius(var(--radius-lg));
     padding: 20px 30px;
     margin-bottom: 15px;
-    // border: 1px solid var(--color-border);
     background-color: var(--color-bg-light);
     box-shadow: var(--shadow);
 
@@ -112,7 +111,7 @@
     margin-bottom: 60px;
     padding-left: 20px;
 
-    a {
+    button {
       font-size: 1.4rem;
       color: var(--color-text-lighter);
 

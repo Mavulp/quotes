@@ -1,11 +1,13 @@
 <script setup lang='ts'>
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { get } from '../../../bin/fetch'
+import Search from '../../../components/form/Search.vue'
 import TagItem from '../../../components/tags/TagItem.vue'
 import { useLoading } from '../../../store/loading'
 import type { Tag } from '../../../types/quote-types'
 
-const tags = ref<Tag[]>()
+const search = ref('')
+const tags = ref<Tag[]>([])
 const loading = useLoading()
 
 onMounted(async () => {
@@ -13,29 +15,38 @@ onMounted(async () => {
   tags.value = await get('/tag')
   loading.del('tags')
 })
+
+const filteredQuotes = computed(() => {
+  return tags.value?.filter(tag => tag.name.includes(search.value))
+})
 </script>
 
 <template>
   <div class="route-tags">
-    <div class="quote-container">
-      <section id="header" class="quote-list-header">
+    <section id="header" class="quote-page-header">
+      <div class="quote-container">
         <div class="quote-title-wrap text">
           <h1>Tags</h1>
 
-          <button class="button wide">
-            Add
+          <button class="button wide btn-gray">
+            Add Tag
           </button>
         </div>
 
-        <div class="quote-title-wrap quote-filters" />
+        <div class="quote-title-wrap">
+          <Search v-model:value="search" style="width:324px" placeholder="Search for tags" />
+        </div>
         <!-- <p>Quotes are used to contextually assign theme or topic to a quote. You can assign multiple tags to a single quote.</p> -->
-      </section>
-    </div>
+      </div>
+    </section>
 
     <div class="quote-container">
       <Spinner v-if="loading.get('tags')" />
       <template v-else>
-        <TagItem v-for="tag in tags" :key="tag.id" :data="tag" />
+        <p class="list-amount">
+          {{ tags.length }} tags
+        </p>
+        <TagItem v-for="tag in filteredQuotes" :key="tag.id" :data="tag" />
       </template>
     </div>
   </div>

@@ -16,11 +16,13 @@ import ModelFragmentImage from '../../../components/quotes/quote-item/fragments/
 import CommentItem from '../../../components/comments/CommentItem.vue'
 import CommentCreate from '../../../components/comments/CommentCreate.vue'
 import UserLink from '../../../components/UserLink.vue'
+import { useFilters } from '../../../store/filters'
 
 const route = useRoute()
 const router = useRouter()
 const quotes = useQuote()
 const loading = useLoading()
+const filters = useFilters()
 
 const { copy } = useClipboard()
 
@@ -91,6 +93,11 @@ function random() {
   const id = quotes.getRandomQuoteId()
   router.push({ name: 'RouteQuoteDetail', params: { id } })
 }
+
+function filterOnTag(tag: string) {
+  filters.setFilter('tag', [tag])
+  router.push({ name: 'RouteQuoteList' })
+}
 </script>
 
 <template>
@@ -104,9 +111,7 @@ function random() {
             <Icon code="e5c4" size="1.8" />
           </button>
 
-          <span>Added by:
-            <UserLink :user="quote.author" />
-          </span>
+          <span>Added by: <UserLink :user="quote.author" /> </span>
 
           <div class="dot-padder" />
 
@@ -123,15 +128,6 @@ function random() {
             Share
           </button>
         </div>
-
-        <!-- <div class="quote-detail-header">
-          <div class="author">
-            <span>Posted by:</span>
-            <UserLink :user="quote.author" />
-          </div>
-
-          <p>{{ date.time(quote.createdAt) }}</p>
-        </div> -->
 
         <div class="quote-item-content">
           <template v-for="item in quote.fragments" :key="item.index">
@@ -155,9 +151,9 @@ function random() {
 
         <div class="quote-item-tags">
           <template v-for="tag in quote.tags" :key="tag">
-            <router-link :to="{ name: 'RouteTags', params: { tag } }">
+            <button @click="filterOnTag(tag)">
               {{ tag }}
-            </router-link>
+            </button>
             <div class="dot-padder" />
           </template>
         </div>
