@@ -119,7 +119,7 @@ function setValue(item: Option) {
       emit('update:selected', item.value)
 
       // Only close if you multiple=false and you just set an item
-      open.value = false
+      // open.value = false
     }
   }
 }

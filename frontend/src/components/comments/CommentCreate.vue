@@ -17,7 +17,7 @@ const MAX_LEN = 8192
 const form = reactive({ text: '' })
 const rules = computed(() => ({
   text: {
-    maxLength: withMessage('Your comment exceeds the character limit.', maxLength(2048)),
+    maxLength: withMessage('Your comment exceeds the character limit.', maxLength(MAX_LEN)),
     minLength: withMessage('You can not post an empty comment', minLength(1)),
   },
 }))

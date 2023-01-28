@@ -102,6 +102,9 @@
       padding-left: 39px;
 
       p {
+        white-space: prewrap;
+        word-break: break-all;
+
         img {
           @include radius(4px);
           max-width: 100%;

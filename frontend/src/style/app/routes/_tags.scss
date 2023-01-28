@@ -1,0 +1,36 @@
+.route-tags {
+  padding-top: 20px;
+
+  .tag-item {
+    @include radius(var(--radius-lg));
+    border: 1px solid var(--color-border);
+    display: block;
+    margin-bottom: 10px;
+
+    &.is-active {
+      .tag-item-header {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+
+    .tag-item-header {
+      @include flex(0, nowrap, space-between);
+      @include radius(var(--radius-lg));
+      // border-top-left-radius: var(--radius-lg);
+      // border-top-right-radius: var(--radius-lg);
+      padding: 15px 20px;
+      width: 100%;
+      padding-right: 10px;
+      color: var(--color-text);
+
+      &:hover {
+        background-color: var(--color-bg-light);
+      }
+
+      .material-icons {
+        color: var(--color-text-lighter);
+      }
+    }
+  }
+}

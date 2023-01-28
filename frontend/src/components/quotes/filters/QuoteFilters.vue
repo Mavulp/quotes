@@ -49,7 +49,7 @@ const search = computed({
 </script>
 
 <template>
-  <div :key="filters.active.toString()" class="quote-title-wrap quote-filters">
+  <div class="quote-title-wrap quote-filters">
     <Search v-model:value="search" placeholder="Search for a quote" />
 
     <InputSelect

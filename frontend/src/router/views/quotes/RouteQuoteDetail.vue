@@ -95,7 +95,7 @@ function random() {
 
 <template>
   <div class="quote-detail">
-    <Transition name="fade" mode="out-in">
+    <Transition name="tab" mode="out-in">
       <Spinner v-if="loading.get('quote-detail')" class="mg" />
 
       <div v-else-if="quote" class="quote-container">
