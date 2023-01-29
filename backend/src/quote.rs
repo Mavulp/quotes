@@ -294,14 +294,14 @@ pub fn get_by_id(conn: &Connection, id: i64) -> Result<Quote, Error> {
     Ok(quote)
 }
 
-/// Creates a quote from the request body
+/// Creates a quote from the request body.
 #[utoipa::path(
     post,
     path = "/api/quote",
     request_body = PostQuote,
     responses(
-        (status = 200, description = "The quote was created"),
-        (status = 302, description = "Redirects to hiveID if not authenticated"),
+        (status = 200, description = "The quote was created and its ID is returned.", body = i64),
+        (status = 302, description = "Redirects to hiveID if not authenticated."),
     )
 )]
 pub async fn post_quote(
@@ -321,7 +321,7 @@ pub async fn post_quote(
         .await
 }
 
-pub fn insert_quote(conn: &mut Connection, quote: PostQuote, author: &str) -> Result<(), Error> {
+pub fn insert_quote(conn: &mut Connection, quote: PostQuote, author: &str) -> Result<i64, Error> {
     if quote.fragments.is_empty() {
         return Err(Error::EmptyField("fragments"));
     }
@@ -462,5 +462,5 @@ pub fn insert_quote(conn: &mut Connection, quote: PostQuote, author: &str) -> Re
 
     tx.commit().context("Failed to commit transaction")?;
 
-    Ok(())
+    Ok(quote_id)
 }
