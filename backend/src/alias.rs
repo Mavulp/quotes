@@ -21,7 +21,7 @@ use crate::AppState;
 /// their content.
 ///
 /// # Example
-/// Alias: "fb", "foobar"
+/// Alias: "fb", "foobar"  
 /// Comment: "I like !fb" -> "I like foobar"
 #[derive(Debug, Serialize, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]

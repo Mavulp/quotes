@@ -77,8 +77,8 @@ pub struct AppState {
     )),
     modifiers(&SecurityAddon),
     security(
-        ("hiveID JWT in cookie" = []),
-        ("hiveID JWT in header" = []),
+        ("hiveid-jwt-cookie" = []),
+        ("hiveid-jwt-header" = []),
     ),
 )]
 struct ApiDoc;
@@ -89,11 +89,11 @@ impl Modify for SecurityAddon {
     fn modify(&self, openapi: &mut utoipa::openapi::OpenApi) {
         if let Some(components) = openapi.components.as_mut() {
             components.add_security_scheme(
-                "hiveID JWT in cookie",
+                "hiveid-jwt-cookie",
                 SecurityScheme::ApiKey(ApiKey::Cookie(ApiKeyValue::new("__auth"))),
             );
             components.add_security_scheme(
-                "hiveID JWT in header",
+                "hiveid-jwt-header",
                 SecurityScheme::Http(Http::new(HttpAuthScheme::Bearer)),
             );
         }
