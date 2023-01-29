@@ -10,6 +10,7 @@ use serde_rusqlite::from_row;
 use utoipa::ToSchema;
 
 use std::sync::Arc;
+use std::time::SystemTime;
 
 use crate::error::Error;
 use crate::util::non_empty_trimmed_str;
@@ -33,6 +34,14 @@ pub struct Tag {
         example = "This quote was not actually said, the author thought it was implied and made this quote up."
     )]
     pub description: Option<String>,
+
+    /// The username of the account who first created the tag.
+    #[schema(example = "Alice")]
+    pub author: String,
+
+    /// A unix timestamp of when this tag was created.
+    #[schema(example = 1670802822)]
+    pub created_at: u64,
 }
 
 #[derive(Deserialize, Debug, PartialEq)]
@@ -40,6 +49,8 @@ struct DbTag {
     id: i64,
     name: String,
     description: Option<String>,
+    author: String,
+    created_at: u64,
 }
 
 impl From<DbTag> for Tag {
@@ -48,6 +59,8 @@ impl From<DbTag> for Tag {
             id: tag.id,
             name: tag.name,
             description: tag.description,
+            author: tag.author,
+            created_at: tag.created_at,
         }
     }
 }
@@ -81,7 +94,9 @@ pub fn get_all(conn: &Connection) -> Result<Vec<Tag>, Error> {
             "SELECT
                 id,
                 name,
-                description
+                description,
+                author,
+                created_at
             FROM tags",
         )
         .context("Failed to prepare statement for tags query")?;
@@ -131,7 +146,9 @@ pub fn get_by_id(conn: &Connection, id: i64) -> Result<Tag, Error> {
             "SELECT
                 id,
                 name,
-                description
+                description,
+                author,
+                created_at
             FROM tags
             WHERE id = $1",
             params![id],
@@ -173,7 +190,7 @@ pub struct PostTag {
     )
 )]
 pub async fn post_tag(
-    AuthorizeCookie(_payload, maybe_token, ..): AuthorizeCookie<idlib::NoGroups>,
+    AuthorizeCookie(payload, maybe_token, ..): AuthorizeCookie<idlib::NoGroups>,
     Extension(state): Extension<Arc<AppState>>,
     request: Result<Json<PostTag>, JsonRejection>,
 ) -> impl IntoResponse {
@@ -184,6 +201,8 @@ pub async fn post_tag(
             if request.name.is_empty() {
                 return Err(Error::EmptyField("name"));
             }
+
+            let now = SystemTime::UNIX_EPOCH.elapsed().unwrap().as_secs();
 
             let name = request.name.clone();
             let tag_exists = state
@@ -210,10 +229,10 @@ pub async fn post_tag(
                 .call(move |conn| {
                     conn.execute(
                         &format!(
-                            "INSERT INTO tags (name, description)
-                            VALUES ($1, $2)"
+                            "INSERT INTO tags (name, description, author, created_at)
+                            VALUES ($1, $2, $3, $4)"
                         ),
-                        params![&request.name, &request.description],
+                        params![&request.name, &request.description, payload.name, now],
                     )
                     .optional()
                 })
