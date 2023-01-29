@@ -144,6 +144,87 @@ pub fn get_by_id(conn: &Connection, id: i64) -> Result<Tag, Error> {
     Ok(tag)
 }
 
+/// Tags can be used to categorize quotes and allows for more extensive filtering provided that
+/// quotes are well tagged.
+#[derive(Debug, Deserialize, ToSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct PostTag {
+    /// A short handle for users to quickly understand what the tag is for.
+    #[schema(example = "implied")]
+    pub name: String,
+
+    /// A description that can be used for further explanations in case the name is unclear or to
+    /// go into more details on how it should be used.
+    #[schema(
+        example = "This quote was not actually said, the author thought it was implied and made this quote up."
+    )]
+    pub description: Option<String>,
+}
+
+/// Create tag from the body.
+#[utoipa::path(
+    post,
+    path = "/api/tag",
+    request_body = PostTag,
+    responses(
+        (status = 200, description = "The tag was successfully created."),
+        (status = 400, description = "One of the values sent in is invalid."),
+        (status = 302, description = "Redirects to hiveID if not authenticated."),
+    )
+)]
+pub async fn post_tag(
+    AuthorizeCookie(_payload, maybe_token, ..): AuthorizeCookie<idlib::NoGroups>,
+    Extension(state): Extension<Arc<AppState>>,
+    request: Result<Json<PostTag>, JsonRejection>,
+) -> impl IntoResponse {
+    maybe_token
+        .wrap_future(async move {
+            let Json(request) = request?;
+
+            if request.name.is_empty() {
+                return Err(Error::EmptyField("name"));
+            }
+
+            let name = request.name.clone();
+            let tag_exists = state
+                .db
+                .call(move |conn| {
+                    conn.query_row(
+                        "SELECT 1
+                        FROM tags
+                        WHERE name = $1",
+                        params![name],
+                        |row| Ok(Tag::from(from_row::<DbTag>(row).unwrap())),
+                    )
+                    .optional()
+                })
+                .await
+                .context("Failed to get tag by name")?;
+
+            if tag_exists.is_some() {
+                return Err(Error::TagExists);
+            }
+
+            state
+                .db
+                .call(move |conn| {
+                    conn.execute(
+                        &format!(
+                            "INSERT INTO tags (name, description)
+                            VALUES ($1, $2)"
+                        ),
+                        params![&request.name, &request.description],
+                    )
+                    .optional()
+                })
+                .await
+                .context("Failed to insert tag")?;
+
+            Ok::<_, Error>(())
+        })
+        .await
+}
+
 /// A list of fields that can be updated by anyone with the required permissions. To leave fields
 /// as they are they can be skipped, set to null or set to a whitespace only string.
 /// # Note
@@ -199,6 +280,24 @@ pub async fn put_tag_by_id(
     maybe_token
         .wrap_future(async move {
             let Json(request) = request?;
+
+            let tag_exists = state
+                .db
+                .call(move |conn| {
+                    conn.query_row(
+                        "SELECT 1 FROM tags
+                        WHERE id = ?",
+                        params![&id],
+                        |row| Ok(from_row::<i64>(row).unwrap()),
+                    )
+                })
+                .await
+                .optional()
+                .context("Failed to check if tag exists")?;
+
+            if tag_exists.is_none() {
+                return Err(Error::NotFound);
+            }
 
             let update_str = request.update_str();
             if !update_str.is_empty() {

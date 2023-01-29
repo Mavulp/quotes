@@ -47,6 +47,7 @@ pub struct AppState {
         comment::post_comment,
         comment::delete_comment,
         tag::get_tags,
+        tag::post_tag,
         tag::get_tag_by_id,
         tag::put_tag_by_id,
         tag::delete_tag_by_id,
@@ -69,6 +70,7 @@ pub struct AppState {
         comment::Comment,
         comment::PostComment,
         tag::Tag,
+        tag::PostTag,
         tag::PutTag,
         alias::Alias,
         alias::PutAlias,
@@ -126,6 +128,7 @@ pub async fn api_route(db: tokio_rusqlite::Connection) -> anyhow::Result<Router>
         .route("/api/quote/:id/comment", post(comment::post_comment))
         .route("/api/comment/:id", delete(comment::delete_comment))
         .route("/api/tag", get(tag::get_tags))
+        .route("/api/tag", post(tag::post_tag))
         .route("/api/tag/:id", get(tag::get_tag_by_id))
         .route("/api/tag/:id", put(tag::put_tag_by_id))
         .route("/api/tag/:id", delete(tag::delete_tag_by_id))

@@ -142,7 +142,7 @@ pub fn get_by_name(conn: &Connection, name: String) -> Result<Alias, Error> {
 
 type HasEditAliases = Either<Has<"edit-aliases">, Has<"moderator">>;
 
-/// Create alias from the body that is sent in.
+/// Create alias from the body.
 /// # Note
 /// Requires either `edit-aliases` or `moderator` permission.
 #[utoipa::path(
@@ -234,6 +234,25 @@ pub async fn put_alias_by_name(
     maybe_token
         .wrap_future(async move {
             let Json(request) = request?;
+
+            let check_name = name.clone();
+            let alias_exists = state
+                .db
+                .call(move |conn| {
+                    conn.query_row(
+                        "SELECT 1 FROM aliases
+                        WHERE name = ?",
+                        params![&check_name],
+                        |row| Ok(from_row::<i64>(row).unwrap()),
+                    )
+                })
+                .await
+                .optional()
+                .context("Failed to check if alias exists")?;
+
+            if alias_exists.is_none() {
+                return Err(Error::NotFound);
+            }
 
             state
                 .db

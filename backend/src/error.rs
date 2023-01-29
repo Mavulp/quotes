@@ -28,6 +28,9 @@ pub enum Error {
     #[error("A quote needs to have at least one quote fragment")]
     MissingQuoteFragments,
 
+    #[error("A tag with that name already exists")]
+    TagExists,
+
     #[error("The field {0} is empty")]
     EmptyField(&'static str),
 
@@ -64,6 +67,7 @@ impl IntoResponse for Error {
             Error::TooManyCharacters { .. }
             | Error::JsonRejection(_)
             | Error::InvalidQuoteId
+            | Error::TagExists
             | Error::EmptyField(_)
             | Error::EmptyArrayElement(_)
             | Error::EmptyArrayField { .. }
