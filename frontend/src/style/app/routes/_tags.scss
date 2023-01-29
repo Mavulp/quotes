@@ -40,7 +40,7 @@
 
       .tag-item-header {
         @include t();
-        @include flex(8px, nowrap, flex-start);
+        @include flex(40px, nowrap, flex-start);
         @include radius(var(--radius-lg));
         padding: 7.5px 20px;
         width: 100%;
@@ -55,10 +55,20 @@
         span {
           pointer-events: none;
 
-          &:first-of-type:before {
+          &.title:before {
             content: "# ";
             @include font(700);
             color: var(--color-secondary);
+          }
+
+          &.quote-amount {
+            font-size: 1.4rem;
+            color: var(--color-text-lighter);
+
+            b {
+              color: var(--color-highlight);
+              font-size: inherit;
+            }
           }
         }
 
@@ -68,16 +78,29 @@
 
         .button.btn-white {
           color: var(--color-highlight);
+          gap: 5px;
           opacity: 0.5;
+
+          .material-icons {
+            // @include t();
+            // width: 0px;
+            // overflow: hidden;
+            color: var(--color-highlight);
+          }
 
           &:hover {
             background-color: var(--color-bg-light-hover);
+
+            // .material-icons {
+            //   width: 20px;
+            // }
           }
         }
       }
 
       .tag-item-content {
         @include flex(0);
+        align-items: stretch;
 
         .cell {
           padding: 15px;
@@ -87,8 +110,25 @@
             @include flex(10px);
           }
 
+          &:first-of-type {
+            span {
+              @include font(700);
+              // font-size: 2.2rem;
+            }
+          }
+
           &:last-of-type {
             border-right: 0;
+
+            .button {
+              &:first-of-type {
+                color: var(--color-highlight);
+              }
+
+              &:last-of-type {
+                color: var(--color-red);
+              }
+            }
           }
 
           strong {

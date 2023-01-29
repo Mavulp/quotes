@@ -30,24 +30,27 @@ const quotes = computed(() => {
   <div>
     <div class="tag-item" :class="{ 'is-active': open }">
       <button class="tag-item-header" @click.self="open = !open">
-        <span>
+        <span class="title">
           {{ props.data.name }}
         </span>
 
         <div class="flex-1" />
 
-        <button class="button btn-white wide regular btn-small" @click="filterOnTag">
-          Show Quotes
+        <span class="quote-amount"> <b>{{ quotes.length }}</b> {{ quotes.length === 1 ? 'quote' : 'quotes' }}</span>
+
+        <button class="button btn-white regular btn-small" data-title-top="Filters quotes by this tag" @click="filterOnTag">
+          View
+          <Icon code="e5c8" size="1.6" />
         </button>
 
         <!-- <Icon :code="open ? 'e5ce' : 'e5cf'" /> -->
       </button>
 
       <div v-show="open" class="tag-item-content">
-        <div class="cell">
+        <!-- <div class="cell">
           <strong>Quotes</strong>
           <span>{{ quotes.length }}</span>
-        </div>
+        </div> -->
         <div class="cell">
           <strong>Last Upload</strong>
           <span>{{ date.simple(quotes[0].createdAt) }}</span>
@@ -61,14 +64,16 @@ const quotes = computed(() => {
         </div>
 
         <div class="cell flex">
-          <button class="button btn-round btn-white">
+          <button class="button btn-round btn-white" data-title-bottom="Edit">
             <Icon code="e3c9" size="2" />
           </button>
-          <button class="button btn-round btn-white">
+          <button class="button btn-round btn-white" data-title-bottom="Delete">
             <Icon code="e14c" size="2" />
           </button>
         </div>
       </div>
+
+      <div class="" />
     </div>
   </div>
 </template>
