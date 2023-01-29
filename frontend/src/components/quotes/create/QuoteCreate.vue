@@ -14,6 +14,7 @@ import { useToast } from '../../../store/toast'
 import { useLoading } from '../../../store/loading'
 import { get } from '../../../bin/fetch'
 import type { Tag } from '../../../types/quote-types'
+import router from '../../../router'
 import FragmentText from './fragments/FragmentText.vue'
 import FragmentImage from './fragments/FragmentImage.vue'
 
@@ -52,8 +53,16 @@ const { validate, errors } = useFormValidation(reactive({ offensive }), rules, {
 
 async function submit() {
   validate()
-    .then(() => {
-      create.submitQuote()
+    .then(async () => {
+      const id = await create.submitQuote()
+
+      if (!id)
+        return
+
+      router.push({
+        name: 'RouteQuoteDetail',
+        params: { id },
+      })
     })
     .catch(() => {
       toast.push({ type: 'error', message: 'Error creating Quote. Check for errors in the form.' })

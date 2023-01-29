@@ -9,3 +9,10 @@ export interface Comment {
 export interface CreateComment {
   text: string
 }
+
+export interface Alias {
+  name: string
+  content: string
+  author: string
+  createdAt: number
+}

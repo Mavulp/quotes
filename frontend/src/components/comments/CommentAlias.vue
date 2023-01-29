@@ -1,10 +1,11 @@
 <script setup lang='ts'>
 import { onClickOutside, useMagicKeys, whenever } from '@vueuse/core'
-import { ref } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 import { isValidImage } from '../../bin/comments'
-import Search from '../form/Search.vue'
+import type { Alias } from '../../types/comment-types'
+import { $fetch, get } from '../../bin/fetch'
 
-import aliases from './test.json'
+import Search from '../form/Search.vue'
 
 const emit = defineEmits<{
   (e: 'insert', name: string): void
@@ -17,6 +18,12 @@ onClickOutside(self, () => open.value = false)
 
 const keys = useMagicKeys()
 whenever(keys.Escape, () => open.value = false)
+
+// Alias items
+const aliases = ref<Alias[]>([])
+onBeforeMount(async () => {
+  aliases.value = await $fetch<Alias[]>('aliases', get('/alias'))
+})
 </script>
 
 <template>
@@ -30,6 +37,9 @@ whenever(keys.Escape, () => open.value = false)
         <Search v-model:value="search" placeholder="Search for an emote" />
 
         <div class="alias-items">
+          <!-- <pre style="height:200vh">
+            {{ aliases }}
+          </pre> -->
           <template v-for="alias in aliases" :key="alias.name">
             <template v-if="alias.name && alias.content">
               <button v-show="search.length === 0 || alias.name.includes(search)" class="alias-item" @click="emit('insert', alias.name)">

@@ -40,4 +40,6 @@ export interface Tag {
   name: string
   id: number
   description: string
+  author: string
+  createdAt: number
 }

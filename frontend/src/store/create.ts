@@ -48,7 +48,7 @@ export const useCreate = defineStore('create', {
     delFragment(index: number) {
       this.form.fragments.splice(index, 1)
     },
-    async submitQuote() {
+    async submitQuote(): Promise<number | null> {
       const { push } = useToast()
       const loading = useLoading()
 
@@ -67,11 +67,13 @@ export const useCreate = defineStore('create', {
       }
 
       return post('/quote', body)
-        .then(() => {
+        .then((res) => {
           push({ type: 'success', message: 'Succesfully added new quote' })
+          return res
         })
         .catch(() => {
           push({ type: 'error', message: 'Error adding new quote' })
+          return null
         })
         .finally(() => {
           loading.del('create')

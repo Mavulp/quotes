@@ -1,4 +1,5 @@
-import { merge } from 'lodash'
+import { isArray, merge } from 'lodash'
+import { useLoading } from '../store/loading'
 
 // Setup endpoint base
 // export const rootUrl = "localhost:5173/api"
@@ -121,4 +122,14 @@ async function _handleResponse(response: Response) {
 
     return data
   })
+}
+
+export async function $fetch<P>(name: string, promises: Promise<P>): Promise<P> {
+  const loading = useLoading()
+  loading.add(name)
+
+  return Promise.all(isArray(promises) ? promises : [promises])
+    .finally(() => {
+      loading.del(name)
+    }) as Promise<P>
 }

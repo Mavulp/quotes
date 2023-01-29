@@ -3,7 +3,6 @@
 [https://quotes.hivecom.net/swagger/]
 
 - [Quote creator] [] Add drag re-ordering
-
 - [Global] [] Create generic modal component
 
 ## User
