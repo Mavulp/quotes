@@ -7,14 +7,23 @@ import { __LOCALHOST__ } from '../../bin/env'
 
 const key = 'quotes_bearer_token'
 
+function setupUser(token: string) {
+  const user = useUser()
+  const { name, groups } = parseJwt(token)
+
+  user.$patch({
+    username: name,
+    permissions: groups,
+    signedIn: true,
+  })
+}
+
 export default async function (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) {
   const user = useUser()
   const token = localStorage.getItem(key)
 
-  if (token && !user.username) {
-    const { name } = parseJwt(token)
-    user.$patch({ username: name })
-  }
+  if (token && !user.username)
+    setupUser(token)
 
   if (to.meta.requiresAuth || to.name === 'RouteAuthorize') {
     if (!token) {
@@ -34,17 +43,13 @@ export default async function (to: RouteLocationNormalized, from: RouteLocationN
         }
       }
       else {
-        const { name } = parseJwt(token)
         localStorage.setItem(key, token)
-
-        user.$patch({
-          username: name,
-          signedIn: true,
-        })
+        setupUser(token)
 
         await get(`/auth/authorize?redirect_uri=${redirect_uri}&token=${token}`)
-
-        return next({ name: 'RouteHome' })
+          .finally(() => {
+            return next({ name: 'RouteHome' })
+          })
       }
     }
 

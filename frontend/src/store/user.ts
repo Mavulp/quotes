@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
-import { isNil } from 'lodash'
+import { isArray, isNil } from 'lodash'
 import { get, put } from '../bin/fetch'
-import type { EditableSettings, Settings, User } from '../types/user-types'
+import type { EditableSettings, Settings, User, UserRole } from '../types/user-types'
 import { useToast } from '../store/toast'
 import { useLoading } from '../store/loading'
 
@@ -74,6 +74,14 @@ export const useUser = defineStore('user', {
           toast.push({ type: 'success', message: 'Succesfully updating settings' })
         })
         .catch(() => toast.push({ type: 'error', message: 'Error updating settings' }))
+    },
+  },
+  getters: {
+    isRole: state => (role: UserRole | UserRole[]) => {
+      if (isArray(role))
+        return role.some(r => state.permissions.includes(r))
+
+      return state.permissions.includes(role)
     },
   },
 })

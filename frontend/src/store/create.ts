@@ -10,7 +10,6 @@ import { useToast } from './toast'
 
 interface State {
   form: CreateQuote
-  // _index: number
 }
 
 const defaultQuote: CreateQuote = {
@@ -22,12 +21,10 @@ const defaultQuote: CreateQuote = {
 export const useCreate = defineStore('create', {
   state: () => ({
     form: structuredClone(defaultQuote),
-    // _index: 0,
   } as State),
   actions: {
     reset() {
       this.form = structuredClone(defaultQuote)
-      // this._index = 0
     },
     addFragment(fragmentType: string) {
       const [type, highlight] = fragmentType.split('-')
@@ -41,8 +38,6 @@ export const useCreate = defineStore('create', {
 
       if (fragment)
         this.form.fragments.push(fragment)
-      // this.form.fragments.set(this._index, fragment)
-      // this._index++
     },
     editFragment(
       index: number,
@@ -51,9 +46,7 @@ export const useCreate = defineStore('create', {
       this.form.fragments.splice(index, 1, updated)
     },
     delFragment(index: number) {
-      // this.form.fragments.delete(index)
       this.form.fragments.splice(index, 1)
-      // this._index--
     },
     async submitQuote() {
       const { push } = useToast()
@@ -70,7 +63,7 @@ export const useCreate = defineStore('create', {
       const body = {
         fragments,
         offensive: offensive === 'yes',
-        tags: tags.map(tag => tag.name),
+        tags: [...tags],
       }
 
       return post('/quote', body)

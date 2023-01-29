@@ -2,7 +2,7 @@
 import './style/index.scss'
 
 import { useRoute, useRouter } from 'vue-router'
-import { onMounted } from 'vue'
+import { onBeforeMount, onMounted } from 'vue'
 import { until } from '@vueuse/shared'
 import Header from './components/navigation/Header.vue'
 import ToastWrap from './components/ToastWrap.vue'
@@ -16,7 +16,7 @@ const loading = useLoading()
 const quotes = useQuote()
 const user = useUser()
 
-onMounted(async () => {
+onBeforeMount(async () => {
   await until(() => user.signedIn).toBe(true)
 
   user.fetchUsers()

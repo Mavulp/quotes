@@ -69,7 +69,7 @@ function submit() {
 
           <br>
           <div class="flex-wrap right">
-            <button class="button" @click="submit">
+            <button class="button semiwide" @click="submit">
               Save
             </button>
           </div>

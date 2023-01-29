@@ -121,6 +121,10 @@ onBeforeMount(async () => {
       </button>
     </div>
 
+    <pre>
+      {{ create.form }}
+    </pre>
+
     <div class="quote-publish">
       <InputSelect
         v-model:selected="tags"

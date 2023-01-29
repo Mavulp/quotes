@@ -45,10 +45,11 @@ function updateValue(e: any) {
     <button v-if="value && canClear" @click="emit('update:value', '')">
       <span class="material-icons">&#xe5cd;</span>
     </button>
-    <div v-if="error && error.invalid" class="input-error-list">
-      <p v-for="item in error.errors" :key="item">
+
+    <template v-if="error?.invalid">
+      <p v-for="item in error.errors" :key="item" class="error-item">
         {{ item }}
       </p>
-    </div>
+    </template>
   </div>
 </template>

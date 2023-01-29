@@ -38,6 +38,6 @@ export interface CreateQuote {
 
 export interface Tag {
   name: string
-  id: string
+  id: number
   description: string
 }

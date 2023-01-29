@@ -1,7 +1,9 @@
 <script setup lang='ts'>
-import { computed, onMounted, ref } from 'vue'
+import { profile } from 'console'
+import { computed, onMounted, ref, watch } from 'vue'
 import { get } from '../../../bin/fetch'
 import Search from '../../../components/form/Search.vue'
+import ModalTag from '../../../components/modal/ModalTag.vue'
 import TagItem from '../../../components/tags/TagItem.vue'
 import { useLoading } from '../../../store/loading'
 import type { Tag } from '../../../types/quote-types'
@@ -10,15 +12,43 @@ const search = ref('')
 const tags = ref<Tag[]>([])
 const loading = useLoading()
 
-onMounted(async () => {
-  loading.add('tags')
+onMounted(query)
+
+async function query(ignoreLoading = false) {
+  if (!ignoreLoading)
+    loading.add('tags')
   tags.value = await get('/tag')
-  loading.del('tags')
-})
+
+  if (!ignoreLoading)
+    loading.del('tags')
+}
 
 const filteredTags = computed(() => {
   return tags.value?.filter(tag => tag.name.includes(search.value))
 })
+
+function removeTag(id: number) {
+  tags.value = tags.value.filter(tag => tag.id !== id)
+}
+
+// Modal & Tag creation
+const open = ref(false)
+const prefill = ref<Tag | null>(null)
+
+watch(open, (val) => {
+  if (!val)
+    query(true)
+})
+
+function editTag(id: number) {
+  const fill = tags.value.find(tag => tag.id === id)
+
+  if (!fill)
+    return
+
+  prefill.value = fill
+  open.value = true
+}
 </script>
 
 <template>
@@ -28,9 +58,14 @@ const filteredTags = computed(() => {
         <div class="quote-title-wrap text">
           <h1>Tags</h1>
 
-          <button class="button wide btn-gray">
-            Add Tag
+          <button class="button semiwide btn-gray" @click="open = true">
+            <Icon code="e145" size="1.8" />
+            Tag
           </button>
+
+          <Teleport v-if="open" to="body">
+            <ModalTag :prefill="prefill" @close="open = false" />
+          </Teleport>
         </div>
 
         <div class="quote-title-wrap">
@@ -47,7 +82,13 @@ const filteredTags = computed(() => {
           {{ filteredTags.length }} tags
         </p>
         <div class="tag-list">
-          <TagItem v-for="tag in filteredTags" :key="tag.id" :data="tag" />
+          <TagItem
+            v-for="tag in filteredTags"
+            :key="tag.id"
+            :data="tag"
+            @remove="removeTag(tag.id)"
+            @edit="editTag(tag.id)"
+          />
         </div>
       </template>
     </div>

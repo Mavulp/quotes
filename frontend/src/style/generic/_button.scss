@@ -3,7 +3,7 @@
   @include radius(3px);
   @include font(700);
   display: flex;
-  gap: 10px;
+  gap: 5px;
   align-items: center;
   justify-content: center;
   height: 36px;
@@ -41,7 +41,8 @@
   }
 
   &.semiwide {
-    padding: 0 20px;
+    min-width: unset;
+    padding: 0 16px;
   }
 
   &.btn-gray {

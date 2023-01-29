@@ -17,3 +17,5 @@ export interface EditableSettings {
   bio: string
   profilePicture: string
 }
+
+export type UserRole = 'moderator' | 'edit-tags' | 'delete-tags' | 'edit-aliases'

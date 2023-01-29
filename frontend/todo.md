@@ -3,8 +3,8 @@
 [https://quotes.hivecom.net/swagger/]
 
 - [Quote creator] [] Add drag re-ordering
-- [Router] [] Update page title on each route
-- [Router] [] Fix error when entering route detail which breaks evetything
+
+- [Global] [] Create generic modal component
 
 ## User
 
@@ -13,19 +13,18 @@
 - [] Showing last 3 quotes from this user
 - [x] Showing how many quotes person added and is quoted on
 
+## tags
+
+- [] Add form to POST tag
+- [] Add tag editing (within dropdown)
+- [x] Add tag DELETE
+
 ## Create
 
 - [x] Add tag component
 - [] Add "add tag" to creation. Redirects to new tags page and includes "bcak to form" button somewhere
 - [] Implement rearrange
 - [] Add loading indicator to when tags are loading
-
-## Detail
-
-- [] Display tags under quote wrap as small bubbles, clickable, will open tags page and will highlight said tag
-- [] Add author, quotees, other info
-- [x] Copy url to clipboard
-- [x] Make quotees indices names clickable ( to their profile / their quotes)
 
 ## List
 
