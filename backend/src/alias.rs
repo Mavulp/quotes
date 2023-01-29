@@ -6,10 +6,11 @@ use anyhow::Context;
 use axum::{extract::Path, Extension, Json};
 use rusqlite::{params, Connection, OptionalExtension};
 use serde::{Deserialize, Serialize};
-use serde_rusqlite::{from_row, to_params_named};
+use serde_rusqlite::from_row;
 use utoipa::ToSchema;
 
 use std::sync::Arc;
+use std::time::SystemTime;
 
 use crate::error::Error;
 use crate::util::non_empty_trimmed_str;
@@ -33,12 +34,22 @@ pub struct Alias {
     /// The content of the alias which is to be used as the replacement.
     #[schema(example = "https://example.com/funny.png")]
     pub content: String,
+
+    /// The username of the account who first created the tag.
+    #[schema(example = "Alice")]
+    pub author: String,
+
+    /// A unix timestamp of when this tag was created.
+    #[schema(example = 1670802822)]
+    pub created_at: u64,
 }
 
 #[derive(Deserialize, Debug, PartialEq)]
 struct DbAlias {
     name: String,
     content: String,
+    author: String,
+    created_at: u64,
 }
 
 impl From<DbAlias> for Alias {
@@ -46,6 +57,8 @@ impl From<DbAlias> for Alias {
         Self {
             name: alias.name,
             content: alias.content,
+            author: alias.author,
+            created_at: alias.created_at,
         }
     }
 }
@@ -78,7 +91,9 @@ pub fn get_all(conn: &Connection) -> Result<Vec<Alias>, Error> {
         .prepare(
             "SELECT
                 name,
-                content
+                content,
+                author,
+                created_at
             FROM aliases",
         )
         .context("Failed to prepare statement for alias query")?;
@@ -127,7 +142,9 @@ pub fn get_by_name(conn: &Connection, name: String) -> Result<Alias, Error> {
         .query_row(
             "SELECT
                 name,
-                content
+                content,
+                author,
+                created_at
             FROM aliases
             WHERE name = $1",
             params![name],
@@ -157,7 +174,7 @@ type HasEditAliases = Either<Has<"edit-aliases">, Has<"moderator">>;
     )
 )]
 pub async fn post_alias(
-    AuthorizeCookie(_payload, maybe_token, ..): AuthorizeCookie<HasEditAliases>,
+    AuthorizeCookie(payload, maybe_token, ..): AuthorizeCookie<HasEditAliases>,
     Extension(state): Extension<Arc<AppState>>,
     request: Result<Json<Alias>, JsonRejection>,
 ) -> impl IntoResponse {
@@ -172,15 +189,17 @@ pub async fn post_alias(
                 return Err(Error::EmptyField("content"));
             }
 
+            let now = SystemTime::UNIX_EPOCH.elapsed().unwrap().as_secs();
+
             state
                 .db
                 .call(move |conn| {
                     conn.execute(
                         &format!(
-                            "INSERT INTO aliases (name, content)
-                            VALUES (:name, :content)"
+                            "INSERT INTO aliases (name, content, author, created_at)
+                            VALUES ($1, $2, $3, $4)"
                         ),
-                        to_params_named(&request).unwrap().to_slice().as_slice(),
+                        params![&request.name, &request.content, &payload.name, now],
                     )
                     .optional()
                 })

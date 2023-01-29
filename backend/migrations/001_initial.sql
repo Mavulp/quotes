@@ -73,7 +73,13 @@ CREATE TABLE user_quote_index (
 CREATE TABLE tags (
     id INTEGER PRIMARY KEY NOT NULL,
     name TEXT NOT NULL UNIQUE COLLATE NOCASE,
-    description TEXT
+    description TEXT,
+    author TEXT NOT NULL,
+    created_at INTEGER NOT NULL, -- unix ts
+
+    CONSTRAINT fk_author_assoc
+        FOREIGN KEY (author)
+        REFERENCES users (username)
 ) STRICT;
 
 CREATE TABLE quote_tag_associations (
