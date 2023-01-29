@@ -3,6 +3,7 @@
 [https://quotes.hivecom.net/swagger/]
 
 - [Quote creator] [] Add drag re-ordering
+  [https://stackoverflow.com/questions/26283661/drag-drop-with-handle]
 - [Global] [] Create generic modal component
 
 ## User

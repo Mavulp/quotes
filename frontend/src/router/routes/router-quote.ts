@@ -5,7 +5,7 @@ import RouteTags from '../views/quotes/RouteTags.vue'
 
 export default [
   {
-    path: '/quotes/add',
+    path: '/quote/add',
     name: 'RouteQuoteAdd',
     component: RouteQuoteCreate,
     meta: {
