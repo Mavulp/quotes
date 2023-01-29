@@ -160,7 +160,7 @@
           }
 
           p,
-          span {
+          span:not(.material-icons) {
             @include font(400);
             white-space: wrap;
             word-break: break-all;

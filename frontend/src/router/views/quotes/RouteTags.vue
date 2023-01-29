@@ -37,8 +37,10 @@ const open = ref(false)
 const prefill = ref<Tag | null>(null)
 
 watch(open, (val) => {
-  if (!val)
+  if (!val) {
+    prefill.value = null
     query(true)
+  }
 })
 
 function editTag(id: number) {

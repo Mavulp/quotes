@@ -10,6 +10,7 @@
 - [] Design how quote looks on a user profile
 - [] Adding a highlighted quote
 - [] Showing last 3 quotes from this user
+- [] Use markdown for user profile
 
 ## Users
 

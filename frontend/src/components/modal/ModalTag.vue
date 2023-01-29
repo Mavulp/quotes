@@ -45,6 +45,7 @@ onBeforeMount(() => {
 })
 
 onBeforeUnmount(() => {
+  Object.assign(form, { name: '', description: '' })
   document.body.style.overflow = 'unset'
 })
 
@@ -116,7 +117,7 @@ function submit() {
 
     <div class="quote-container-small">
       <div class="modal-content">
-        <h2>Create a Tag</h2>
+        <h2>{{ props.prefill ? 'Edit' : "Create" }} a Tag</h2>
         <strong>Name</strong>
         <InputText v-model:value="form.name" placeholder="Tag name" :error="errors.name" />
         <strong>Description (optional)</strong>
