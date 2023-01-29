@@ -5,6 +5,7 @@ import { get } from '../../../bin/fetch'
 import Search from '../../../components/form/Search.vue'
 import ModalTag from '../../../components/modal/ModalTag.vue'
 import TagItem from '../../../components/tags/TagItem.vue'
+import { useCreate } from '../../../store/create'
 import { useLoading } from '../../../store/loading'
 import type { Tag } from '../../../types/quote-types'
 
@@ -49,6 +50,10 @@ function editTag(id: number) {
   prefill.value = fill
   open.value = true
 }
+
+// If current form is not empty, offer a button back
+const create = useCreate()
+const isFormActive = computed(() => create.form.fragments.length > 0)
 </script>
 
 <template>
@@ -57,6 +62,10 @@ function editTag(id: number) {
       <div class="quote-container">
         <div class="quote-title-wrap text">
           <h1>Tags</h1>
+
+          <router-link v-if="isFormActive" :to="{ name: 'RouteQuoteAdd' }" class="button btn-round btn-white" data-title-bottom="Back To Form">
+            <Icon code="e5c4" size="1.8" />
+          </router-link>
 
           <button class="button semiwide btn-gray" @click="open = true">
             <Icon code="e145" size="1.8" />

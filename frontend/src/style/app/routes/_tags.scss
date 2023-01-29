@@ -2,6 +2,17 @@
   padding-top: 20px;
   padding-bottom: 156px;
 
+  .quote-title-wrap {
+    position: relative;
+    .button.btn-round {
+      position: absolute;
+      right: calc(100% + 20px);
+      top: 5px;
+      color: var(--color-highlight);
+      text-decoration: none;
+    }
+  }
+
   .tag-list {
     // @include grid(20px, 1fr 1fr);
 
