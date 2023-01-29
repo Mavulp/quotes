@@ -71,8 +71,8 @@ async function deleteTag() {
           <span>{{ quotes.length }}</span>
         </div> -->
         <div class="cell">
-          <strong>Last Upload</strong>
-          <span v-if="quotes.length > 0">{{ date.simple(quotes[0].createdAt) }}</span>
+          <strong>Last Used</strong>
+          <span v-if="quotes.length > 0">{{ date.tiny(quotes[0].createdAt) }}</span>
           <span v-else>No uploads.</span>
         </div>
 
@@ -81,6 +81,16 @@ async function deleteTag() {
           <p>
             {{ props.data.description && props.data.description.length > 0 ? props.data.description : 'No description.' }}
           </p>
+        </div>
+
+        <div class="cell">
+          <strong>Added by</strong>
+          <span>{{ props.data.author }}</span>
+        </div>
+
+        <div class="cell">
+          <strong>Added at</strong>
+          <span>{{ date.tiny(props.data.createdAt) }}</span>
         </div>
 
         <div v-if="user.isRole(['moderator', 'edit-tags', 'delete-tags'])" class="cell flex">

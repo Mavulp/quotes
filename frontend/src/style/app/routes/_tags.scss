@@ -118,12 +118,12 @@
             @include flex(10px);
           }
 
-          &:first-of-type {
-            span {
-              @include font(700);
-              // font-size: 2.2rem;
-            }
-          }
+          // &:first-of-type {
+          //   span {
+          //     @include font(700);
+          //     // font-size: 2.2rem;
+          //   }
+          // }
 
           &:last-of-type {
             border-right: 0;
@@ -150,6 +150,7 @@
 
           p,
           span {
+            @include font(400);
             white-space: wrap;
             word-break: break-all;
             font-size: 1.5rem;

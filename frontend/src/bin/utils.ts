@@ -48,6 +48,16 @@ export const date = {
       day: 'numeric',
     })}`
   },
+
+  tiny: (date: number) => {
+    const _date = new Date(date * 1000)
+
+    return _date.toLocaleDateString('en-GB', {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+    })
+  },
 }
 
 export function toBool(value: any): boolean {
