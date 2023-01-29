@@ -12,7 +12,7 @@ import Dropdown from '../../Dropdown.vue'
 import { useToast } from '../../../store/toast'
 
 import { useLoading } from '../../../store/loading'
-import { get } from '../../../bin/fetch'
+import { $fetch, get } from '../../../bin/fetch'
 import type { Tag } from '../../../types/quote-types'
 import router from '../../../router'
 import FragmentText from './fragments/FragmentText.vue'
@@ -83,11 +83,10 @@ const dropdownOptions = [
 ]
 
 // Tags
-
 const tagOptions = ref()
 
 onBeforeMount(async () => {
-  tagOptions.value = await get<Tag[]>('/tag')
+  tagOptions.value = await $fetch('tags', get<Tag[]>('/tag'))
     .then((res) => {
       return res.map(tag => ({
         value: tag.name,
@@ -95,8 +94,6 @@ onBeforeMount(async () => {
       }))
     })
 })
-
-// const tagOptions =
 </script>
 
 <template>
@@ -132,7 +129,9 @@ onBeforeMount(async () => {
 
     <div class="quote-publish">
       <div class="tag-wrap">
+        <Spinner v-if="loading.get('tags')" />
         <InputSelect
+          v-else
           v-model:selected="tags"
           icon="e867"
           :options="tagOptions"

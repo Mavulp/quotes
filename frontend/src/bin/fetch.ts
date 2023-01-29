@@ -128,8 +128,14 @@ export async function $fetch<P>(name: string, promises: Promise<P>): Promise<P> 
   const loading = useLoading()
   loading.add(name)
 
-  return Promise.all(isArray(promises) ? promises : [promises])
-    .finally(() => {
-      loading.del(name)
-    }) as Promise<P>
+  if (isArray(promises)) {
+    return Promise.all(promises)
+      .finally(() => {
+        loading.del(name)
+      }) as Promise<P>
+  }
+
+  return promises.finally(() => {
+    loading.del(name)
+  })
 }
