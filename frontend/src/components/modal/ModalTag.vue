@@ -20,7 +20,7 @@ const emit = defineEmits<{
 const loading = useLoading()
 const toast = useToast()
 
-const form = reactive<Omit<Tag, 'id'>>({
+const form = reactive<Omit<Tag, 'id' | 'author' | 'createdAt'>>({
   name: '',
   description: '',
 })
