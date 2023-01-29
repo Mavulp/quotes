@@ -16,7 +16,7 @@ onMounted(async () => {
   loading.del('tags')
 })
 
-const filteredQuotes = computed(() => {
+const filteredTags = computed(() => {
   return tags.value?.filter(tag => tag.name.includes(search.value))
 })
 </script>
@@ -41,12 +41,14 @@ const filteredQuotes = computed(() => {
     </section>
 
     <div class="quote-container">
-      <Spinner v-if="loading.get('tags')" />
+      <Spinner v-if="loading.get('tags', 'quote-list')" />
       <template v-else>
         <p class="list-amount">
-          {{ tags.length }} tags
+          {{ filteredTags.length }} tags
         </p>
-        <TagItem v-for="tag in filteredQuotes" :key="tag.id" :data="tag" />
+        <div class="tag-list">
+          <TagItem v-for="tag in filteredTags" :key="tag.id" :data="tag" />
+        </div>
       </template>
     </div>
   </div>

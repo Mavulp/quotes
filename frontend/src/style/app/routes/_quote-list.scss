@@ -93,14 +93,14 @@
     }
 
     .filters-clear {
-      @include radius(50%);
+      // @include radius(50%);
       position: absolute;
       left: calc(100% + 10px);
       top: 50%;
       transform: translateY(-50%);
-      width: 36px !important;
-      min-width: unset;
-      height: 36px;
+      // width: 36px !important;
+      // min-width: unset;
+      // height: 36px;
       color: var(--color-highlight);
 
       &:hover {

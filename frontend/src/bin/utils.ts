@@ -33,7 +33,7 @@ export const date = {
     return _date.toLocaleDateString('en-GB', {
       weekday: 'short',
       year: 'numeric',
-      month: 'long',
+      month: 'short',
       day: 'numeric',
     })
   },

@@ -16,13 +16,16 @@
   font-size: 1.4rem;
 
   &:hover {
-    // filter: brightness(90%);
     background-color: var(--color-highlight-tint);
   }
 
-  // svg {
-  //   color: var(--color-text-lighter);
-  // }
+  &.btn-round {
+    @include radius(50%);
+    width: 36px !important;
+    min-width: unset;
+    height: 36px;
+    line-height: 36px;
+  }
 
   &.regular {
     @include font(400);
@@ -63,6 +66,15 @@
       background-color: var(--color-bg-light);
     }
   }
+
+  &.btn-red {
+    color: var(--color-red);
+    background-color: var(--color-bg-light);
+
+    &:hover {
+      background-color: var(--color-bg-light);
+    }
+  }
 }
 
 .btn-round {
@@ -76,7 +88,6 @@
     display: block;
     position: absolute;
     pointer-events: none;
-    // inset: 0;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);

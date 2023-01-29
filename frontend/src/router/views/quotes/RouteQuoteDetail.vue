@@ -107,7 +107,7 @@ function filterOnTag(tag: string) {
 
       <div v-else-if="quote" class="quote-container">
         <div class="quote-detail-top">
-          <button class="button btn-white" data-title-bottom="Go Back" @click="goBack">
+          <button class="button btn-round btn-white" data-title-bottom="Go Back" @click="goBack">
             <Icon code="e5c4" size="1.8" />
           </button>
 

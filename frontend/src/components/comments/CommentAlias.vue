@@ -20,8 +20,8 @@ whenever(keys.Escape, () => open.value = false)
 </script>
 
 <template>
-  <div ref="self" class="comment-alias-picker">
-    <button data-title-bottom="Add an Emote" class="button btn-gray picker" @click="open = !open">
+  <div ref="self" class="comment-alias-picker" :class="{ open }">
+    <button data-title-bottom="Add an Emote" class="button btn-gray btn-round picker" @click="open = !open">
       <Icon code="ea22" size="1.8" />
     </button>
 
