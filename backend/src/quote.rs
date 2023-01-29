@@ -323,7 +323,7 @@ pub async fn post_quote(
 
 pub fn insert_quote(conn: &mut Connection, quote: PostQuote, author: &str) -> Result<(), Error> {
     if quote.fragments.is_empty() {
-        return Err(Error::MissingQuoteFragments);
+        return Err(Error::EmptyField("fragments"));
     }
 
     let created_at = SystemTime::UNIX_EPOCH.elapsed().unwrap().as_secs();
@@ -350,11 +350,17 @@ pub fn insert_quote(conn: &mut Connection, quote: PostQuote, author: &str) -> Re
     let mut inserted_index_users = Vec::new();
     for (idx, fragment) in quote.fragments.iter().enumerate() {
         if fragment.content.is_empty() {
-            return Err(Error::EmptyFragmentContent);
+            return Err(Error::EmptyArrayField {
+                array: "fragments",
+                field: "content",
+            });
         }
 
         if fragment.quotee.is_empty() {
-            return Err(Error::EmptyFragmentQuotee);
+            return Err(Error::EmptyArrayField {
+                array: "fragments",
+                field: "quotee",
+            });
         }
 
         let type_id = tx
@@ -418,7 +424,7 @@ pub fn insert_quote(conn: &mut Connection, quote: PostQuote, author: &str) -> Re
         let tag = tag.trim().to_owned();
 
         if tag.is_empty() {
-            return Err(Error::EmptyTag);
+            return Err(Error::EmptyArrayElement("tags"));
         }
 
         tx.execute(

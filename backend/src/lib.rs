@@ -19,6 +19,7 @@ use std::sync::Arc;
 pub mod util;
 
 mod account;
+mod alias;
 mod auth;
 mod comment;
 mod error;
@@ -49,6 +50,11 @@ pub struct AppState {
         tag::get_tag_by_id,
         tag::put_tag_by_id,
         tag::delete_tag_by_id,
+        alias::get_aliases,
+        alias::post_alias,
+        alias::get_alias_by_name,
+        alias::put_alias_by_name,
+        alias::delete_alias_by_name,
         auth::_authorize_dummy,
         auth::_revoke_dummy,
         auth::_logout_dummy
@@ -64,6 +70,8 @@ pub struct AppState {
         comment::PostComment,
         tag::Tag,
         tag::PutTag,
+        alias::Alias,
+        alias::PutAlias,
         account::Settings,
         account::PutSettings
     )),
@@ -121,6 +129,11 @@ pub async fn api_route(db: tokio_rusqlite::Connection) -> anyhow::Result<Router>
         .route("/api/tag/:id", get(tag::get_tag_by_id))
         .route("/api/tag/:id", put(tag::put_tag_by_id))
         .route("/api/tag/:id", delete(tag::delete_tag_by_id))
+        .route("/api/alias", get(alias::get_aliases))
+        .route("/api/alias", post(alias::post_alias))
+        .route("/api/alias/:name", get(alias::get_alias_by_name))
+        .route("/api/alias/:name", put(alias::put_alias_by_name))
+        .route("/api/alias/:name", delete(alias::delete_alias_by_name))
         .nest(
             "/api/auth",
             idlib::api_route(idp_client, Some(auth_callback)),

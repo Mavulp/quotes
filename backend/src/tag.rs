@@ -52,13 +52,13 @@ impl From<DbTag> for Tag {
     }
 }
 
-/// Get a list of all tags
+/// Get a list of all tags.
 #[utoipa::path(
     get,
     path = "/api/tag",
     responses(
-        (status = 200, description = "All tags are returned", body = [Tag]),
-        (status = 302, description = "Redirects to hiveID if not authenticated"),
+        (status = 200, description = "All tags are returned.", body = [Tag]),
+        (status = 302, description = "Redirects to hiveID if not authenticated."),
     )
 )]
 pub async fn get_tags(
@@ -102,12 +102,12 @@ pub fn get_all(conn: &Connection) -> Result<Vec<Tag>, Error> {
     get,
     path = "/api/tag/{id}",
     responses(
-        (status = 200, description = "The tag with the matching id is returned", body = Tag),
-        (status = 404, description = "No tag with that id exists"),
-        (status = 302, description = "Redirects to hiveID if not authenticated"),
+        (status = 200, description = "The tag with the matching id is returned.", body = Tag),
+        (status = 404, description = "No tag with that id exists."),
+        (status = 302, description = "Redirects to hiveID if not authenticated."),
     ),
     params(
-        ("id" = i64, Path, description = "ID of the tag to query"),
+        ("id" = i64, Path, description = "ID of the tag to query."),
     ),
 )]
 pub async fn get_tag_by_id(
@@ -144,8 +144,10 @@ pub fn get_by_id(conn: &Connection, id: i64) -> Result<Tag, Error> {
     Ok(tag)
 }
 
-/// A list of fields that can be updated by anyone with the `edit-tags` permission. To leave
-/// fields as they are they can be skipped, set to null or set to a whitespace only string.
+/// A list of fields that can be updated by anyone with the required permissions. To leave fields
+/// as they are they can be skipped, set to null or set to a whitespace only string.
+/// # Note
+/// Requires `delete-tags` or `moderator` permission.
 #[derive(Debug, Deserialize, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct PutTag {
@@ -281,7 +283,7 @@ pub async fn delete_tag_by_id(
                 .call(move |conn| {
                     conn.query_row(
                         &format!("DELETE FROM tags WHERE id = ?"),
-                        rusqlite::params_from_iter(params![id]),
+                        params![id],
                         |_| Ok(()),
                     )
                     .optional()

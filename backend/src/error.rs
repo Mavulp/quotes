@@ -28,20 +28,17 @@ pub enum Error {
     #[error("A quote needs to have at least one quote fragment")]
     MissingQuoteFragments,
 
-    #[error("One of the quote fragments is empty")]
-    EmptyFragmentContent,
+    #[error("The field {0} is empty")]
+    EmptyField(&'static str),
 
-    #[error("One of the quotees is empty")]
-    EmptyFragmentQuotee,
+    #[error("An element in {0} is empty")]
+    EmptyArrayElement(&'static str),
 
-    #[error("One of the tags is empty")]
-    EmptyTag,
-
-    #[error("The comment has no text associated with it.")]
-    EmptyComment,
-
-    #[error("Invalid argument(s): {0}")]
-    InvalidArguments(anyhow::Error),
+    #[error("{field} in {array} is empty")]
+    EmptyArrayField {
+        array: &'static str,
+        field: &'static str,
+    },
 
     #[error("Internal Server Error")]
     InternalError(#[from] anyhow::Error),
@@ -67,12 +64,10 @@ impl IntoResponse for Error {
             Error::TooManyCharacters { .. }
             | Error::JsonRejection(_)
             | Error::InvalidQuoteId
-            | Error::EmptyFragmentContent
-            | Error::EmptyFragmentQuotee
-            | Error::EmptyTag
-            | Error::EmptyComment
-            | Error::MissingQuoteFragments
-            | Error::InvalidArguments(_) => StatusCode::BAD_REQUEST,
+            | Error::EmptyField(_)
+            | Error::EmptyArrayElement(_)
+            | Error::EmptyArrayField { .. }
+            | Error::MissingQuoteFragments => StatusCode::BAD_REQUEST,
         };
 
         let message = if let Error::JsonRejection(rej) = self {

@@ -146,7 +146,7 @@ pub(super) async fn post_comment(
             let Json(post_comment) = request?;
             let mut text = post_comment.text.trim().to_owned();
             if text.is_empty() {
-                return Err(Error::EmptyComment);
+                return Err(Error::EmptyField("text"));
             }
 
             let now = SystemTime::UNIX_EPOCH.elapsed().unwrap().as_secs();
