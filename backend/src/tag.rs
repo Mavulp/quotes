@@ -126,21 +126,17 @@ pub async fn get_tag_by_id(
 }
 
 pub fn get_by_id(conn: &Connection, id: i64) -> Result<Tag, Error> {
-    let mut stmt = conn
-        .prepare(
+    let tag = conn
+        .query_row(
             "SELECT
                 id,
                 name,
                 description
             FROM tags
             WHERE id = $1",
+            params![id],
+            |row| Ok(Tag::from(from_row::<DbTag>(row).unwrap())),
         )
-        .context("Failed to prepare statement for tags query")?;
-
-    let tag = stmt
-        .query_row(params![id], |row| {
-            Ok(Tag::from(from_row::<DbTag>(row).unwrap()))
-        })
         .optional()
         .context("Failed to query tags")?
         .ok_or(Error::NotFound)?;
@@ -253,4 +249,47 @@ impl PutTag {
 
         params
     }
+}
+
+type HasDeleteTags = Either<Has<"delete-tags">, Has<"moderator">>;
+
+/// Delete tag by its id.
+/// # Note
+/// Requires `delete-tags` or `moderator` permission.
+#[utoipa::path(
+    delete,
+    path = "/api/tag/{id}",
+    responses(
+        (status = 200, description = "The tag was successfully deleted."),
+        (status = 404, description = "Tag with the specified ID does not exist."),
+        (status = 403, description = "User does not have the required permissions."),
+        (status = 302, description = "Redirects to hiveID if not authenticated."),
+    ),
+    params(
+        ("id" = i64, Path, description = "ID of the tag to delete."),
+    )
+)]
+pub async fn delete_tag_by_id(
+    Path(id): Path<i64>,
+    AuthorizeCookie(_payload, maybe_token, ..): AuthorizeCookie<HasDeleteTags>,
+    Extension(state): Extension<Arc<AppState>>,
+) -> impl IntoResponse {
+    maybe_token
+        .wrap_future(async move {
+            state
+                .db
+                .call(move |conn| {
+                    conn.query_row(
+                        &format!("DELETE FROM tags WHERE id = ?"),
+                        rusqlite::params_from_iter(params![id]),
+                        |_| Ok(()),
+                    )
+                    .optional()
+                })
+                .await
+                .context("Failed to delete tag.")?;
+
+            Ok::<_, Error>(())
+        })
+        .await
 }

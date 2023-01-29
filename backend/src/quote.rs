@@ -273,8 +273,8 @@ pub async fn get_quote_by_id(
 }
 
 pub fn get_by_id(conn: &Connection, id: i64) -> Result<Quote, Error> {
-    let mut stmt = conn
-        .prepare(
+    let mut quote = conn
+        .query_row(
             "SELECT
                 id,
                 author,
@@ -282,13 +282,9 @@ pub fn get_by_id(conn: &Connection, id: i64) -> Result<Quote, Error> {
                 created_at
             FROM quotes
             WHERE id = $1",
+            params![id],
+            |row| Ok(Quote::from(from_row::<DbQuote>(row).unwrap())),
         )
-        .context("Failed to prepare statement for quotes query")?;
-
-    let mut quote = stmt
-        .query_row(params![id], |row| {
-            Ok(Quote::from(from_row::<DbQuote>(row).unwrap()))
-        })
         .optional()
         .context("Failed to query quotes")?
         .ok_or(Error::NotFound)?;

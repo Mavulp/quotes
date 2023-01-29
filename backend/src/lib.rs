@@ -48,6 +48,7 @@ pub struct AppState {
         tag::get_tags,
         tag::get_tag_by_id,
         tag::put_tag_by_id,
+        tag::delete_tag_by_id,
         auth::_authorize_dummy,
         auth::_revoke_dummy,
         auth::_logout_dummy
@@ -119,6 +120,7 @@ pub async fn api_route(db: tokio_rusqlite::Connection) -> anyhow::Result<Router>
         .route("/api/tag", get(tag::get_tags))
         .route("/api/tag/:id", get(tag::get_tag_by_id))
         .route("/api/tag/:id", put(tag::put_tag_by_id))
+        .route("/api/tag/:id", delete(tag::delete_tag_by_id))
         .nest(
             "/api/auth",
             idlib::api_route(idp_client, Some(auth_callback)),

@@ -223,7 +223,7 @@ async fn extract_alias(
         let alias_content = db
             .call(move |conn| {
                 conn.query_row(
-                    r"SELECT content FROM aliases WHERE name=?1",
+                    "SELECT content FROM aliases WHERE name=?1",
                     params![&cloned],
                     |row| Ok(serde_rusqlite::from_row::<String>(row).unwrap()),
                 )

@@ -156,23 +156,17 @@ pub async fn create_user_if_missing(
             debug!("User already existed for {name}");
         } else {
             let now = SystemTime::UNIX_EPOCH.elapsed().unwrap().as_secs();
-            insert(&name, now, conn)?;
 
+            conn.execute(
+                "INSERT INTO users (username, created_at) VALUES (?1, ?2)",
+                params![name, now],
+            )?;
             info!("Created user for user {name}");
         }
 
         Ok::<(), anyhow::Error>(())
     })
     .await?;
-
-    Ok(())
-}
-
-pub fn insert(username: &str, now: u64, conn: &Connection) -> anyhow::Result<()> {
-    conn.execute(
-        "INSERT INTO users (username, created_at) VALUES (?1, ?2)",
-        params![username, now],
-    )?;
 
     Ok(())
 }
