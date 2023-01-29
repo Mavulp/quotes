@@ -99,6 +99,25 @@
         margin-top: 32px;
         margin-left: 20px;
       }
+
+      .tag-wrap {
+        @include grid(20px, 1fr 48px);
+        align-items: center;
+        margin-bottom: 20px;
+
+        .form-select {
+          margin-bottom: 0;
+        }
+
+        .button {
+          width: 48px;
+          height: 48px;
+          min-width: 48px;
+          line-height: 48px;
+          margin: 0;
+          text-decoration: none;
+        }
+      }
     }
   }
 

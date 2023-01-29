@@ -60,7 +60,7 @@ function editTag(id: number) {
 
           <button class="button semiwide btn-gray" @click="open = true">
             <Icon code="e145" size="1.8" />
-            Tag
+            Create
           </button>
 
           <Teleport v-if="open" to="body">

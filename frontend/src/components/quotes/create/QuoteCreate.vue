@@ -121,18 +121,20 @@ onBeforeMount(async () => {
       </button>
     </div>
 
-    <pre>
-      {{ create.form }}
-    </pre>
-
     <div class="quote-publish">
-      <InputSelect
-        v-model:selected="tags"
-        icon="e867"
-        :options="tagOptions"
-        placeholder="Choose tags fitting the quote (optional)"
-        :multiple="true"
-      />
+      <div class="tag-wrap">
+        <InputSelect
+          v-model:selected="tags"
+          icon="e867"
+          :options="tagOptions"
+          placeholder="Choose tags fitting the quote (optional)"
+          :multiple="true"
+        />
+
+        <router-link class="button btn-gray btn-round" :to="{ name: 'RouteTags' }" data-title-top="Add New Tags">
+          <Icon code="e145" size="1.8" />
+        </router-link>
+      </div>
 
       <InputSelect
         v-model:selected="offensive"

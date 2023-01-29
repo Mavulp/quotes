@@ -116,7 +116,7 @@ function submit() {
 
     <div class="quote-container-small">
       <div class="modal-content">
-        <h2>Create Tag</h2>
+        <h2>Create a Tag</h2>
         <strong>Name</strong>
         <InputText v-model:value="form.name" placeholder="Tag name" :error="errors.name" />
         <strong>Description (optional)</strong>
