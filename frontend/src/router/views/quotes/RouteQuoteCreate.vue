@@ -20,9 +20,11 @@ const create = useCreate()
       <div class="quote-title-wrap text">
         <h1>Add a quote</h1>
 
-        <button v-if="create.form.fragments.length > 0" class="button" @click="create.reset()">
-          Start new
-        </button>
+        <Transition name="fade" mode="out-in">
+          <button v-show="create.form.fragments.length > 0" class="button" @click="create.reset()">
+            Start new
+          </button>
+        </Transition>
       </div>
 
       <Tabs :tabs="['Create', 'Preview']">

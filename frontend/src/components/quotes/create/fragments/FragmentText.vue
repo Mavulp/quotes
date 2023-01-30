@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { LOADIPHLPAPI } from 'dns'
+import { computed, ref, watch } from 'vue'
+import { useEventListener, useMouse } from '@vueuse/core'
+import { isNil } from 'lodash'
 import { useCreate } from '../../../../store/create'
 import type { TextFragment } from '../../../../types/quote-types'
 
@@ -45,18 +48,64 @@ const context = computed({
 function remove() {
   create.delFragment(props.index)
 }
+
+/**
+ * Drag & Drop
+ */
+const isDragging = computed(() => !isNil(create.dragIndex))
+const isDraggingOver = ref(false)
+
+function drop() {
+  isDraggingOver.value = false
+
+  if (props.index !== create.dragIndex && !isNil(create.dragIndex)) {
+    // We push item at dragIndex into the array at props index
+
+    const itemAtDragIndex = create.form.fragments.at(create.dragIndex)
+
+    if (!itemAtDragIndex)
+      return
+
+    // Remove item at drag index from the array
+    create.form.fragments.splice(create.dragIndex, 1)
+    // Append it at the drop index
+    create.form.fragments.splice(props.index, 0, itemAtDragIndex)
+
+    create.setDragIndex(null)
+  }
+}
+
+function dragStart(event: DragEvent) {
+  event.dataTransfer?.setData('text/plain', '')
+}
+
+function dragLeave(e: DragEvent) {
+  e.preventDefault()
+  isDraggingOver.value = false
+}
+
+function dragEnter(e: DragEvent) {
+  e.preventDefault()
+  isDraggingOver.value = true
+}
 </script>
 
 <template>
   <div
     class="quote-block block-create-context"
-    tabindex="0"
+    :class="{ 'is-dragging-over': isDraggingOver }"
+    :draggable="isDragging"
+    @dragstart="dragStart"
+    @drop="drop"
+    @dragenter="dragEnter"
+    @dragleave="dragLeave"
+    @dragover="dragEnter"
   >
     <FragmentButtons
       :index="props.index"
       :highlight="props.data.highlight"
-      tabindex="-1"
       @remove="remove"
+      @dragstatus="(state) => isDragging = state"
     />
     <InputTextarea v-model="context" placeholder="Provide context for quote" />
     <InputText v-model:value="quotee" class="form-quotee" placeholder="Add a quotee (optional)" />

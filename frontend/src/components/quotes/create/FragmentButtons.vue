@@ -1,23 +1,29 @@
 <script setup lang="ts">
-interface Props {
-  index: number
-}
+import { useCreate } from '../../../store/create'
 
 defineProps<Props>()
 
 const emit = defineEmits<{
   (e: 'remove'): void
-  (e: 'startdrag', event: any): void
+  (e: 'dragstatus', isDragging: boolean): void
 }>()
+
+const create = useCreate()
+
+interface Props {
+  index: number
+}
 </script>
 
 <template>
   <div class="quote-buttons">
     <span class="quote-number">#<b>{{ index + 1 }}</b></span>
     <button
+      v-if="create.form.fragments.length > 1"
       class="btn-round btn-highlight btn-hover-40"
       data-title-right="Re-arrange"
-      @click="emit('startdrag', $event)"
+      @mousedown="create.setDragIndex(index)"
+      @mouseleave="create.setDragIndex(null)"
     >
       <Icon code="e945" />
     </button>

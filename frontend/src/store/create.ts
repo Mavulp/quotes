@@ -10,6 +10,7 @@ import { useToast } from './toast'
 
 interface State {
   form: CreateQuote
+  dragIndex: number | null
 }
 
 const defaultQuote: CreateQuote = {
@@ -21,6 +22,7 @@ const defaultQuote: CreateQuote = {
 export const useCreate = defineStore('create', {
   state: () => ({
     form: structuredClone(defaultQuote),
+    dragIndex: null,
   } as State),
   actions: {
     reset() {
@@ -78,6 +80,9 @@ export const useCreate = defineStore('create', {
         .finally(() => {
           loading.del('create')
         })
+    },
+    setDragIndex(index: number | null) {
+      this.dragIndex = index
     },
   },
   getters: {

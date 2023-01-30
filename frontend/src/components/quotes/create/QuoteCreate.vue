@@ -99,20 +99,24 @@ onBeforeMount(async () => {
 <template>
   <div class="quote-create" :class="{ 'is-loading': loading.get('create') }">
     <div class="quote-blocks">
-      <template v-for="(fragment, index) in blocks" :key="index + fragment.type">
-        <FragmentText
-          v-if="fragment.type === 'text'"
-          :class="{ 'block-create-highlight': fragment.highlight }"
-          :data="fragment"
-          :index="index"
-        />
-        <FragmentImage
-          v-else-if="fragment.type === 'image'"
-          :class="{ 'is-highlight': fragment.highlight }"
-          :data="fragment"
-          :index="index"
-        />
-      </template>
+      <TransitionGroup name="list">
+        <template v-for="(fragment, index) in blocks" :key="index + fragment.type">
+          <FragmentText
+            v-if="fragment.type === 'text'"
+            :key="`text${fragment.highlight}${index}`"
+            :class="{ 'block-create-highlight': fragment.highlight }"
+            :data="fragment"
+            :index="index"
+          />
+          <FragmentImage
+            v-else-if="fragment.type === 'image'"
+            :key="`image${fragment.highlight}${index}`"
+            :class="{ 'is-highlight': fragment.highlight }"
+            :data="fragment"
+            :index="index"
+          />
+        </template>
+      </TransitionGroup>
     </div>
 
     <div class="add-block" :class="{ 'has-blocks': blocks.length > 0 }">

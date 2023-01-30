@@ -2,6 +2,10 @@
   padding-bottom: 156px;
   padding-top: 3em;
 
+  .quote-title-wrap .button {
+    @include t(0.2s);
+  }
+
   h1 {
     margin-bottom: 50px;
   }
@@ -15,15 +19,16 @@
 
     .quote-blocks {
       display: block;
+      position: relative;
       // margin-bottom: 24px;
     }
 
     .add-block {
-      @include t();
+      @include t(0.2s);
       @include radius(var(--radius-lg));
       @include flex(15px, $justify: center);
       background-color: var(--color-bg-light);
-      height: 128px;
+      height: 156px;
       width: 100%;
       position: relative;
       padding-left: 15px;
@@ -133,13 +138,18 @@
 }
 
 .quote-block {
-  @include t();
+  // @include t();
   @include radius(var(--radius-lg));
   display: block;
   position: relative;
   margin-bottom: 40px;
   padding: 16px;
+  width: 100%;
   border: 1px solid var(--color-border);
+
+  &.is-dragging-over {
+    background-color: var(--color-bg-light);
+  }
 
   &:before {
     content: "";

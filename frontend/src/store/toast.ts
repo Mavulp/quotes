@@ -30,7 +30,7 @@ export const useToast = defineStore('toasts', {
     push({ type, message, action }: Toast, persist = false) {
       const id = this.id
       // Toast message LEN * 50, minimum is 2s, max is 7s
-      const expiresIn = Math.min(Math.max(message.length * 50, 2000), 7000)
+      const expiresIn = Math.min(Math.max(message.length * 50, 2500), 7000)
 
       this.items.set(id,
         {
