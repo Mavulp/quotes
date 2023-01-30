@@ -7,10 +7,10 @@
 - [] Design how quote looks on a user profile (look for highlight -> look for just text -> only image)
 - [] Adding a highlighted quote (on quote detail)
 - [] Remove highlighted quote (user settings)
-- [] Showing last 2 quotes from this user
+- [x] Showing last 3 quotes from this user
 - [] Use markdown for user profile
-  - [] Make form bigger
-  - [] Update styling of user input markdown styles
+  - [x] Make form bigger
+  - [] Update styling of user input markdown styles (code, pre)
 
 ## Users
 

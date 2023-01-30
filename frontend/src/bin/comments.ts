@@ -68,7 +68,7 @@ export function formatCommentUsers(text: string) {
 
 export function sanitize(text: string) {
   if (!text)
-    return null
+    return ''
 
   const regex = /\bon\w+\=\"?[\w\:\(\)\']+\"?/g
   return text.replaceAll(regex, '')

@@ -1,14 +1,17 @@
 <script setup lang='ts'>
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { marked } from 'marked'
 import { useUser } from '../../../store/user'
 import { getRanMinMax } from '../../../bin/utils'
 import { useQuote } from '../../../store/quote'
 import { useLoading } from '../../../store/loading'
 import { useFilters } from '../../../store/filters'
 
+import UserProfileQuote from '../../../components/user/UserQuote.vue'
 import ModalSettings from '../../../components/modal/ModalSettings.vue'
 import Modal from '../../../components/Modal.vue'
+import { sanitize } from '../../../bin/comments'
 
 const user = useUser()
 const filters = useFilters()
@@ -18,7 +21,8 @@ const route = useRoute()
 const router = useRouter()
 
 const profile = computed(() => user.users.find(u => u.username === route.params.username))
-const quoteHighlight = computed(() => quotes.getQuoteById(profile.value?.highlightedQuoteId))
+const highlightQuote = computed(() => quotes.getQuoteById(profile.value?.highlightedQuoteId))
+const authoredQuotes = computed(() => quotes.getAuthoredQuotes(String(route.params.username)).slice(0, 3))
 
 function colorOfTheDay() {
   const date = new Date()
@@ -112,18 +116,20 @@ function quotesFromUser() {
           </Modal>
 
           <div>
-            <h2>{{ profile.username }}</h2>
-            <p>{{ profile.bio }}</p>
+            <h1>{{ profile.username }}</h1>
+            <!-- <p>{{ profile.bio }}</p> -->
+
+            <div class="profile-markdown-wrap" v-html="sanitize(marked.parse(profile.bio))" />
 
             <hr>
 
-            <router-link v-if="quoteHighlight" :to="{ name: 'RouteQuoteDetail', params: { id: quoteHighlight.id } }" class="quote-user-highlight">
+            <!-- <router-link v-if="quoteHighlight" :to="{ name: 'RouteQuoteDetail', params: { id: quoteHighlight.id } }" class="quote-user-highlight">
               <p>My plan worked, we didnt get APH!</p>
               <div class="flex-wrap">
                 <span class="tag highlight">Highlighted</span>
                 <span class="tag gray">Quote #62</span>
               </div>
-            </router-link>
+            </router-link> -->
 
             <!-- <router-link :to="{ name: 'RouteQuoteDetail', params: { id: 2 } }" class="quote-user-normal">
             <p>My plan worked, we didnt get APH!</p>
@@ -135,11 +141,23 @@ function quotesFromUser() {
             <span class="tag gray">Quote #15</span>
           </router-link> -->
 
-            <div class="flex-wrap" style="padding-left:20px">
+            <!-- {{ highlightQuote }} -->
+
+            <hr>
+
+            <template v-if="authoredQuotes.length > 0">
+              <UserProfileQuote v-for="quote in authoredQuotes" :key="quote.id" :data="quote" />
+            </template>
+
+            <!-- <pre>
+            {{ authoredQuotes }}
+          </pre> -->
+
+            <!-- <div class="flex-wrap" style="padding-left:20px">
               <button class="button" @click="quotesByUser">
                 User Quotes
               </button>
-            </div>
+            </div> -->
           </div>
         </div>
       </template>

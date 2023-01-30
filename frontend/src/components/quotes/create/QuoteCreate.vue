@@ -59,10 +59,7 @@ async function submit() {
       if (!id)
         return
 
-      router.push({
-        name: 'RouteQuoteDetail',
-        params: { id },
-      })
+      router.push({ name: 'RouteQuoteDetail', params: { id } })
     })
     .catch(() => {
       toast.push({ type: 'error', message: 'Error creating Quote. Check for errors in the form.' })

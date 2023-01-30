@@ -15,7 +15,7 @@ import ModelFragmentText from '../../../components/quotes/quote-item/fragments/M
 import ModelFragmentImage from '../../../components/quotes/quote-item/fragments/ModelFragmentImage.vue'
 import CommentItem from '../../../components/comments/CommentItem.vue'
 import CommentCreate from '../../../components/comments/CommentCreate.vue'
-import UserLink from '../../../components/UserLink.vue'
+import UserLink from '../../../components/user/UserLink.vue'
 import { useFilters } from '../../../store/filters'
 
 const route = useRoute()
