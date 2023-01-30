@@ -1,21 +1,20 @@
 <script setup lang='ts'>
-import { useEventListener } from '@vueuse/core'
 import { computed, onBeforeMount, onBeforeUnmount, reactive, ref } from 'vue'
 import { post, put } from '../../bin/fetch'
 import { maxLength, minLength, required, useFormValidation } from '../../bin/validation'
 import { useLoading } from '../../store/loading'
 import { useToast } from '../../store/toast'
 import type { Tag } from '../../types/quote-types'
+
 import InputText from '../form/InputText.vue'
 import InputTextarea from '../form/InputTextarea.vue'
+import Modal from '../Modal.vue'
 
 const props = defineProps<{
   prefill: Tag | null
 }>()
 
-const emit = defineEmits<{
-  (e: 'close'): void
-}>()
+const emit = defineEmits<{ (e: 'close'): void }>()
 
 const loading = useLoading()
 const toast = useToast()
@@ -38,20 +37,12 @@ const rules = computed(() => ({
 }))
 
 onBeforeMount(() => {
-  document.body.style.overflow = 'hidden'
-
   if (props.prefill)
     Object.assign(form, props.prefill)
 })
 
 onBeforeUnmount(() => {
   Object.assign(form, { name: '', description: '' })
-  document.body.style.overflow = 'unset'
-})
-
-useEventListener('keydown', ({ key }) => {
-  if (key === 'Escape')
-    emit('close')
 })
 
 const { validate, errors } = useFormValidation(form, rules, { autoclear: true })
@@ -110,11 +101,7 @@ function submit() {
 </script>
 
 <template>
-  <div class="modal" @click.self="emit('close')">
-    <button class="modal-close" @click="emit('close')">
-      <Icon code="e5cd" />
-    </button>
-
+  <Modal @close="emit('close')">
     <div class="quote-container-small">
       <div class="modal-content">
         <h2>{{ props.prefill ? 'Edit' : "Create" }} a Tag</h2>
@@ -134,5 +121,5 @@ function submit() {
         </div>
       </div>
     </div>
-  </div>
+  </Modal>
 </template>

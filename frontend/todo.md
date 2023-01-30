@@ -2,10 +2,6 @@
 
 [https://quotes.hivecom.net/swagger/]
 
-- [Global] [] Create generic modal component
-  - [] Convert tag modal
-  - [] Convert user settings
-
 ## User
 
 - [] Design how quote looks on a user profile (look for highlight -> look for just text -> only image)

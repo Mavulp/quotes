@@ -3,10 +3,12 @@ import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUser } from '../../../store/user'
 import { getRanMinMax } from '../../../bin/utils'
-import ModalSettings from '../../../components/modal/ModalSettings.vue'
 import { useQuote } from '../../../store/quote'
 import { useLoading } from '../../../store/loading'
 import { useFilters } from '../../../store/filters'
+
+import ModalSettings from '../../../components/modal/ModalSettings.vue'
+import Modal from '../../../components/Modal.vue'
 
 const user = useUser()
 const filters = useFilters()
@@ -105,9 +107,9 @@ function quotesFromUser() {
             <Icon code="e8b8" />
           </button>
 
-          <Teleport v-if="editing" to="body">
-            <ModalSettings @close="editing = false" />
-          </Teleport>
+          <Modal v-if="editing" @close="editing = false">
+            <ModalSettings />
+          </Modal>
 
           <div>
             <h2>{{ profile.username }}</h2>

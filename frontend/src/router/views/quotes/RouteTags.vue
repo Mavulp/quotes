@@ -74,9 +74,7 @@ const isFormActive = computed(() => create.form.fragments.length > 0)
             Create
           </button>
 
-          <Teleport v-if="open" to="body">
-            <ModalTag :prefill="prefill" @close="open = false" />
-          </Teleport>
+          <ModalTag v-if="open" :prefill="prefill" @close="open = false" />
         </div>
 
         <div class="quote-title-wrap">
