@@ -1,0 +1,70 @@
+.quote-user {
+  @include t();
+  @include radius(var(--radius-lg));
+  border: 1px solid var(--color-border);
+  padding: 20px;
+  padding-top: 50px;
+  display: block;
+  width: 100%;
+  margin-bottom: 20px;
+  max-height: 128px;
+  overflow: hidden;
+  text-decoration: none;
+  font-size: 2rem;
+  color: var(--color-text);
+  position: relative;
+  z-index: 1;
+
+  &:before {
+    content: "";
+    @include gradient(180deg, rgba(#181818, 0), rgba(#181818, 1));
+    display: block;
+    z-index: 10;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 20px;
+  }
+
+  .quote-info {
+    @include flex(10px, $justify: flex-start);
+    position: absolute;
+    top: 0;
+    height: 50px;
+    left: 15px;
+    right: 15px;
+
+    span {
+      font-size: 1.4rem;
+      color: var(--color-text-lighter);
+
+      &.tag:before {
+        content: "#";
+      }
+    }
+  }
+
+  &:hover {
+    background-color: var(--color-bg-light);
+
+    .dot-padder {
+      background-color: var(--color-bg-light-hover);
+    }
+  }
+
+  text-overflow: ellipsis;
+
+  &.is-highlight {
+    font-size: 4rem !important;
+  }
+
+  img {
+    max-width: 100%;
+    object-position: top -50px;
+  }
+
+  // &:last-of-type {
+  //   margin-bottom: 0;
+  // }
+}

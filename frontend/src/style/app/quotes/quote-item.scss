@@ -250,7 +250,7 @@
       @include radius(var(--radius-sm));
       display: block;
       max-width: 324px;
-      max-height: 324px;
+      max-height: 80vh;
       object-fit: contain;
       object-position: center;
       box-shadow: var(--shadow);

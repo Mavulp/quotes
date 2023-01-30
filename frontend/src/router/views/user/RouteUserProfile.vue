@@ -97,7 +97,7 @@ function quotesFromUser() {
                 </button>
               </li>
               <li><div class="dot-padder" /></li>
-              <li :data-title-top="`View quotes by ${profile.username}`">
+              <li :data-title-top="`Quotes from ${profile.username}`">
                 <button @click="quotesFromUser">
                   Quoted <span>{{ quotes.getQuotedQuotes(profile.username).length }}</span>
                 </button>
@@ -117,47 +117,30 @@ function quotesFromUser() {
 
           <div>
             <h1>{{ profile.username }}</h1>
-            <!-- <p>{{ profile.bio }}</p> -->
-
             <div class="profile-markdown-wrap" v-html="sanitize(marked.parse(profile.bio))" />
 
             <hr>
 
-            <!-- <router-link v-if="quoteHighlight" :to="{ name: 'RouteQuoteDetail', params: { id: quoteHighlight.id } }" class="quote-user-highlight">
-              <p>My plan worked, we didnt get APH!</p>
-              <div class="flex-wrap">
-                <span class="tag highlight">Highlighted</span>
-                <span class="tag gray">Quote #62</span>
-              </div>
-            </router-link> -->
-
-            <!-- <router-link :to="{ name: 'RouteQuoteDetail', params: { id: 2 } }" class="quote-user-normal">
-            <p>My plan worked, we didnt get APH!</p>
-            <span class="tag gray">Quote #23</span>
-          </router-link>
-
-          <router-link :to="{ name: 'RouteQuoteDetail', params: { id: 2 } }" class="quote-user-normal">
-            <p>I never said that!</p>
-            <span class="tag gray">Quote #15</span>
-          </router-link> -->
-
             <!-- {{ highlightQuote }} -->
+            <template v-if="highlightQuote">
+              <hr>
+            </template>
 
-            <hr>
+            <strong class="profile-title">Latest uploads</strong>
 
             <template v-if="authoredQuotes.length > 0">
               <UserProfileQuote v-for="quote in authoredQuotes" :key="quote.id" :data="quote" />
             </template>
 
-            <!-- <pre>
-            {{ authoredQuotes }}
-          </pre> -->
-
-            <!-- <div class="flex-wrap" style="padding-left:20px">
-              <button class="button" @click="quotesByUser">
-                User Quotes
+            <div class="flex-wrap center">
+              <button :data-title-top="`Quotes posted by ${profile.username}`" class="button semiwide btn-gray" @click="quotesByUser">
+                All Posts
               </button>
-            </div> -->
+
+              <button :data-title-top="`Quotes from ${profile.username}`" class="button semiwide" @click="quotesFromUser">
+                Quoted
+              </button>
+            </div>
           </div>
         </div>
       </template>
