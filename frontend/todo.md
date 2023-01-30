@@ -2,26 +2,25 @@
 
 [https://quotes.hivecom.net/swagger/]
 
-- [Quote creator] [] Add drag re-ordering
-  [https://stackoverflow.com/questions/26283661/drag-drop-with-handle]
 - [Global] [] Create generic modal component
+  - [] Convert tag modal
+  - [] Convert user settings
 
 ## User
 
-- [] Design how quote looks on a user profile
-- [] Adding a highlighted quote
-- [] Showing last 3 quotes from this user
+- [] Design how quote looks on a user profile (look for highlight -> look for just text -> only image)
+- [] Adding a highlighted quote (on quote detail)
+- [] Remove highlighted quote (user settings)
+- [] Showing last 2 quotes from this user
 - [] Use markdown for user profile
+  - [] Make form bigger
+  - [] Update styling of user input markdown styles
 
 ## Users
 
 - [] List user
 - [] Show latest quote and last quoted
 - [] Add links to profile and filtered list
-
-## Create
-
-- [] Implement rearrange
 
 ## List
 
