@@ -13,6 +13,11 @@
 - [] Consolidated mode (all quotes are max 256px tall) (default)
 - [] Add option to add your indiced or authored quote as a highligh
 
+## Quote Create
+
+- Add user autocomplete to quotees
+- If user does not exist, add UI modal confirmation for "Adding a user"
+
 ## Stats
 
 - top level (cells function as links)

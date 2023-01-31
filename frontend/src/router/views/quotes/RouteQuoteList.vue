@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useEventListener, useThrottleFn } from '@vueuse/core'
 import { useQuote } from '../../../store/quote'
 import { $, searchInStr } from '../../../bin/utils'
 
@@ -27,7 +28,7 @@ onBeforeUnmount(() => {
   filters.clear()
 })
 
-const data = computed(() => {
+const filteredData = computed(() => {
   // #1 First filter data from active filters
   const filtered = quote.quotes.filter((q) => {
     const quotees = q.indices.map(indice => indice.quotee)
@@ -55,11 +56,19 @@ const data = computed(() => {
 
 const authors = computed(() =>
   Array.from(
-    data.value.reduce((a, b) => {
+    filteredData.value.reduce((a, b) => {
       return a.add(b.author)
     }, new Set()),
   ),
 )
+
+const displayedRows = ref(20)
+const displayedData = computed(() => filteredData.value.slice(0, displayedRows.value))
+
+useEventListener(window, 'scroll', useThrottleFn(() => {
+  if (window.scrollY + window.innerHeight >= (document.body.offsetHeight - 1500))
+    displayedRows.value += 20
+}, 100))
 
 /**
  * Header scrolling
@@ -89,7 +98,7 @@ function random() {
       <div class="quote-container container-header">
         <div class="quote-title-wrap text">
           <h1>Quote list</h1>
-          <button v-if="data.length > 1" class="button btn-gray semiwide" @click="random()">
+          <button v-if="filteredData.length > 1" class="button btn-gray semiwide" @click="random()">
             Random
           </button>
         </div>
@@ -103,13 +112,13 @@ function random() {
         <template v-else>
           <div class="quote-list-context ">
             <p>
-              <b>{{ data.length }}</b> {{ data.length === 1 ? "quote" : "quotes" }} uploaded by
+              <b>{{ filteredData.length }}</b> {{ filteredData.length === 1 ? "quote" : "quotes" }} uploaded by
               <b>{{ authors.length }}</b> {{ authors.length === 1 ? "person" : "people" }}
             </p>
           </div>
 
           <div class="quote-list-items">
-            <QuoteListItem v-for="item in data" :key="item.id" :data="item" />
+            <QuoteListItem v-for="item in displayedData" :key="item.id" :data="item" />
           </div>
         </template>
       </div>

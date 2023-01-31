@@ -37,7 +37,7 @@ const usersByQuotes = computed(() => objectToArray(quote.quotes.reduce((group, q
   }
 
   return group
-}, {} as Metric)).sort((a, b) => a > b ? 1 : -1))
+}, {} as Metric)).sort((a, b) => Object.values(a)[0] < Object.values(b)[0] ? 1 : -1))
 
 // Rank users by the amount of uploads
 const usersByUploads = computed(() => objectToArray(quote.quotes.reduce((group, quote) => {
@@ -47,7 +47,7 @@ const usersByUploads = computed(() => objectToArray(quote.quotes.reduce((group, 
     group[quote.author]++
 
   return group
-}, {} as Metric)).sort((a, b) => a > b ? 1 : -1))
+}, {} as Metric)).sort((a, b) => Object.values(a)[0] < Object.values(b)[0] ? 1 : -1))
 
 // Most used tagts
 const tagsByUsage = computed(() => objectToArray(quote.quotes.reduce((group, quote) => {
@@ -60,7 +60,7 @@ const tagsByUsage = computed(() => objectToArray(quote.quotes.reduce((group, quo
   }
 
   return group
-}, {} as Metric)).sort((a, b) => a > b ? 1 : -1))
+}, {} as Metric)).sort((a, b) => Object.values(a)[0] < Object.values(b)[0] ? 1 : -1))
 </script>
 
 <template>
@@ -108,23 +108,8 @@ const tagsByUsage = computed(() => objectToArray(quote.quotes.reduce((group, quo
             <strong>{{ date.timeShort(lastUpload.createdAt) }}</strong>
             <span>Latest Post</span>
           </div>
-
-          <!-- <pre>
-            {{ usersByQuotes }}
-          </pre>
-
-          <hr>
-
-          <pre>
-            {{ usersByUploads }}
-          </pre>
-
-          <hr>
-
-          <pre>
-            {{ tagsByUsage }}
-          </pre> -->
         </div>
+        <pre>{{ usersByQuotes }}</pre>
       </template>
     </div>
   </div>
