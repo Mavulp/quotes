@@ -2,14 +2,14 @@
 import { onBeforeMount, reactive } from 'vue'
 import { useLoading } from '../../store/loading'
 import { useUser } from '../../store/user'
-import type { EditableSettings } from '../../types/user-types'
+import type { Settings } from '../../types/user-types'
 
 import InputText from '../form/InputText.vue'
 import InputTextarea from '../form/InputTextarea.vue'
 
 const user = useUser()
 const loading = useLoading()
-const form = reactive<EditableSettings>({
+const form = reactive<Omit<Settings, 'highlightedQuoteId' | 'colorTheme'>>({
   bio: '',
   profilePicture: '',
 })

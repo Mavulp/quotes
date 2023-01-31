@@ -4,7 +4,7 @@
 
 ## User
 
-- [] Design how quote looks on a user profile (look for highlight -> look for just text -> only image)
+- [x] Design how quote looks on a user profile (look for highlight -> look for just text -> only image)
 - [] Adding a highlighted quote (on quote detail)
 - [] Remove highlighted quote (user settings)
 - [x] Showing last 3 quotes from this user

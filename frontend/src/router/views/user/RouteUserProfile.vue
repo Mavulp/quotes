@@ -121,9 +121,9 @@ function quotesFromUser() {
 
             <hr>
 
-            <!-- {{ highlightQuote }} -->
             <template v-if="highlightQuote">
               <hr>
+              <UserProfileQuote :data="highlightQuote" />
             </template>
 
             <strong class="profile-title">Latest uploads</strong>

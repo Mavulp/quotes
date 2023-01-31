@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { onBeforeMount, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useClipboard } from '@vueuse/core'
 import type { Quote } from '../../../types/quote-types'
@@ -17,12 +17,14 @@ import CommentItem from '../../../components/comments/CommentItem.vue'
 import CommentCreate from '../../../components/comments/CommentCreate.vue'
 import UserLink from '../../../components/user/UserLink.vue'
 import { useFilters } from '../../../store/filters'
+import { useUser } from '../../../store/user'
 
 const route = useRoute()
 const router = useRouter()
 const quotes = useQuote()
 const loading = useLoading()
 const filters = useFilters()
+const user = useUser()
 
 const { copy } = useClipboard()
 
@@ -98,6 +100,21 @@ function filterOnTag(tag: string) {
   filters.setFilter('tag', [tag])
   router.push({ name: 'RouteQuoteList' })
 }
+
+// Highlight stuff
+function saveHighlight() {
+  user.updateSettings({
+    ...user.settings,
+    highlightedQuoteId: Number(route.params.id),
+  })
+}
+
+function removeHighlight() {
+  user.updateSettings({
+    ...user.settings,
+    highlightedQuoteId: null,
+  })
+}
 </script>
 
 <template>
@@ -118,6 +135,14 @@ function filterOnTag(tag: string) {
           <span class="date">{{ date.time(quote.createdAt) }}</span>
 
           <div class="flex-1" />
+
+          <button class="button btn-white btn-round" data-title-top="Highlight on profile" @click="saveHighlight">
+            <Icon code="e866" />
+          </button>
+
+          <button class="button btn-white btn-round" data-title-top="Remove highlight" @click="removeHighlight">
+            <Icon code="e867" />
+          </button>
 
           <button class="button btn-white" @click="random">
             Random
