@@ -13,10 +13,6 @@
     position: relative;
 
     .button.btn-white:first-of-type {
-      // @include radius(50%);
-      // width: 36px;
-      // height: 36px;
-      // line-height: 36px;
       min-width: unset;
       position: absolute;
       bottom: 0;
@@ -36,6 +32,12 @@
 
     .button {
       @include font(400);
+
+      &.highlight {
+        .material-icons {
+          color: var(--color-highlight) !important;
+        }
+      }
 
       &:hover {
         color: var(--color-text);

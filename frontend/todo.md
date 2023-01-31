@@ -5,12 +5,12 @@
 ## User
 
 - [x] Design how quote looks on a user profile (look for highlight -> look for just text -> only image)
-- [] Adding a highlighted quote (on quote detail)
-- [] Remove highlighted quote (user settings)
+- [x] Adding a highlighted quote (on quote detail)
+- [x] Remove highlighted quote (user settings)
 - [x] Showing last 3 quotes from this user
-- [] Use markdown for user profile
+- [x] Use markdown for user profile
   - [x] Make form bigger
-  - [] Update styling of user input markdown styles (code, pre)
+  - [x] Update styling of user input markdown styles (code, pre)
 
 ## Users
 

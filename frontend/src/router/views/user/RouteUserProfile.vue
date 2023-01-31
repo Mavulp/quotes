@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { marked } from 'marked'
 import { useUser } from '../../../store/user'
@@ -22,7 +22,7 @@ const router = useRouter()
 
 const profile = computed(() => user.users.find(u => u.username === route.params.username))
 const highlightQuote = computed(() => quotes.getQuoteById(profile.value?.highlightedQuoteId))
-const authoredQuotes = computed(() => quotes.getAuthoredQuotes(String(route.params.username)).slice(0, 3))
+const quotedQuotes = computed(() => quotes.getQuotedQuotes(String(route.params.username)).slice(0, 3))
 
 function colorOfTheDay() {
   const date = new Date()
@@ -42,6 +42,11 @@ const { normal } = colorOfTheDay()
 
 // Name
 const editing = ref(false)
+
+// watch(editing, (val) => {
+//   if (!val)
+//     user.fetchUsers()
+// })
 
 // Redirect back to filters
 function quotesByUser() {
@@ -103,14 +108,14 @@ function quotesFromUser() {
                 </button>
               </li>
             </ul>
+
+            <button v-if="profile.username === user.user.username" class="edit-btn" data-title-top="Edit Profile" @click="editing = true">
+              <Icon code="e8b8" size="2" />
+            </button>
           </div>
         </div>
 
         <div class="quote-user-info">
-          <button v-if="profile.username === user.user.username" class="edit-btn" data-title-top="Edit Profile" @click="editing = true">
-            <Icon code="e8b8" />
-          </button>
-
           <Modal v-if="editing" @close="editing = false">
             <ModalSettings />
           </Modal>
@@ -122,14 +127,16 @@ function quotesFromUser() {
             <hr>
 
             <template v-if="highlightQuote">
+              <strong class="profile-title highlight">Highlighted Quote</strong>
+
+              <UserProfileQuote class="highlight-quote" :data="highlightQuote" />
               <hr>
-              <UserProfileQuote :data="highlightQuote" />
             </template>
 
-            <strong class="profile-title">Latest uploads</strong>
+            <strong class="profile-title">Latest quotes</strong>
 
-            <template v-if="authoredQuotes.length > 0">
-              <UserProfileQuote v-for="quote in authoredQuotes" :key="quote.id" :data="quote" />
+            <template v-if="quotedQuotes && quotedQuotes.length > 0">
+              <UserProfileQuote v-for="quote in quotedQuotes" :key="quote.id" :data="quote" />
             </template>
 
             <div class="flex-wrap center">

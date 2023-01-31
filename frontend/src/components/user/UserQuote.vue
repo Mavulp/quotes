@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 import { orderBy } from 'lodash'
 import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { date } from '../../bin/utils'
 import type { Quote } from '../../types/quote-types'
 
@@ -8,8 +9,11 @@ const props = defineProps<{
   data: Quote
 }>()
 
+const route = useRoute()
+
 const fragment = computed(() => {
-  return orderBy(props.data.fragments, ['type', 'highlight'], ['desc', 'desc'])[0]
+  return orderBy(props.data.fragments, ['type', 'highlight'], ['desc', 'desc'])
+    .sort(a => a.quotee === route.params.username ? -1 : 1)[0]
 })
 </script>
 

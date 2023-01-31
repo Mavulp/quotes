@@ -70,7 +70,8 @@ export const useUser = defineStore('user', {
 
       return put('/account/settings', form)
         .then(() => {
-          this.fetchUsers()
+          Object.assign(this.settings, form)
+          Object.assign(this.user, form)
           toast.push({ type: 'success', message: 'Succesfully updating settings' })
         })
         .catch(() => toast.push({ type: 'error', message: 'Error updating settings' }))

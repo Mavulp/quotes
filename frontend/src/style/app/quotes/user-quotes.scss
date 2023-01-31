@@ -15,6 +15,12 @@
   position: relative;
   z-index: 1;
 
+  &.highlight-quote {
+    font-size: 3.2rem;
+    color: var(--color-highlight);
+    max-height: 180px;
+  }
+
   &:before {
     content: "";
     @include gradient(180deg, rgba(#181818, 0), rgba(#181818, 1));

@@ -83,6 +83,25 @@
             }
           }
         }
+
+        .edit-btn {
+          display: block;
+          margin: 20px auto 0;
+          // position: absolute;
+          // top: 20px;
+          // right: -10%;
+          z-index: 15;
+          cursor: pointer;
+
+          &:hover .material-icons {
+            color: var(--color-highlight);
+          }
+
+          .material-icons {
+            @include t();
+            color: var(--color-text-light);
+          }
+        }
       }
     }
 
@@ -91,24 +110,6 @@
       position: relative;
       z-index: 1;
       padding-bottom: 156px;
-
-      .edit-btn {
-        display: block;
-        position: absolute;
-        top: 20px;
-        right: -10%;
-        z-index: 15;
-        cursor: pointer;
-
-        &:hover .material-icons {
-          color: var(--color-highlight);
-        }
-
-        .material-icons {
-          @include t();
-          color: var(--color-text-light);
-        }
-      }
 
       .profile-markdown-wrap {
         h1,
@@ -160,6 +161,25 @@
           }
         }
 
+        pre {
+          @include radius(var(--radius-lg));
+          padding: 20px;
+          background-color: var(--color-bg-light);
+
+          code {
+            @include radius(0);
+            color: var(--color-text);
+            padding: 0;
+          }
+        }
+
+        code {
+          @include radius(var(--radius-sm));
+
+          padding: 3px 5px;
+          background-color: var(--color-bg-light);
+        }
+
         ol,
         ul {
           display: block;
@@ -182,6 +202,13 @@
         }
       }
 
+      hr {
+        margin: 60px -20px;
+        border: none;
+        border-bottom: 1px solid var(--color-border);
+        opacity: 0.25;
+      }
+
       h1 {
         font-size: 6.2rem;
         margin-bottom: 20px;
@@ -192,13 +219,6 @@
         line-height: 1.6em;
       }
 
-      hr {
-        margin: 40px 0;
-        // margin-top: 40px;
-        border: none;
-        border-bottom: 1px solid var(--color-border);
-      }
-
       .profile-title {
         @include font(600);
         display: block;
@@ -206,6 +226,10 @@
         color: var(--color-text);
         font-size: 1.3rem;
         margin-bottom: 15px;
+
+        &.highlight {
+          color: var(--color-highlight);
+        }
       }
 
       .quote-user-normal,
@@ -273,9 +297,26 @@
       object-fit: cover;
       object-position: center;
     }
+
+    p {
+      font-size: 1.4rem;
+      color: var(--color-text);
+      margin-bottom: 2px;
+    }
+
+    // .wrap {
+    //   @include flex(4);
+    // }
   }
 
   textarea {
     height: 156px;
+  }
+
+  hr {
+    margin: 20px 0;
+    border: none;
+    border-bottom: 1px solid var(--color-border);
+    opacity: 0.25;
   }
 }

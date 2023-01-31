@@ -7,7 +7,7 @@ const toasts = useToast()
 <template>
   <div class="toasts-wrap">
     <ul>
-      <TransitionGroup appear name="toast" mode="out-in">
+      <TransitionGroup name="tab">
         <ToastItem v-for="[, item] in toasts.items" :key="item._id" :data="item" />
       </TransitionGroup>
     </ul>

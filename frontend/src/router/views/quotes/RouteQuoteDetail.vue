@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useClipboard } from '@vueuse/core'
 import type { Quote } from '../../../types/quote-types'
@@ -102,6 +102,9 @@ function filterOnTag(tag: string) {
 }
 
 // Highlight stuff
+
+const isHighlighted = computed(() => Number(route.params.id) === user.settings.highlightedQuoteId)
+
 function saveHighlight() {
   user.updateSettings({
     ...user.settings,
@@ -136,12 +139,14 @@ function removeHighlight() {
 
           <div class="flex-1" />
 
-          <button class="button btn-white btn-round" data-title-top="Highlight on profile" @click="saveHighlight">
-            <Icon code="e866" />
+          <!-- Is highlighted -->
+          <button v-if="isHighlighted" class="button highlight btn-white btn-round" data-title-top="Remove highlight" @click="removeHighlight">
+            <Icon code="e866" size="2" />
           </button>
 
-          <button class="button btn-white btn-round" data-title-top="Remove highlight" @click="removeHighlight">
-            <Icon code="e867" />
+          <!-- Add highlight -->
+          <button v-else class="button highlight btn-white btn-round" data-title-top="Highlight on profile" @click="saveHighlight">
+            <Icon code="e867" size="2" />
           </button>
 
           <button class="button btn-white" @click="random">
