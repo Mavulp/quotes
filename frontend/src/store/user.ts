@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { isArray, isNil } from 'lodash'
 import { get, put } from '../bin/fetch'
-import type { EditableSettings, Settings, User, UserRole } from '../types/user-types'
+import type { Settings, User, UserRole } from '../types/user-types'
 import { useToast } from '../store/toast'
 import { useLoading } from '../store/loading'
 
@@ -65,12 +65,13 @@ export const useUser = defineStore('user', {
         .finally(() => loading.del('settings'))
     },
 
-    async updateSettings(form: EditableSettings) {
+    async updateSettings(form: any) {
       const toast = useToast()
 
       return put('/account/settings', form)
         .then(() => {
-          this.fetchUsers()
+          Object.assign(this.settings, form)
+          Object.assign(this.user, form)
           toast.push({ type: 'success', message: 'Succesfully updating settings' })
         })
         .catch(() => toast.push({ type: 'error', message: 'Error updating settings' }))

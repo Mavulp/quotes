@@ -1,14 +1,17 @@
 <script setup lang='ts'>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { marked } from 'marked'
 import { useUser } from '../../../store/user'
 import { getRanMinMax } from '../../../bin/utils'
 import { useQuote } from '../../../store/quote'
 import { useLoading } from '../../../store/loading'
 import { useFilters } from '../../../store/filters'
 
+import UserProfileQuote from '../../../components/user/UserQuote.vue'
 import ModalSettings from '../../../components/modal/ModalSettings.vue'
 import Modal from '../../../components/Modal.vue'
+import { sanitize } from '../../../bin/comments'
 
 const user = useUser()
 const filters = useFilters()
@@ -18,7 +21,8 @@ const route = useRoute()
 const router = useRouter()
 
 const profile = computed(() => user.users.find(u => u.username === route.params.username))
-const quoteHighlight = computed(() => quotes.getQuoteById(profile.value?.highlightedQuoteId))
+const highlightQuote = computed(() => quotes.getQuoteById(profile.value?.highlightedQuoteId))
+const quotedQuotes = computed(() => quotes.getQuotedQuotes(String(route.params.username)).slice(0, 3))
 
 function colorOfTheDay() {
   const date = new Date()
@@ -38,6 +42,11 @@ const { normal } = colorOfTheDay()
 
 // Name
 const editing = ref(false)
+
+// watch(editing, (val) => {
+//   if (!val)
+//     user.fetchUsers()
+// })
 
 // Redirect back to filters
 function quotesByUser() {
@@ -93,51 +102,50 @@ function quotesFromUser() {
                 </button>
               </li>
               <li><div class="dot-padder" /></li>
-              <li :data-title-top="`View quotes by ${profile.username}`">
+              <li :data-title-top="`Quotes from ${profile.username}`">
                 <button @click="quotesFromUser">
                   Quoted <span>{{ quotes.getQuotedQuotes(profile.username).length }}</span>
                 </button>
               </li>
             </ul>
+
+            <button v-if="profile.username === user.user.username" class="edit-btn" data-title-top="Edit Profile" @click="editing = true">
+              <Icon code="e8b8" size="2" />
+            </button>
           </div>
         </div>
 
         <div class="quote-user-info">
-          <button v-if="profile.username === user.user.username" class="edit-btn" data-title-top="Edit Profile" @click="editing = true">
-            <Icon code="e8b8" />
-          </button>
-
           <Modal v-if="editing" @close="editing = false">
             <ModalSettings />
           </Modal>
 
           <div>
-            <h2>{{ profile.username }}</h2>
-            <p>{{ profile.bio }}</p>
+            <h1>{{ profile.username }}</h1>
+            <div class="profile-markdown-wrap" v-html="sanitize(marked.parse(profile.bio))" />
 
             <hr>
 
-            <router-link v-if="quoteHighlight" :to="{ name: 'RouteQuoteDetail', params: { id: quoteHighlight.id } }" class="quote-user-highlight">
-              <p>My plan worked, we didnt get APH!</p>
-              <div class="flex-wrap">
-                <span class="tag highlight">Highlighted</span>
-                <span class="tag gray">Quote #62</span>
-              </div>
-            </router-link>
+            <template v-if="highlightQuote">
+              <strong class="profile-title highlight">Highlighted Quote</strong>
 
-            <!-- <router-link :to="{ name: 'RouteQuoteDetail', params: { id: 2 } }" class="quote-user-normal">
-            <p>My plan worked, we didnt get APH!</p>
-            <span class="tag gray">Quote #23</span>
-          </router-link>
+              <UserProfileQuote class="highlight-quote" :data="highlightQuote" />
+              <hr>
+            </template>
 
-          <router-link :to="{ name: 'RouteQuoteDetail', params: { id: 2 } }" class="quote-user-normal">
-            <p>I never said that!</p>
-            <span class="tag gray">Quote #15</span>
-          </router-link> -->
+            <strong class="profile-title">Latest quotes</strong>
 
-            <div class="flex-wrap" style="padding-left:20px">
-              <button class="button" @click="quotesByUser">
-                User Quotes
+            <template v-if="quotedQuotes && quotedQuotes.length > 0">
+              <UserProfileQuote v-for="quote in quotedQuotes" :key="quote.id" :data="quote" />
+            </template>
+
+            <div class="flex-wrap center">
+              <button :data-title-top="`Quotes posted by ${profile.username}`" class="button semiwide btn-gray" @click="quotesByUser">
+                All Posts
+              </button>
+
+              <button :data-title-top="`Quotes from ${profile.username}`" class="button semiwide" @click="quotesFromUser">
+                Quoted
               </button>
             </div>
           </div>

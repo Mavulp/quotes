@@ -59,6 +59,15 @@
     background-color: var(--color-bg);
   }
 
+  &.btn-gray-light {
+    color: var(--color-text);
+    background-color: transparent;
+
+    &:hover {
+      background-color: var(--color-bg-light-hover);
+    }
+  }
+
   &.btn-white {
     color: var(--color-text);
     background-color: transparent;
@@ -73,7 +82,7 @@
     background-color: var(--color-bg-light);
 
     &:hover {
-      background-color: var(--color-bg-light);
+      background-color: var(--color-bg-light-hover);
     }
   }
 }

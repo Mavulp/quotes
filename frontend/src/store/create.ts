@@ -78,6 +78,7 @@ export const useCreate = defineStore('create', {
           return null
         })
         .finally(() => {
+          this.reset()
           loading.del('create')
         })
     },

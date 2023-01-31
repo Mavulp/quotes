@@ -14,8 +14,7 @@ const props = defineProps<Props>()
 
     <div v-if="props.data.quotee" class="quote-item-quotee">
       <Icon size="1.6" code="e244" />
-      <span v-if="props.data.quotee === 'Anonymous'">Anonymous</span>
-      <router-link v-else :to="{ name: 'RouteUserProfile', params: { username: props.data.quotee } }">
+      <router-link :to="{ name: 'RouteUserProfile', params: { username: props.data.quotee } }">
         {{ props.data.quotee }}
       </router-link>
     </div>

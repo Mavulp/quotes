@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { onBeforeMount, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useClipboard } from '@vueuse/core'
 import type { Quote } from '../../../types/quote-types'
@@ -15,14 +15,16 @@ import ModelFragmentText from '../../../components/quotes/quote-item/fragments/M
 import ModelFragmentImage from '../../../components/quotes/quote-item/fragments/ModelFragmentImage.vue'
 import CommentItem from '../../../components/comments/CommentItem.vue'
 import CommentCreate from '../../../components/comments/CommentCreate.vue'
-import UserLink from '../../../components/UserLink.vue'
+import UserLink from '../../../components/user/UserLink.vue'
 import { useFilters } from '../../../store/filters'
+import { useUser } from '../../../store/user'
 
 const route = useRoute()
 const router = useRouter()
 const quotes = useQuote()
 const loading = useLoading()
 const filters = useFilters()
+const user = useUser()
 
 const { copy } = useClipboard()
 
@@ -98,6 +100,24 @@ function filterOnTag(tag: string) {
   filters.setFilter('tag', [tag])
   router.push({ name: 'RouteQuoteList' })
 }
+
+// Highlight stuff
+
+const isHighlighted = computed(() => Number(route.params.id) === user.settings.highlightedQuoteId)
+
+function saveHighlight() {
+  user.updateSettings({
+    ...user.settings,
+    highlightedQuoteId: Number(route.params.id),
+  })
+}
+
+function removeHighlight() {
+  user.updateSettings({
+    ...user.settings,
+    highlightedQuoteId: null,
+  })
+}
 </script>
 
 <template>
@@ -118,6 +138,16 @@ function filterOnTag(tag: string) {
           <span class="date">{{ date.time(quote.createdAt) }}</span>
 
           <div class="flex-1" />
+
+          <!-- Is highlighted -->
+          <button v-if="isHighlighted" class="button highlight btn-white btn-round" data-title-top="Remove highlight" @click="removeHighlight">
+            <Icon code="e866" size="2" />
+          </button>
+
+          <!-- Add highlight -->
+          <button v-else class="button highlight btn-white btn-round" data-title-top="Highlight on profile" @click="saveHighlight">
+            <Icon code="e867" size="2" />
+          </button>
 
           <button class="button btn-white" @click="random">
             Random

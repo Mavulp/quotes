@@ -16,7 +16,9 @@ const props = defineProps<Props>()
 
     <div class="quote-item-quotee">
       <Icon size="1.6" code="e244" />
-      <a :href="props.data.quotee">{{ props.data.quotee }}</a>
+      <router-link :to="{ name: 'RouteUserProfile', params: { username: props.data.quotee } }">
+        {{ props.data.quotee }}
+      </router-link>
     </div>
   </div>
 </template>
