@@ -30,8 +30,7 @@ export const useQuote = defineStore('quotes', {
           const filters = useFilters()
           filters.init(res)
 
-          this.quotes = res
-          // this.quotes = res.sort((a, b) => a.createdAt > b.createdAt ? -1 : 1)
+          this.quotes = res.sort((a, b) => a.createdAt > b.createdAt ? -1 : 1)
           return res
         })
         .catch(() => {

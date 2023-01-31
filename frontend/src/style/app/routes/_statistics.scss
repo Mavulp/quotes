@@ -16,10 +16,13 @@
       padding: 30px;
       height: 128px;
       border-right: 1px solid var(--color-border);
-      border-bottom: 1px solid var(--color-border);
 
       &:nth-child(5n) {
         border-right: 0;
+      }
+
+      &:nth-child(-n + 5) {
+        border-bottom: 1px solid var(--color-border);
       }
 
       &.date {

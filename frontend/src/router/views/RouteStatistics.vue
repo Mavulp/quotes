@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import { computed } from 'vue'
+import { findLast } from 'lodash'
 import { useQuote } from '../../store/quote'
 import { date, objectToArray, toNum } from '../../bin/utils'
 import type { Quote } from '../../types/quote-types'
@@ -15,18 +16,18 @@ const user = useUser()
  */
 
 const totalQuotes = computed(() => quote.quotes.length)
-const totalQuotees = computed(() => quote.quotes.reduce((amount, q) => {
-  amount += new Set(q.indices.map(item => item.quotee)).size
-  return amount
-}, 0))
+// const totalQuotees = computed(() => quote.quotes.reduce((amount, q) => {
+//   amount += new Set(q.indices.map(item => item.quotee)).size
+//   return amount
+// }, 0))
 const totalAuthors = computed(() => new Set(quote.quotes.map(q => q.author)).size)
-const firstUpload = computed(() => quote.quotes.at(-1) as Quote)
+const firstUpload = computed(() => findLast(quote.quotes, q => q.createdAt !== 0))
 const lastUpload = computed(() => quote.quotes.at(0) as Quote)
-const registeredUsers = computed(() => user.users.length)
-// Rank users by how many times they were quoted
+// const registeredUsers = computed(() => user.users.length)
 
 type Metric = Record<string, number>
 
+// Rank users by how many times they were quoted
 const usersByQuotes = computed(() => objectToArray(quote.quotes.reduce((group, quote) => {
   for (const item of quote.indices) {
     if (group[item.quotee])
@@ -73,21 +74,16 @@ const tagsByUsage = computed(() => objectToArray(quote.quotes.reduce((group, quo
         <div class="stats-grid">
           <div class="cell">
             <strong>{{ toNum(totalQuotes) }}</strong>
-            <span>Total Quotes</span>
+            <span>Quotes</span>
           </div>
           <div class="cell">
-            <strong>{{ toNum(totalQuotees) }}</strong>
-            <span>Quoted Users</span>
+            <strong>{{ toNum(usersByQuotes.length) }}</strong>
+            <span>Quotees</span>
           </div>
           <div class="cell">
             <strong>{{ toNum(totalAuthors) }}</strong>
-            <span>Total Authors</span>
+            <span>Authors</span>
           </div>
-          <div class="cell">
-            <strong>{{ toNum(registeredUsers) }}</strong>
-            <span>Registered Users</span>
-          </div>
-
           <div class="cell date">
             <strong>{{ Object.keys(usersByQuotes[0])[0] }}</strong>
             <span>Most Quoted</span>
@@ -109,7 +105,7 @@ const tagsByUsage = computed(() => objectToArray(quote.quotes.reduce((group, quo
             <span>Latest Post</span>
           </div>
         </div>
-        <pre>{{ usersByQuotes }}</pre>
+        <!-- <pre>{{ usersByQuotes }}</pre> -->
       </template>
     </div>
   </div>

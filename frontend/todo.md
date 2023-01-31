@@ -21,15 +21,10 @@
 ## Stats
 
 - top level (cells function as links)
-  - amount of quotes link to list
-  - amount of quotees
-  - amount of authors
-  - first upload (link to it)
   - time since last quote (link to the quote)
   - most used tag - link to filtered list
-  - most quoted person - link to filtered list
-  - most quotes added by - link to to filtered list
-  - most tags on a single quote (just number and link to it)
+
+- add links to cells 
 
 - sort by user
 - authors per year / month / week (last 12 months)

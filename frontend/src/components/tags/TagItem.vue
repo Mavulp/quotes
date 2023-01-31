@@ -35,7 +35,7 @@ function filterOnTag() {
 const quotes = computed(() => {
   return quote.quotes
     .filter(q => q.tags.includes(props.data.name))
-    .sort((a, b) => a.createdAt - b.createdAt)
+    .sort((a, b) => b.createdAt - a.createdAt)
 })
 
 async function deleteTag() {
