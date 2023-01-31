@@ -48,6 +48,17 @@ export const date = {
       day: 'numeric',
     })}`
   },
+  timeShort: (date: number) => {
+    const _date = new Date(date * 1000)
+
+    return `${padTo2Digits(_date.getUTCHours())}:${padTo2Digits(
+      _date.getUTCMinutes(),
+    )}, ${_date.toLocaleDateString('en-GB', {
+      year: '2-digit',
+      month: 'numeric',
+      day: 'numeric',
+    })}`
+  },
 
   tiny: (date: number) => {
     const _date = new Date(date * 1000)
@@ -88,4 +99,12 @@ export function parseJwt(token: string) {
   }).join(''))
 
   return JSON.parse(jsonPayload)
+}
+
+export function toNum(num: number) {
+  return num.toLocaleString()
+}
+
+export function objectToArray(obj: Record<any, any>) {
+  return Object.entries(obj).map(e => ({ [e[0]]: e[1] }))
 }

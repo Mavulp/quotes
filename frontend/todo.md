@@ -2,16 +2,6 @@
 
 [https://quotes.hivecom.net/swagger/]
 
-## User
-
-- [x] Design how quote looks on a user profile (look for highlight -> look for just text -> only image)
-- [x] Adding a highlighted quote (on quote detail)
-- [x] Remove highlighted quote (user settings)
-- [x] Showing last 3 quotes from this user
-- [x] Use markdown for user profile
-  - [x] Make form bigger
-  - [x] Update styling of user input markdown styles (code, pre)
-
 ## Users
 
 - [] List user

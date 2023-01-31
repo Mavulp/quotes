@@ -1,0 +1,43 @@
+.route-statistics {
+  padding-top: 20px;
+
+  h1 {
+    margin-bottom: 40px;
+  }
+
+  .stats-grid {
+    @include radius(var(--radius-lg));
+    @include grid(0, repeat(5, 1fr));
+    border: 1px solid var(--color-border);
+
+    .cell {
+      @include flex(5px, nowrap, center, center, column);
+
+      padding: 30px;
+      height: 128px;
+      border-right: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+
+      &:nth-child(5n) {
+        border-right: 0;
+      }
+
+      &.date {
+        strong {
+          font-size: 1.6rem;
+        }
+      }
+
+      strong {
+        @include font(700);
+        font-size: 3rem;
+        color: var(--color-highlight);
+      }
+
+      span {
+        font-size: 1.2rem;
+        color: var(--color-text-light);
+      }
+    }
+  }
+}
