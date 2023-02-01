@@ -1,16 +1,14 @@
 <script setup lang='ts'>
 import { computed } from 'vue'
 import { findLast } from 'lodash'
-import dayjs from 'dayjs'
 import { useQuote } from '../../store/quote'
 import { date, objectToArray, toNum } from '../../bin/utils'
 import type { Quote } from '../../types/quote-types'
 import { useLoading } from '../../store/loading'
-import { useUser } from '../../store/user'
+import StatBreakdown from '../../components/statistics/StatBreakdown.vue'
 
 const quote = useQuote()
 const loading = useLoading()
-const user = useUser()
 
 /**
  * Top level metrics
@@ -59,40 +57,6 @@ const tagsByUsage = computed(() => objectToArray(quote.quotes.reduce((group, quo
 
   return group
 }, {} as Metric)).sort((a, b) => Object.values(a)[0] < Object.values(b)[0] ? 1 : -1))
-
-// Daily quotes
-const quotesPerDay = computed(() => objectToArray(quote.quotes.reduce((group, quote) => {
-  // Convert the entire timestmap to just the day
-  const fullDay = dayjs.utc(quote.createdAt * 1000).startOf('day').format()
-
-  if (group[fullDay])
-    group[fullDay]++
-  else
-    group[fullDay] = 1
-
-  return group
-}, {} as Metric)))
-
-// Chart of uploads
-// Compute daily uploads of quotes in the last 365 days
-// const chart = computed(() => {
-//   let labels: string[] = []
-//   let data: number[] = []
-
-//   for (let i = 0; i >= 365; i++) {
-//     const date = dayjs.utc().subtract(i)
-//     const
-//   }
-
-//   return {
-//     labels,
-//     datasets: [{
-//       data,
-//       backgroundColor: '#f29b41',
-//       // borderColor:'#f29b41'
-//     }]
-//   }
-// })
 </script>
 
 <template>
@@ -136,7 +100,8 @@ const quotesPerDay = computed(() => objectToArray(quote.quotes.reduce((group, qu
             <span>Latest Post</span>
           </div>
         </div>
-        <pre>{{ quotesPerDay }}</pre>
+
+        <StatBreakdown />
       </template>
     </div>
   </div>

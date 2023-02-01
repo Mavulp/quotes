@@ -8,10 +8,6 @@ import QuoteCreate from '../../../components/quotes/create/QuoteCreate.vue'
 import QuotePreview from '../../../components/quotes/create/QuotePreview.vue'
 
 const create = useCreate()
-
-// onBeforeMount(() => {
-//   create.reset()
-// })
 </script>
 
 <template>

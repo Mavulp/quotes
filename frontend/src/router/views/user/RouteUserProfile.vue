@@ -122,7 +122,7 @@ function quotesFromUser() {
 
           <div>
             <h1>{{ profile.username }}</h1>
-            <div class="profile-markdown-wrap" v-html="sanitize(marked.parse(profile.bio))" />
+            <div v-if="profile.bio" class="profile-markdown-wrap" v-html="sanitize(marked.parse(profile.bio))" />
 
             <hr>
 

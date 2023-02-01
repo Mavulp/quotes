@@ -36,7 +36,9 @@ provide(
   computed<Quote>(() => props.data),
 )
 
-function goToQuote() {
+function goToQuote(e?: Event) {
+  if (e)
+    e.preventDefault()
   router.push({ name: 'RouteQuoteDetail', params: { id: props.data.id } })
 }
 </script>
@@ -63,7 +65,7 @@ function goToQuote() {
       <span class="quote-text"> {{ date.simple(props.data.createdAt) }} </span>
     </div>
 
-    <div class="quote-item-content" @click="goToQuote()">
+    <div class="quote-item-content" role="button" @click="goToQuote()" @mousedown.middle="goToQuote($event)">
       <template v-for="item in props.data.fragments" :key="item.index">
         <ModelFragmentText
           v-if="item.type === 'text' && !item.highlight"
