@@ -2,10 +2,12 @@
 import { computed } from 'vue'
 import { findLast } from 'lodash'
 import { useQuote } from '../../store/quote'
-import { date, objectToArray, toNum } from '../../bin/utils'
+import { date, getKey, getVal, objectToArray, toNum } from '../../bin/utils'
 import type { Quote } from '../../types/quote-types'
 import { useLoading } from '../../store/loading'
-import StatBreakdown from '../../components/statistics/StatBreakdown.vue'
+
+import StatBreakdown from '../../components/statistics/YearBreakdown.vue'
+import StatCell from '../../components/statistics/StatCell.vue'
 
 const quote = useQuote()
 const loading = useLoading()
@@ -20,8 +22,6 @@ const firstUpload = computed(() => findLast(quote.quotes, q => q.createdAt !== 0
 const lastUpload = computed(() => quote.quotes.at(0) as Quote)
 // const registeredUsers = computed(() => user.users.length)
 
-type Metric = Record<string, number>
-
 // Rank users by how many times they were quoted
 const usersByQuotes = computed(() => objectToArray(quote.quotes.reduce((group, quote) => {
   for (const item of quote.indices) {
@@ -33,7 +33,7 @@ const usersByQuotes = computed(() => objectToArray(quote.quotes.reduce((group, q
   }
 
   return group
-}, {} as Metric)).sort((a, b) => Object.values(a)[0] < Object.values(b)[0] ? 1 : -1))
+}, {} as Record<string, number>)).sort((a, b) => getVal(a) < getVal(b) ? 1 : -1))
 
 // Rank users by the amount of uploads
 const usersByUploads = computed(() => objectToArray(quote.quotes.reduce((group, quote) => {
@@ -43,7 +43,7 @@ const usersByUploads = computed(() => objectToArray(quote.quotes.reduce((group, 
     group[quote.author]++
 
   return group
-}, {} as Metric)).sort((a, b) => Object.values(a)[0] < Object.values(b)[0] ? 1 : -1))
+}, {} as Record<string, number>)).sort((a, b) => getVal(a) < getVal(b) ? 1 : -1))
 
 // Most used tagts
 const tagsByUsage = computed(() => objectToArray(quote.quotes.reduce((group, quote) => {
@@ -56,7 +56,7 @@ const tagsByUsage = computed(() => objectToArray(quote.quotes.reduce((group, quo
   }
 
   return group
-}, {} as Metric)).sort((a, b) => Object.values(a)[0] < Object.values(b)[0] ? 1 : -1))
+}, {} as Record<string, number>)).sort((a, b) => getVal(a) < getVal(b) ? 1 : -1))
 </script>
 
 <template>
@@ -66,41 +66,19 @@ const tagsByUsage = computed(() => objectToArray(quote.quotes.reduce((group, quo
 
       <Spinner v-if="loading.get('quotes', 'users')" />
       <template v-else>
+        <strong class="section-title">Top level statistics</strong>
         <div class="stats-grid">
-          <div class="cell">
-            <strong>{{ toNum(totalQuotes) }}</strong>
-            <span>Quotes</span>
-          </div>
-          <div v-if="usersByQuotes" class="cell">
-            <strong>{{ toNum(usersByQuotes.length) }}</strong>
-            <span>Quotees</span>
-          </div>
-          <div class="cell">
-            <strong>{{ toNum(totalAuthors) }}</strong>
-            <span>Authors</span>
-          </div>
-          <div v-if="usersByQuotes" class="cell date">
-            <strong>{{ Object.keys(usersByQuotes[0])[0] }}</strong>
-            <span>Most Quoted</span>
-          </div>
-          <div class="cell date">
-            <strong>{{ Object.keys(usersByUploads[0])[0] }}</strong>
-            <span>Most Uploads</span>
-          </div>
-          <div class="cell date">
-            <strong>#{{ Object.keys(tagsByUsage[0])[0] }}</strong>
-            <span>Most Used Tag</span>
-          </div>
-          <div v-if="firstUpload" class="cell date">
-            <strong>{{ date.timeShort(firstUpload.createdAt) }}</strong>
-            <span>First Post </span>
-          </div>
-          <div v-if="lastUpload" class="cell date">
-            <strong>{{ date.timeShort(lastUpload.createdAt) }}</strong>
-            <span>Latest Post</span>
-          </div>
+          <StatCell label="Quotes" :data="toNum(totalQuotes)" />
+          <StatCell label="Quotees" :data="toNum(usersByQuotes.length)" />
+          <StatCell label="Authors" :data="toNum(totalAuthors)" />
+          <StatCell v-if="usersByQuotes" str label="Most Quoted" :data="Object.keys(usersByQuotes[0])[0]" />
+          <StatCell str label="Most Uploads" :data="Object.keys(usersByUploads[0])[0]" />
+          <StatCell v-if="tagsByUsage" str label="Most Used Tag" :data="Object.keys(tagsByUsage[0])[0]" />
+          <StatCell v-if="firstUpload" str label="First Post" :data="date.timeShort(firstUpload.createdAt)" />
+          <StatCell v-if="lastUpload" str label="Latest Post" :data="date.timeShort(lastUpload.createdAt)" />
         </div>
 
+        <strong class="section-title">Upload frequency</strong>
         <StatBreakdown />
       </template>
     </div>

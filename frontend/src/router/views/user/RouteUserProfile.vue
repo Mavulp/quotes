@@ -127,13 +127,13 @@ function quotesFromUser() {
             <hr>
 
             <template v-if="highlightQuote">
-              <strong class="profile-title highlight">Highlighted Quote</strong>
+              <strong class="section-title highlight">Highlighted Quote</strong>
 
               <UserProfileQuote class="highlight-quote" :data="highlightQuote" />
               <hr>
             </template>
 
-            <strong class="profile-title">Latest quotes</strong>
+            <strong class="section-title">Latest quotes</strong>
 
             <template v-if="quotedQuotes && quotedQuotes.length > 0">
               <UserProfileQuote v-for="quote in quotedQuotes" :key="quote.id" :data="quote" />

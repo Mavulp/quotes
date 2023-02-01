@@ -34,3 +34,12 @@
     font-size: 4rem;
   }
 }
+
+.section-title {
+  @include font(600);
+  display: block;
+  text-transform: uppercase;
+  color: var(--color-text);
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+}

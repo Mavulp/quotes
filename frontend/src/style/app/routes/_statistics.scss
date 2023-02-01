@@ -9,6 +9,7 @@
     @include radius(var(--radius-lg));
     @include grid(0, repeat(5, 1fr));
     border: 1px solid var(--color-border);
+    margin-bottom: 40px;
 
     .cell {
       @include flex(5px, nowrap, center, center, column);
@@ -42,5 +43,12 @@
         color: var(--color-text-light);
       }
     }
+  }
+
+  .year-breakdown {
+    @include radius(var(--radius-lg));
+    padding: 20px;
+    margin-bottom: 40px;
+    border: 1px solid var(--color-border);
   }
 }

@@ -18,10 +18,10 @@ export function diffDate(start: string | Date, end: string | Date, unit: Differe
  * Caveat: `from` must always be before `to` as a date
  */
 export function dateRange(from: string | Date, to: string | Date, unit: DifferenceUnit = 'month') {
-  const differnce = diffDate(to, from, unit) + 1
+  const differnce = diffDate(to, from, unit)
   const ranges = []
 
-  for (let i = 0; i < differnce; i++) {
+  for (let i = 0; i <= differnce; i++) {
     const d = dayjs.utc(from).add(i, unit).startOf(unit).format()
     ranges.push(d)
   }
