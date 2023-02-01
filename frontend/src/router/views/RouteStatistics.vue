@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 import { computed } from 'vue'
 import { findLast } from 'lodash'
+import dayjs from 'dayjs'
 import { useQuote } from '../../store/quote'
 import { date, objectToArray, toNum } from '../../bin/utils'
 import type { Quote } from '../../types/quote-types'
@@ -16,10 +17,6 @@ const user = useUser()
  */
 
 const totalQuotes = computed(() => quote.quotes.length)
-// const totalQuotees = computed(() => quote.quotes.reduce((amount, q) => {
-//   amount += new Set(q.indices.map(item => item.quotee)).size
-//   return amount
-// }, 0))
 const totalAuthors = computed(() => new Set(quote.quotes.map(q => q.author)).size)
 const firstUpload = computed(() => findLast(quote.quotes, q => q.createdAt !== 0))
 const lastUpload = computed(() => quote.quotes.at(0) as Quote)
@@ -62,6 +59,40 @@ const tagsByUsage = computed(() => objectToArray(quote.quotes.reduce((group, quo
 
   return group
 }, {} as Metric)).sort((a, b) => Object.values(a)[0] < Object.values(b)[0] ? 1 : -1))
+
+// Daily quotes
+const quotesPerDay = computed(() => objectToArray(quote.quotes.reduce((group, quote) => {
+  // Convert the entire timestmap to just the day
+  const fullDay = dayjs.utc(quote.createdAt * 1000).startOf('day').format()
+
+  if (group[fullDay])
+    group[fullDay]++
+  else
+    group[fullDay] = 1
+
+  return group
+}, {} as Metric)))
+
+// Chart of uploads
+// Compute daily uploads of quotes in the last 365 days
+// const chart = computed(() => {
+//   let labels: string[] = []
+//   let data: number[] = []
+
+//   for (let i = 0; i >= 365; i++) {
+//     const date = dayjs.utc().subtract(i)
+//     const
+//   }
+
+//   return {
+//     labels,
+//     datasets: [{
+//       data,
+//       backgroundColor: '#f29b41',
+//       // borderColor:'#f29b41'
+//     }]
+//   }
+// })
 </script>
 
 <template>
@@ -69,14 +100,14 @@ const tagsByUsage = computed(() => objectToArray(quote.quotes.reduce((group, quo
     <div class="quote-container">
       <h1>Statistics</h1>
 
-      <Spinner v-if="loading.get('quotes')" />
+      <Spinner v-if="loading.get('quotes', 'users')" />
       <template v-else>
         <div class="stats-grid">
           <div class="cell">
             <strong>{{ toNum(totalQuotes) }}</strong>
             <span>Quotes</span>
           </div>
-          <div class="cell">
+          <div v-if="usersByQuotes" class="cell">
             <strong>{{ toNum(usersByQuotes.length) }}</strong>
             <span>Quotees</span>
           </div>
@@ -84,7 +115,7 @@ const tagsByUsage = computed(() => objectToArray(quote.quotes.reduce((group, quo
             <strong>{{ toNum(totalAuthors) }}</strong>
             <span>Authors</span>
           </div>
-          <div class="cell date">
+          <div v-if="usersByQuotes" class="cell date">
             <strong>{{ Object.keys(usersByQuotes[0])[0] }}</strong>
             <span>Most Quoted</span>
           </div>
@@ -105,7 +136,7 @@ const tagsByUsage = computed(() => objectToArray(quote.quotes.reduce((group, quo
             <span>Latest Post</span>
           </div>
         </div>
-        <!-- <pre>{{ usersByQuotes }}</pre> -->
+        <pre>{{ quotesPerDay }}</pre>
       </template>
     </div>
   </div>

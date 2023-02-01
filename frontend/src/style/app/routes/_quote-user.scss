@@ -170,11 +170,16 @@
             @include radius(0);
             color: var(--color-text);
             padding: 0;
+            width: 100%;
           }
         }
 
         code {
           @include radius(var(--radius-sm));
+          font-size: 1.4rem;
+          word-wrap: break-word;
+          word-break: break-word;
+          white-space: pre-wrap;
 
           padding: 3px 5px;
           background-color: var(--color-bg-light);

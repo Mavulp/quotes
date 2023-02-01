@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "@dolanske/v-valid": "github:dolanske/v-valid",
+    "@types/chart.js": "^2.9.37",
     "@vueuse/core": "^9.6.0",
+    "chart.js": "^4.2.0",
     "dayjs": "^1.11.7",
     "lodash": "^4.17.21",
     "marked": "^4.2.12",
@@ -17,6 +19,7 @@
     "sass": "^1.56.2",
     "tinycolor2": "^1.5.2",
     "vue": "^3.2.45",
+    "vue-chartjs": "^5.2.0",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {

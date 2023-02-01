@@ -1,5 +1,16 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import {
+  BarElement,
+  CategoryScale,
+  Chart,
+  Legend,
+  LinearScale,
+  Title,
+  Tooltip,
+} from 'chart.js'
+import utc from 'dayjs/plugin/utc'
+import dayjs from 'dayjs'
 
 import App from './App.vue'
 import router from './router'
@@ -7,6 +18,10 @@ import router from './router'
 // Global Components
 import Icon from './components/global/Icon.vue'
 import Spinner from './components/global/Spinner.vue'
+
+// Plugin registration
+Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
+dayjs.extend(utc)
 
 const app = createApp(App)
 
