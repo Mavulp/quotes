@@ -26,9 +26,11 @@ const tabs = computed(() => {
   if (!quotesPerDay.value)
     return []
 
+  const first = Object.keys(quotesPerDay.value)[0]
+
   const range = dateRange(
-    Object.keys(quotesPerDay.value.at(0))[0],
-    Object.keys(quotesPerDay.value.at(-1))[0],
+    Object.keys(quotesPerDay.value)[0],
+    Object.keys(quotesPerDay.value)[0],
     'year',
   )
 })
