@@ -5,7 +5,7 @@
   left: 0;
   width: 100%;
   backdrop-filter: blur(30px);
-  background-color: rgba(#181818, 0.75);
+  background-color: rgba(#181818, 0.85);
   z-index: 1000;
   height: $header;
   @include flex($align: center);

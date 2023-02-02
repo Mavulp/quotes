@@ -125,7 +125,7 @@ const yearModel = computed(() => {
                   opacity: Math.max(35, percent(activeHours[hour - 1], mostActiveHour)) / 100,
                 }"
               />
-              <span>{{ hour % 3 === 0 || hour === 1 ? hour : null }}</span>
+              <span>{{ hour % 4 === 0 || hour === 1 ? hour : null }}</span>
             </div>
           </div>
         </tr>

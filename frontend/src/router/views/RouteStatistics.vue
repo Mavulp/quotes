@@ -8,6 +8,7 @@ import { useLoading } from '../../store/loading'
 
 import StatBreakdown from '../../components/statistics/YearBreakdown.vue'
 import StatCell from '../../components/statistics/StatCell.vue'
+import LadderBreakdown from '../../components/statistics/LadderBreakdown.vue'
 
 const quote = useQuote()
 const loading = useLoading()
@@ -66,6 +67,12 @@ const tagsByUsage = computed(() => objectToArray(quote.quotes.reduce((group, quo
 
         <strong class="section-title">Yearly</strong>
         <StatBreakdown />
+
+        <strong class="section-title">Top</strong>
+        <LadderBreakdown />
+
+        <strong class="section-title">User uploads</strong>
+        <LadderBreakdown />
       </template>
     </div>
   </div>

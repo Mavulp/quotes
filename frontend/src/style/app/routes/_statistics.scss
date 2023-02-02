@@ -1,5 +1,6 @@
 .route-statistics {
   padding-top: 20px;
+  padding-bottom: 156px;
 
   h1 {
     margin-bottom: 40px;
@@ -186,5 +187,11 @@
         background-color: var(--color-highlight);
       }
     }
+  }
+
+  .ladder-breakdown {
+    @include radius(var(--radius-lg));
+    border: 1px solid var(--color-border);
+    padding: 20px;
   }
 }
