@@ -1,7 +1,8 @@
 import dayjs from 'dayjs'
 
 export const displayDateShort = 'DD/MM/YYYY'
-export const dipslayDate = 'HH:MM DD/MMMM/YYYY'
+export const displayDateLong = 'dddd, DD/MM/YYYY'
+export const dipslayDateTime = 'HH:MM DD/MMMM/YYYY'
 
 /**
  * Returns amount of time between two dates in the amount of provided type (days, months, etc)

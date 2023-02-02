@@ -4,26 +4,32 @@ import dayjs from 'dayjs'
 import { useQuote } from '../../store/quote'
 import { getKey, objectToArray } from '../../bin/utils'
 import Tabs from '../Tabs.vue'
+import type { DateCount } from '../../types/quote-types'
 import YearItem from './YearItem.vue'
 
 const quote = useQuote()
 
-const quotesPerDay = computed(() => objectToArray(quote.quotes.reduce((group, quote) => {
+const quotesPerDay = computed(() => quote.quotes.reduce((group, quote) => {
   // Convert the entire timestmap to just the day
   const fullDay = dayjs.utc(quote.createdAt * 1000).startOf('day').format()
 
-  if (group[fullDay])
-    group[fullDay]++
-  else
-    group[fullDay] = 1
+  if (group[fullDay]) {
+    group[fullDay].count++
+  }
+  else {
+    group[fullDay] = {
+      count: 1,
+      date: quote.createdAt * 1000,
+    }
+  }
 
   return group
-}, {} as Record<string, number>)))
+}, {} as Record<string, DateCount>))
 
-const uniqueYears = computed(() => Array.from(new Set(quotesPerDay.value.map(quote => dayjs.utc(getKey(quote)).year()))))
+const uniqueYears = computed(() => [...new Set(Object.values(quotesPerDay.value).map(q => dayjs.utc(q.date).year()))])
 
 function getQuotesPerYear(year: number) {
-  return quotesPerDay.value.filter(item => dayjs.utc(getKey(item)).year() === year)
+  return Object.values(quotesPerDay.value).filter(q => dayjs.utc(q.date).year() === year)
 }
 </script>
 

@@ -105,14 +105,21 @@ onMounted(() => {
 
   &.fusion-tabs-compact {
     .fusion-tabs-buttons {
-      gap: 12px !important;
+      gap: 10px !important;
+      padding-bottom: 2px;
 
       .fusion-tab-button {
-        height: 34px;
-        line-height: 34px;
-        padding: 0 12px
+        height: 36px;
+        line-height: 36px;
+        padding: 0 10px;
+        font-size: 1.4rem;
+      }
+
+      .fusion-tabs-underline {
+        height: 2px;
       }
     }
+
   }
 
   .fusion-tabs-buttons {

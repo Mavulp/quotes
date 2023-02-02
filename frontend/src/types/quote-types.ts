@@ -43,3 +43,8 @@ export interface Tag {
   author: string
   createdAt: number
 }
+
+export interface DateCount {
+  date: number
+  count: number
+}

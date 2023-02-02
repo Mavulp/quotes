@@ -24,36 +24,22 @@ const lastUpload = computed(() => quote.quotes.at(0) as Quote)
 
 // Rank users by how many times they were quoted
 const usersByQuotes = computed(() => objectToArray(quote.quotes.reduce((group, quote) => {
-  for (const item of quote.indices) {
-    if (group[item.quotee])
-      group[item.quotee]++
-
-    else
-      group[item.quotee] = 1
-  }
+  for (const item of quote.indices)
+    group[item.quotee] ? group[item.quotee]++ : group[item.quotee] = 1
 
   return group
 }, {} as Record<string, number>)).sort((a, b) => getVal(a) < getVal(b) ? 1 : -1))
 
 // Rank users by the amount of uploads
 const usersByUploads = computed(() => objectToArray(quote.quotes.reduce((group, quote) => {
-  if (!group[quote.author])
-    group[quote.author] = 1
-  else
-    group[quote.author]++
-
+  group[quote.author] ? group[quote.author]++ : group[quote.author] = 1
   return group
 }, {} as Record<string, number>)).sort((a, b) => getVal(a) < getVal(b) ? 1 : -1))
 
 // Most used tagts
 const tagsByUsage = computed(() => objectToArray(quote.quotes.reduce((group, quote) => {
-  for (const tag of quote.tags) {
-    if (group[tag])
-      group[tag]++
-
-    else
-      group[tag] = 1
-  }
+  for (const tag of quote.tags)
+    group[tag] ? group[tag]++ : group[tag] = 1
 
   return group
 }, {} as Record<string, number>)).sort((a, b) => getVal(a) < getVal(b) ? 1 : -1))
@@ -78,7 +64,7 @@ const tagsByUsage = computed(() => objectToArray(quote.quotes.reduce((group, quo
           <StatCell v-if="lastUpload" str label="Latest Post" :data="date.timeShort(lastUpload.createdAt)" />
         </div>
 
-        <strong class="section-title">Upload frequency</strong>
+        <strong class="section-title">Yearly Uploads</strong>
         <StatBreakdown />
       </template>
     </div>

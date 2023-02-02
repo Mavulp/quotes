@@ -47,27 +47,45 @@
 
   .year-breakdown {
     @include radius(var(--radius-lg));
-    padding: 20px;
     margin-bottom: 40px;
     border: 1px solid var(--color-border);
 
     .fusion-tabs {
-      padding-bottom: 30px;
+      padding: 5px 20px 0;
+      border-bottom: 1px solid var(--color-border);
     }
 
     .year-item {
       display: block;
+      padding: 20px;
 
       .month-row {
-        @include flex(7px);
-        margin-bottom: 12px;
+        @include flex(8px);
+        margin-bottom: 13px;
+
+        &:last-of-type {
+          margin-bottom: 0;
+        }
+
+        &.days-count {
+          // margin-bottom: 0;
+          // margin-top: -5px;
+          margin-bottom: 5px;
+
+          .month-tile {
+            @include flex(0, $justify: center);
+            font-size: 1rem;
+            color: var(--color-text);
+            opacity: 0.28;
+          }
+        }
 
         .month-title {
           display: block;
-          width: 65px;
-          margin-right: 26px;
+          width: 72px;
+          margin-right: 20px;
           text-align: left;
-          font-size: 1.4rem;
+          font-size: 1.3rem;
           color: var(--color-text-light);
         }
 
@@ -75,10 +93,59 @@
           @include radius(var(--radius-tn));
           width: 16px;
           height: 16px;
-          // background-color: var(--color-bg-light);
+        }
+      }
 
-          &.has-items {
-            // background-color: var(--color-highlight);
+      .year-top-level {
+        display: block;
+        padding-left: 100px;
+
+        hr {
+          margin: 25px 0;
+          margin-right: 43px;
+          border: none;
+          border-bottom: 1px solid var(--color-border-light);
+        }
+
+        table {
+          border-collapse: collapse;
+
+          tr:last-child {
+            th,
+            td {
+              padding-bottom: 0;
+            }
+          }
+
+          th,
+          td {
+            vertical-align: middle;
+            padding-bottom: 10px;
+          }
+
+          th {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            color: var(--color-text-lighter);
+            padding-right: 20px;
+            text-align: left;
+            padding-bottom: 5px;
+            white-space: nowrap;
+          }
+
+          td {
+            width: 100%;
+            font-size: 1.4rem;
+
+            b {
+              color: var(--color-highlight);
+              font-size: 1.4rem;
+            }
+
+            & > div {
+              @include flex(10px);
+              font-size: inherit;
+            }
           }
         }
       }
