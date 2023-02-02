@@ -108,3 +108,15 @@ export function toNum(num: number) {
 export function objectToArray(obj: Record<any, any>) {
   return Object.entries(obj).map(e => ({ [e[0]]: e[1] }))
 }
+
+export function getKey(object: Record<any, any>, index = 0) {
+  return Object.keys(object)[index]
+}
+
+export function getVal(object: Record<any, any>, index = 0) {
+  return Object.values(object)[index]
+}
+
+export function percent(partial: number, total: number) {
+  return (100 * partial) / total
+}

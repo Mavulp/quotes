@@ -122,18 +122,18 @@ function quotesFromUser() {
 
           <div>
             <h1>{{ profile.username }}</h1>
-            <div class="profile-markdown-wrap" v-html="sanitize(marked.parse(profile.bio))" />
+            <div v-if="profile.bio" class="profile-markdown-wrap" v-html="sanitize(marked.parse(profile.bio))" />
 
             <hr>
 
             <template v-if="highlightQuote">
-              <strong class="profile-title highlight">Highlighted Quote</strong>
+              <strong class="section-title highlight">Highlighted Quote</strong>
 
               <UserProfileQuote class="highlight-quote" :data="highlightQuote" />
               <hr>
             </template>
 
-            <strong class="profile-title">Latest quotes</strong>
+            <strong class="section-title">Latest quotes</strong>
 
             <template v-if="quotedQuotes && quotedQuotes.length > 0">
               <UserProfileQuote v-for="quote in quotedQuotes" :key="quote.id" :data="quote" />

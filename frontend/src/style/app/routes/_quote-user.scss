@@ -224,13 +224,13 @@
         line-height: 1.6em;
       }
 
-      .profile-title {
-        @include font(600);
-        display: block;
-        text-transform: uppercase;
-        color: var(--color-text);
-        font-size: 1.3rem;
-        margin-bottom: 15px;
+      .section-title {
+        // @include font(600);
+        // display: block;
+        // text-transform: uppercase;
+        // color: var(--color-text);
+        // font-size: 1.3rem;
+        // margin-bottom: 15px;
 
         &.highlight {
           color: var(--color-highlight);

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { isObject } from 'lodash'
 import { computed, onMounted, reactive, ref, useAttrs, useSlots, watch } from 'vue'
 
 const props = defineProps<Props>()
@@ -10,19 +11,20 @@ interface Tab {
   label: string
 }
 
-type PropsTab = Tab | string
+type PropsTab = Tab | string | number
 
 interface Props {
   tabs: PropsTab[]
+  compact?: boolean
 }
 
 // Serialize the tab buttons to use the same format
 const formattedButtons = computed<Tab[]>(() => {
   return props.tabs.map((tab: PropsTab) => {
     // If type is Tab do nothing, else convert to <Tab>
-    if (typeof tab !== 'string')
+    if (isObject(tab))
       return tab
-    return { key: tab, label: tab }
+    return { key: String(tab), label: String(tab) }
   })
 })
 
@@ -62,7 +64,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="fusion-tabs" v-bind="attrs">
+  <div class="fusion-tabs" v-bind="attrs" :class="{ 'fusion-tabs-compact': props.compact }">
     <div ref="tabswrap" class="fusion-tabs-buttons">
       <button
         v-for="btn in formattedButtons"
@@ -87,7 +89,7 @@ onMounted(() => {
   </transition>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 // SECTION
 // The name "fusion" is an idea for a generic library used for Mavulp / Personal
 // projects. It will be composed at some point in the future from these little
@@ -100,6 +102,25 @@ onMounted(() => {
   display: block;
   width: 100%;
   padding-bottom: 20px;
+
+  &.fusion-tabs-compact {
+    .fusion-tabs-buttons {
+      gap: 10px !important;
+      padding-bottom: 2px;
+
+      .fusion-tab-button {
+        height: 36px;
+        line-height: 36px;
+        padding: 0 10px;
+        font-size: 1.4rem;
+      }
+
+      .fusion-tabs-underline {
+        height: 2px;
+      }
+    }
+
+  }
 
   .fusion-tabs-buttons {
     @include flex();

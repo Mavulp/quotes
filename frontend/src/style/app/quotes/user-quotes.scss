@@ -18,7 +18,8 @@
   &.highlight-quote {
     font-size: 3.2rem;
     color: var(--color-highlight);
-    max-height: 180px;
+    // max-height: 180px;
+    max-height: unset;
   }
 
   &:before {
