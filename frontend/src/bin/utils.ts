@@ -120,3 +120,29 @@ export function getVal(object: Record<any, any>, index = 0) {
 export function percent(partial: number, total: number) {
   return (100 * partial) / total
 }
+
+// Checkes wether value is a number and a positive/negative infinity
+export function isInfinity(value: any) {
+  if (typeof value !== 'number')
+    return false
+
+  return value === -Infinity || value === Infinity
+}
+
+/**
+ * Takes in a partial and a full number and returns amount of percent by which the partial changed.
+ * I am not smart enough to tell you the difference so I will show you the formula.
+ *
+ * partial - total
+ * --------------- x 100
+ *       total
+ */
+export function diffPercent(partial: number, total: number, returnInfinity = false) {
+  const diff = partial - total
+  const percent = (diff / total) * 100
+
+  if (returnInfinity && isInfinity(percent))
+    return percent === -Infinity ? -100 : 100
+
+  return percent
+}

@@ -193,7 +193,7 @@ function removeHighlight() {
 
           <Spinner v-if="loading.get('comments')" />
           <template v-else-if="comments.length > 0">
-            <CommentItem v-for="comment in comments" :key="comment.id" :data="comment" @delete="delComment" />
+            <CommentItem v-for="comment in comments" :key="comment.id + comment.text" :data="comment" @delete="delComment" />
           </template>
 
           <CommentCreate :key="comments.length" @post="postComment" />

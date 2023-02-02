@@ -2,8 +2,9 @@
 import { computed } from 'vue'
 import dayjs from 'dayjs'
 import { useCssVar } from '@vueuse/core'
+import { fill } from 'lodash'
 import { displayDateLong, displayDateShort } from '../../bin/time'
-import { date, getKey, getVal, objectToArray, padTo2Digits, percent } from '../../bin/utils'
+import { date, diffPercent, getKey, getVal, objectToArray, padTo2Digits, percent } from '../../bin/utils'
 import { hexToRgb } from '../../bin/color'
 import type { DateCount } from '../../types/quote-types'
 
@@ -13,7 +14,7 @@ const props = defineProps<{
 }>()
 
 const bg = useCssVar('--color-bg-light')
-const fg = useCssVar('--color-secondary')
+const fg = useCssVar('--color-highlight')
 
 const sortedUploads = computed(() => [...props.data].sort((a, b) => a.count > b.count ? -1 : 1))
 
@@ -22,12 +23,15 @@ const mostUploads = computed(() => sortedUploads.value[0])
 // Total amount of uploads in the year
 const totalUploads = computed(() => sortedUploads.value.reduce((group, item) => group += item.count, 0))
 
-// Get the most active hours
-const activeHour = computed(() => {
-  const [first] = [...props.data].sort((a, b) => a.date > b.date ? -1 : 1)
-  const hours = dayjs.utc(first.date).get('hours')
-  return `${padTo2Digits(hours - 1)}-${padTo2Digits(hours + 1)}`
-})
+// Get the most active hours between 1 - 24
+const activeHours = computed(() => props.data.reduce((group, item) => {
+  const hour = dayjs.utc(item.date).get('hours')
+
+  group[hour] ? group[hour]++ : group[hour] = 1
+  return group
+}, fill(Array(24), 0)))
+
+const mostActiveHour = computed(() => Math.max.apply(0, activeHours.value))
 
 const yearModel = computed(() => {
   const model: Record<string, { date: string; count: number; color: string }[]> = {}
@@ -104,13 +108,26 @@ const yearModel = computed(() => {
               {{ dayjs.utc(mostUploads.date).format(displayDateShort) }}
               <div class="dot-padder" />
               <b>{{ getVal(mostUploads) }}</b>
-              Uploads
+              Quotes
             </div>
           </td>
         </tr>
         <tr>
-          <th>Most Active Hours</th>
-          <td> {{ activeHour }} </td>
+          <th>Active Hours</th>
+          <!-- <td> {{ activeHour }} </td> -->
+
+          <div class="hour-breakdown">
+            <div v-for="hour in 24" :key="hour" class="hour-item" :data-title-bottom="`${hour}:00 - ${activeHours[hour - 1]} Quotes`">
+              <div
+                class="hour-progress"
+                :style="{
+                  height: `${percent(activeHours[hour - 1], mostActiveHour)}%`,
+                  opacity: Math.max(35, percent(activeHours[hour - 1], mostActiveHour)) / 100,
+                }"
+              />
+              <span>{{ hour % 3 === 0 || hour === 1 ? hour : null }}</span>
+            </div>
+          </div>
         </tr>
       </table>
     </div>

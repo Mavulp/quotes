@@ -60,23 +60,21 @@
       padding: 20px;
 
       .month-row {
-        @include flex(8px);
-        margin-bottom: 13px;
+        @include flex(7px);
+        margin-bottom: 10px;
 
         &:last-of-type {
           margin-bottom: 0;
         }
 
         &.days-count {
-          // margin-bottom: 0;
-          // margin-top: -5px;
           margin-bottom: 5px;
 
           .month-tile {
             @include flex(0, $justify: center);
             font-size: 1rem;
             color: var(--color-text);
-            opacity: 0.28;
+            opacity: 0.3;
           }
         }
 
@@ -102,7 +100,7 @@
 
         hr {
           margin: 25px 0;
-          margin-right: 43px;
+          margin-right: 72px;
           border: none;
           border-bottom: 1px solid var(--color-border-light);
         }
@@ -115,12 +113,16 @@
             td {
               padding-bottom: 0;
             }
+
+            th {
+              vertical-align: top;
+            }
           }
 
           th,
           td {
             vertical-align: middle;
-            padding-bottom: 10px;
+            padding-bottom: 15px;
           }
 
           th {
@@ -129,7 +131,6 @@
             color: var(--color-text-lighter);
             padding-right: 20px;
             text-align: left;
-            padding-bottom: 5px;
             white-space: nowrap;
           }
 
@@ -143,11 +144,46 @@
             }
 
             & > div {
-              @include flex(10px);
+              @include flex(5px);
               font-size: inherit;
+
+              .dot-padder {
+                margin: 0 5px;
+              }
             }
           }
         }
+      }
+    }
+  }
+
+  .hour-breakdown {
+    @include grid(5px, repeat(24, 12px));
+    width: 100%;
+    padding-bottom: 20px;
+
+    .hour-item {
+      @include radius(var(--radius-tn));
+      @include flex(0, nowrap, $align: flex-end);
+      height: 56px;
+      background-color: var(--color-bg-light);
+      position: relative;
+      padding-top: 10px;
+
+      span {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 1rem;
+        color: var(--color-text);
+        opacity: 0.3;
+      }
+
+      .hour-progress {
+        @include radius(var(--radius-tn));
+        width: 100%;
+        background-color: var(--color-highlight);
       }
     }
   }

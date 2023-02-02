@@ -15,6 +15,7 @@
   background-color: var(--color-highlight);
   font-size: 1.4rem;
 
+  &:focus,
   &:hover {
     background-color: var(--color-highlight-tint);
   }
@@ -49,6 +50,7 @@
     color: var(--color-text);
     background-color: var(--color-bg-light);
 
+    &:focus,
     &:hover {
       background-color: var(--color-bg-light-hover);
     }
@@ -63,6 +65,7 @@
     color: var(--color-text);
     background-color: transparent;
 
+    &:focus,
     &:hover {
       background-color: var(--color-bg-light-hover);
     }
@@ -72,6 +75,7 @@
     color: var(--color-text);
     background-color: transparent;
 
+    &:focus,
     &:hover {
       background-color: var(--color-bg-light);
     }
@@ -81,6 +85,7 @@
     color: var(--color-red);
     background-color: var(--color-bg-light);
 
+    &:focus,
     &:hover {
       background-color: var(--color-bg-light-hover);
     }

@@ -52,19 +52,19 @@ const tagsByUsage = computed(() => objectToArray(quote.quotes.reduce((group, quo
 
       <Spinner v-if="loading.get('quotes', 'users')" />
       <template v-else>
-        <strong class="section-title">Top level statistics</strong>
+        <strong class="section-title">Top level summary</strong>
         <div class="stats-grid">
           <StatCell label="Quotes" :data="toNum(totalQuotes)" />
           <StatCell label="Quotees" :data="toNum(usersByQuotes.length)" />
           <StatCell label="Authors" :data="toNum(totalAuthors)" />
           <StatCell v-if="usersByQuotes" str label="Most Quoted" :data="Object.keys(usersByQuotes[0])[0]" />
-          <StatCell str label="Most Uploads" :data="Object.keys(usersByUploads[0])[0]" />
+          <StatCell str label="Most Posts" :data="Object.keys(usersByUploads[0])[0]" />
           <StatCell v-if="tagsByUsage" str label="Most Used Tag" :data="Object.keys(tagsByUsage[0])[0]" />
           <StatCell v-if="firstUpload" str label="First Post" :data="date.timeShort(firstUpload.createdAt)" />
           <StatCell v-if="lastUpload" str label="Latest Post" :data="date.timeShort(lastUpload.createdAt)" />
         </div>
 
-        <strong class="section-title">Yearly Uploads</strong>
+        <strong class="section-title">Yearly</strong>
         <StatBreakdown />
       </template>
     </div>

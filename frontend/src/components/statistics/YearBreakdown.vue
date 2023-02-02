@@ -26,7 +26,7 @@ const quotesPerDay = computed(() => quote.quotes.reduce((group, quote) => {
   return group
 }, {} as Record<string, DateCount>))
 
-const uniqueYears = computed(() => [...new Set(Object.values(quotesPerDay.value).map(q => dayjs.utc(q.date).year()))])
+const uniqueYears = computed(() => [...new Set(Object.values(quotesPerDay.value).filter(q => q.date !== 0).map(q => dayjs.utc(q.date).year()))])
 
 function getQuotesPerYear(year: number) {
   return Object.values(quotesPerDay.value).filter(q => dayjs.utc(q.date).year() === year)

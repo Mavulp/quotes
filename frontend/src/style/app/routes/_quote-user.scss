@@ -1,6 +1,6 @@
 .quote-profile {
   @include flex(0, $align: flex-start);
-  padding-top: 10em;
+  padding-top: 7em;
   z-index: 1;
   position: relative;
 
@@ -25,7 +25,7 @@
       }
 
       .quote-side-content {
-        top: calc(24%);
+        top: calc(19%);
         position: sticky;
 
         .image-wrap {
@@ -306,7 +306,7 @@
     p {
       font-size: 1.4rem;
       color: var(--color-text);
-      margin-bottom: 2px;
+      margin-bottom: 5px;
     }
 
     // .wrap {
@@ -319,7 +319,7 @@
   }
 
   hr {
-    margin: 20px 0;
+    margin: 10px 0 15px;
     border: none;
     border-bottom: 1px solid var(--color-border);
     opacity: 0.25;

@@ -73,7 +73,7 @@ async function deleteTag() {
         <div class="cell">
           <strong>Last Used</strong>
           <span v-if="quotes.length > 0">{{ date.tiny(quotes[0].createdAt) }}</span>
-          <span v-else>No uploads.</span>
+          <span v-else>No Posts.</span>
         </div>
 
         <div class="cell flex-1">
