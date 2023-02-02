@@ -50,5 +50,38 @@
     padding: 20px;
     margin-bottom: 40px;
     border: 1px solid var(--color-border);
+
+    .fusion-tabs {
+      padding-bottom: 30px;
+    }
+
+    .year-item {
+      display: block;
+
+      .month-row {
+        @include flex(7px);
+        margin-bottom: 12px;
+
+        .month-title {
+          display: block;
+          width: 65px;
+          margin-right: 26px;
+          text-align: left;
+          font-size: 1.4rem;
+          color: var(--color-text-light);
+        }
+
+        .month-tile {
+          @include radius(var(--radius-tn));
+          width: 16px;
+          height: 16px;
+          // background-color: var(--color-bg-light);
+
+          &.has-items {
+            // background-color: var(--color-highlight);
+          }
+        }
+      }
+    }
   }
 }

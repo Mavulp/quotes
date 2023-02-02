@@ -116,3 +116,7 @@ export function getKey(object: Record<any, any>, index = 0) {
 export function getVal(object: Record<any, any>, index = 0) {
   return Object.values(object)[index]
 }
+
+export function percent(partial: number, total: number) {
+  return (100 * partial) / total
+}

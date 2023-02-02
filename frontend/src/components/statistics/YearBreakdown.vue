@@ -30,8 +30,8 @@ function getQuotesPerYear(year: number) {
 <template>
   <div class="year-breakdown">
     <Tabs compact :tabs="uniqueYears">
-      <template v-for="tab in uniqueYears" :key="tab" #[tab]>
-        <YearItem :data="getQuotesPerYear(tab)" />
+      <template v-for="year in uniqueYears" :key="year" #[year]>
+        <YearItem :data="getQuotesPerYear(year)" :year="year" />
       </template>
     </Tabs>
   </div>
