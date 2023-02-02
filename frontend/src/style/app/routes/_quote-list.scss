@@ -3,6 +3,18 @@
   padding-bottom: 20px;
   margin-bottom: 30px;
   border-bottom: 1px solid var(--color-border);
+
+  &.sticky {
+    position: fixed;
+    top: $header;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    backdrop-filter: blur(30px);
+    background-color: rgba(#181818, 0.75);
+  }
 }
 
 .quote-route-list {
@@ -10,6 +22,17 @@
   padding-top: 20px;
 
   .quote-list {
+    .btn-go-up {
+      position: fixed;
+      bottom: 20px;
+      // right: 40px;
+      left: calc(15em + 920px + 60px);
+
+      .material-icons {
+        color: var(--color-highlight);
+      }
+    }
+
     .quote-list-context {
       @include flex($gap: 40px);
       margin-bottom: 20px;

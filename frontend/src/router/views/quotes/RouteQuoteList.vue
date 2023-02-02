@@ -75,20 +75,27 @@ useEventListener(window, 'scroll', useThrottleFn(() => {
  */
 
 const stickHeader = ref(false)
+const height = ref(0)
 
 onMounted(() => {
-  const header = $('#header')
-  const height = header?.scrollHeight ?? 0
+  height.value = $('#header')?.clientHeight ?? 0
+})
 
-  window.addEventListener('scroll', () => {
-    stickHeader.value = window.scrollY > height
-  })
+useEventListener('scroll', () => {
+  stickHeader.value = window.scrollY > height.value
 })
 
 // Get random quote
 function random() {
   const id = quote.getRandomQuoteId()
   router.push({ name: 'RouteQuoteDetail', params: { id } })
+}
+
+function scrollUp() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  })
 }
 </script>
 
@@ -102,6 +109,12 @@ function random() {
             Random
           </button>
         </div>
+        <QuoteFilters />
+      </div>
+    </section>
+
+    <section v-if="stickHeader" class="quote-page-header sticky">
+      <div class="quote-container container-header">
         <QuoteFilters />
       </div>
     </section>
@@ -122,6 +135,12 @@ function random() {
           </div>
         </template>
       </div>
+
+      <Transition name="page" mode="out-in">
+        <button v-if="stickHeader" data-title-top="Scroll Up" class="button btn-round btn-go-up btn-white" @click="scrollUp">
+          <Icon code="e5d8" size="2" />
+        </button>
+      </Transition>
     </section>
   </div>
 </template>
