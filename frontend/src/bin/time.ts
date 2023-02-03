@@ -10,7 +10,7 @@ export const dipslayDateTime = 'HH:MM DD/MMMM/YYYY'
 
 type DifferenceUnit = 'day' | 'week' | 'month' | 'year' | 'hour' | 'minute' | 'second' | 'millisecond'
 
-export function diffDate(start: string | Date, end: string | Date, unit: DifferenceUnit = 'month') {
+export function diffDate(start: string | number | Date, end: string | number | Date, unit: DifferenceUnit = 'month') {
   return dayjs.utc(start).diff(dayjs.utc(end), unit)
 }
 

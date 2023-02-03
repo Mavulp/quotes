@@ -9,6 +9,7 @@ import { useLoading } from '../../store/loading'
 import StatBreakdown from '../../components/statistics/YearBreakdown.vue'
 import StatCell from '../../components/statistics/StatCell.vue'
 import LadderBreakdown from '../../components/statistics/LadderBreakdown.vue'
+import UserBreakdown from '../../components/statistics/UserBreakdown.vue'
 
 const quote = useQuote()
 const loading = useLoading()
@@ -19,7 +20,7 @@ const loading = useLoading()
 
 const totalQuotes = computed(() => quote.quotes.length)
 const totalAuthors = computed(() => new Set(quote.quotes.map(q => q.author)).size)
-const firstUpload = computed(() => findLast(quote.quotes, q => q.createdAt !== 0))
+const firstUpload = computed(() => findLast(quote.quotes, q => q.createdAt !== 0) as Quote)
 const lastUpload = computed(() => quote.quotes.at(0) as Quote)
 // const registeredUsers = computed(() => user.users.length)
 
@@ -52,27 +53,26 @@ const tagsByUsage = computed(() => objectToArray(quote.quotes.reduce((group, quo
       <h1>Statistics</h1>
 
       <Spinner v-if="loading.get('quotes', 'users')" />
-      <template v-else>
+      <template v-else-if="quote.quotes.length > 0">
         <strong class="section-title">Top level summary</strong>
         <div class="stats-grid">
           <StatCell label="Quotes" :data="toNum(totalQuotes)" />
           <StatCell label="Quotees" :data="toNum(usersByQuotes.length)" />
           <StatCell label="Authors" :data="toNum(totalAuthors)" />
-          <StatCell v-if="usersByQuotes" str label="Most Quoted" :data="Object.keys(usersByQuotes[0])[0]" />
+          <StatCell str label="Most Quoted" :data="Object.keys(usersByQuotes[0])[0]" />
           <StatCell str label="Most Posts" :data="Object.keys(usersByUploads[0])[0]" />
-          <StatCell v-if="tagsByUsage" str label="Most Used Tag" :data="Object.keys(tagsByUsage[0])[0]" />
-          <StatCell v-if="firstUpload" str label="First Post" :data="date.timeShort(firstUpload.createdAt)" />
-          <StatCell v-if="lastUpload" str label="Latest Post" :data="date.timeShort(lastUpload.createdAt)" />
+          <StatCell str label="Most Used Tag" :data="Object.keys(tagsByUsage[0])[0]" />
+          <StatCell str label="First Post" :data="date.timeShort(firstUpload.createdAt)" />
+          <StatCell str label="Latest Post" :data="date.timeShort(lastUpload.createdAt)" />
         </div>
 
         <strong class="section-title">Yearly</strong>
         <StatBreakdown />
 
-        <strong class="section-title">Top</strong>
-        <LadderBreakdown />
+        <strong class="section-title">Historic uploads</strong>
+        <UserBreakdown :range="[firstUpload, lastUpload]" />
 
-        <strong class="section-title">User uploads</strong>
-        <LadderBreakdown />
+        <!-- <strong class="section-title">User uploads</strong> -->
       </template>
     </div>
   </div>
