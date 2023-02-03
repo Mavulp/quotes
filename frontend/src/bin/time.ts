@@ -18,14 +18,18 @@ export function diffDate(start: string | number | Date, end: string | number | D
  * Generates an array of dates between (inclusive) provided dates.
  * Caveat: `from` must always be before `to` as a date
  */
-export function dateRange(from: string | Date, to: string | Date, unit: DifferenceUnit = 'month') {
+export function dateRange(from: string | Date | number, to: string | Date | number, unit: DifferenceUnit = 'month', format?: string) {
   const differnce = diffDate(to, from, unit)
   const ranges = []
 
   for (let i = 0; i <= differnce; i++) {
-    const d = dayjs.utc(from).add(i, unit).startOf(unit).format()
-    ranges.push(d)
+    const d = dayjs.utc(from).add(i, unit).startOf(unit)
+
+    if (format)
+      ranges.push(d.format(format))
+    else
+      ranges.push(d)
   }
 
-  return ranges
+  return ranges as typeof format extends string ? string[] : dayjs.Dayjs[]
 }

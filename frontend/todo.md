@@ -23,6 +23,8 @@
 
 <!-- https://jokler.xyz/f/Iqe2F+ru/svg -->
 
+<!-- https://www.chartjs.org/docs/latest/general/fonts.html -->
+
 - [] Remove createdAt: 0 from time related statistics
 
 - [] Remove uploads to posts

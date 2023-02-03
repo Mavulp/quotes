@@ -5,8 +5,11 @@ import {
   CategoryScale,
   Chart,
   Colors,
-  Legend,
+  // Legend,
+  LineElement,
   LinearScale,
+  PointElement,
+  // TimeScale,
   Title,
   Tooltip,
 } from 'chart.js'
@@ -21,7 +24,7 @@ import Icon from './components/global/Icon.vue'
 import Spinner from './components/global/Spinner.vue'
 
 // Plugin registration
-Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, Colors)
+Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Colors, PointElement, LineElement)
 dayjs.extend(utc)
 
 const app = createApp(App)
