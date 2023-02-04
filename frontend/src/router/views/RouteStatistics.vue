@@ -69,8 +69,8 @@ const tagsByUsage = computed(() => objectToArray(quote.quotes.reduce((group, quo
         <strong class="section-title">Yearly</strong>
         <StatBreakdown />
 
-        <strong class="section-title">Historic uploads</strong>
-        <UserBreakdown :range="[firstUpload, lastUpload]" />
+        <strong class="section-title">Historic</strong>
+        <UserBreakdown />
 
         <!-- <strong class="section-title">User uploads</strong> -->
       </template>

@@ -8,15 +8,11 @@ import { useCssVar } from '@vueuse/core'
 interface Props {
   data: ChartData<'line'>
   config?: ChartOptions<'line'>
-  width?: string
-  height?: string
   cost?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   config: () => ({}),
-  width: '100%',
-  height: '100%',
 })
 
 const defaultConfig: ChartOptions<'line'> = {
@@ -47,12 +43,3 @@ const mergedOptions = computed(() => {
     <Line :data="props.data" :options="mergedOptions" />
   </div>
 </template>
-
-<style scoped lang="scss">
-.graph-wrapper {
-  & > div {
-    width: v-bind("width");
-    height: v-bind("height");
-  }
-}
-</style>
