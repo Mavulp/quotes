@@ -1,7 +1,6 @@
 <script setup lang='ts'>
 import type { ChartData, ChartOptions } from 'chart.js'
 import { computed, onBeforeMount, ref, shallowRef } from 'vue'
-import type { Quote } from '../../types/quote-types'
 import { gradient } from '../../bin/color'
 
 import Line from '../charts/Line.vue'
