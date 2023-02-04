@@ -194,4 +194,36 @@
     border: 1px solid var(--color-border);
     padding: 20px;
   }
+
+  .chart-breakdown {
+    .chart-wrapper {
+      @include grid(20px, 1fr 156px);
+    }
+
+    .chart-graph {
+      max-height: 75vh;
+    }
+
+    .chart-legend {
+      display: block;
+      width: 100%;
+      max-height: 75vh;
+      overflow-y: auto;
+
+      .legend-item {
+        @include flex(5px);
+        font-size: 1.2rem;
+        color: var(--color-text-light);
+        cursor: default;
+
+        .legend-marker {
+          @include radius(2px);
+          display: block;
+          width: 10px;
+          height: 10px;
+          background-color: var(--color-bg-light);
+        }
+      }
+    }
+  }
 }

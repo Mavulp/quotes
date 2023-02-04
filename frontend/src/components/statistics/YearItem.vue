@@ -49,7 +49,7 @@ const yearModel = computed(() => {
       const match = props.data.find(item => dayjs.utc(item.date).isSame(day, 'day'))
       const count = match ? getVal(match) : 0
 
-      const opacity = Math.max(35, percent(count, getVal(mostUploads.value))) / 100
+      const opacity = Math.max(50, percent(count, getVal(mostUploads.value))) / 100
 
       // #3 Save each day as unix timestamp into the object
       model[monthKey].push({
