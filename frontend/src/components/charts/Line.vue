@@ -40,6 +40,6 @@ const mergedOptions = computed(() => {
 
 <template>
   <div class="graph-wrapper">
-    <Line :data="props.data" :options="mergedOptions" />
+    <Line ref="chart" :data="props.data" :options="mergedOptions" />
   </div>
 </template>

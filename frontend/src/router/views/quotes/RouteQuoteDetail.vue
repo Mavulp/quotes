@@ -48,10 +48,7 @@ function goBack() {
   if (!quote.value)
     return
 
-  router.push({
-    name: 'RouteQuoteList',
-    hash: `#${quote.value.id}`,
-  })
+  router.go(-1)
 }
 
 const highlightLabel = 'The Funny'

@@ -21,24 +21,13 @@
 
 ## Stats
 
-<!-- https://jokler.xyz/f/Iqe2F+ru/svg -->
-
 <!-- https://www.chartjs.org/docs/latest/general/fonts.html -->
 
-- [] Remove createdAt: 0 from time related statistics
-
-- [] Remove uploads to posts
-- [] Ratio of posted x uploaded (list of users with bars next to them, one color is posted, other color is quoted)
-
-- [] add links to cells
+- [] Ratio of posted x quoted (list of users with bars next to them, one color is posted, other color is quoted)
 - [] chart showing all authors and their uploads overtime
-- [] chart showing all quotees and their quoted items over time
-
-  - option to set granularity from per year to month or week
 
 ### Year breakdown
 
-- [x] remove most active hours, add a 24 bar histogram showing when quotes are most posted (per year)
 - [] Allow months to be clicked and shown child rows (the exact same stats as at the bottom of the year, except for a month instead)
 
 ### Laders

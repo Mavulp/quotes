@@ -3,7 +3,12 @@
   padding-bottom: 156px;
 
   h1 {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
+
+    & + .fusion-tabs {
+      margin-bottom: 20px;
+      padding-bottom: 0;
+    }
   }
 
   .stats-grid {
@@ -11,13 +16,19 @@
     @include grid(0, repeat(5, 1fr));
     border: 1px solid var(--color-border);
     margin-bottom: 40px;
+    overflow: hidden;
 
     .cell {
       @include flex(5px, nowrap, center, center, column);
 
       padding: 30px;
-      height: 128px;
+      height: 136px;
       border-right: 1px solid var(--color-border);
+      text-decoration: none !important;
+
+      &:is(a):hover {
+        background-color: var(--color-bg-light);
+      }
 
       &:nth-child(5n) {
         border-right: 0;
@@ -201,7 +212,7 @@
     }
 
     .chart-graph {
-      max-height: 75vh;
+      height: 70vh;
     }
 
     .chart-legend {
@@ -211,10 +222,32 @@
       overflow-y: auto;
 
       .legend-item {
+        @include t();
         @include flex(5px);
         font-size: 1.2rem;
         color: var(--color-text-light);
-        cursor: default;
+        width: 100%;
+        padding: 1px 4px;
+
+        &:hover {
+          background-color: var(--color-bg-light);
+        }
+
+        .material-icons {
+          display: none;
+        }
+
+        &.is-hidden {
+          color: var(--color-text-lighter);
+
+          .legend-marker {
+            filter: grayscale(1);
+          }
+
+          .material-icons {
+            display: block;
+          }
+        }
 
         .legend-marker {
           @include radius(2px);

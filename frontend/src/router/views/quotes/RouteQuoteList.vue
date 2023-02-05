@@ -125,7 +125,7 @@ function scrollUp() {
         <template v-else>
           <div class="quote-list-context ">
             <p>
-              <b>{{ filteredData.length }}</b> {{ filteredData.length === 1 ? "quote" : "quotes" }} uploaded by
+              <b>{{ filteredData.length }}</b> {{ filteredData.length === 1 ? "quote" : "quotes" }} posted by
               <b>{{ authors.length }}</b> {{ authors.length === 1 ? "person" : "people" }}
             </p>
           </div>

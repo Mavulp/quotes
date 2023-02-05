@@ -3,6 +3,9 @@ import { isObject } from 'lodash'
 import { computed, onMounted, reactive, ref, useAttrs, useSlots, watch } from 'vue'
 
 const props = defineProps<Props>()
+const emit = defineEmits<{
+  (e: 'update:modelValue', tab: string): void
+}>()
 const attrs = useAttrs()
 const slots = useSlots()
 
@@ -32,8 +35,10 @@ const formattedButtons = computed<Tab[]>(() => {
 const active = ref<string>(formattedButtons.value[0].key)
 
 function setActive(key: string) {
-  if (active.value !== key)
+  if (active.value !== key) {
     active.value = key
+    emit('update:modelValue', key)
+  }
 }
 
 // Calculate position of active element
@@ -123,7 +128,7 @@ onMounted(() => {
   }
 
   .fusion-tabs-buttons {
-    @include flex();
+    @include flex(5px);
     position: relative;
     padding-bottom: 4px;
 

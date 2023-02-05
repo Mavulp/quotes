@@ -1,43 +1,59 @@
 <script setup lang='ts'>
 import type { ChartData, ChartOptions } from 'chart.js'
-import { computed, onBeforeMount, ref, shallowRef } from 'vue'
+import { debounce, isEmpty, take, takeRight } from 'lodash'
+import { computed, onBeforeMount, reactive, ref } from 'vue'
 import { gradient } from '../../bin/color'
+import { useLoading } from '../../store/loading'
+import { useStats } from '../../store/statistics'
 
 import Line from '../charts/Line.vue'
-import { get } from '../../bin/fetch'
 
-interface StatisticsChart {
-  labels: string[]
-  datasets: {
-    label: 'string'
-    data: Array<number | null>
-  }[]
-}
+const loading = useLoading()
+const stats = useStats()
 
-const data = shallowRef<StatisticsChart>()
 const hoveredUser = ref<string | null>(null)
+const hiddenUsers = reactive<{ value: string[] }>({ value: [] })
+const quotee = computed(() => stats.quotee)
 
-onBeforeMount(async () => {
-  data.value = await get<StatisticsChart>('/stats/quotee')
+onBeforeMount(() => {
+  stats.fetchQuoteeStats()
+    .then((res) => {
+      // hiddenUsers.value = takeRight(res.datasets, res.datasets.length - 10).map(set => set.label)
+    })
 })
 
+function setHiddenUser(user?: string) {
+  if (!user)
+    return
+
+  if (hiddenUsers.value.includes(user))
+    hiddenUsers.value = hiddenUsers.value.filter(u => u !== user)
+  else
+    hiddenUsers.value.push(user)
+}
+
+const setHoveredUser = debounce((user: string | null) => {
+  hoveredUser.value = user
+}, 100)
+
 const chart = computed<ChartData<'line'> | null>(() => {
-  if (!data.value)
+  if (isEmpty(quotee.value))
     return null
 
   return {
-    labels: data.value.labels,
-    datasets: data.value.datasets.map((dataset, index) => {
+    labels: quotee.value.labels,
+    datasets: quotee.value.datasets.map((dataset, index) => {
       const color = gradient[index % gradient.length]
-      const actualColor = (hoveredUser.value === dataset.label || hoveredUser.value === null) ? color : `${color}44`
+      const actualColor = (hoveredUser.value === dataset.label || hoveredUser.value === null) ? color : `${color}22`
 
       return {
         ...dataset,
-        borderWidth: 2,
+        borderWidth: 3,
         spanGaps: true,
         pointStyle: false,
         borderColor: actualColor,
         backgroundColor: actualColor,
+        hidden: hiddenUsers.value.includes(dataset.label),
       }
     }),
   }
@@ -62,7 +78,7 @@ const options: ChartOptions<'line'> = {
       ticks: {
         maxRotation: 0,
         autoSkip: true,
-        maxTicksLimit: 5,
+        maxTicksLimit: 6,
       },
     },
     y: {
@@ -80,20 +96,28 @@ const options: ChartOptions<'line'> = {
     <span class="section-title dark">
       Quotees
     </span>
-    <div v-if="chart" class="chart-wrapper">
+
+    <Spinner v-if="loading.get('stats-quotee')" />
+
+    <div v-else-if="chart" class="chart-wrapper">
       <Line class="chart-graph" :data="chart" :config="options" />
 
       <div class="chart-legend">
-        <div
+        <button
           v-for="author in chart.datasets"
           :key="author.label"
           class="legend-item"
-          @mouseenter="hoveredUser = author.label ?? null"
-          @mouseleave="hoveredUser = null"
+          :class="{ 'is-hidden': hiddenUsers.value.includes(String(author.label)) }"
+          @mouseenter="setHoveredUser(String(author.label))"
+          @mouseleave="setHoveredUser(null)"
+          @click="setHiddenUser(author.label)"
         >
           <div class="legend-marker" :style="{ backgroundColor: String(author.borderColor) }" />
           {{ author.label }}
-        </div>
+
+          <div class="flex-1" />
+          <Icon code="e8f5" size="1.2" />
+        </button>
       </div>
     </div>
   </div>

@@ -35,6 +35,8 @@ function getQuotesPerYear(year: number) {
 
 <template>
   <div class="year-breakdown">
+    <!-- <strong class="section-title">Upload Histogram</strong> -->
+
     <Tabs compact :tabs="uniqueYears">
       <template v-for="year in uniqueYears" :key="year" #[year]>
         <YearItem :data="getQuotesPerYear(year)" :year="year" />

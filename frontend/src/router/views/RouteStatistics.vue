@@ -1,10 +1,11 @@
 <script setup lang='ts'>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { findLast } from 'lodash'
 import { useQuote } from '../../store/quote'
 import { date, getKey, getVal, objectToArray, toNum } from '../../bin/utils'
 import type { Quote } from '../../types/quote-types'
 import { useLoading } from '../../store/loading'
+import Tabs from '../../components/Tabs.vue'
 
 import StatBreakdown from '../../components/statistics/YearBreakdown.vue'
 import StatCell from '../../components/statistics/StatCell.vue'
@@ -38,6 +39,10 @@ const usersByUploads = computed(() => objectToArray(quote.quotes.reduce((group, 
   return group
 }, {} as Record<string, number>)).sort((a, b) => getVal(a) < getVal(b) ? 1 : -1))
 
+// Most quoted and most uploaded
+const mostQuoted = computed(() => Object.keys(usersByQuotes.value[0])[0])
+const mostAuthored = computed(() => Object.keys(usersByUploads.value[0])[0])
+
 // Most used tagts
 const tagsByUsage = computed(() => objectToArray(quote.quotes.reduce((group, quote) => {
   for (const tag of quote.tags)
@@ -45,35 +50,52 @@ const tagsByUsage = computed(() => objectToArray(quote.quotes.reduce((group, quo
 
   return group
 }, {} as Record<string, number>)).sort((a, b) => getVal(a) < getVal(b) ? 1 : -1))
+
+// Tabs
+const tab = ref('Summary')
 </script>
 
 <template>
   <div class="route-statistics">
     <div class="quote-container">
       <h1>Statistics</h1>
-
       <Spinner v-if="loading.get('quotes', 'users')" />
-      <template v-else-if="quote.quotes.length > 0">
-        <strong class="section-title">Top level summary</strong>
+      <Tabs v-else v-model="tab" :tabs="['Summary', 'Range']" />
+    </div>
+
+    <template v-if="quote.quotes.length > 0">
+      <div v-show="tab === 'Summary'" class="quote-container">
         <div class="stats-grid">
-          <StatCell label="Quotes" :data="toNum(totalQuotes)" />
-          <StatCell label="Quotees" :data="toNum(usersByQuotes.length)" />
-          <StatCell label="Authors" :data="toNum(totalAuthors)" />
-          <StatCell str label="Most Quoted" :data="Object.keys(usersByQuotes[0])[0]" />
-          <StatCell str label="Most Posts" :data="Object.keys(usersByUploads[0])[0]" />
-          <StatCell str label="Most Used Tag" :data="Object.keys(tagsByUsage[0])[0]" />
-          <StatCell str label="First Post" :data="date.timeShort(firstUpload.createdAt)" />
-          <StatCell str label="Latest Post" :data="date.timeShort(lastUpload.createdAt)" />
+          <StatCell label="Quotes" :data="toNum(totalQuotes)" :to="{ name: 'RouteQuoteList' }" />
+          <StatCell label="Quotees" :data="toNum(usersByQuotes.length)" :to="{ name: 'RouteQuoteList' }" />
+          <StatCell label="Authors" :data="toNum(totalAuthors)" :to="{ name: 'RouteQuoteList' }" />
+          <StatCell
+            str label="Most Quoted" :data="mostQuoted"
+            :to="{ name: 'RouteUserProfile', params: { username: mostQuoted } }"
+          />
+          <StatCell
+            str label="Most Posts" :data="mostAuthored"
+            :to="{ name: 'RouteUserProfile', params: { username: mostAuthored } }"
+          />
+          <StatCell
+            str label="Most Used Tag" :data="Object.keys(tagsByUsage[0])[0]"
+            :to="{ name: 'RouteTags' }"
+          />
+          <StatCell
+            str label="First Post" :data="date.timeShort(firstUpload.createdAt)"
+            :to="{ name: 'RouteQuoteDetail', params: { id: firstUpload.id } }"
+          />
+          <StatCell
+            str label="Latest Post" :data="date.timeShort(lastUpload.createdAt)"
+            :to="{ name: 'RouteQuoteDetail', params: { id: lastUpload.id } }"
+          />
         </div>
 
-        <strong class="section-title">Yearly</strong>
         <StatBreakdown />
-
-        <strong class="section-title">Historic</strong>
+      </div>
+      <div v-show="tab === 'Range'" class="quote-container container-header">
         <UserBreakdown />
-
-        <!-- <strong class="section-title">User uploads</strong> -->
-      </template>
-    </div>
+      </div>
+    </template>
   </div>
 </template>
