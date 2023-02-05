@@ -1,14 +1,17 @@
 .quote-home {
-  // padding-top: 5em;
+  padding-top: 10em;
   position: relative;
-
+  height: calc(100vh - $header);
   z-index: 1;
+  overflow: hidden;
 
   .bg {
+    @include t();
     z-index: -1;
     position: fixed;
     left: -256px;
     bottom: -256px;
+    pointer-events: none;
   }
 
   .quote-container {
@@ -108,77 +111,79 @@
     }
   }
 
-  nav {
-    display: block;
-    width: 100%;
-    padding-top: 3em;
-    margin-bottom: 8em;
+  // nav {
+  //   display: block;
+  //   width: 100%;
+  //   padding-top: 3em;
+  //   margin-bottom: 8em;
 
-    ul {
-      @include flex(80px, $justify: center);
-      list-style: none;
+  //   // opacity: 0;
 
-      li button,
-      li a {
-        @include t();
-        @include flex(10px);
-        font-size: 2rem;
-        position: relative;
-        z-index: 5;
-        text-decoration: none;
-        color: var(--color-text);
+  //   ul {
+  //     @include flex(80px, $justify: center);
+  //     list-style: none;
 
-        &:hover {
-          color: var(--color-highlight);
+  //     li button,
+  //     li a {
+  //       @include t();
+  //       @include flex(10px);
+  //       font-size: 2rem;
+  //       position: relative;
+  //       z-index: 5;
+  //       text-decoration: none;
+  //       color: var(--color-text);
 
-          &:after {
-            opacity: 1;
-          }
-        }
+  //       &:hover {
+  //         color: var(--color-highlight);
 
-        &:after {
-          @include t();
-          @include radius(var(--radius-sm));
-          content: "";
-          position: absolute;
-          inset: -10px -15px;
-          z-index: -1;
-          background-color: var(--color-highlight-shade);
-          opacity: 0;
-        }
+  //         &:after {
+  //           opacity: 1;
+  //         }
+  //       }
 
-        &.header-post {
-          color: var(--color-highlight);
+  //       &:after {
+  //         @include t();
+  //         @include radius(var(--radius-sm));
+  //         content: "";
+  //         position: absolute;
+  //         inset: -10px -15px;
+  //         z-index: -1;
+  //         background-color: var(--color-highlight-shade);
+  //         opacity: 0;
+  //       }
 
-          &:hover {
-            color: var(--color-text-dark);
+  //       &.header-post {
+  //         color: var(--color-highlight);
 
-            &:after {
-              background-color: var(--color-highlight);
-            }
-          }
+  //         &:hover {
+  //           color: var(--color-text-dark);
 
-          &:after {
-            opacity: 1;
-          }
-        }
+  //           &:after {
+  //             background-color: var(--color-highlight);
+  //           }
+  //         }
 
-        &.header-user {
-          @include font(400);
-          text-transform: none;
+  //         &:after {
+  //           opacity: 1;
+  //         }
+  //       }
 
-          img {
-            @include radius(50%);
-            display: block;
-            width: 24px;
-            height: 24px;
-            object-fit: cover;
-            object-position: center;
-          }
-        }
-      }
-    }
-  }
+  //       &.header-user {
+  //         @include font(400);
+  //         text-transform: none;
+
+  //         img {
+  //           @include radius(50%);
+  //           display: block;
+  //           width: 24px;
+  //           height: 24px;
+  //           object-fit: cover;
+  //           object-position: center;
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 
   .made-by {
     @include flex(5px);
@@ -205,5 +210,19 @@
     .material-icons {
       color: var(--color-highlight);
     }
+  }
+}
+
+.modal-content.modal-conditions {
+  h1 {
+    font-size: 5rem;
+    margin-bottom: 40px;
+  }
+
+  p {
+    display: block;
+    font-size: 2rem;
+    line-height: 1.4em;
+    margin-bottom: 20px;
   }
 }

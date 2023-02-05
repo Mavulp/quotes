@@ -11,7 +11,6 @@ import { sanitize } from '../../../bin/comments'
 import UserProfileQuote from '../../../components/user/UserQuote.vue'
 import ModalSettings from '../../../components/modal/ModalSettings.vue'
 import Modal from '../../../components/Modal.vue'
-import BackgroundBlob from '../../../components/BackgroundBlob.vue'
 
 const user = useUser()
 const filters = useFilters()
@@ -49,6 +48,8 @@ function quotesFromUser() {
 
 <template>
   <div class="quote-profile">
+    <img class="bg" src="/bg/blobs.svg" alt="">
+
     <div class="quote-container">
       <div v-if="loading.get('users')">
         <Spinner />
@@ -56,8 +57,6 @@ function quotesFromUser() {
 
       <template v-else-if="profile">
         <div class="quote-side">
-          <BackgroundBlob />
-
           <div class="quote-side-content">
             <div class="image-wrap">
               <img :src="profile.profilePicture ?? '/user-alt.svg'">

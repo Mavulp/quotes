@@ -3,20 +3,50 @@
 
 import { computed } from 'vue'
 import dayjs from 'dayjs'
+import { useRouter } from 'vue-router'
+import { useLocalStorage } from '@vueuse/core'
 import { displayDateLong } from '../../bin/time'
-import BackgroundBlob from '../../components/BackgroundBlob.vue'
 import { useUser } from '../../store/user'
+import { useQuote } from '../../store/quote'
+import Modal from '../../components/Modal.vue'
 
+const quote = useQuote()
+const router = useRouter()
 const user = useUser()
 
-const profile = computed(() => user.user)
+// const profile = computed(() => user.user)
+
+function random() {
+  const id = quote.getRandomQuoteId()
+  router.push({ name: 'RouteQuoteDetail', params: { id } })
+}
+
+// Prompt to understand funny
+const open = useLocalStorage('quotes_funny_prompt', true)
 </script>
 
 <template>
   <div class="quote-home">
-    <img src="/bg/blobs.svg" class="bg" alt="">
+    <Modal v-if="open" @close="open = false">
+      <div class="quote-container-small">
+        <div class="modal-content modal-conditions">
+          <h1>Content Agreement</h1>
 
-    <nav>
+          <p>I understand that humor is subjective and out of context statements made do not necessarily reflect the views of those involved</p>
+          <p>I also acknowledge that what is funny yesterday may not be tomorrow. I will bring some salt.</p>
+
+          <button style="margin:0 auto" class="button btn-large" @click="open = false">
+            Acknowledge
+          </button>
+        </div>
+      </div>
+    </Modal>
+
+    <Transition name="fade" appear>
+      <img src="/bg/blobs.svg" class="bg" alt="">
+    </Transition>
+
+    <!-- <nav>
       <ul>
         <li>
           <router-link :to="{ name: 'RouteQuoteList' }">
@@ -50,14 +80,14 @@ const profile = computed(() => user.user)
           </router-link>
         </li>
       </ul>
-    </nav>
+    </nav> -->
 
     <div class="quote-container">
       <div>
         <h1>Hivecom Quotes</h1>
         <p>A bunch of friends holding each other accountable for the messed up things they said.</p>
         <br>
-        <button class="button btn-large btn-highlight">
+        <button class="button btn-large btn-highlight" @click="random">
           Random Quote
         </button>
       </div>
@@ -76,7 +106,6 @@ const profile = computed(() => user.user)
         <div class="example-content">
           <div class="example-line">
             <strong>What is the difference between a microphone and a jellyfish? hehe.</strong>
-
             <span><Icon size="1.6" code="e244" />Crab</span>
           </div>
           <div class="example-line highlight">
@@ -86,7 +115,6 @@ const profile = computed(() => user.user)
           </div>
         </div>
       </router-link>
-      <!-- <BackgroundBlob /> -->
     </div>
 
     <p class="made-by">

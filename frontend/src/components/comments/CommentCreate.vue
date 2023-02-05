@@ -53,7 +53,7 @@ function insertAlias(alias: string) {
       </template>
     </form>
     <div class="comment-post">
-      <CommentAlias @insert="insertAlias" />
+      <!-- <CommentAlias @insert="insertAlias" /> -->
 
       <button class="button wide" :class="{ 'btn-gray': form.text.length === 0 }" @click="submit">
         <Spinner v-if="loading.get('comment')" class="white" />

@@ -40,11 +40,6 @@
 
 ---
 
-## Home
-
-- Latest added non-offensive quote
-- big navigation in the middle with emphasised "Add" button
-
 ## First login
 
 - Modal with a terms / conditions about funny etc. Save result to localStorage to not prompt it again
