@@ -130,7 +130,7 @@ onMounted(() => {
   .fusion-tabs-buttons {
     @include flex(5px);
     position: relative;
-    padding-bottom: 3px;
+    padding-bottom: 2px;
 
     .fusion-tab-button {
       @include t(0.3s, cubic-bezier(0.83, 0, 0.17, 1));
@@ -154,7 +154,7 @@ onMounted(() => {
       @include t(0.3s, cubic-bezier(0.83, 0, 0.17, 1));
       @include radius(var(--radius-tn));
       display: block;
-      height: 3px;
+      height: 2px;
       bottom: 0;
       background-color: var(--color-highlight);
       position: absolute;
