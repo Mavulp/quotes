@@ -9,7 +9,7 @@ import Tabs from '../../components/Tabs.vue'
 
 import StatBreakdown from '../../components/statistics/YearBreakdown.vue'
 import StatCell from '../../components/statistics/StatCell.vue'
-import LadderBreakdown from '../../components/statistics/LadderBreakdown.vue'
+// import LadderBreakdown from '../../components/statistics/LadderBreakdown.vue'
 import UserBreakdown from '../../components/statistics/UserBreakdown.vue'
 
 const quote = useQuote()
@@ -62,7 +62,7 @@ const tab = ref('Summary')
     <div class="quote-container">
       <h1>Statistics</h1>
       <Spinner v-if="loading.get('quotes', 'users')" />
-      <Tabs v-else v-model="tab" :tabs="['Summary', 'Range']" />
+      <Tabs v-else v-model="tab" :tabs="['Summary', 'Quotees', 'Authors', 'You']" />
     </div>
 
     <template v-if="quote.quotes.length > 0">
@@ -98,8 +98,18 @@ const tab = ref('Summary')
 
         <StatBreakdown />
       </div>
-      <div v-show="tab === 'Range'" class="quote-container container-header">
+      <div v-show="tab === 'Quotees'" class="quote-container container-header">
         <UserBreakdown />
+      </div>
+      <div v-show="tab === 'Authors'" class="quote-container container-header">
+        <div class="ladder-breakdown chart-breakdown">
+          Chart of how many time
+        </div>
+      </div>
+      <div v-show="tab === 'User Analysis'">
+        <div class="ladder-breakdown chart-breakdown">
+          Breakdown of stuff related to YOU (or a different user you select)
+        </div>
       </div>
     </template>
   </div>

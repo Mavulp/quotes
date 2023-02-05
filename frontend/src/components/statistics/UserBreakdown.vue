@@ -1,10 +1,11 @@
 <script setup lang='ts'>
 import type { ChartData, ChartOptions } from 'chart.js'
-import { debounce, isEmpty, take, takeRight } from 'lodash'
+import { isEmpty } from 'lodash'
 import { computed, onBeforeMount, reactive, ref } from 'vue'
 import { gradient } from '../../bin/color'
 import { useLoading } from '../../store/loading'
 import { useStats } from '../../store/statistics'
+import type { RawDataset } from '../../types/statistics-types'
 
 import Line from '../charts/Line.vue'
 
@@ -17,9 +18,6 @@ const quotee = computed(() => stats.quotee)
 
 onBeforeMount(() => {
   stats.fetchQuoteeStats()
-    .then((res) => {
-      // hiddenUsers.value = takeRight(res.datasets, res.datasets.length - 10).map(set => set.label)
-    })
 })
 
 function setShowingUsers(user?: string) {
@@ -32,10 +30,6 @@ function setShowingUsers(user?: string) {
     showingOnly.value.push(user)
 }
 
-// const setHoveredUser = debounce((user: string | null) => {
-//   hoveredUser.value = user
-// }, 100)
-
 const chart = computed<ChartData<'line'> | null>(() => {
   if (isEmpty(quotee.value))
     return null
@@ -47,10 +41,11 @@ const chart = computed<ChartData<'line'> | null>(() => {
       const actualColor = (hoveredUser.value === dataset.label || hoveredUser.value === null) ? color : `${color}22`
 
       return {
-        ...dataset,
+        ...dataset as RawDataset,
         borderWidth: 3,
         spanGaps: true,
         pointStyle: false,
+        tension: 0,
         borderColor: actualColor,
         backgroundColor: actualColor,
         hidden: showingOnly.value.length > 0 && !showingOnly.value.includes(dataset.label),
@@ -79,6 +74,7 @@ const options: ChartOptions<'line'> = {
         maxRotation: 0,
         autoSkip: true,
         maxTicksLimit: 6,
+        padding: 10,
       },
     },
     y: {
@@ -93,10 +89,6 @@ const options: ChartOptions<'line'> = {
 
 <template>
   <div class="ladder-breakdown chart-breakdown">
-    <span class="section-title dark">
-      Times quoted
-    </span>
-
     <Spinner v-if="loading.get('stats-quotee')" />
 
     <div v-else-if="chart" class="chart-wrapper">
@@ -105,7 +97,7 @@ const options: ChartOptions<'line'> = {
       <button
         v-if="showingOnly.value.length > 0"
         class="btn-clear button btn-gray btn-small"
-        data-title-top="Remove filters"
+        data-title-right="Remove filters"
         @click="showingOnly.value = []"
       >
         <Icon code="e5cd" size="1.4" />
@@ -113,11 +105,13 @@ const options: ChartOptions<'line'> = {
       </button>
 
       <div class="chart-legend">
+        <!-- Added as any because I was not able to figure out how to add a specific additional field -->
         <button
-          v-for="author in chart.datasets"
+          v-for="author in (chart.datasets as any)"
           :key="author.label"
           class="legend-item"
           :class="{ 'is-hidden': showingOnly.value.length > 0 && !showingOnly.value.includes(String(author.label)) }"
+          :data-title-left="`${author.total} Quotes`"
           @click="setShowingUsers(author.label)"
         >
           <div class="legend-marker" :style="{ backgroundColor: String(author.backgroundColor) }" />

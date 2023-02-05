@@ -18,6 +18,7 @@ onMounted(query)
 async function query(ignoreLoading = false) {
   if (!ignoreLoading)
     loading.add('tags')
+
   tags.value = await get('/tag')
 
   if (!ignoreLoading)

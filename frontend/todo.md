@@ -25,24 +25,7 @@
 
 - [] Ratio of posted x quoted (list of users with bars next to them, one color is posted, other color is quoted)
 - [] chart showing all authors and their uploads overtime
-
-### Year breakdown
-
-- [] Allow months to be clicked and shown child rows (the exact same stats as at the bottom of the year, except for a month instead)
-
-### Laders
-
-- amount of uploads (top 10, click to expand)
-- amount of times being quoted (top 10, click to expand)
-  - reference figma design for a married view of these two ^^
-- top 10 used tags (click to expand)
-- top 10 of most offensive quotes (get scanning lib)
-
----
-
-## First login
-
-- Modal with a terms / conditions about funny etc. Save result to localStorage to not prompt it again
+- [] Page showing statistics related to YOU or the selected user
 
 ## Quote
 

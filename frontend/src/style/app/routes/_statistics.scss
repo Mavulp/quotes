@@ -214,7 +214,7 @@
       position: absolute;
       // right: 0;
       left: calc(100% - 176px);
-      top: 10px;
+      top: 12px;
       color: var(--color-text-lighter);
     }
 
@@ -223,7 +223,7 @@
     }
 
     .chart-graph {
-      height: 75vh;
+      height: 85vh;
       position: sticky;
       top: calc($header + 24px);
     }
@@ -231,7 +231,7 @@
     .chart-legend {
       display: block;
       width: 100%;
-      overflow-y: auto;
+      // overflow-y: auto;
 
       .legend-item {
         // @include t();
@@ -248,13 +248,14 @@
 
         .material-icons {
           display: none;
+          color: var(--color-text-lighter);
         }
 
         &.is-hidden {
           color: var(--color-text-lighter);
 
           .legend-marker {
-            background-color: var(--color-bg-light) !important;
+            filter: brightness(0.25) grayscale(0.75);
           }
 
           .material-icons {
