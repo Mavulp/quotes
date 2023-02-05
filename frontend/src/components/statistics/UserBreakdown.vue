@@ -94,17 +94,16 @@ const options: ChartOptions<'line'> = {
     <div v-else-if="chart" class="chart-wrapper">
       <Line class="chart-graph" :data="chart" :config="options" />
 
-      <button
-        v-if="showingOnly.value.length > 0"
-        class="btn-clear button btn-gray btn-small"
-        data-title-right="Remove filters"
-        @click="showingOnly.value = []"
-      >
-        <Icon code="e5cd" size="1.4" />
-        Clear
-      </button>
-
       <div class="chart-legend">
+        <button
+          v-if="showingOnly.value.length > 0"
+          class="btn-clear button btn-gray btn-small"
+          data-title-right="Remove filters"
+          @click="showingOnly.value = []"
+        >
+          <Icon code="e5cd" size="1.4" />
+          Clear
+        </button>
         <!-- Added as any because I was not able to figure out how to add a specific additional field -->
         <button
           v-for="author in (chart.datasets as any)"

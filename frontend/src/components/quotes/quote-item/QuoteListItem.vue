@@ -75,7 +75,7 @@ onBeforeMount(async () => {
       <template v-if="commentCount > 0">
         <span class="quote-text quote-comments">
           {{ commentCount }}
-          <Icon code="e0cb" size="1.4" />
+          <Icon code="e0cb" size="1.5" />
         </span>
         <div class="quote-divider" />
       </template>

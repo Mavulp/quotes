@@ -27,12 +27,12 @@ const open = useLocalStorage('quotes_funny_prompt', true)
 
 <template>
   <div class="quote-home">
-    <Modal v-if="open" @close="open = false">
+    <Modal v-if="open" :close="false" @close="open = false">
       <div class="quote-container-small">
         <div class="modal-content modal-conditions">
           <h1>Content Agreement</h1>
 
-          <p>I understand that humor is subjective and out of context statements made do not necessarily reflect the views of those involved</p>
+          <p>I understand that humor is subjective and out of context statements made do not necessarily reflect the views of those involved.</p>
           <p>I also acknowledge that what is funny yesterday may not be tomorrow. I will bring some salt.</p>
 
           <button style="margin:0 auto" class="button btn-large" @click="open = false">
@@ -46,46 +46,10 @@ const open = useLocalStorage('quotes_funny_prompt', true)
       <img src="/bg/blobs.svg" class="bg" alt="">
     </Transition>
 
-    <!-- <nav>
-      <ul>
-        <li>
-          <router-link :to="{ name: 'RouteQuoteList' }">
-            Quotes
-          </router-link>
-        </li>
-        <li>
-          <router-link :to="{ name: 'RouteTags' }">
-            Tags
-          </router-link>
-        </li>
-        <li>
-          <router-link :to="{ name: 'RouteStatistics' }">
-            Statistics
-          </router-link>
-        </li>
-        <li>
-          <router-link class="header-post" :to="{ name: 'RouteQuoteAdd' }">
-            <Icon code="e745" /> Post
-          </router-link>
-        </li>
-        <li>
-          <router-link
-            v-if="profile.username"
-            class="header-link header-user"
-            :to="{ name: 'RouteUserProfile', params: { username: profile.username } }"
-          >
-            <img v-if="profile.profilePicture" :src="profile.profilePicture">
-            <Icon v-else code="e7fd" />
-            {{ profile.username }}
-          </router-link>
-        </li>
-      </ul>
-    </nav> -->
-
     <div class="quote-container">
       <div>
         <h1>Hivecom Quotes</h1>
-        <p>A bunch of friends holding each other accountable for the messed up things they said.</p>
+        <p>Said something very funny, unfunny, or didn't say it in that way at all? It'll probably end up posted here anyway.</p>
         <br>
         <button class="button btn-large btn-highlight" @click="random">
           Random Quote
@@ -94,24 +58,27 @@ const open = useLocalStorage('quotes_funny_prompt', true)
       <router-link :to="{ name: 'RouteQuoteList' }" class="quote-example">
         <div class="example-header">
           <span>
-            Big Jellyfish
+            Fish
             <b>#27</b>
           </span>
           <div class="dot-padder" />
-          <span>reported by <b>Brick</b></span>
+          <span>reported by <b>Apple</b></span>
           <div class="flex-1" />
           <span>{{ dayjs.utc().format(displayDateLong) }}</span>
         </div>
 
         <div class="example-content">
           <div class="example-line">
-            <strong>What is the difference between a microphone and a jellyfish? hehe.</strong>
-            <span><Icon size="1.6" code="e244" />Crab</span>
+            <strong>What was the bowling ball doing at the funeral?</strong>
+            <span><Icon size="1.6" code="e244" />Crabe</span>
+          </div>
+          <div class="example-line">
+            <strong><img src="https://friends.hivecom.net/emotes/emotesv2_a2a5c3db772f4d949a9fe8c5eb193891.gif" alt=""></strong>
+            <span><Icon size="1.6" code="e244" />Fish</span>
           </div>
           <div class="example-line highlight">
-            <strong>Idk, I am breaking up with you.</strong>
-
-            <span><Icon size="1.6" code="e244" />Big Jellyfish</span>
+            <strong>It was bawling. HEHE!!</strong>
+            <span><Icon size="1.6" code="e244" />Crabe</span>
           </div>
         </div>
       </router-link>

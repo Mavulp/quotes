@@ -9,6 +9,7 @@ import type { TextFragment } from '../../../../types/quote-types'
 import InputText from '../../../form/InputText.vue'
 import FragmentButtons from '../FragmentButtons.vue'
 import InputTextarea from '../../../form/InputTextarea.vue'
+import FragmentQuotee from '../FragmentQuotee.vue'
 
 const props = defineProps<{
   data: TextFragment
@@ -108,6 +109,7 @@ function dragEnter(e: DragEvent) {
       @dragstatus="(state) => isDragging = state"
     />
     <InputTextarea v-model="context" placeholder="Provide context for quote" />
-    <InputText v-model:value="quotee" class="form-quotee" placeholder="Add a quotee (optional)" />
+    <FragmentQuotee v-model="quotee" />
+    <!-- <InputText v-model:value="quotee" class="form-quotee" placeholder="Add a quotee (optional)" /> -->
   </div>
 </template>

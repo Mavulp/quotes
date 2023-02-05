@@ -211,11 +211,12 @@
     position: relative;
 
     .btn-clear {
-      position: absolute;
+      // position: absolute;
       // right: 0;
-      left: calc(100% - 176px);
-      top: 12px;
+      // left: calc(100% - 176px);
+      // top: 12px;
       color: var(--color-text-lighter);
+      margin-bottom: 10px;
     }
 
     .chart-wrapper {
@@ -231,6 +232,7 @@
     .chart-legend {
       display: block;
       width: 100%;
+      // padding-top: 40px;
       // overflow-y: auto;
 
       .legend-item {
