@@ -1,6 +1,7 @@
 export interface RawDataset {
   label: 'string'
   data: Array<number | null>
+  total: number
 }
 
 export interface StatisticsChartRaw {

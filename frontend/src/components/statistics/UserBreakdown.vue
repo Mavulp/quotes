@@ -12,7 +12,7 @@ const loading = useLoading()
 const stats = useStats()
 
 const hoveredUser = ref<string | null>(null)
-const hiddenUsers = reactive<{ value: string[] }>({ value: [] })
+const showingOnly = reactive<{ value: string[] }>({ value: [] })
 const quotee = computed(() => stats.quotee)
 
 onBeforeMount(() => {
@@ -22,19 +22,19 @@ onBeforeMount(() => {
     })
 })
 
-function setHiddenUser(user?: string) {
+function setShowingUsers(user?: string) {
   if (!user)
     return
 
-  if (hiddenUsers.value.includes(user))
-    hiddenUsers.value = hiddenUsers.value.filter(u => u !== user)
+  if (showingOnly.value.includes(user))
+    showingOnly.value = showingOnly.value.filter(u => u !== user)
   else
-    hiddenUsers.value.push(user)
+    showingOnly.value.push(user)
 }
 
-const setHoveredUser = debounce((user: string | null) => {
-  hoveredUser.value = user
-}, 100)
+// const setHoveredUser = debounce((user: string | null) => {
+//   hoveredUser.value = user
+// }, 100)
 
 const chart = computed<ChartData<'line'> | null>(() => {
   if (isEmpty(quotee.value))
@@ -53,7 +53,7 @@ const chart = computed<ChartData<'line'> | null>(() => {
         pointStyle: false,
         borderColor: actualColor,
         backgroundColor: actualColor,
-        hidden: hiddenUsers.value.includes(dataset.label),
+        hidden: showingOnly.value.length > 0 && !showingOnly.value.includes(dataset.label),
       }
     }),
   }
@@ -94,7 +94,7 @@ const options: ChartOptions<'line'> = {
 <template>
   <div class="ladder-breakdown chart-breakdown">
     <span class="section-title dark">
-      Quotees
+      Times quoted
     </span>
 
     <Spinner v-if="loading.get('stats-quotee')" />
@@ -102,17 +102,25 @@ const options: ChartOptions<'line'> = {
     <div v-else-if="chart" class="chart-wrapper">
       <Line class="chart-graph" :data="chart" :config="options" />
 
+      <button
+        v-if="showingOnly.value.length > 0"
+        class="btn-clear button btn-gray btn-small"
+        data-title-top="Remove filters"
+        @click="showingOnly.value = []"
+      >
+        <Icon code="e5cd" size="1.4" />
+        Clear
+      </button>
+
       <div class="chart-legend">
         <button
           v-for="author in chart.datasets"
           :key="author.label"
           class="legend-item"
-          :class="{ 'is-hidden': hiddenUsers.value.includes(String(author.label)) }"
-          @mouseenter="setHoveredUser(String(author.label))"
-          @mouseleave="setHoveredUser(null)"
-          @click="setHiddenUser(author.label)"
+          :class="{ 'is-hidden': showingOnly.value.length > 0 && !showingOnly.value.includes(String(author.label)) }"
+          @click="setShowingUsers(author.label)"
         >
-          <div class="legend-marker" :style="{ backgroundColor: String(author.borderColor) }" />
+          <div class="legend-marker" :style="{ backgroundColor: String(author.backgroundColor) }" />
           {{ author.label }}
 
           <div class="flex-1" />
