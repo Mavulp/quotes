@@ -1,0 +1,209 @@
+.quote-home {
+  // padding-top: 5em;
+  position: relative;
+
+  z-index: 1;
+
+  .bg {
+    z-index: -1;
+    position: fixed;
+    left: -256px;
+    bottom: -256px;
+  }
+
+  .quote-container {
+    @include grid(80px, 1fr 1fr);
+    align-items: center;
+    margin: 0 auto;
+    width: 75%;
+    max-width: 1440px;
+
+    h1 {
+      @include bebas();
+      font-size: 10rem;
+      margin-bottom: 15px;
+    }
+
+    p {
+      font-size: 2.8rem;
+      color: var(--color-text-light);
+      line-height: 1.4em;
+    }
+
+    button {
+      margin-top: 10px;
+      // margin: 0 auto;
+    }
+
+    .quote-example {
+      @include t();
+      @include radius(var(--radius-lg));
+      display: block;
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow);
+      text-decoration: none !important;
+
+      &:hover {
+        background-color: var(--color-bg-light);
+      }
+
+      .example-header {
+        @include flex(10px);
+        padding: 15px 20px;
+        border-bottom: 1px solid var(--color-border);
+
+        span {
+          color: var(--color-text-light);
+          font-size: 1.4rem;
+
+          &:first-of-type b {
+            color: var(--color-highlight);
+          }
+
+          b {
+            font-size: inherit;
+          }
+        }
+      }
+
+      .example-content {
+        padding: 20px;
+
+        .example-line {
+          margin-bottom: 40px;
+
+          &.highlight {
+            strong {
+              font-size: 7rem;
+              color: var(--color-highlight);
+            }
+          }
+
+          strong {
+            display: block;
+            @include font(500);
+            font-size: 2.8rem;
+            color: var();
+            margin-bottom: 10px;
+            color: var(--color-text);
+          }
+
+          span {
+            @include flex(5px);
+            font-size: 1.6rem;
+            color: var(--color-text-light);
+
+            .material-icons {
+              display: block;
+              width: auto;
+              color: var(--color-highlight);
+            }
+          }
+
+          &:last-of-type {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+
+  nav {
+    display: block;
+    width: 100%;
+    padding-top: 3em;
+    margin-bottom: 8em;
+
+    ul {
+      @include flex(80px, $justify: center);
+      list-style: none;
+
+      li button,
+      li a {
+        @include t();
+        @include flex(10px);
+        font-size: 2rem;
+        position: relative;
+        z-index: 5;
+        text-decoration: none;
+        color: var(--color-text);
+
+        &:hover {
+          color: var(--color-highlight);
+
+          &:after {
+            opacity: 1;
+          }
+        }
+
+        &:after {
+          @include t();
+          @include radius(var(--radius-sm));
+          content: "";
+          position: absolute;
+          inset: -10px -15px;
+          z-index: -1;
+          background-color: var(--color-highlight-shade);
+          opacity: 0;
+        }
+
+        &.header-post {
+          color: var(--color-highlight);
+
+          &:hover {
+            color: var(--color-text-dark);
+
+            &:after {
+              background-color: var(--color-highlight);
+            }
+          }
+
+          &:after {
+            opacity: 1;
+          }
+        }
+
+        &.header-user {
+          @include font(400);
+          text-transform: none;
+
+          img {
+            @include radius(50%);
+            display: block;
+            width: 24px;
+            height: 24px;
+            object-fit: cover;
+            object-position: center;
+          }
+        }
+      }
+    }
+  }
+
+  .made-by {
+    @include flex(5px);
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--color-text-light);
+    font-size: 1.4rem;
+
+    a {
+      @include font(600);
+      text-decoration: none;
+      color: var(--color-highlight);
+      font-size: inherit;
+
+      &:hover {
+        text-decoration: underline;
+        text-decoration-thickness: 3px;
+        text-decoration-color: rgb(var(--color-highlight));
+      }
+    }
+
+    .material-icons {
+      color: var(--color-highlight);
+    }
+  }
+}

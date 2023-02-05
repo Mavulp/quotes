@@ -1,6 +1,6 @@
 .button {
   @include t();
-  @include radius(3px);
+  @include radius(var(--radius-tn));
   @include font(700);
   display: flex;
   gap: 5px;
@@ -37,6 +37,14 @@
     line-height: 30px;
   }
 
+  &.btn-large {
+    @include radius(var(--radius-sm));
+    height: 48px;
+    line-height: 48px;
+    padding: 0 20px;
+    font-size: 1.8rem;
+  }
+
   &.wide {
     min-width: 96px;
   }
@@ -53,6 +61,19 @@
     &:focus,
     &:hover {
       background-color: var(--color-bg-light-hover);
+    }
+  }
+
+  &.btn-highlight {
+    color: var(--color-highlight);
+    background-color: var(--color-highlight-shade);
+    // box-shadow: 0 2px 12px rgba(#f29b41, 0.2);
+    box-shadow: var(--shadow);
+
+    &:focus,
+    &:hover {
+      background-color: var(--color-highlight);
+      color: var(--color-text-dark);
     }
   }
 

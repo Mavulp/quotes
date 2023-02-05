@@ -15,7 +15,13 @@ document.addEventListener('scroll', () => {
 </script>
 
 <template>
-  <div v-if="profile.username" class="quote-navigation" :class="{ 'disable-border': show }">
+  <div
+    class="quote-navigation"
+    :class="{
+      'disable-border': show,
+      'disable-navigation': route.name === 'RouteHome' || !user.signedIn,
+    }"
+  >
     <router-link class="logo" :to="{ name: 'RouteHome' }">
       <img src="/logo.svg" alt="">
     </router-link>
@@ -33,9 +39,9 @@ document.addEventListener('scroll', () => {
       <router-link class="header-link" :to="{ name: 'RouteStatistics' }">
         Statistics
       </router-link>
-      <router-link class="header-link" :to="{ name: 'RouteGuessQuote' }">
+      <!-- <router-link class="header-link" :to="{ name: 'RouteGuessQuote' }">
         Guess The Quote
-      </router-link>
+      </router-link> -->
       <!-- <router-link class="header-link" :to="{ name: 'RouteUsers' }">
         Users
       </router-link> -->
@@ -50,6 +56,7 @@ document.addEventListener('scroll', () => {
       </router-link>
 
       <router-link
+        v-if="profile.username"
         data-title-bottom="Your quotes"
         class="header-link header-user"
         :to="{ name: 'RouteUserProfile', params: { username: profile.username } }"

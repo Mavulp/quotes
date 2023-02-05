@@ -161,6 +161,10 @@
           }
         }
 
+        iframe {
+          @include radius(var(--radius-lg));
+        }
+
         pre {
           @include radius(var(--radius-lg));
           padding: 20px;

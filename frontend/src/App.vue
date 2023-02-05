@@ -38,7 +38,7 @@ onBeforeMount(async () => {
 
 <template>
   <div class="quote-app">
-    <Header v-if="user.signedIn && !loading.get('users')" />
+    <Header />
 
     <div class="quote-content-wrap">
       <router-view v-slot="{ Component }">

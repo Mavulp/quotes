@@ -1,17 +1,17 @@
 <script setup lang='ts'>
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { marked } from 'marked'
 import { useUser } from '../../../store/user'
-import { getRanMinMax } from '../../../bin/utils'
 import { useQuote } from '../../../store/quote'
 import { useLoading } from '../../../store/loading'
 import { useFilters } from '../../../store/filters'
+import { sanitize } from '../../../bin/comments'
 
 import UserProfileQuote from '../../../components/user/UserQuote.vue'
 import ModalSettings from '../../../components/modal/ModalSettings.vue'
 import Modal from '../../../components/Modal.vue'
-import { sanitize } from '../../../bin/comments'
+import BackgroundBlob from '../../../components/BackgroundBlob.vue'
 
 const user = useUser()
 const filters = useFilters()
@@ -24,29 +24,8 @@ const profile = computed(() => user.users.find(u => u.username === route.params.
 const highlightQuote = computed(() => quotes.getQuoteById(profile.value?.highlightedQuoteId))
 const quotedQuotes = computed(() => quotes.getQuotedQuotes(String(route.params.username)).slice(0, 3))
 
-function colorOfTheDay() {
-  const date = new Date()
-  // Gives back the number of the day in the year
-  const day = (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - Date.UTC(date.getFullYear(), 0, 0)) / 24 / 60 / 60 / 1000
-  // Get a random brightness
-  const tint = getRanMinMax(50, 85)
-
-  return {
-    light: `hsla(${day}, ${tint}%, ${60}%)`,
-    normal: `hsla(${day}, ${tint}%, ${50}%)`,
-    dark: `hsla(${day}, ${tint}%, ${40}%)`,
-  }
-}
-
-const { normal } = colorOfTheDay()
-
 // Name
 const editing = ref(false)
-
-// watch(editing, (val) => {
-//   if (!val)
-//     user.fetchUsers()
-// })
 
 // Redirect back to filters
 function quotesByUser() {
@@ -77,18 +56,7 @@ function quotesFromUser() {
 
       <template v-else-if="profile">
         <div class="quote-side">
-          <svg width="1000" height="1100" viewBox="0 0 1000 1100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g filter="url(#filter0_f_408_13)">
-              <path d="M534.771 367.406C541.154 402.542 525.515 441.511 545.303 468.981C565.411 496.452 620.945 512.103 619.988 519.769C618.711 527.435 560.1100 527.116 539.239 564.808C517.536 602.819 531.579 678.841 522.962 685.549C514.344 691.937 482.428 629.011 462.959 592.278C443.809 555.225 436.787 544.684 409.977 537.657C382.848 530.63 336.25 527.435 304.014 503.798C272.098 480.161 254.225 435.762 256.14 387.529C258.374 339.297 279.758 287.231 319.015 266.788C357.953 246.345 414.126 257.525 456.894 278.926C499.343 300.647 528.387 332.269 534.771 367.406Z" :fill="normal" fill-opacity="0.5" />
-            </g>
-            <defs>
-              <filter id="filter0_f_408_13" x="0" y="0" width="876" height="942" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-                <feGaussianBlur stdDeviation="128" result="effect1_foregroundBlur_408_13" />
-              </filter>
-            </defs>
-          </svg>
+          <BackgroundBlob />
 
           <div class="quote-side-content">
             <div class="image-wrap">

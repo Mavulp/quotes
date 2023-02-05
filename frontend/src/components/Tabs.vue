@@ -133,13 +133,18 @@ onMounted(() => {
     padding-bottom: 2px;
 
     .fusion-tab-button {
-      @include t(0.3s, cubic-bezier(0.83, 0, 0.17, 1));
+      @include radius(var(--radius-sm));
+      @include t();
       display: block;
       padding: 0 20px;
       font-size: 1.6rem;
       height: 40px;
       line-height: 40px;
       color: var(--color-text-light);
+
+      &:hover {
+        background-color: var(--color-bg-light);
+      }
 
       &:hover:not(.tab-active) {
         color: var(--color-text);
@@ -151,7 +156,7 @@ onMounted(() => {
     }
 
     .fusion-tabs-underline {
-      @include t(0.3s, cubic-bezier(0.83, 0, 0.17, 1));
+      @include t(0.3s);
       @include radius(var(--radius-tn));
       display: block;
       height: 2px;
