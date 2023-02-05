@@ -20,6 +20,8 @@ const loading = useLoading()
  */
 
 const totalQuotes = computed(() => quote.quotes.length)
+const offensiveQuotes = computed(() => quote.quotes.filter(q => q.offensive).length)
+
 const totalAuthors = computed(() => new Set(quote.quotes.map(q => q.author)).size)
 const firstUpload = computed(() => findLast(quote.quotes, q => q.createdAt !== 0) as Quote)
 const lastUpload = computed(() => quote.quotes.at(0) as Quote)
@@ -67,6 +69,9 @@ const tab = ref('Summary')
       <div v-show="tab === 'Summary'" class="quote-container">
         <div class="stats-grid">
           <StatCell label="Quotes" :data="toNum(totalQuotes)" :to="{ name: 'RouteQuoteList' }" />
+          <StatCell label="Offensive Quotes" :data="toNum(offensiveQuotes)" :to="{ name: 'RouteQuoteList' }" />
+          <StatCell label="Safe Quotes" :data="toNum(totalQuotes - offensiveQuotes)" :to="{ name: 'RouteQuoteList' }" />
+
           <StatCell label="Quotees" :data="toNum(usersByQuotes.length)" :to="{ name: 'RouteQuoteList' }" />
           <StatCell label="Authors" :data="toNum(totalAuthors)" :to="{ name: 'RouteQuoteList' }" />
           <StatCell
