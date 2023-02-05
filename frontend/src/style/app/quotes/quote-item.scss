@@ -109,6 +109,11 @@
         }
       }
 
+      &.quote-comments {
+        width: auto;
+        @include flex(5px);
+      }
+
       &.quote-author {
         color: var(--color-text-lighter);
 

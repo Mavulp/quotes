@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { computed, provide } from 'vue'
+import { computed, onBeforeMount, provide, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { Quote, Quotee } from '../../../types/quote-types'
 import { date } from '../../../bin/utils'
 
 import { useUser } from '../../../store/user'
+import { get } from '../../../bin/fetch'
+import type { Comment } from '../../../types/comment-types'
 import ModelFragmentText from './fragments/ModelFragmentText.vue'
 import ModelFragmentHighlight from './fragments/ModelFragmentHighlight.vue'
 import ModelFragmentImage from './fragments/ModelFragmentImage.vue'
@@ -14,7 +16,6 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const users = useUser()
 const router = useRouter()
 
 /**
@@ -41,6 +42,14 @@ function goToQuote(e?: Event) {
     e.preventDefault()
   router.push({ name: 'RouteQuoteDetail', params: { id: props.data.id } })
 }
+
+// Comment count
+const commentCount = ref(0)
+onBeforeMount(async () => {
+  const comments = await get<Comment[]>(`/quote/${props.data.id}/comment`)
+
+  commentCount.value = comments.length
+})
 </script>
 
 <template>
@@ -62,6 +71,14 @@ function goToQuote(e?: Event) {
         <router-link :to="{ name: 'RouteUserProfile', params: { username: props.data.author } }">{{ props.data.author }}</router-link>
       </span>
       <div class="quote-padder" />
+
+      <template v-if="commentCount > 0">
+        <span class="quote-text quote-comments">
+          {{ commentCount }}
+          <Icon code="e0cb" size="1.4" />
+        </span>
+        <div class="quote-divider" />
+      </template>
       <span class="quote-text"> {{ date.simple(props.data.createdAt) }} </span>
     </div>
 
