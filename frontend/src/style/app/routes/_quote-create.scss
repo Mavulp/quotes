@@ -205,10 +205,40 @@
     }
   }
 
+  .quote-add-quotee {
+    position: relative;
+
+    .dropdown-element {
+      button {
+        padding: 10px 15px;
+
+        &:focus {
+          outline: solid 2px var(--color-highlight) !important;
+        }
+
+        b {
+          @include font(700);
+          color: var(--color-highlight);
+        }
+
+        &.btn-add {
+          padding-left: 48px;
+        }
+      }
+    }
+  }
+
   .form-input.form-quotee {
     display: block;
     margin-top: 8px;
     margin-bottom: 24px;
+
+    &.placeholder-visible {
+      ::placeholder {
+        color: var(--color-text);
+        opacity: 1;
+      }
+    }
 
     input {
       @include radius(0);

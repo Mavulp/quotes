@@ -110,6 +110,5 @@ function dragEnter(e: DragEvent) {
     />
     <InputTextarea v-model="context" placeholder="Provide context for quote" />
     <FragmentQuotee v-model="quotee" />
-    <!-- <InputText v-model:value="quotee" class="form-quotee" placeholder="Add a quotee (optional)" /> -->
   </div>
 </template>

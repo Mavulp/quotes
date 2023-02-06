@@ -11,7 +11,7 @@ import InputTextarea from '../form/InputTextarea.vue'
 import Modal from '../Modal.vue'
 
 const props = defineProps<{
-  prefill: Tag | null
+  prefill?: Tag
 }>()
 
 const emit = defineEmits<{ (e: 'close'): void }>()

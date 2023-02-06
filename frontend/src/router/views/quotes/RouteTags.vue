@@ -35,11 +35,11 @@ function removeTag(id: number) {
 
 // Modal & Tag creation
 const open = ref(false)
-const prefill = ref<Tag | null>(null)
+const prefill = ref<Tag>()
 
 watch(open, (val) => {
   if (!val) {
-    prefill.value = null
+    prefill.value = undefined
     query(true)
   }
 })

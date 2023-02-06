@@ -7,7 +7,7 @@ const props = withDefaults(defineProps<{
    * Defines if modal can be closed by clicking the close button, hitting escape
    * or clicking outside of the main container.
    */
-  close: boolean
+  close?: boolean
 }>(), {
   close: true,
 })

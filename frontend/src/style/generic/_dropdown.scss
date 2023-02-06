@@ -49,6 +49,7 @@
       color: var(--color-highlight);
     }
 
+    &:focus,
     &:hover {
       background-color: var(--color-bg-light-hover);
 

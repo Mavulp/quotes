@@ -20,6 +20,11 @@
     background-color: var(--color-highlight-tint);
   }
 
+  &:disabled {
+    filter: grayscale(1);
+    pointer-events: none;
+  }
+
   &.btn-round {
     @include radius(50%);
     width: 36px !important;

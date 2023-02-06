@@ -10,8 +10,6 @@
 
 ## Quote Create
 
-- [] Add user autocomplete to quotees
-- [] If user does not exist, add UI modal confirmation for "Adding a user"
 - [] Add delete button to quotes if you are author (with a timer counting down from 15 minutes before removing the button)
 
 ## List

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, reactive, ref } from 'vue'
+import { computed, onBeforeMount, reactive, ref, watch } from 'vue'
 import { required, useFormValidation, withMessage } from '../../../bin/validation'
 import { useCreate } from '../../../store/create'
 import { writableComputed } from '../../../bin/composables'
@@ -15,6 +15,7 @@ import { useLoading } from '../../../store/loading'
 import { $fetch, get } from '../../../bin/fetch'
 import type { Tag } from '../../../types/quote-types'
 import router from '../../../router'
+import ModalTag from '../../modal/ModalTag.vue'
 import FragmentText from './fragments/FragmentText.vue'
 import FragmentImage from './fragments/FragmentImage.vue'
 
@@ -81,8 +82,16 @@ const dropdownOptions = [
 
 // Tags
 const tagOptions = ref()
+const open = ref(false)
 
-onBeforeMount(async () => {
+onBeforeMount(query)
+
+watch(open, (v) => {
+  if (!v)
+    query()
+})
+
+async function query() {
   tagOptions.value = await $fetch('tags', get<Tag[]>('/tag'))
     .then((res) => {
       return res.map(tag => ({
@@ -90,7 +99,7 @@ onBeforeMount(async () => {
         label: tag.name,
       }))
     })
-})
+}
 </script>
 
 <template>
@@ -140,9 +149,11 @@ onBeforeMount(async () => {
           :multiple="true"
         />
 
-        <router-link class="button btn-gray btn-round" :to="{ name: 'RouteTags' }" data-title-top="Add New Tags">
+        <button class="button btn-gray btn-round" data-title-top="Add Tag" @click="open = true">
           <Icon code="e145" size="1.8" />
-        </router-link>
+        </button>
+
+        <ModalTag v-if="open" @close="open = false" />
       </div>
 
       <InputSelect

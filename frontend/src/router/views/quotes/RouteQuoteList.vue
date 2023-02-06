@@ -46,11 +46,7 @@ const filteredData = computed(() => {
     if (!filters.search || filters.search.length === 0)
       return true
 
-    return searchInStr([
-      q.author,
-      ...q.fragments.map(fragment => fragment.content),
-      ...q.indices.map(item => item.quotee),
-    ], filters.search)
+    return searchInStr(q.fragments.map(fragment => fragment.content), filters.search)
   })
 })
 
