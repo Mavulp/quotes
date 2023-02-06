@@ -82,7 +82,11 @@ onBeforeMount(async () => {
       <span class="quote-text"> {{ date.simple(props.data.createdAt) }} </span>
     </div>
 
-    <div class="quote-item-content" role="button" @click="goToQuote()" @mousedown.middle="goToQuote($event)">
+    <router-link
+      :to="{ name: 'RouteQuoteDetail', params: { id: props.data.id } }"
+      class="quote-item-content"
+      role="button"
+    >
       <template v-for="item in props.data.fragments" :key="item.index">
         <ModelFragmentText
           v-if="item.type === 'text' && !item.highlight"
@@ -98,7 +102,7 @@ onBeforeMount(async () => {
           :data="item"
         />
       </template>
-    </div>
+    </router-link>
 
     <span v-if="props.data.fragments.length > 1" class="parts">{{ props.data.fragments.length - 1 }} more parts...</span>
   </div>

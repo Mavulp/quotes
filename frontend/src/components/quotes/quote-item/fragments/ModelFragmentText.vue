@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useRoute } from 'vue-router'
 import type { TextFragment } from '../../../../types/quote-types'
 
 interface Props {
@@ -6,6 +7,7 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+const route = useRoute()
 </script>
 
 <template>
@@ -14,9 +16,13 @@ const props = defineProps<Props>()
 
     <div v-if="props.data.quotee" class="quote-item-quotee">
       <Icon size="1.6" code="e244" />
-      <router-link :to="{ name: 'RouteUserProfile', params: { username: props.data.quotee } }">
+
+      <router-link v-if="route.name === 'RouteQuoteDetail'" :to="{ name: 'RouteUserProfile', params: { username: props.data.quotee } }">
         {{ props.data.quotee }}
       </router-link>
+      <p v-else>
+        {{ props.data.quotee }}
+      </p>
     </div>
   </div>
 </template>

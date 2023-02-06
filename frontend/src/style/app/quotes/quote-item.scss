@@ -27,20 +27,6 @@
     pointer-events: none;
   }
 
-  // &.is-consolidated {
-  //   position: relative;
-
-  //   .parts {
-  //     display: block;
-  //   }
-
-  //   .quote-item-content-block {
-  //     &:not(:first-child) {
-  //       display: none;
-  //     }
-  //   }
-  // }
-
   &.quote-disabled {
     pointer-events: none;
   }
@@ -58,24 +44,12 @@
     font-size: inherit;
     font-size: 1.6rem;
     color: var(--color-highlight);
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-      text-decoration-thickness: 3px;
-      text-decoration-color: rgb(var(--color-highlight));
-    }
   }
-
-  // &:hover {
-  // background-color: var(--color-bg-light);
-  // }
 
   .quote-item-header {
     border-top-right-radius: var(--radius-lg);
     border-top-left-radius: var(--radius-lg);
     @include flex(8px);
-    // margin-bottom: 10px;
     padding: 10px 20px;
     border-bottom: 1px solid var(--color-border);
 
@@ -101,10 +75,11 @@
       a {
         color: var(--color-highlight);
         font-size: inherit;
+        text-decoration: none;
 
         &:hover {
-          // text-decoration: underline;
-          // text-decoration-thickness: 3px;
+          text-decoration: underline;
+          text-decoration-thickness: 3px;
           text-decoration-color: rgb(var(--color-highlight));
         }
       }
@@ -139,17 +114,11 @@
   }
 
   .quote-item-content {
-    // border-bottom-left-radius: var(--radius-lg);
-    // border-bottom-right-radius: var(--radius-lg);
     display: block;
     padding: 20px 20px 10px;
     width: 100%;
     text-align: left;
-    // overflow: hidden;
-
-    & > * {
-      pointer-events: none;
-    }
+    text-decoration: none !important;
   }
 }
 
@@ -186,14 +155,15 @@
     padding-left: 5px;
     padding-top: 8px;
 
-    span,
     a,
+    span,
+    p,
     .material-icons {
       color: var(--color-text-lighter);
     }
 
     span:not(.material-icons),
-    a {
+    p {
       @include font(400);
       font-size: 1.5rem;
     }
@@ -221,6 +191,7 @@
       font-size: 5.5rem;
       line-height: 1em;
       color: var(--color-highlight);
+      text-decoration: none !important;
     }
   }
 
@@ -232,6 +203,7 @@
       word-wrap: break-word;
       font-size: 2rem;
       color: var(--color-text);
+      text-decoration: none !important;
     }
   }
 
@@ -275,7 +247,7 @@
 
   p {
     margin-left: 15px;
-
+    text-decoration: none;
     @include font(700);
     color: var(--color-text);
   }

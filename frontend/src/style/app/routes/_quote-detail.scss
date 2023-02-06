@@ -60,6 +60,33 @@
         text-decoration-color: rgb(var(--color-highlight));
       }
     }
+
+    .quotees-circles {
+      @include flex(5px);
+
+      a {
+        text-decoration: none !important;
+        width: 24px;
+        height: 24px;
+      }
+
+      div,
+      img {
+        @include radius(50%);
+        width: 24px;
+        height: 24px;
+        object-fit: cover;
+        object-position: center;
+        color: var(--color-text);
+        font-size: 1.2rem;
+      }
+
+      div {
+        @include font(400);
+        @include flex(0, center, center);
+        text-decoration: none !important;
+      }
+    }
   }
 
   .quote-detail-header {
@@ -98,13 +125,13 @@
         font-size: 6.6rem;
       }
 
-      .quote-item-quotee {
-        a {
-          &:hover {
-            color: var(--color-highlight);
-          }
-        }
-      }
+      // .quote-item-quotee {
+      //   a {
+      //     &:hover {
+      //       color: var(--color-highlight);
+      //     }
+      //   }
+      // }
     }
   }
 

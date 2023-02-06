@@ -18,6 +18,7 @@ import CommentCreate from '../../../components/comments/CommentCreate.vue'
 import UserLink from '../../../components/user/UserLink.vue'
 import { useFilters } from '../../../store/filters'
 import { useUser } from '../../../store/user'
+import { getRndColor } from '../../../bin/color'
 
 const route = useRoute()
 const router = useRouter()
@@ -115,6 +116,10 @@ function removeHighlight() {
     highlightedQuoteId: null,
   })
 }
+
+function hasPfp(u: string) {
+  return user.users.find(us => us.username === u)?.profilePicture ?? undefined
+}
 </script>
 
 <template>
@@ -130,9 +135,27 @@ function removeHighlight() {
 
           <span>Added by: <UserLink :user="quote.author" /> </span>
 
+          <!-- <div class="dot-padder" />
+
+          <div class="quotees-circles">
+            <router-link
+              v-for="item in quote.indices"
+              :key="item.quotee"
+              :to="{ name: 'RouteUserProfile', params: { username: item.quotee } }"
+              :data-title-top="item.quotee"
+            >
+              <template v-if="hasPfp(item.quotee)">
+                <img :src="hasPfp(item.quotee)" alt="">
+              </template>
+              <div v-else :style="{ backgroundColor: getRndColor() }">
+                {{ item.quotee.at(0) }}
+              </div>
+            </router-link>
+          </div> -->
+
           <div class="dot-padder" />
 
-          <span class="date">{{ date.time(quote.createdAt) }}</span>
+          <span class="date">{{ date.simple(quote.createdAt) }}</span>
 
           <div class="flex-1" />
 

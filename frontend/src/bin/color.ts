@@ -16,7 +16,7 @@ export function hexToRgb(hex: string, format = false) {
 export function getRndColor() {
   let color = '#'
   for (let i = 0; i < 3; i++)
-    color += (`0${Math.floor(((1 + Math.random()) * 16 ** 2) / 1.25).toString(16)}`).slice(-2)
+    color += (`0${Math.floor(((1 + Math.random()) * 16 ** 2) / 1.5).toString(16)}`).slice(-2)
   return color
 }
 
