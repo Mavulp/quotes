@@ -4,6 +4,6 @@ import { ref } from 'vue'
 
 <template>
   <div class="ladder-breakdown chart-breakdown">
-    Breakdown of stuff related to YOU (or a different user you select)
+    Chart of how many time
   </div>
 </template>

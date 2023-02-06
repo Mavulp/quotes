@@ -45,6 +45,13 @@
         }
       }
 
+      &:nth-child(8) strong:before {
+        content: "#";
+        line-height: inherit;
+        font-size: inherit;
+        color: var(--color-text-light);
+      }
+
       strong {
         @include font(700);
         font-size: 3rem;

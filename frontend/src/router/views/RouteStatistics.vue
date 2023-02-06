@@ -10,6 +10,8 @@ import Tabs from '../../components/Tabs.vue'
 import StatBreakdown from '../../components/statistics/YearBreakdown.vue'
 import StatCell from '../../components/statistics/StatCell.vue'
 // import LadderBreakdown from '../../components/statistics/LadderBreakdown.vue'
+import QuoteeBreakdown from '../../components/statistics/QuoteeBreakdown.vue'
+import AuthorBreakdown from '../../components/statistics/AuthorBreakdown.vue'
 import UserBreakdown from '../../components/statistics/UserBreakdown.vue'
 
 const quote = useQuote()
@@ -99,17 +101,13 @@ const tab = ref('Summary')
         <StatBreakdown />
       </div>
       <div v-show="tab === 'Quotees'" class="quote-container container-header">
-        <UserBreakdown />
+        <QuoteeBreakdown />
       </div>
       <div v-show="tab === 'Authors'" class="quote-container container-header">
-        <div class="ladder-breakdown chart-breakdown">
-          Chart of how many time
-        </div>
+        <AuthorBreakdown />
       </div>
-      <div v-show="tab === 'User Analysis'">
-        <div class="ladder-breakdown chart-breakdown">
-          Breakdown of stuff related to YOU (or a different user you select)
-        </div>
+      <div v-show="tab === 'You'" class="quote-container">
+        <UserBreakdown />
       </div>
     </template>
   </div>
