@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useClipboard } from '@vueuse/core'
+import dayjs from 'dayjs'
 import type { Quote } from '../../../types/quote-types'
 import type { Comment } from '../../../types/comment-types'
 import { useQuote } from '../../../store/quote'
@@ -19,6 +20,7 @@ import UserLink from '../../../components/user/UserLink.vue'
 import { useFilters } from '../../../store/filters'
 import { useUser } from '../../../store/user'
 import { getRndColor } from '../../../bin/color'
+import { useCountdown } from '../../../bin/composables'
 
 const route = useRoute()
 const router = useRouter()
@@ -120,10 +122,16 @@ function removeHighlight() {
 function hasPfp(u: string) {
   return user.users.find(us => us.username === u)?.profilePicture ?? undefined
 }
+
+// Edit timeout
+const { format } = useCountdown(new Date(), 5)
 </script>
 
 <template>
   <div class="quote-detail">
+    <pre>
+      {{ format }}
+    </pre>
     <Transition name="tab" mode="out-in">
       <Spinner v-if="loading.get('quote-detail')" class="mg" />
 

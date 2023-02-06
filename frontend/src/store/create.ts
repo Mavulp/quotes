@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { post } from '../bin/fetch'
+import { post, put } from '../bin/fetch'
 import type {
   CreateQuote,
   ImageFragment,
@@ -11,6 +11,7 @@ import { useToast } from './toast'
 interface State {
   form: CreateQuote
   dragIndex: number | null
+  editing: number | null
 }
 
 const defaultQuote: CreateQuote = {
@@ -19,10 +20,25 @@ const defaultQuote: CreateQuote = {
   offensive: null,
 }
 
+function getBody(form: CreateQuote) {
+  const {
+    offensive,
+    fragments,
+    tags,
+  } = form
+
+  return {
+    fragments,
+    offensive: offensive === 'yes',
+    tags: [...tags],
+  }
+}
+
 export const useCreate = defineStore('create', {
   state: () => ({
     form: structuredClone(defaultQuote),
     dragIndex: null,
+    editing: null,
   } as State),
   actions: {
     reset() {
@@ -56,17 +72,7 @@ export const useCreate = defineStore('create', {
 
       loading.add('create')
 
-      const {
-        offensive,
-        fragments,
-        tags,
-      } = this.form
-
-      const body = {
-        fragments,
-        offensive: offensive === 'yes',
-        tags: [...tags],
-      }
+      const body = getBody(this.form)
 
       return post('/quote', body)
         .then((res) => {
@@ -80,6 +86,28 @@ export const useCreate = defineStore('create', {
         .finally(() => {
           this.reset()
           loading.del('create')
+        })
+    },
+    async updateQuote() {
+      const { push } = useToast()
+      const loading = useLoading()
+
+      loading.add('update')
+
+      const body = getBody(this.form)
+
+      return put('/quote', body)
+        .then((res) => {
+          push({ type: 'success', message: 'Succesfully updates quote' })
+          return res
+        })
+        .catch(() => {
+          push({ type: 'error', message: 'Error updating quote' })
+          return null
+        })
+        .finally(() => {
+          this.reset()
+          loading.del('update')
         })
     },
     setDragIndex(index: number | null) {
