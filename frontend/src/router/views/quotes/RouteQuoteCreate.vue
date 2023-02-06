@@ -14,11 +14,11 @@ const create = useCreate()
   <div class="quote-route-create">
     <div class="quote-container">
       <div class="quote-title-wrap text">
-        <h1>Add a quote</h1>
+        <h1>{{ create.editing ? 'Editing' : 'Add' }} a quote</h1>
 
         <Transition name="fade" mode="out-in">
           <button v-show="create.form.fragments.length > 0" class="button" @click="create.reset()">
-            Start new
+            {{ create.editing ? 'Cancel Edititing' : 'Clear Form' }}
           </button>
         </Transition>
       </div>

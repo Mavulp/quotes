@@ -55,7 +55,7 @@ const { validate, errors } = useFormValidation(reactive({ offensive }), rules, {
 async function submit() {
   validate()
     .then(async () => {
-      const id = await create.submitQuote()
+      const id = create.editing ? await create.updateQuote() : await create.submitQuote()
 
       if (!id)
         return

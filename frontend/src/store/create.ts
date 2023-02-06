@@ -3,6 +3,7 @@ import { post, put } from '../bin/fetch'
 import type {
   CreateQuote,
   ImageFragment,
+  Quote,
   TextFragment,
 } from '../types/quote-types'
 import { useLoading } from './loading'
@@ -42,6 +43,7 @@ export const useCreate = defineStore('create', {
   } as State),
   actions: {
     reset() {
+      this.editing = null
       this.form = structuredClone(defaultQuote)
     },
     addFragment(fragmentType: string) {
@@ -112,6 +114,15 @@ export const useCreate = defineStore('create', {
     },
     setDragIndex(index: number | null) {
       this.dragIndex = index
+    },
+    prefillForm(quote: Quote) {
+      this.editing = quote.id
+
+      Object.assign(this.form, {
+        fragments: quote.fragments,
+        tags: quote.tags,
+        offensive: quote.offensive ? 'yes' : 'no',
+      })
     },
   },
   getters: {

@@ -20,7 +20,7 @@ import UserLink from '../../../components/user/UserLink.vue'
 import { useFilters } from '../../../store/filters'
 import { useUser } from '../../../store/user'
 import { getRndColor } from '../../../bin/color'
-import { useCountdown } from '../../../bin/composables'
+import { useCreate } from '../../../store/create'
 
 const route = useRoute()
 const router = useRouter()
@@ -28,6 +28,7 @@ const quotes = useQuote()
 const loading = useLoading()
 const filters = useFilters()
 const user = useUser()
+const create = useCreate()
 
 const { copy } = useClipboard()
 
@@ -123,15 +124,20 @@ function hasPfp(u: string) {
   return user.users.find(us => us.username === u)?.profilePicture ?? undefined
 }
 
-// Edit timeout
-const { format } = useCountdown(new Date(), 5)
+// Edit stuff
+function openEdit() {
+  if (!quote.value)
+    return
+
+  create.prefillForm(quote.value)
+  router.push({
+    name: 'RouteQuoteAdd',
+  })
+}
 </script>
 
 <template>
   <div class="quote-detail">
-    <pre>
-      {{ format }}
-    </pre>
     <Transition name="tab" mode="out-in">
       <Spinner v-if="loading.get('quote-detail')" class="mg" />
 
@@ -143,7 +149,7 @@ const { format } = useCountdown(new Date(), 5)
 
           <span>Added by: <UserLink :user="quote.author" /> </span>
 
-          <!-- <div class="dot-padder" />
+          <div class="dot-padder" />
 
           <div class="quotees-circles">
             <router-link
@@ -159,13 +165,17 @@ const { format } = useCountdown(new Date(), 5)
                 {{ item.quotee.at(0) }}
               </div>
             </router-link>
-          </div> -->
+          </div>
 
           <div class="dot-padder" />
 
           <span class="date">{{ date.simple(quote.createdAt) }}</span>
 
           <div class="flex-1" />
+
+          <button class="button red btn-white btn-round" data-title-top="Edit" @click="openEdit">
+            <Icon code="e3c9" size="2" />
+          </button>
 
           <!-- Is highlighted -->
           <button v-if="isHighlighted" class="button highlight btn-white btn-round" data-title-top="Remove highlight" @click="removeHighlight">
