@@ -27,7 +27,8 @@
 
   /* Shadow properties */
   --shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
-  --shadow-highlight: 0 1px 32px rgba(242, 155, 65, 0.6);
+  --shadow-highlight: 0 1px 32px rgba(242, 155, 65, 0.5);
+  --shadow-highlight-large: 0 6px 56px rgba(242, 155, 65, 0.2);
 
   --radius-lg: 12px;
   --radius-sm: 6px;

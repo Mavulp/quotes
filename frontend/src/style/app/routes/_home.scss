@@ -39,17 +39,13 @@
         left: 4px;
         color: var(--color-highlight);
         opacity: 0.6;
-        // color: transparent;
         z-index: -1;
-        // -webkit-text-stroke-width: 1px;
-        // -webkit-text-stroke-color: var(--color-border);
       }
 
       &:before {
         top: 8px;
         left: 8px;
         opacity: 0.3;
-        // color: var(--color-text-lighter);
       }
     }
 
@@ -64,9 +60,12 @@
       @include t();
       @include radius(var(--radius-lg));
       display: block;
-      border: 1px solid var(--color-border);
-      box-shadow: var(--shadow);
+      position: relative;
+      z-index: 10;
       text-decoration: none !important;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-highlight-large);
 
       &:hover {
         background-color: var(--color-bg-light);
