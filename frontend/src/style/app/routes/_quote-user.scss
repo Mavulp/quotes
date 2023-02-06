@@ -227,7 +227,8 @@
       }
 
       h1 {
-        font-size: 6.2rem;
+        @include bebas();
+        font-size: 6.6rem;
         margin-bottom: 20px;
       }
 

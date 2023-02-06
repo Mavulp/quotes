@@ -37,8 +37,8 @@
         position: absolute;
         top: 4px;
         left: 4px;
-        color: var(--color-text);
-        opacity: 0.5;
+        color: var(--color-highlight);
+        opacity: 0.6;
         // color: transparent;
         z-index: -1;
         // -webkit-text-stroke-width: 1px;
@@ -48,7 +48,7 @@
       &:before {
         top: 8px;
         left: 8px;
-        opacity: 0.2;
+        opacity: 0.3;
         // color: var(--color-text-lighter);
       }
     }

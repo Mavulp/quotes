@@ -103,8 +103,11 @@ function submit() {
 <template>
   <Modal @close="emit('close')">
     <div class="quote-container-small">
-      <div class="modal-content">
+      <div class="modal-content ">
         <h2>{{ props.prefill ? 'Edit' : "Create" }} a Tag</h2>
+        <p>Tags are used to contextually group quotes and usually describe the quote in one way or another. You can also add multiple tags to a single quote.</p>
+        <br>
+        <br>
         <strong>Name</strong>
         <InputText v-model:value="form.name" placeholder="Tag name" :error="errors.name" />
         <strong>Description (optional)</strong>

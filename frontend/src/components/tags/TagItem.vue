@@ -54,7 +54,7 @@ async function deleteTag() {
 
 <template>
   <div>
-    <div class="tag-item" :class="{ 'is-active': open }">
+    <div class="tag-item" :class="{ 'is-active': open, 'is-empty': quotes.length === 0 }">
       <button class="tag-item-header" @click.self="open = !open">
         <span class="title">{{ props.data.name }}</span>
         <div class="flex-1" />

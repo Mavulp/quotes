@@ -93,9 +93,11 @@ onMounted(() => {
 
   <Modal v-if="open" @close="setQuotee('')">
     <div class="quote-container-small">
-      <div class="modal-content modal-conditions">
-        <h1>Add New User</h1>
+      <div class="modal-content">
+        <h2>Add New User</h2>
         <p>To prevent data pullution and incorrect statistics, it is required to not create funny or misspelled names of already existing users.</p>
+        <br>
+        <br>
 
         <InputText v-model:value="newUser" placeholder="New username" />
         <br>

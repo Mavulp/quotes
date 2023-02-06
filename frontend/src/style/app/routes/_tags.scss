@@ -4,6 +4,7 @@
 
   .quote-title-wrap {
     position: relative;
+
     .button.btn-round {
       position: absolute;
       right: calc(100% + 20px);
@@ -22,6 +23,10 @@
       border: 1px solid var(--color-border);
       display: block;
       margin-bottom: 10px;
+
+      &.is-empty .tag-item-header span.title:before {
+        color: var(--color-text-lighter);
+      }
 
       &.is-active {
         // border-color: var(--color-border);
