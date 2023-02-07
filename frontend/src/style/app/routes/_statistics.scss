@@ -19,6 +19,25 @@
     margin-bottom: 40px;
     overflow: hidden;
 
+    &.user {
+      grid-template-columns: repeat(3, 1fr);
+
+      .cell {
+        border-right: 1px solid var(--color-border) !important;
+        // padding: 15px;
+        &:nth-child(3),
+        &:nth-child(6) {
+          border-right: none !important;
+        }
+
+        &:nth-child(4),
+        &:nth-child(5),
+        &:nth-child(6) {
+          border-bottom: none;
+        }
+      }
+    }
+
     .cell {
       @include flex(5px, nowrap, center, center, column);
 
@@ -279,6 +298,21 @@
           height: 12px;
           background-color: var(--color-bg-light);
         }
+      }
+    }
+  }
+
+  .form-select {
+    width: 256px;
+    margin-bottom: 20px;
+
+    .select-button {
+      height: 48px;
+      line-height: 48px;
+
+      input {
+        height: 48px;
+        line-height: 48px;
       }
     }
   }

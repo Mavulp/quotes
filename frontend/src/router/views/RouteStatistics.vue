@@ -64,36 +64,36 @@ const tab = ref('Summary')
     <div class="quote-container">
       <h1>Statistics</h1>
       <Spinner v-if="loading.get('quotes', 'users')" />
-      <Tabs v-else v-model="tab" :tabs="['Summary', 'Quotees', 'Authors', 'You']" />
+      <Tabs v-else v-model="tab" :tabs="['Summary', 'Quotees', 'Authors', 'Users']" />
     </div>
 
     <template v-if="quote.quotes.length > 0">
       <div v-show="tab === 'Summary'" class="quote-container">
         <div class="stats-grid">
           <StatCell label="Quotes" :data="toNum(totalQuotes)" :to="{ name: 'RouteQuoteList' }" />
-          <StatCell label="Offensive Quotes" :data="toNum(offensiveQuotes)" :to="{ name: 'RouteQuoteList' }" />
-          <StatCell label="Safe Quotes" :data="toNum(totalQuotes - offensiveQuotes)" :to="{ name: 'RouteQuoteList' }" />
+          <StatCell label="Offensive quotes" :data="toNum(offensiveQuotes)" :to="{ name: 'RouteQuoteList' }" />
+          <StatCell label="Safe quotes" :data="toNum(totalQuotes - offensiveQuotes)" :to="{ name: 'RouteQuoteList' }" />
 
           <StatCell label="Quotees" :data="toNum(usersByQuotes.length)" :to="{ name: 'RouteQuoteList' }" />
           <StatCell label="Authors" :data="toNum(totalAuthors)" :to="{ name: 'RouteQuoteList' }" />
           <StatCell
-            str label="Most Quoted" :data="mostQuoted"
+            str label="Most quoted" :data="mostQuoted"
             :to="{ name: 'RouteUserProfile', params: { username: mostQuoted } }"
           />
           <StatCell
-            str label="Most Posts" :data="mostAuthored"
+            str label="Most posts" :data="mostAuthored"
             :to="{ name: 'RouteUserProfile', params: { username: mostAuthored } }"
           />
           <StatCell
-            str label="Most Used Tag" :data="Object.keys(tagsByUsage[0])[0]"
+            str label="Most used tag" :data="Object.keys(tagsByUsage[0])[0]"
             :to="{ name: 'RouteTags' }"
           />
           <StatCell
-            str label="First Post" :data="date.timeShort(firstUpload.createdAt)"
+            str label="First post" :data="date.timeShort(firstUpload.createdAt)"
             :to="{ name: 'RouteQuoteDetail', params: { id: firstUpload.id } }"
           />
           <StatCell
-            str label="Latest Post" :data="date.timeShort(lastUpload.createdAt)"
+            str label="Latest post" :data="date.timeShort(lastUpload.createdAt)"
             :to="{ name: 'RouteQuoteDetail', params: { id: lastUpload.id } }"
           />
         </div>
@@ -106,9 +106,7 @@ const tab = ref('Summary')
       <div v-show="tab === 'Authors'" class="quote-container container-header">
         <AuthorBreakdown />
       </div>
-      <div v-show="tab === 'You'" class="quote-container">
-        <UserBreakdown />
-      </div>
+      <UserBreakdown v-show="tab === 'Users'" />
     </template>
   </div>
 </template>
