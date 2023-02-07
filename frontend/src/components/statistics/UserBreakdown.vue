@@ -41,6 +41,8 @@ const quoting = computed(() => objectToArray(authored.value.reduce((group, quote
 
 <template>
   <div class="quote-container">
+    the dates are wrong i think
+
     <InputSelect v-model:selected="activeUser" icon="e7fd" :options="user.users.map(u => u.username)" />
     <div class="stats-grid user">
       <StatCell str label="Quoted" :data="`${toNum(quoted.length)} - ${percent(quoted.length, quote.quotes.length).toFixed(2)}%`" />
