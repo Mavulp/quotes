@@ -2,13 +2,15 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useClipboard } from '@vueuse/core'
+import dayjs from 'dayjs'
+import Countdown from '@chenfengyuan/vue-countdown'
 import type { Quote } from '../../../types/quote-types'
 import type { Comment } from '../../../types/comment-types'
 import { useQuote } from '../../../store/quote'
 import { del, get, post } from '../../../bin/fetch'
 import { useToast } from '../../../store/toast'
 import { useLoading } from '../../../store/loading'
-import { date } from '../../../bin/utils'
+import { date, padTo2Digits } from '../../../bin/utils'
 
 import ModelFragmentHighlight from '../../../components/quotes/quote-item/fragments/ModelFragmentHighlight.vue'
 import ModelFragmentText from '../../../components/quotes/quote-item/fragments/ModelFragmentText.vue'
@@ -19,6 +21,7 @@ import UserLink from '../../../components/user/UserLink.vue'
 import { useFilters } from '../../../store/filters'
 import { useUser } from '../../../store/user'
 import { getRndColor } from '../../../bin/color'
+import { useCreate } from '../../../store/create'
 
 const route = useRoute()
 const router = useRouter()
@@ -26,6 +29,7 @@ const quotes = useQuote()
 const loading = useLoading()
 const filters = useFilters()
 const user = useUser()
+const create = useCreate()
 
 const { copy } = useClipboard()
 
@@ -120,6 +124,18 @@ function removeHighlight() {
 function hasPfp(u: string) {
   return user.users.find(us => us.username === u)?.profilePicture ?? undefined
 }
+
+// Edit stuff
+function openEdit() {
+  if (!quote.value)
+    return
+
+  create.prefillForm(quote.value)
+  router.push({
+    name: 'RouteQuoteAdd',
+  })
+}
+const showEdit = ref(true)
 </script>
 
 <template>
@@ -135,7 +151,7 @@ function hasPfp(u: string) {
 
           <span>Added by: <UserLink :user="quote.author" /> </span>
 
-          <!-- <div class="dot-padder" />
+          <div class="dot-padder" />
 
           <div class="quotees-circles">
             <router-link
@@ -151,13 +167,28 @@ function hasPfp(u: string) {
                 {{ item.quotee.at(0) }}
               </div>
             </router-link>
-          </div> -->
+          </div>
 
           <div class="dot-padder" />
 
           <span class="date">{{ date.simple(quote.createdAt) }}</span>
 
           <div class="flex-1" />
+          <template v-if="showEdit && quote.createdAt - Date.now() < 0">
+            <Countdown
+              :key="quote.id"
+              v-slot="{ minutes, seconds }"
+              data-title-top="This quote is editable"
+              :time="dayjs.utc(quote.createdAt * 1000).add(15, 'minute').diff(Date.now())"
+              @end="showEdit = false"
+            >
+              {{ padTo2Digits(minutes) }}:{{ padTo2Digits(seconds) }}
+            </Countdown>
+
+            <button v-if="showEdit" class="button red highlight btn-white btn-round" data-title-top="Edit" @click="openEdit">
+              <Icon code="e3c9" size="2" />
+            </button>
+          </template>
 
           <!-- Is highlighted -->
           <button v-if="isHighlighted" class="button highlight btn-white btn-round" data-title-top="Remove highlight" @click="removeHighlight">

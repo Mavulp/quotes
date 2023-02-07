@@ -14,6 +14,7 @@ import {
   Tooltip,
 } from 'chart.js'
 import utc from 'dayjs/plugin/utc'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import dayjs from 'dayjs'
 
 import App from './App.vue'
@@ -26,6 +27,7 @@ import Spinner from './components/global/Spinner.vue'
 // Plugin registration
 Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Colors, PointElement, LineElement)
 dayjs.extend(utc)
+dayjs.extend(relativeTime)
 
 const app = createApp(App)
 

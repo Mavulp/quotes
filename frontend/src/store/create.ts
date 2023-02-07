@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
-import { post } from '../bin/fetch'
+import { del, post, put } from '../bin/fetch'
 import type {
   CreateQuote,
   ImageFragment,
+  Quote,
   TextFragment,
 } from '../types/quote-types'
 import { useLoading } from './loading'
@@ -11,6 +12,7 @@ import { useToast } from './toast'
 interface State {
   form: CreateQuote
   dragIndex: number | null
+  editing: number | null
 }
 
 const defaultQuote: CreateQuote = {
@@ -19,13 +21,29 @@ const defaultQuote: CreateQuote = {
   offensive: null,
 }
 
+function getBody(form: CreateQuote) {
+  const {
+    offensive,
+    fragments,
+    tags,
+  } = form
+
+  return {
+    fragments,
+    offensive: offensive === 'yes',
+    tags: [...tags],
+  }
+}
+
 export const useCreate = defineStore('create', {
   state: () => ({
     form: structuredClone(defaultQuote),
     dragIndex: null,
+    editing: null,
   } as State),
   actions: {
     reset() {
+      this.editing = null
       this.form = structuredClone(defaultQuote)
     },
     addFragment(fragmentType: string) {
@@ -56,21 +74,11 @@ export const useCreate = defineStore('create', {
 
       loading.add('create')
 
-      const {
-        offensive,
-        fragments,
-        tags,
-      } = this.form
-
-      const body = {
-        fragments,
-        offensive: offensive === 'yes',
-        tags: [...tags],
-      }
+      const body = getBody(this.form)
 
       return post('/quote', body)
         .then((res) => {
-          push({ type: 'success', message: 'Succesfully added new quote' })
+          push({ type: 'success', message: 'Successfully added new quote' })
           return res
         })
         .catch(() => {
@@ -82,8 +90,57 @@ export const useCreate = defineStore('create', {
           loading.del('create')
         })
     },
+    async updateQuote() {
+      const { push } = useToast()
+      const loading = useLoading()
+
+      loading.add('update')
+
+      const body = getBody(this.form)
+
+      return put(`/quote/${this.editing}`, body)
+        .then(() => {
+          push({ type: 'success', message: 'Successfully updates quote' })
+          return this.editing
+        })
+        .catch(() => {
+          push({ type: 'error', message: 'Error updating quote' })
+          return null
+        })
+        .finally(() => {
+          this.reset()
+          loading.del('update')
+        })
+    },
     setDragIndex(index: number | null) {
       this.dragIndex = index
+    },
+    prefillForm(quote: Quote) {
+      this.editing = quote.id
+
+      Object.assign(this.form, {
+        fragments: quote.fragments,
+        tags: quote.tags,
+        offensive: quote.offensive ? 'yes' : 'no',
+      })
+    },
+    async removeQuote() {
+      const { push } = useToast()
+      const loading = useLoading()
+
+      loading.add('delete')
+
+      return del(`/quote/${this.editing}`)
+        .then(() => {
+          push({ type: 'success', message: 'Successfully deleted quote' })
+          this.reset()
+        })
+        .catch(() => {
+          push({ type: 'error', message: 'Error deleting quote' })
+        })
+        .finally(() => {
+          loading.del('delete')
+        })
     },
   },
   getters: {

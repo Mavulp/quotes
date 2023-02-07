@@ -3,14 +3,16 @@ import dayjs from 'dayjs'
 export const displayDateShort = 'DD/MM/YYYY'
 export const displayDateLong = 'dddd, DD/MM/YYYY'
 export const dipslayDateTime = 'HH:MM DD/MMMM/YYYY'
+export const displayDateHour = 'HH:MM:ss'
 
 /**
  * Returns amount of time between two dates in the amount of provided type (days, months, etc)
  */
 
-type DifferenceUnit = 'day' | 'week' | 'month' | 'year' | 'hour' | 'minute' | 'second' | 'millisecond'
+export type DifferenceUnit = 'day' | 'week' | 'month' | 'year' | 'hour' | 'minute' | 'second' | 'millisecond'
+export type DateInput = string | number | Date | dayjs.Dayjs
 
-export function diffDate(start: string | number | Date, end: string | number | Date, unit: DifferenceUnit = 'month') {
+export function diffDate(start: DateInput, end: DateInput, unit: DifferenceUnit = 'month') {
   return dayjs.utc(start).diff(dayjs.utc(end), unit)
 }
 
@@ -18,7 +20,7 @@ export function diffDate(start: string | number | Date, end: string | number | D
  * Generates an array of dates between (inclusive) provided dates.
  * Caveat: `from` must always be before `to` as a date
  */
-export function dateRange(from: string | Date | number, to: string | Date | number, unit: DifferenceUnit = 'month', format?: string) {
+export function dateRange(from: DateInput, to: DateInput, unit: DifferenceUnit = 'month', format?: string) {
   const differnce = diffDate(to, from, unit)
   const ranges = []
 

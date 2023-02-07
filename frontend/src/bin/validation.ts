@@ -94,6 +94,7 @@ export function useFormValidation(
 
     root.pending = true
 
+    // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
       for (const [key, value] of Object.entries(form)) {
         if (!Reflect.has(rules.value, key))
@@ -160,8 +161,6 @@ export const validateIf = () => {
  */
 export const required: ValidationRule = {
   _validate(value: any) {
-    console.log(typeof value)
-
     return (
       !isNil(value)
       && !isEmpty(value)
@@ -231,6 +230,7 @@ export const email = {
 export const sameAs = (compared: any, leanient = false) => {
   return {
     _validate(value: any) {
+      // eslint-disable-next-line eqeqeq
       return leanient ? value == compared : value === compared
     },
     _message() {
@@ -250,23 +250,23 @@ export const sameAs = (compared: any, leanient = false) => {
 
 // SECTION: Unfinished functions
 
-const matchRegex = (regex: RegExp) => {
-  return {
-    _validate(value: any) { },
-    _message() {
-      return 'Value does not match the provided rule.'
-    },
-  }
-}
+// const matchRegex = (regex: RegExp) => {
+//   return {
+//     _validate(value: any) { },
+//     _message() {
+//       return 'Value does not match the provided rule.'
+//     },
+//   }
+// }
 
 // IMPLEMENT
-const asyncValidation = (executable: Function) => {
-  return {
-    async _validate(value: any) {
-      return await executable(value)
-    },
-    _message() {
-      return 'not implemented'
-    },
-  }
-}
+// const asyncValidation = (executable: Function) => {
+//   return {
+//     async _validate(value: any) {
+//       return await executable(value)
+//     },
+//     _message() {
+//       return 'not implemented'
+//     },
+//   }
+// }

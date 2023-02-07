@@ -8,12 +8,12 @@
   justify-content: center;
   height: 36px;
   line-height: 36px;
-  // min-width: 104px;
   padding: 0 10px;
   text-align: center;
   color: var(--color-text-dark);
   background-color: var(--color-highlight);
   font-size: 1.4rem;
+  letter-spacing: 0.01em;
 
   &:focus,
   &:hover {
