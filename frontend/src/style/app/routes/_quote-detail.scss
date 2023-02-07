@@ -138,32 +138,52 @@
 
   .quote-item-tags {
     @include flex(10px, wrap);
-    margin-bottom: 60px;
-    padding-left: 20px;
+    margin-bottom: 50px;
+    padding-left: 30px;
 
-    button {
-      font-size: 1.4rem;
-      color: var(--color-text-lighter);
+    .tags {
+      @include flex(10px, wrap);
 
-      &::first-letter {
-        @include font(600);
-      }
+      button {
+        font-size: 1.4rem;
+        color: var(--color-text-lighter);
+        text-decoration: none;
 
-      &:before {
-        content: "#";
-      }
+        &::first-letter {
+          @include font(600);
+        }
 
-      text-decoration: none;
+        &:before {
+          content: "#";
+        }
 
-      &:hover {
-        text-decoration: underline;
-        text-decoration-thickness: 3px;
-        text-decoration-color: rgb(var(--color-highlight));
+        &:hover {
+          text-decoration: underline;
+          text-decoration-thickness: 3px;
+          text-decoration-color: rgb(var(--color-highlight));
+        }
       }
     }
 
-    .dot-padder:last-of-type {
-      display: none;
+    .quote-detail-add-tag {
+      position: relative;
+
+      .button.btn-white {
+        color: var(--color-text-light);
+
+        &:hover {
+          color: var(--color-text);
+        }
+      }
+
+      .dropdown-icon,
+      .select-button {
+        display: none;
+      }
+
+      .form-select.is-open .select-dropdown {
+        width: 216px;
+      }
     }
   }
 }

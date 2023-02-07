@@ -13,4 +13,4 @@ export interface Settings {
   colorTheme: 'light-theme' | 'dark-theme'
 }
 
-export type UserRole = 'moderator' | 'edit-tags' | 'delete-tags' | 'edit-aliases'
+export type UserRole = 'moderator' | 'edit-tags' | 'delete-tags' | 'edit-quote-metadata'

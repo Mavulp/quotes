@@ -11,7 +11,7 @@ interface State {
   settings: Settings
   users: User[]
   signedIn: boolean
-  permissions: string[]
+  permissions: UserRole[]
 }
 
 export const useUser = defineStore('user', {
@@ -21,7 +21,7 @@ export const useUser = defineStore('user', {
     settings: {},
     users: [{}],
     username: '',
-    permissions: [''],
+    permissions: [] as UserRole[],
   } as State),
   actions: {
     async fetchUsers() {

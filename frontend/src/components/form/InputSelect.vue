@@ -123,6 +123,10 @@ function setValue(item: Option) {
     }
   }
 }
+
+defineExpose({
+  open,
+})
 </script>
 
 <template>

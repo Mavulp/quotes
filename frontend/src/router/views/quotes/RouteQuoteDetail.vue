@@ -1,13 +1,13 @@
 <script setup lang='ts'>
-import { computed, ref, watch } from 'vue'
+import { computed, onBeforeMount, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useClipboard } from '@vueuse/core'
 import dayjs from 'dayjs'
 import Countdown from '@chenfengyuan/vue-countdown'
-import type { Quote } from '../../../types/quote-types'
+import type { Quote, Tag } from '../../../types/quote-types'
 import type { Comment } from '../../../types/comment-types'
 import { useQuote } from '../../../store/quote'
-import { del, get, post } from '../../../bin/fetch'
+import { $fetch, del, get, post, put } from '../../../bin/fetch'
 import { useToast } from '../../../store/toast'
 import { useLoading } from '../../../store/loading'
 import { date, padTo2Digits } from '../../../bin/utils'
@@ -22,6 +22,7 @@ import { useFilters } from '../../../store/filters'
 import { useUser } from '../../../store/user'
 import { getRndColor } from '../../../bin/color'
 import { useCreate } from '../../../store/create'
+import InputSelect from '../../../components/form/InputSelect.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -35,13 +36,17 @@ const { copy } = useClipboard()
 
 const quote = ref<Quote>()
 const comments = ref<Comment[]>([])
+const quoteTags = ref<string[]>()
 
 watch(() => route.params.id, (id) => {
   if (!id)
     return
 
   quotes.fetchQuote(Number(id))
-    .then(res => quote.value = res)
+    .then((res) => {
+      quote.value = res
+      quoteTags.value = res.tags
+    })
 
   loading.add('comments')
   get(`/quote/${id}/comment`)
@@ -136,6 +141,33 @@ function openEdit() {
   })
 }
 const showEdit = ref(true)
+
+// Update quote tags
+const tagOptions = ref()
+
+onBeforeMount(async () => {
+  tagOptions.value = await $fetch('tags', get<Tag[]>('/tag'))
+    .then((res) => {
+      return res.map(tag => ({
+        value: tag.name,
+        label: tag.name,
+      }))
+    })
+})
+
+const select = ref()
+
+function triggerClick() {
+  if (select.value)
+    select.value.open = true
+}
+
+watch(quoteTags, async (value) => {
+  if (!quote.value)
+    return
+
+  await put(`/quote/${quote.value.id}`, { tags: value })
+})
 </script>
 
 <template>
@@ -174,7 +206,7 @@ const showEdit = ref(true)
           <span class="date">{{ date.simple(quote.createdAt) }}</span>
 
           <div class="flex-1" />
-          <template v-if="showEdit && quote.createdAt - Date.now() < 0">
+          <template v-if="showEdit && quote.createdAt - Date.now() < 0 && quote.author === user.username">
             <Countdown
               :key="quote.id"
               v-slot="{ minutes, seconds }"
@@ -231,12 +263,21 @@ const showEdit = ref(true)
         </div>
 
         <div class="quote-item-tags">
-          <template v-for="tag in quote.tags" :key="tag">
+          <div v-for="tag in quoteTags" :key="tag" class="tags">
             <button @click="filterOnTag(tag)">
               {{ tag }}
             </button>
             <div class="dot-padder" />
-          </template>
+          </div>
+
+          <div v-if="user.isRole(['moderator', 'edit-quote-metadata'])" class="quote-detail-add-tag">
+            <button class="button btn-white" @click="triggerClick">
+              <Icon code="f05b" size="1.8" />
+              Edit
+            </button>
+
+            <InputSelect ref="select" v-model:selected="quoteTags" :multiple="true" :options="tagOptions" placeholder="Add tag" />
+          </div>
         </div>
 
         <div class="quote-comments">
