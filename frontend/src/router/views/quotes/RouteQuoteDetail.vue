@@ -3,13 +3,14 @@ import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useClipboard } from '@vueuse/core'
 import dayjs from 'dayjs'
+import Countdown from '@chenfengyuan/vue-countdown'
 import type { Quote } from '../../../types/quote-types'
 import type { Comment } from '../../../types/comment-types'
 import { useQuote } from '../../../store/quote'
 import { del, get, post } from '../../../bin/fetch'
 import { useToast } from '../../../store/toast'
 import { useLoading } from '../../../store/loading'
-import { date } from '../../../bin/utils'
+import { date, padTo2Digits } from '../../../bin/utils'
 
 import ModelFragmentHighlight from '../../../components/quotes/quote-item/fragments/ModelFragmentHighlight.vue'
 import ModelFragmentText from '../../../components/quotes/quote-item/fragments/ModelFragmentText.vue'
@@ -134,6 +135,7 @@ function openEdit() {
     name: 'RouteQuoteAdd',
   })
 }
+const showEdit = ref(true)
 </script>
 
 <template>
@@ -172,10 +174,21 @@ function openEdit() {
           <span class="date">{{ date.simple(quote.createdAt) }}</span>
 
           <div class="flex-1" />
+          <template v-if="showEdit && quote.createdAt - Date.now() < 0">
+            <Countdown
+              :key="quote.id"
+              v-slot="{ minutes, seconds }"
+              data-title-top="This quote is editable"
+              :time="dayjs.utc(quote.createdAt * 1000).add(15, 'minute').diff(Date.now())"
+              @end="showEdit = false"
+            >
+              {{ padTo2Digits(minutes) }}:{{ padTo2Digits(seconds) }}
+            </Countdown>
 
-          <button class="button red btn-white btn-round" data-title-top="Edit" @click="openEdit">
-            <Icon code="e3c9" size="2" />
-          </button>
+            <button v-if="showEdit" class="button red highlight btn-white btn-round" data-title-top="Edit" @click="openEdit">
+              <Icon code="e3c9" size="2" />
+            </button>
+          </template>
 
           <!-- Is highlighted -->
           <button v-if="isHighlighted" class="button highlight btn-white btn-round" data-title-top="Remove highlight" @click="removeHighlight">

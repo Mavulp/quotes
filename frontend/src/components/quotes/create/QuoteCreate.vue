@@ -164,12 +164,18 @@ async function query() {
         :error="errors.offensive"
       />
 
-      <button class="button wide" @click="submit">
-        <Spinner v-if="loading.get('create')" class="white" />
-        <template v-else>
-          Post
-        </template>
-      </button>
+      <div class="flex-wrap start" style="gap:0">
+        <button class="button wide" @click="submit">
+          <Spinner v-if="loading.get('create')" class="white" />
+          <template v-else>
+            {{ create.editing ? 'Save' : 'Create' }}
+          </template>
+        </button>
+
+        <button v-if="create.editing" class="button wide btn-red" @click="create.removeQuote()">
+          Delete
+        </button>
+      </div>
     </div>
   </div>
 </template>

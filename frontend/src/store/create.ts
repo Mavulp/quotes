@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { post, put } from '../bin/fetch'
+import { del, post, put } from '../bin/fetch'
 import type {
   CreateQuote,
   ImageFragment,
@@ -78,7 +78,7 @@ export const useCreate = defineStore('create', {
 
       return post('/quote', body)
         .then((res) => {
-          push({ type: 'success', message: 'Succesfully added new quote' })
+          push({ type: 'success', message: 'Successfully added new quote' })
           return res
         })
         .catch(() => {
@@ -98,10 +98,10 @@ export const useCreate = defineStore('create', {
 
       const body = getBody(this.form)
 
-      return put('/quote', body)
-        .then((res) => {
-          push({ type: 'success', message: 'Succesfully updates quote' })
-          return res
+      return put(`/quote/${this.editing}`, body)
+        .then(() => {
+          push({ type: 'success', message: 'Successfully updates quote' })
+          return this.editing
         })
         .catch(() => {
           push({ type: 'error', message: 'Error updating quote' })
@@ -123,6 +123,24 @@ export const useCreate = defineStore('create', {
         tags: quote.tags,
         offensive: quote.offensive ? 'yes' : 'no',
       })
+    },
+    async removeQuote() {
+      const { push } = useToast()
+      const loading = useLoading()
+
+      loading.add('delete')
+
+      return del(`/quote/${this.editing}`)
+        .then(() => {
+          push({ type: 'success', message: 'Successfully deleted quote' })
+          this.reset()
+        })
+        .catch(() => {
+          push({ type: 'error', message: 'Error deleting quote' })
+        })
+        .finally(() => {
+          loading.del('delete')
+        })
     },
   },
   getters: {
