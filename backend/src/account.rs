@@ -185,7 +185,7 @@ pub async fn put_settings(
                         rusqlite::ErrorCode::ConstraintViolation => {
                             return Err(Error::InvalidQuoteId);
                         }
-                        _ => panic!(),
+                        _ => Err(e).context("Failed to update user fields")?,
                     }
                 }
             }

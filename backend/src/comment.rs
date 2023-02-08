@@ -144,7 +144,7 @@ pub(super) async fn post_comment(
     maybe_token
         .wrap_future(async move {
             let Json(post_comment) = request?;
-            let mut text = post_comment.text.trim().to_owned();
+            let text = post_comment.text.trim().to_owned();
             if text.is_empty() {
                 return Err(Error::EmptyField("text"));
             }
@@ -169,10 +169,6 @@ pub(super) async fn post_comment(
                 return Err(Error::NotFound);
             }
 
-            // Chek for possible aliases within the text
-            // and return the modified string
-            text = extract_alias(text, &state.db).await?;
-
             let author = payload.name.clone();
             let db_text = text.clone();
             let id = state
@@ -196,106 +192,6 @@ pub(super) async fn post_comment(
                 quote_id,
                 created_at: now,
             }))
-        })
-        .await
-}
-
-async fn extract_alias(
-    mut text: String,
-    db: &tokio_rusqlite::Connection,
-) -> anyhow::Result<String> {
-    let aliases: Vec<String> = text
-        .split(' ')
-        .filter(|word| word.starts_with('!'))
-        .map(|word| word[1..].to_string())
-        .filter(|word| !word.is_empty())
-        .unique()
-        .collect();
-
-    // let conn = state.pool.get().await.context("Failed to get connection")?;
-
-    for alias in aliases {
-        // For each alias, fetch the link
-        // If link is available, replace alias with link
-        // If no alias is available, skip
-        let cloned = alias.clone();
-
-        let alias_content = db
-            .call(move |conn| {
-                conn.query_row(
-                    "SELECT content FROM aliases WHERE name=?1",
-                    params![&cloned],
-                    |row| Ok(serde_rusqlite::from_row::<String>(row).unwrap()),
-                )
-            })
-            .await
-            .optional()
-            .context("Failed to get alias content")?;
-
-        if let Some(alias_content) = alias_content {
-            text = text.replace(&format!("!{alias}"), &alias_content);
-        }
-    }
-
-    Ok(text)
-}
-
-/// Deletes a comment by id.
-#[utoipa::path(
-    delete,
-    path = "/api/comment/{id}",
-    responses(
-        (status = 200, description = "The comment was deleted."),
-        (status = 404, description = "Comment does not exist."),
-        (status = 403, description = "Only the author can delete their comment."),
-        (status = 302, description = "Redirects to hiveID if not authenticated."),
-    ),
-    params(
-        ("id" = i64, Path, description = "ID of the comment that should be deleted."),
-    )
-)]
-pub(super) async fn delete_comment(
-    AuthorizeCookie(payload, maybe_token, ..): AuthorizeCookie<idlib::NoGroups>,
-    Path(comment_id): Path<i64>,
-    Extension(state): Extension<Arc<AppState>>,
-) -> impl IntoResponse {
-    maybe_token
-        .wrap_future(async move {
-            let author = state
-                .db
-                .call(move |conn| {
-                    conn.query_row(
-                        "SELECT author FROM comments
-                        WHERE id = ?",
-                        params![&comment_id],
-                        |row| Ok(from_row::<String>(row).unwrap()),
-                    )
-                })
-                .await
-                .optional()
-                .context("Failed to get comment author")?;
-
-            if let Some(author) = author {
-                if author != payload.name {
-                    return Err(Error::Unathorized);
-                }
-            } else {
-                return Err(Error::NotFound);
-            }
-
-            state
-                .db
-                .call(move |conn| {
-                    conn.execute(
-                        "DELETE FROM comments
-                        WHERE id = ?",
-                        params![&comment_id],
-                    )
-                })
-                .await
-                .context("Failed to delete comment")?;
-
-            Ok(())
         })
         .await
 }

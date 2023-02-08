@@ -16,7 +16,7 @@ CREATE TABLE users (
 
 CREATE TABLE quotes (
     id INTEGER PRIMARY KEY NOT NULL,
-    author TEXT NOT NULL,
+    author TEXT NOT NULL COLLATE NOCASE,
     offensive INTEGER NOT NULL, -- bool
     created_at INTEGER NOT NULL, -- unix ts
 
@@ -74,7 +74,7 @@ CREATE TABLE tags (
     id INTEGER PRIMARY KEY NOT NULL,
     name TEXT NOT NULL UNIQUE COLLATE NOCASE,
     description TEXT,
-    author TEXT NOT NULL,
+    author TEXT NOT NULL COLLATE NOCASE,
     created_at INTEGER NOT NULL, -- unix ts
 
     CONSTRAINT fk_author_assoc
@@ -101,7 +101,7 @@ CREATE TABLE quote_tag_associations (
 
 CREATE TABLE comments (
     id INTEGER PRIMARY KEY NOT NULL,
-    author TEXT NOT NULL,
+    author TEXT NOT NULL COLLATE NOCASE,
     quote_id INTEGER NOT NULL,
     created_at INTEGER NOT NULL, -- unix ts
 
@@ -116,9 +116,4 @@ CREATE TABLE comments (
         FOREIGN KEY (author)
         REFERENCES users (username)
         ON DELETE CASCADE
-) STRICT;
-
-CREATE TABLE aliases (
-    name TEXT PRIMARY KEY NOT NULL,
-    content TEXT NOT NULL
 ) STRICT;
