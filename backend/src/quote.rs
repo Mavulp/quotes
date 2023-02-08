@@ -55,7 +55,7 @@ pub struct QuoteIndex {
 }
 
 #[derive(Deserialize, Debug, PartialEq)]
-struct DbQuote {
+pub struct DbQuote {
     id: i64,
     author: String,
     offensive: bool,

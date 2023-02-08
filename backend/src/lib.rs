@@ -23,6 +23,7 @@ mod auth;
 mod comment;
 mod error;
 mod quote;
+pub mod stats;
 mod tag;
 mod user;
 
@@ -51,6 +52,7 @@ pub struct AppState {
         tag::get_tag_by_id,
         tag::put_tag_by_id,
         tag::delete_tag_by_id,
+        stats::get_quotee_stats,
         auth::_authorize_dummy,
         auth::_revoke_dummy,
         auth::_logout_dummy
@@ -69,6 +71,8 @@ pub struct AppState {
         tag::PutTag,
         account::Settings,
         account::PutSettings,
+        stats::QuoteeStats,
+        stats::Dataset,
     )),
     modifiers(&SecurityAddon),
     security(
@@ -125,6 +129,7 @@ pub async fn api_route(db: tokio_rusqlite::Connection) -> anyhow::Result<Router>
         .route("/api/tag/:id", get(tag::get_tag_by_id))
         .route("/api/tag/:id", put(tag::put_tag_by_id))
         .route("/api/tag/:id", delete(tag::delete_tag_by_id))
+        .route("/api/stats/quotee", get(stats::get_quotee_stats))
         .nest(
             "/api/auth",
             idlib::api_route(idp_client, Some(auth_callback)),
