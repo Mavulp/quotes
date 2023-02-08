@@ -62,6 +62,7 @@ pub struct AppState {
         quote::Quote,
         quote::QuoteIndex,
         quote::PostQuote,
+        quote::PutQuote,
         quote::Fragment,
         quote::FragmentType,
         comment::Comment,
@@ -121,6 +122,7 @@ pub async fn api_route(db: tokio_rusqlite::Connection) -> anyhow::Result<Router>
         .route("/api/quote", get(quote::get_quotes))
         .route("/api/quote", post(quote::post_quote))
         .route("/api/quote/:id", get(quote::get_quote_by_id))
+        .route("/api/quote/:id", put(quote::put_quote_by_id))
         .route("/api/quote/:id/comment", get(comment::get_comments))
         .route("/api/quote/:id/comment", post(comment::post_comment))
         .route("/api/comment/:id", delete(comment::delete_comment))
