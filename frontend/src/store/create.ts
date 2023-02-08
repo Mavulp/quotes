@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { del, post, put } from '../bin/fetch'
+import { post, put } from '../bin/fetch'
 import type {
   CreateQuote,
   ImageFragment,
@@ -123,24 +123,6 @@ export const useCreate = defineStore('create', {
         tags: quote.tags,
         offensive: quote.offensive ? 'yes' : 'no',
       })
-    },
-    async removeQuote() {
-      const { push } = useToast()
-      const loading = useLoading()
-
-      loading.add('delete')
-
-      return del(`/quote/${this.editing}`)
-        .then(() => {
-          push({ type: 'success', message: 'Successfully deleted quote' })
-          this.reset()
-        })
-        .catch(() => {
-          push({ type: 'error', message: 'Error deleting quote' })
-        })
-        .finally(() => {
-          loading.del('delete')
-        })
     },
   },
   getters: {

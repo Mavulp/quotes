@@ -237,12 +237,10 @@
     position: relative;
 
     .btn-clear {
-      // position: absolute;
-      // right: 0;
-      // left: calc(100% - 176px);
-      // top: 12px;
-      color: var(--color-text-lighter);
-      margin-bottom: 10px;
+      position: absolute;
+      top: 25px;
+      right: calc(156px + 30px);
+      // color: var(--color-text-lighter);
     }
 
     .chart-wrapper {
@@ -306,14 +304,24 @@
     width: 256px;
     margin-bottom: 20px;
 
+    label {
+      top: 13px;
+    }
+
     .select-button {
       height: 48px;
-      line-height: 48px;
+      line-height: 46px;
 
       input {
-        height: 48px;
-        line-height: 48px;
+        height: 46px;
+        line-height: 46px;
       }
+    }
+  }
+
+  .user-list-stats {
+    @include grid(40px, 1fr 1fr);
+    .user-ratio {
     }
   }
 }

@@ -4,17 +4,15 @@
 
 ## Users
 
-- [] List user
-- [] Show latest quote and last quoted
-- [] Add links to profile and filtered list
-
-## Quote Create
-
-- [] Add delete button to quotes if you are author (with a timer counting down from 15 minutes before removing the button)
+- list every user (2 / 3 inline)
+- pfp, bio, name
+- amount of posted, amount of quoted, first upload, first quote
 
 ## List
 
 - [] date range selector
+- [] Mark offensive quotes in list, profile and detail 
+- [] ... shows up with no users inside of it
 
 ---
 
@@ -24,7 +22,6 @@
 
 - [] Ratio of posted x quoted (list of users with bars next to them, one color is posted, other color is quoted)
 - [] chart showing all authors and their uploads overtime
-- [] Page showing statistics related to YOU or the selected user
 
 ## Quote
 

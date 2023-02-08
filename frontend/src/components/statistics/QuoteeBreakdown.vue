@@ -44,7 +44,6 @@ const chart = computed<ChartData<'line'> | null>(() => {
         ...dataset as RawDataset,
         borderWidth: 3,
         spanGaps: true,
-        pointStyle: false,
         tension: 0,
         borderColor: actualColor,
         backgroundColor: actualColor,
@@ -60,12 +59,12 @@ const options: ChartOptions<'line'> = {
   normalized: true,
   datasets: {
     line: {
-      pointRadius: 0,
+      pointRadius: 1,
     },
   },
   elements: {
     point: {
-      radius: 0,
+      radius: 1,
     },
   },
   scales: {

@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import { computed, ref } from 'vue'
+import { isEmpty } from 'lodash'
 import { useQuote } from '../../store/quote'
 import { useUser } from '../../store/user'
 import { date, getKey, getVal, objectToArray, percent, toNum } from '../../bin/utils'
@@ -41,19 +42,52 @@ const quoting = computed(() => objectToArray(authored.value.reduce((group, quote
 // First time quoted, filtering out 1970 dates
 const firstQuoted = computed(() => quoted.value.filter(q => q.createdAt !== 0).at(-1))
 const firstPosted = computed(() => authored.value.filter(a => a.createdAt !== 0).at(-1))
+
+// Create ratio list
+interface Ratio {
+  user: string
+  quoted: number
+  posted: number
+}
+
+// const ratio = computed(() => {
+//   // Iterate over all users & prepare empty object
+//   const users = user.users.reduce((group, user) => {
+//     return group[user.username] = {
+//       user: user.username,
+//       quoted: 0,
+//       posted: 0,
+//     }
+//   }, {})
+
+//   return quote.quotes.reduce((group, quote) => {
+//     const users = new Set<string>()
+//     for (const item of quote.indices)
+//       users.add(item.quotee)
+//   })
+
+//   // Save authored
+// })
 </script>
 
 <template>
   <div class="quote-container">
     <InputSelect v-model:selected="activeUser" icon="e7fd" :options="user.users.map(u => u.username)" />
     <div class="stats-grid user">
-      <StatCell str label="Quoted" :data="`${toNum(quoted.length)} - ${percent(quoted.length, quote.quotes.length).toFixed(2)}%`" />
-      <StatCell str label="Most quoted by" :data="`${getKey(quotedBy[0])} - ${getVal(quotedBy[0])}`" />
-      <StatCell str label="First time quoted" :data="firstQuoted ? date.timeShort(firstQuoted.createdAt) : 'Never'" />
+      <StatCell str label="Got quoted" :data="`${toNum(quoted.length)} - ${percent(quoted.length, quote.quotes.length).toFixed(2)}%`" />
+      <StatCell str label="Most quoted by" :data="!isEmpty(quotedBy) ? `${getKey(quotedBy[0])} - ${getVal(quotedBy[0])}` : '<Nobody>'" />
+      <StatCell str label="First time quoted" :data="firstQuoted ? date.timeShort(firstQuoted.createdAt) : '<Never>'" />
 
-      <StatCell str label="Posted" :data="`${toNum(authored.length)} - ${percent(authored.length, quote.quotes.length).toFixed(2)}%`" />
-      <StatCell str label="Most quoting" :data="`${getKey(quoting[0])} - ${getVal(quoting[0])}`" />
-      <StatCell str label="First time posted" :data="firstPosted ? date.timeShort(firstPosted.createdAt) : 'Never'" />
+      <StatCell str label="Posted quotes" :data="`${toNum(authored.length)} - ${percent(authored.length, quote.quotes.length).toFixed(2)}%`" />
+      <StatCell str label="Most quoting" :data="!isEmpty(quoting) ? `${getKey(quoting[0])} - ${getVal(quoting[0])}` : '<Nobody>'" />
+      <StatCell str label="First time posted" :data="firstPosted ? date.timeShort(firstPosted.createdAt) : '<Never>'" />
     </div>
+
+    <!-- <div class="user-list-stats">
+      <ul class="user-ratio">
+        <li />
+      </ul>
+      <div />
+    </div> -->
   </div>
 </template>

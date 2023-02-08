@@ -171,10 +171,6 @@ async function query() {
             {{ create.editing ? 'Save' : 'Create' }}
           </template>
         </button>
-
-        <button v-if="create.editing" class="button wide btn-red" @click="create.removeQuote()">
-          Delete
-        </button>
       </div>
     </div>
   </div>
