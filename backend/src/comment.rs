@@ -7,7 +7,6 @@ use axum::{
     Extension, Json,
 };
 use idlib::AuthorizeCookie;
-use itertools::Itertools;
 use rusqlite::{params, Connection, OptionalExtension};
 use serde::{Deserialize, Serialize};
 use serde_rusqlite::from_row;
@@ -192,6 +191,66 @@ pub(super) async fn post_comment(
                 quote_id,
                 created_at: now,
             }))
+        })
+        .await
+}
+
+/// Deletes a comment by id.
+#[utoipa::path(
+    delete,
+    path = "/api/comment/{id}",
+    responses(
+        (status = 200, description = "The comment was deleted."),
+        (status = 404, description = "Comment does not exist."),
+        (status = 403, description = "Only the author can delete their comment."),
+        (status = 302, description = "Redirects to hiveID if not authenticated."),
+    ),
+    params(
+        ("id" = i64, Path, description = "ID of the comment that should be deleted."),
+    )
+)]
+pub(super) async fn delete_comment(
+    AuthorizeCookie(payload, maybe_token, ..): AuthorizeCookie<idlib::NoGroups>,
+    Path(comment_id): Path<i64>,
+    Extension(state): Extension<Arc<AppState>>,
+) -> impl IntoResponse {
+    maybe_token
+        .wrap_future(async move {
+            let author = state
+                .db
+                .call(move |conn| {
+                    conn.query_row(
+                        "SELECT author FROM comments
+                        WHERE id = ?",
+                        params![&comment_id],
+                        |row| Ok(from_row::<String>(row).unwrap()),
+                    )
+                })
+                .await
+                .optional()
+                .context("Failed to get comment author")?;
+
+            if let Some(author) = author {
+                if author != payload.name {
+                    return Err(Error::Unathorized);
+                }
+            } else {
+                return Err(Error::NotFound);
+            }
+
+            state
+                .db
+                .call(move |conn| {
+                    conn.execute(
+                        "DELETE FROM comments
+                        WHERE id = ?",
+                        params![&comment_id],
+                    )
+                })
+                .await
+                .context("Failed to delete comment")?;
+
+            Ok(())
         })
         .await
 }
