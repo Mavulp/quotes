@@ -92,12 +92,21 @@ pub fn get_all(conn: &Connection) -> Result<Vec<Tag>, Error> {
     let mut stmt = conn
         .prepare(
             "SELECT
-                id,
-                name,
-                description,
-                author,
-                created_at
-            FROM tags",
+                t.id,
+                t.name,
+                t.description,
+                t.author,
+                t.created_at
+            FROM tags t
+            LEFT JOIN quote_tag_associations qta ON qta.tag_id = t.id
+            GROUP BY 
+                t.id,
+                t.name,
+                t.description,
+                t.author,
+                t.created_at
+            ORDER BY count(qta.tag_id) DESC
+            ",
         )
         .context("Failed to prepare statement for tags query")?;
 
