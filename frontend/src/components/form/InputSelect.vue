@@ -62,6 +62,7 @@ const formattedOptions = computed(() => {
         return item
       }
     })
+    .filter(o => o)
     .filter(option => option.label.toString().toLowerCase().includes(search.value.toLowerCase()))
 })
 

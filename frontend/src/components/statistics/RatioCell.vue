@@ -6,29 +6,37 @@ import type { Ratio } from '../../types/statistics-types'
 
 const props = defineProps<{ data: Ratio }>()
 const total = computed(() => props.data.posted + props.data.quoted)
+
+const postedRatio = computed(() => percent(props.data.posted, total.value))
+const quotedRatio = computed(() => percent(props.data.quoted, total.value))
 </script>
 
 <template>
-  <li>
-    <span>{{ props.data.user }}</span>
+  <li v-if="props.data.user">
+    <router-link :to="{ name: 'RouteUserProfile', params: { username: props.data.user } }">
+      {{ props.data.user }}
+    </router-link>
 
     <div class="bar-wrap">
-      <span>{{ props.data.posted }} </span>
+      <span>{{ props.data.posted }}</span>
 
       <div class="bar">
         <div
+          v-if="postedRatio > 0"
           class="bar-item"
-          :data-title-top="`${percent(props.data.posted, total).toFixed(1)}%`"
+          :data-title-top="`${postedRatio.toFixed(1)}%`"
           :style="{
-            width: `${Math.round(percent(props.data.posted, total))}%`,
+            width: `${Math.round(postedRatio)}%`,
+            // backgroundColor: gradient[5],
           }"
         />
         <div
+          v-if="quotedRatio > 0"
           class="bar-item"
-          :data-title-top="`${percent(props.data.quoted, total).toFixed(1)}%`"
+          :data-title-top="`${quotedRatio.toFixed(1)}%`"
           :style="{
-            width: `${Math.round(percent(props.data.quoted, total))}%`,
-            backgroundColor: gradient[2],
+            width: `${Math.round(quotedRatio)}%`,
+            // backgroundColor: gradient[18],
           }"
         />
       </div>
