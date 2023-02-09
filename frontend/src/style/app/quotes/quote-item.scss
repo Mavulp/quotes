@@ -80,7 +80,7 @@
         &:hover {
           text-decoration: underline;
           text-decoration-thickness: 3px;
-          text-decoration-color: rgb(var(--color-highlight));
+          text-decoration-color: var(--color-highlight);
         }
       }
 
@@ -175,7 +175,7 @@
     a:hover {
       text-decoration: underline;
       text-decoration-thickness: 3px;
-      text-decoration-color: rgb(var(--color-highlight));
+      text-decoration-color: var(--color-highlight);
     }
   }
 

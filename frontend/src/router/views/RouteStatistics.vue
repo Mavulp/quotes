@@ -13,8 +13,10 @@ import StatCell from '../../components/statistics/StatCell.vue'
 import QuoteeBreakdown from '../../components/statistics/QuoteeBreakdown.vue'
 import AuthorBreakdown from '../../components/statistics/AuthorBreakdown.vue'
 import UserBreakdown from '../../components/statistics/UserBreakdown.vue'
+import { useUser } from '../../store/user'
 
 const quote = useQuote()
+const user = useUser()
 const loading = useLoading()
 
 /**
@@ -67,7 +69,7 @@ const tab = ref('Summary')
       <Tabs v-else v-model="tab" :tabs="['Summary', 'Quotees', 'Authors', 'Users']" />
     </div>
 
-    <template v-if="quote.quotes.length > 0">
+    <template v-if="quote.quotes.length > 0 && user.users.length > 0">
       <div v-show="tab === 'Summary'" class="quote-container">
         <div class="stats-grid">
           <StatCell label="Quotes" :data="toNum(totalQuotes)" :to="{ name: 'RouteQuoteList' }" />
