@@ -19,3 +19,9 @@ export interface StatisticsChartNormalized {
     backgroundColor: string
   }[]
 }
+
+export interface Ratio {
+  user: string
+  quoted: number
+  posted: number
+}

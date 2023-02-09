@@ -4,9 +4,11 @@ import { isEmpty } from 'lodash'
 import { useQuote } from '../../store/quote'
 import { useUser } from '../../store/user'
 import { date, getKey, getVal, objectToArray, percent, toNum } from '../../bin/utils'
+import type { Ratio } from '../../types/statistics-types'
 
 import InputSelect from '../form/InputSelect.vue'
 import StatCell from './StatCell.vue'
+import RatioCell from './RatioCell.vue'
 
 const quote = useQuote()
 const user = useUser()
@@ -44,34 +46,37 @@ const firstQuoted = computed(() => quoted.value.filter(q => q.createdAt !== 0).a
 const firstPosted = computed(() => authored.value.filter(a => a.createdAt !== 0).at(-1))
 
 // Create ratio list
-interface Ratio {
-  user: string
-  quoted: number
-  posted: number
-}
 
-// const ratio = computed(() => {
-//   // Iterate over all users & prepare empty object
-//   const users = user.users.reduce((group, user) => {
-//     return group[user.username] = {
-//       user: user.username,
-//       quoted: 0,
-//       posted: 0,
-//     }
-//   }, {})
+const ratio = computed(() => {
+  // Iterate over all users & prepare empty object
+  const users = user.users.reduce((group, user) => {
+    group[user.username] = {
+      user: user.username,
+      quoted: 0,
+      posted: 0,
+    }
 
-//   return quote.quotes.reduce((group, quote) => {
-//     const users = new Set<string>()
-//     for (const item of quote.indices)
-//       users.add(item.quotee)
-//   })
+    return group
+  }, {} as Record<string, Ratio>)
 
-//   // Save authored
-// })
+  for (const q of quote.quotes) {
+    if (users[q.author])
+      users[q.author].posted++
+
+    const uniqueIndices = new Set(q.indices.map(i => i.quotee))
+
+    for (const indice of uniqueIndices.values()) {
+      if (users[indice])
+        users[indice].quoted++
+    }
+  }
+
+  return users
+})
 </script>
 
 <template>
-  <div class="quote-container">
+  <div v-if="user.users.length > 0" class="quote-container">
     <InputSelect v-model:selected="activeUser" icon="e7fd" :options="user.users.map(u => u.username)" />
     <div class="stats-grid user">
       <StatCell str label="Got quoted" :data="`${toNum(quoted.length)} - ${percent(quoted.length, quote.quotes.length).toFixed(2)}%`" />
@@ -83,11 +88,11 @@ interface Ratio {
       <StatCell str label="First time posted" :data="firstPosted ? date.timeShort(firstPosted.createdAt) : '<Never>'" />
     </div>
 
-    <!-- <div class="user-list-stats">
+    <div class="user-list-stats">
       <ul class="user-ratio">
-        <li />
+        <RatioCell v-for="(value, key) in ratio" :key="key" :data="value" />
       </ul>
       <div />
-    </div> -->
+    </div>
   </div>
 </template>
