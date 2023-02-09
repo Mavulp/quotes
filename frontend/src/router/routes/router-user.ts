@@ -27,7 +27,7 @@ export default [
     name: 'RouteAuthorize',
     component: RouteAuth,
     meta: {
-      title: 'You are being authorized. WAIT!',
+      title: 'You are being authorized. Wait! NO DONT CLICK ANYTHING!!',
     },
   },
 ]

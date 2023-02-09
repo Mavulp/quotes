@@ -24,5 +24,7 @@
 <template>
   <div>
     <Spinner />
+
+    <p>Tbh if this screen shows up for longer than a few seconds (if you have a bad internet) then I recommend reloading or submitting an issue <a href="https://github.com/Mavulp/quotes/issues/new" target="_blank">here</a></p>
   </div>
 </template>
