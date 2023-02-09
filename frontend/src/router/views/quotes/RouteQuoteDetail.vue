@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useClipboard } from '@vueuse/core'
 import dayjs from 'dayjs'
 import Countdown from '@chenfengyuan/vue-countdown'
+import { difference } from 'lodash'
 import type { Quote, Tag } from '../../../types/quote-types'
 import type { Comment } from '../../../types/comment-types'
 import { useQuote } from '../../../store/quote'
@@ -20,7 +21,7 @@ import CommentCreate from '../../../components/comments/CommentCreate.vue'
 import UserLink from '../../../components/user/UserLink.vue'
 import { useFilters } from '../../../store/filters'
 import { useUser } from '../../../store/user'
-import { getRndColor } from '../../../bin/color'
+import { getRndGradient } from '../../../bin/color'
 import { useCreate } from '../../../store/create'
 import InputSelect from '../../../components/form/InputSelect.vue'
 
@@ -163,7 +164,7 @@ function triggerClick() {
 }
 
 watch(quoteTags, async (value) => {
-  if (!quote.value)
+  if (!quote.value || difference(value, quote.value.tags).length === 0)
     return
 
   await put(`/quote/${quote.value.id}`, { tags: value })
@@ -195,7 +196,7 @@ watch(quoteTags, async (value) => {
               <template v-if="hasPfp(item.quotee)">
                 <img :src="hasPfp(item.quotee)" alt="">
               </template>
-              <div v-else :style="{ backgroundColor: getRndColor() }">
+              <div v-else :style="{ backgroundColor: getRndGradient() }">
                 {{ item.quotee.at(0) }}
               </div>
             </router-link>

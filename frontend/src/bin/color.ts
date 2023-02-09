@@ -45,6 +45,10 @@ export const gradient = [
   '#da2222',
 ]
 
+export function getRndGradient() {
+  return gradient[getRanMinMax(0, gradient.length - 1)]
+}
+
 export function colorOfTheDay() {
   const date = new Date()
   // Gives back the number of the day in the year
