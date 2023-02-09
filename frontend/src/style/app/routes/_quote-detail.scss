@@ -14,7 +14,7 @@
   }
 
   .quote-detail-top {
-    @include flex(20px);
+    @include flex(15px);
     padding-top: 3em;
     margin-bottom: 20px;
     position: relative;
@@ -43,6 +43,16 @@
       &.highlight {
         .material-icons {
           color: var(--color-highlight) !important;
+        }
+      }
+
+      &.red {
+        .material-icons {
+          color: var(--color-text-light);
+        }
+
+        &.is-active .material-icons {
+          color: var(--color-red);
         }
       }
 
@@ -91,7 +101,7 @@
         @include flex(0, center, center);
         text-decoration: none !important;
         text-transform: uppercase;
-        color: var(--color-text);
+        color: var(--color-text-dark);
         font-size: 1.4rem;
       }
     }

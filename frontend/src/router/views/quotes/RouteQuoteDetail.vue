@@ -169,6 +169,14 @@ watch(quoteTags, async (value) => {
 
   await put(`/quote/${quote.value.id}`, { tags: value })
 })
+
+// Offensive
+async function toggleOffensive() {
+  if (!quote.value)
+    return
+
+  await put(`/quote/${quote.value.id}`, { offensive: !quote.value.offensive })
+}
 </script>
 
 <template>
@@ -222,6 +230,16 @@ watch(quoteTags, async (value) => {
               <Icon code="e3c9" size="2" />
             </button>
           </template>
+
+          <button
+            v-if="user.isRole(['moderator'])"
+            class="button btn-white red btn-round"
+            :class="{ 'is-active': quote.offensive }"
+            :data-title-top="quote.offensive ? 'Mark is NOT offensive' : 'Mark as offensive'"
+            @click="toggleOffensive()"
+          >
+            <Icon code="e002" size="2" />
+          </button>
 
           <!-- Is highlighted -->
           <button v-if="isHighlighted" class="button highlight btn-white btn-round" data-title-top="Remove highlight" @click="removeHighlight">

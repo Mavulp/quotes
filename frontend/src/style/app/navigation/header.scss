@@ -73,6 +73,11 @@
         height: 36px;
         line-height: 36px;
         padding: 0 10px;
+        overflow: unset;
+
+        &:after {
+          bottom: -8px;
+        }
 
         .material-icons {
           color: var(--color-highlight);
