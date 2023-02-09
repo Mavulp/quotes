@@ -2,12 +2,6 @@
 
 [https://quotes.hivecom.net/swagger/]
 
-## Users
-
-- list every user (2 / 3 inline)
-- pfp, bio, name
-- amount of posted, amount of quoted, first upload, first quote
-
 ## List
 
 - [] date range selector
@@ -20,4 +14,4 @@
 
 ## Quote
 
-his whole class is full of well-breasted women (of age) and they compete who makes the best jello desert (in the first season). The one with the smallest breasts cooks the most flacid jello desert you could ever imagine (first episode) and Gordon scolds her. She is very sad but then at home she thinks more and gets a very strong resolve that she is going to make the most erect jello cake ever. In the final episode she presents her cake and Gordon is taken aback by the sheer erectness, beauty and first and foremost, the taste. Silky smooth milky strawberry (just as Gordon's momma used to make). He promptly verbally assaults everyone in the class but her and she wins a romantic dinner with Gordon. Fulfilling her lifelong dreams. 
+his whole class is full of well-breasted women (of age) and they compete who makes the best jello desert (in the first season). The one with the smallest breasts cooks the most flacid jello desert you could ever imagine (first episode) and Gordon scolds her. She is very sad but then at home she thinks more and gets a very strong resolve that she is going to make the most erect jello cake ever. In the final episode she presents her cake and Gordon is taken aback by the sheer erectness, beauty and first and foremost, the taste. Silky smooth milky strawberry (just as Gordon's momma used to make). He promptly verbally assaults everyone in the class but her and she wins a romantic dinner with Gordon. Fulfilling her lifelong dreams.

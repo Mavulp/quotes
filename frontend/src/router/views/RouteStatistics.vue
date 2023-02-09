@@ -63,11 +63,13 @@ const tab = ref('Summary')
 
 <template>
   <div class="route-statistics">
-    <div class="quote-container">
-      <h1>Statistics</h1>
-      <Spinner v-if="loading.get('quotes', 'users')" />
-      <Tabs v-else v-model="tab" :tabs="['Summary', 'Quotees', 'Authors', 'Users']" />
-    </div>
+    <section class="quote-page-header">
+      <div class="quote-container">
+        <h1>Statistics</h1>
+        <Spinner v-if="loading.get('quotes', 'users')" />
+        <Tabs v-else v-model="tab" :tabs="['Summary', 'Quotees', 'Authors', 'Users']" />
+      </div>
+    </section>
 
     <template v-if="quote.quotes.length > 0 && user.users.length > 0">
       <div v-show="tab === 'Summary'" class="quote-container">

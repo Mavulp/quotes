@@ -118,109 +118,8 @@
       z-index: 1;
       padding-bottom: 156px;
 
-      .profile-markdown-wrap {
-        h1,
-        h2 {
-          font-size: 5rem;
-        }
-
-        h3 {
-          font-size: 4rem;
-        }
-
-        h4 {
-          font-size: 3.2rem;
-        }
-
-        h5,
-        h6 {
-          font-size: 2.4rem;
-        }
-
-        img {
-          @include radius(var(--radius-lg));
-          max-width: 100%;
-          max-height: 100%;
-          box-shadow: var(--shadow);
-        }
-
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-          margin-bottom: 20px;
-        }
-
-        p {
-          font-size: 1.8rem;
-          margin-bottom: 20px;
-        }
-
-        a {
-          @include font(600);
-          text-decoration: none;
-
-          &:hover {
-            text-decoration: underline;
-            text-decoration-thickness: 3px;
-            text-decoration-color: var(--color-highlight);
-          }
-        }
-
-        iframe {
-          @include radius(var(--radius-lg));
-        }
-
-        pre {
-          @include radius(var(--radius-lg));
-          padding: 20px;
-          background-color: var(--color-bg-light);
-
-          code {
-            @include radius(0);
-            color: var(--color-text);
-            padding: 0;
-            width: 100%;
-          }
-        }
-
-        code {
-          @include radius(var(--radius-sm));
-          font-size: 1.4rem;
-          word-wrap: break-word;
-          word-break: break-word;
-          white-space: pre-wrap;
-
-          padding: 3px 5px;
-          background-color: var(--color-bg-light);
-        }
-
-        ol,
-        ul {
-          display: block;
-          margin-bottom: 20px;
-          // list-style: none;
-          padding-left: 20px;
-
-          li {
-            margin-bottom: 5px;
-            font-size: 1.8rem;
-
-            &:last-of-type {
-              margin-bottom: 0;
-            }
-
-            &::marker {
-              color: var(--color-highlight);
-            }
-          }
-        }
-      }
-
       hr {
-        margin: 60px -20px;
+        margin: 40px -20px;
         border: none;
         border-bottom: 1px solid var(--color-border);
         opacity: 0.25;
@@ -229,7 +128,11 @@
       h1 {
         @include bebas();
         font-size: 6.6rem;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
+      }
+
+      .flex-wrap {
+        margin-bottom: 40px;
       }
 
       p {
@@ -336,5 +239,107 @@
     border: none;
     border-bottom: 1px solid var(--color-border);
     opacity: 0.25;
+  }
+}
+
+.profile-markdown-wrap {
+  h1,
+  h2 {
+    font-size: 5rem;
+  }
+
+  h3 {
+    font-size: 4rem;
+  }
+
+  h4 {
+    font-size: 3.2rem;
+  }
+
+  h5,
+  h6 {
+    font-size: 2.4rem;
+  }
+
+  img {
+    @include radius(var(--radius-lg));
+    max-width: 100%;
+    max-height: 100%;
+    box-shadow: var(--shadow);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+
+  a {
+    @include font(600);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+      text-decoration-thickness: 3px;
+      text-decoration-color: var(--color-highlight);
+    }
+  }
+
+  iframe {
+    @include radius(var(--radius-lg));
+    max-width: 100%;
+  }
+
+  pre {
+    @include radius(var(--radius-lg));
+    padding: 20px;
+    background-color: var(--color-bg-light);
+
+    code {
+      @include radius(0);
+      color: var(--color-text);
+      padding: 0;
+      width: 100%;
+    }
+  }
+
+  code {
+    @include radius(var(--radius-sm));
+    font-size: 1.4rem;
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space: pre-wrap;
+
+    padding: 3px 5px;
+    background-color: var(--color-bg-light);
+  }
+
+  ol,
+  ul {
+    display: block;
+    margin-bottom: 20px;
+    // list-style: none;
+    padding-left: 20px;
+
+    li {
+      margin-bottom: 5px;
+      font-size: 1.8rem;
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+
+      &::marker {
+        color: var(--color-highlight);
+      }
+    }
   }
 }

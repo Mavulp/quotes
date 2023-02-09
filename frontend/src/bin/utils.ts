@@ -146,3 +146,30 @@ export function diffPercent(partial: number, total: number, returnInfinity = fal
 
   return percent
 }
+
+/**
+ * Splits array into equally large chunks
+ */
+export function arrayIntoChunks(images: Array<any>, columns = 3) {
+  if (!images)
+    return []
+
+  const makeArray = (cols: number) => Array.from(Array(cols).keys()).map(() => [])
+
+  const chunks: Array<Array<any>> = makeArray(columns)
+
+  let i = 0
+  let j = 0
+
+  while (i !== images.length) {
+    chunks[j].push(images[i])
+
+    if (j >= columns - 1)
+      j = 0
+    else j++
+
+    i++
+  }
+
+  return chunks
+}

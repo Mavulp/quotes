@@ -89,6 +89,17 @@ function quotesFromUser() {
 
           <div>
             <h1>{{ profile.username }}</h1>
+
+            <div class="flex-wrap left">
+              <button :data-title-top="`Quotes posted by ${profile.username}`" class="button semiwide btn-gray" @click="quotesByUser">
+                Posted
+              </button>
+
+              <button :data-title-top="`Quotes from ${profile.username}`" class="button semiwide" @click="quotesFromUser">
+                Quoted
+              </button>
+            </div>
+
             <div v-if="profile.bio" class="profile-markdown-wrap" v-html="sanitize(marked.parse(profile.bio))" />
 
             <hr>
@@ -105,16 +116,6 @@ function quotesFromUser() {
             <template v-if="quotedQuotes && quotedQuotes.length > 0">
               <UserProfileQuote v-for="quote in quotedQuotes" :key="quote.id" :data="quote" />
             </template>
-
-            <div class="flex-wrap center">
-              <button :data-title-top="`Quotes posted by ${profile.username}`" class="button semiwide btn-gray" @click="quotesByUser">
-                All Posts
-              </button>
-
-              <button :data-title-top="`Quotes from ${profile.username}`" class="button semiwide" @click="quotesFromUser">
-                Quoted
-              </button>
-            </div>
           </div>
         </div>
       </template>

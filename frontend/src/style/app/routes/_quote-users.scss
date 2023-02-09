@@ -1,0 +1,72 @@
+.quote-users {
+  @include grid(20px, repeat(3, 1fr));
+  padding-top: 20px;
+  padding-bottom: 156px;
+
+  .col {
+    width: 100%;
+  }
+
+  .quote-users-item {
+    @include t();
+    @include radius(var(--radius-lg));
+    display: block;
+    border: 1px solid var(--color-border);
+    padding: 20px;
+    max-width: 100%;
+    overflow: hidden;
+    text-decoration: none !important;
+    margin-bottom: 20px;
+
+    * {
+      text-decoration: none !important;
+    }
+
+    &:hover {
+      background-color: var(--color-bg-light);
+    }
+
+    .user-pfp {
+      width: 128px;
+      height: 128px;
+      margin: 0 auto 40px;
+
+      img,
+      div {
+        @include radius(50%);
+        width: 100%;
+        height: 100%;
+      }
+
+      img {
+        display: block;
+
+        object-fit: cover;
+        object-position: center;
+      }
+
+      div {
+        @include flex(0, $justify: center);
+        @include font(800);
+        font-size: 3.2rem;
+        text-transform: uppercase;
+        color: var(--color-text-dark);
+      }
+    }
+
+    strong {
+      display: block;
+      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      text-decoration: none;
+      color: var(--color-text);
+    }
+
+    p {
+      text-align: center;
+      font-size: 1.4rem;
+      color: var(--color-text-light);
+    }
+  }
+}
