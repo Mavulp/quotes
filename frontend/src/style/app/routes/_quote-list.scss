@@ -5,15 +5,28 @@
   border-bottom: 1px solid var(--color-border-light);
 
   &.sticky {
+    @include t();
     position: fixed;
     top: $header;
     left: 0;
     width: 100%;
-    z-index: 1000;
     padding-top: 10px;
     padding-bottom: 10px;
     backdrop-filter: blur(30px);
     background-color: rgba(#181818, 0.85);
+    box-shadow: var(--shadow);
+
+    opacity: 0;
+    transform: translateY(-32px);
+    visibility: hidden;
+    z-index: -1;
+
+    &.active {
+      opacity: 1;
+      transform: translateY(0);
+      visibility: visible;
+      z-index: 1000;
+    }
   }
 }
 
@@ -132,4 +145,12 @@
       }
     }
   }
+}
+
+.no-more-quotes {
+  display: block;
+  text-align: center;
+  padding: 40px 0;
+  color: var(--color-text-light);
+  font-size: 1.4rem;
 }

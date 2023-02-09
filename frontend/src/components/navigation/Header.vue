@@ -51,7 +51,7 @@ document.addEventListener('scroll', () => {
 
       <div style="flex: 1" />
 
-      <router-link class="header-link post" :to="{ name: 'RouteQuoteAdd' }">
+      <router-link class="header-link post button btn-white" :to="{ name: 'RouteQuoteAdd' }">
         <Icon code="e745" /> Post
       </router-link>
 

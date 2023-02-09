@@ -70,6 +70,9 @@
 
       &.post {
         color: var(--color-text);
+        height: 36px;
+        line-height: 36px;
+        padding: 0 10px;
 
         .material-icons {
           color: var(--color-highlight);

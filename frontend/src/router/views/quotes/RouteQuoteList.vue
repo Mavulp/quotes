@@ -109,7 +109,7 @@ function scrollUp() {
       </div>
     </section>
 
-    <section v-if="stickHeader" class="quote-page-header sticky">
+    <section :class="{ active: stickHeader }" class="quote-page-header sticky">
       <div class="quote-container container-header">
         <QuoteFilters />
       </div>
@@ -129,6 +129,10 @@ function scrollUp() {
           <div class="quote-list-items">
             <QuoteListItem v-for="item in displayedData" :key="item.id" :data="item" />
           </div>
+
+          <p class="no-more-quotes">
+            That's it. No more quotes.
+          </p>
         </template>
       </div>
 
