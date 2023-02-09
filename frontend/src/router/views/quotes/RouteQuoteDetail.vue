@@ -171,7 +171,7 @@ watch(quoteTags, async (value) => {
 </script>
 
 <template>
-  <div class="quote-detail">
+  <div class="quote-detail" :class="{ 'is-offensive': quote?.offensive }">
     <Transition name="tab" mode="out-in">
       <Spinner v-if="loading.get('quote-detail')" class="mg" />
 

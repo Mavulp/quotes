@@ -11,16 +11,11 @@
 ## List
 
 - [] date range selector
-- [] Mark offensive quotes in list, profile and detail 
-- [] ... shows up with no users inside of it
 
 ---
 
 ## Stats
 
-<!-- https://www.chartjs.org/docs/latest/general/fonts.html -->
-
-- [] Ratio of posted x quoted (list of users with bars next to them, one color is posted, other color is quoted)
 - [] chart showing all authors and their uploads overtime
 
 ## Quote

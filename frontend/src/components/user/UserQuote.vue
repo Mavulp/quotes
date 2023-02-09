@@ -21,7 +21,7 @@ const fragment = computed(() => {
   <router-link
     :to="{ name: 'RouteQuoteDetail', params: { id: props.data.id } }"
     class="quote-user"
-    :class="{ 'is-highlight': fragment.highlight }"
+    :class="{ 'is-highlight': fragment.highlight, 'is-offensive': props.data.offensive }"
   >
     <div class="quote-info">
       <span>{{ props.data.indices.length }} {{ props.data.indices.length === 1 ? 'quotee' : 'quotees' }}</span>

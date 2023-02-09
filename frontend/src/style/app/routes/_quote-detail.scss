@@ -2,6 +2,13 @@
   display: block;
   padding-bottom: 156px;
 
+  &.is-offensive {
+    .quote-detail-top a,
+    .quote-item-content {
+      --color-highlight: var(--color-red);
+    }
+  }
+
   .quote-container {
     max-width: 956px;
   }
@@ -160,7 +167,7 @@
         &:hover {
           text-decoration: underline;
           text-decoration-thickness: 3px;
-          text-decoration-color: var(--color-highlight);
+          text-decoration-color: var(--color-text-light);
         }
       }
     }

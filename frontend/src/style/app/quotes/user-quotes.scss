@@ -18,9 +18,13 @@
 
   &.highlight-quote {
     font-size: 3.2rem;
-    color: var(--color-highlight);
+    color: var(--color-highlight) !important;
     // max-height: 180px;
     max-height: unset;
+  }
+
+  &.is-offensive {
+    color: var(--color-red);
   }
 
   &:before {

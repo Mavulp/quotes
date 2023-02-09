@@ -26,7 +26,7 @@ const USER_THRESHOLD = 3
 const highlightUsers = computed<Quotee[]>(() => props.data.indices.slice(0, USER_THRESHOLD))
 
 const otherUsers = computed(() =>
-  highlightUsers.value
+  props.data.indices
     .slice(USER_THRESHOLD)
     .map(user => `${user.quotee} #${user.index}`)
     .join(', '),
@@ -53,7 +53,7 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div :id="props.data.id.toString()" class="quote-item">
+  <div :id="props.data.id.toString()" class="quote-item" :class="{ 'is-offensive': props.data.offensive }">
     <div class="quote-item-header" @click.self="goToQuote()">
       <div class="quote-quotees">
         <span v-for="user in highlightUsers" :key="user.quotee" class="quote-text quote-quotee">
@@ -61,7 +61,7 @@ onBeforeMount(async () => {
           {{ `#${user.index}` }}
         </span>
 
-        <span v-if="highlightUsers.length > 2" :data-title-bottom="otherUsers">...</span>
+        <span v-if="otherUsers.length > 0" :data-title-bottom="otherUsers">...</span>
       </div>
 
       <div class="quote-divider" />
