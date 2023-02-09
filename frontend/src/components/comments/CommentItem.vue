@@ -5,6 +5,7 @@ import { formatCommentContent, formatCommentUsers, sanitize } from '../../bin/co
 import { useUser } from '../../store/user'
 import { date } from '../../bin/utils'
 import { useLoading } from '../../store/loading'
+import { getRndGradient } from '../../bin/color'
 
 const props = defineProps<{
   data: Comment
@@ -36,7 +37,10 @@ const user = computed(() => users.users.find(u => u.username === props.data.auth
   <div v-if="user" class="comment-item">
     <div class="comment-header">
       <div class="image-wrap">
-        <img :src="user.profilePicture">
+        <img v-if="user.profilePicture" :src="user.profilePicture">
+        <div v-else :style="{ backgroundColor: getRndGradient() }">
+          {{ user.username.at(0) }}
+        </div>
       </div>
 
       <router-link :to="{ name: 'RouteUserProfile', params: { username: props.data.author } }">

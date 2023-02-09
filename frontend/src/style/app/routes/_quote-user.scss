@@ -47,6 +47,7 @@
           box-shadow: var(--shadow);
           margin-bottom: 30px;
 
+          div,
           img {
             @include radius(50%);
             width: 100%;
@@ -54,6 +55,14 @@
             object-fit: cover;
             object-position: center;
             background-color: var(--color-bg-light);
+          }
+
+          div {
+            @include font(800);
+            @include flex(0, $justify: center);
+            color: var(--color-text-dark);
+            font-size: 10rem;
+            text-transform: uppercase;
           }
         }
 

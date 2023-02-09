@@ -84,15 +84,15 @@
         height: 24px;
         object-fit: cover;
         object-position: center;
-        color: var(--color-text);
-        font-size: 1.2rem;
-        // margin-left: -10px;
       }
 
       div {
         @include font(400);
         @include flex(0, center, center);
         text-decoration: none !important;
+        text-transform: uppercase;
+        color: var(--color-text);
+        font-size: 1.4rem;
       }
     }
   }
@@ -132,14 +132,6 @@
       &.quote-item-highlight strong {
         font-size: 6.6rem;
       }
-
-      // .quote-item-quotee {
-      //   a {
-      //     &:hover {
-      //       color: var(--color-highlight);
-      //     }
-      //   }
-      // }
     }
   }
 

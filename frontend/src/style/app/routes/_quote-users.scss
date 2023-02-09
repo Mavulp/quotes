@@ -48,7 +48,7 @@
       div {
         @include flex(0, $justify: center);
         @include font(800);
-        font-size: 3.2rem;
+        font-size: 6rem;
         text-transform: uppercase;
         color: var(--color-text-dark);
       }
