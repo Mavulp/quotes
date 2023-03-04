@@ -2,13 +2,6 @@
 
 [https://quotes.hivecom.net/swagger/]
 
-## List
-
-- [] date range selector
-- [] split tags into include x exclude dropdowns, selecting exclude will HIDE results which fall into that
-
----
-
 ## Stats
 
 - [] chart showing all authors and their uploads overtime

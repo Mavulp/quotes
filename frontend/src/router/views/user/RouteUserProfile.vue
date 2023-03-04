@@ -51,7 +51,7 @@ function quotesFromUser() {
   <div class="quote-profile">
     <img class="bg" src="/bg/blobs.svg" alt="">
 
-    <div class="quote-container">
+    <div class="quote-container quote-smaller">
       <div v-if="loading.get('users')">
         <Spinner />
       </div>
