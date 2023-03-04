@@ -133,7 +133,6 @@ function scrollUp() {
           position="center"
           dark
           :enable-time-picker="false"
-          multi-calendars=""
         >
           <template #trigger>
             <button class="date-picker">

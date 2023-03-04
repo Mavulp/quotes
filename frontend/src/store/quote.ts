@@ -10,7 +10,6 @@ import { useUser } from './user'
 
 interface State {
   quotes: Quote[]
-  // random: () number
 }
 
 export const useQuote = defineStore('quotes', {
@@ -31,6 +30,7 @@ export const useQuote = defineStore('quotes', {
           filters.init(res)
 
           this.quotes = res.sort((a, b) => a.createdAt > b.createdAt ? -1 : 1)
+
           return res
         })
         .catch(() => {
