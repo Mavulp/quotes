@@ -2,6 +2,7 @@ import type { RemovableRef } from '@vueuse/core'
 import { useLocalStorage } from '@vueuse/core'
 import { isArray } from 'lodash'
 import { defineStore } from 'pinia'
+import dayjs from 'dayjs'
 import { get } from '../bin/fetch'
 import type { Quote } from '../types/quote-types'
 import { useLoading } from './loading'
@@ -25,6 +26,11 @@ interface State {
   filters: Map<FilterKey, Set<string>>
   tags: Tag[]
   excludedTags: string[]
+
+  date: {
+    from: number
+    to: number
+  }
 
   expand: RemovableRef<boolean>
   offensive: RemovableRef<boolean>
@@ -50,6 +56,10 @@ export const useFilters = defineStore('filters', {
     excludedTags: assignExcludedTags(),
     expand: useLocalStorage('quotes_expanded', false),
     offensive: useLocalStorage('quotes_expanded', false),
+    date: {
+      from: dayjs(0).valueOf(),
+      to: dayjs().valueOf(),
+    },
   } as State),
   actions: {
     init(quotes: Quote[]) {

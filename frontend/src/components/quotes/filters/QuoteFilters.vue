@@ -1,23 +1,14 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useEventListener, useLocalStorage } from '@vueuse/core'
+import dayjs from 'dayjs'
 import VueDatePicker from '@vuepic/vue-datepicker'
 import { useFilters } from '../../../store/filters'
 
 import InputCheckbox from '../../../components/form/InputCheckbox.vue'
 import InputSelect from '../../../components/form/InputSelect.vue'
 import Search from '../../../components/form/Search.vue'
-
-// const props = defineProps<{
-//   search: string
-//   author: string
-//   quotee: string
-// }>()
-
-// const emit = defineEmits<{
-//   (e: 'update:author', value: string): void
-//   (e: 'update:quotee', value: string): void
-// }>()
+import { displayDateShort } from '../../../bin/time'
 
 const filters = useFilters()
 
@@ -47,6 +38,21 @@ const excludedTags = computed({
   set: (value: string[]) => {
     localStorage.setItem('quotes_excluded_tags', JSON.stringify(value))
     filters.setFilter('excludedTags', value)
+  },
+})
+
+const date = computed({
+  get() {
+    const { from, to } = filters.date
+    return [from, to]
+  },
+  set([from, to]) {
+    filters.$patch({
+      date: {
+        from: dayjs(from).valueOf(),
+        to: dayjs(to).valueOf(),
+      },
+    })
   },
 })
 
@@ -114,6 +120,40 @@ function scrollUp() {
         multiple
         :cantclear="false"
       />
+      <hr>
+      <div>
+        <strong>Date</strong>
+
+        <VueDatePicker
+          v-model="date"
+          range
+          utc
+          auto-apply
+          hide-input-icon
+          position="center"
+          dark
+          :enable-time-picker="false"
+          multi-calendars=""
+        >
+          <template #trigger>
+            <button class="date-picker">
+              <span>
+                <Icon code="e8df" size="1.8" />
+                {{ dayjs(filters.date.from).format(displayDateShort) }}
+              </span>
+              -
+              <span>
+                <Icon code="e8df" size="1.8" />
+                {{ dayjs(filters.date.to).format(displayDateShort) }}
+              </span>
+            </button>
+          </template>
+        </VueDatePicker>
+
+        <!-- <pre>
+          {{ filters.date }}
+        </pre> -->
+      </div>
       <hr>
       <strong>Tags</strong>
       <div class="filters-between">

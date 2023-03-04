@@ -24,8 +24,14 @@ onBeforeMount(quote.fetchQuotes)
 onBeforeUnmount(filters.clear)
 
 const filteredData = computed(() => {
+  // #0 date filter
+  let filtered = quote.quotes.filter((q) => {
+    const timestamp = q.createdAt * 1000
+    return filters.date.from <= timestamp && filters.date.to >= timestamp
+  })
+
   // #1 First filter data from active filters
-  const filtered = quote.quotes.filter((q) => {
+  filtered = filtered.filter((q) => {
     const quotees = q.indices.map(indice => indice.quotee)
 
     if (!filters.offensive && q.offensive)

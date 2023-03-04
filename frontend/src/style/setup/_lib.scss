@@ -1,1 +1,146 @@
 @import "@vuepic/vue-datepicker/src/VueDatePicker/style/main.scss";
+
+:root {
+  --dp-primary-color: var(--color-highlight);
+}
+
+.dp__instance_calendar > .dp__flex-display {
+  & > .dp__instance_calendar {
+    &:first-child {
+      border-right: 1px solid var(--color-border);
+      padding-right: 10px;
+    }
+  }
+}
+
+.db-hover-class {
+  &:hover:before {
+    height: 100% !important;
+    bottom: 0 !important;
+  }
+
+  &:before {
+    left: 0;
+    right: 0;
+    background-color: var(--color-bg);
+  }
+}
+
+.dp__input_wrap {
+  @extend .db-hover-class;
+}
+
+.dp__input {
+  @include font(400);
+  border-radius: var(--radius-lg);
+  font-size: 1.5rem;
+  padding: 0 16px;
+  height: 48px;
+  line-height: 48px;
+  color: var(--color-text);
+  border-color: var(--color-border) !important;
+  background-color: var(--color-bg-light);
+
+  &:hover {
+    background-color: transparent;
+  }
+}
+
+.dp__overlay_action,
+.dp__button,
+.dp__menu,
+.dp__month_year_row,
+.dp__action_row,
+.dp__overlay {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+.dp__menu {
+  @include font(400);
+  border-radius: var(--radius-lg);
+
+  border: 1px solid var(--color-border) !important;
+  font-size: 1.5rem;
+  outline: none !important;
+}
+
+.dp__month_picker_header {
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 1px;
+
+  .dp__pointer {
+    @include font(600);
+    text-transform: uppercase;
+    font-size: 1.4rem;
+    color: var(--color-text-light);
+  }
+}
+
+.dp__overlay_cell {
+  @include t();
+  border-radius: var(--radius-lg);
+
+  color: var(--color-text);
+
+  @extend .db-hover-class;
+
+  &:hover {
+    color: var(--color-text);
+    background: transparent;
+  }
+
+  &.dp__overlay_cell_disabled {
+    background-color: transparent;
+    opacity: 0.5;
+
+    &:before {
+      display: none !important;
+    }
+  }
+}
+
+.dp__overlay_cell_active {
+  border-radius: var(--radius-lg);
+
+  color: var(--color-text-white);
+  background-color: var(--color-highlight);
+}
+
+.dp__arrow_top {
+  display: none;
+}
+
+.dp__cell_in_between {
+  background-color: var(--color-highlight-tint);
+}
+
+.dp__inner_nav {
+  width: 35px;
+  border-radius: var(--radius-lg);
+
+  height: 35px;
+}
+
+:root.dark {
+  .dp__overlay_cell_active {
+    color: var(--color-text-white);
+  }
+}
+
+.dp__cell_inner:hover,
+.dp__overlay_cell:hover,
+.dp__inner_nav:hover {
+  background-color: var(--color-bg-light);
+}
+
+.dp__range_end,
+.dp__range_start,
+.dp__active_date {
+  background-color: var(--color-highlight);
+}
+
+.dp__range_between {
+  background-color: var(--color-bg-light-hover);
+  border: none !important;
+}
