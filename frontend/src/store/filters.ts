@@ -6,7 +6,7 @@ import { get } from '../bin/fetch'
 import type { Quote } from '../types/quote-types'
 import { useLoading } from './loading'
 
-type FilterKey = 'author' | 'quotee' | 'tag'
+type FilterKey = 'author' | 'quotee' | 'tag' | 'excludedTags'
 
 interface Tag {
   id: string
@@ -21,12 +21,20 @@ interface OptionValue {
 
 interface State {
   search: string
-  options: Record<FilterKey, Set<string>>
+  options: Record<Exclude<FilterKey, 'excludedTags'>, Set<string>>
   filters: Map<FilterKey, Set<string>>
   tags: Tag[]
+  excludedTags: string[]
 
   expand: RemovableRef<boolean>
   offensive: RemovableRef<boolean>
+}
+
+function assignExcludedTags(): string[] {
+  const local = localStorage.getItem('quotes_excluded_tags')
+  if (!local)
+    return []
+  return JSON.parse(local)
 }
 
 export const useFilters = defineStore('filters', {
@@ -39,6 +47,7 @@ export const useFilters = defineStore('filters', {
     },
     filters: new Map(),
     tags: [],
+    excludedTags: assignExcludedTags(),
     expand: useLocalStorage('quotes_expanded', false),
     offensive: useLocalStorage('quotes_expanded', false),
   } as State),
@@ -78,7 +87,7 @@ export const useFilters = defineStore('filters', {
     },
   },
   getters: {
-    getOptionsByKey: state => (key: FilterKey): OptionValue[] => {
+    getOptionsByKey: state => (key: Exclude<FilterKey, 'excludedTags'>): OptionValue[] => {
       return [...state.options[key] ?? []].map((option) => {
         return {
           label: option,

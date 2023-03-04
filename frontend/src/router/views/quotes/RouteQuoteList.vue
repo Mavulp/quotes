@@ -20,13 +20,8 @@ const filters = useFilters()
  * DATA
  */
 
-onBeforeMount(() => {
-  quote.fetchQuotes()
-})
-
-onBeforeUnmount(() => {
-  filters.clear()
-})
+onBeforeMount(quote.fetchQuotes)
+onBeforeUnmount(filters.clear)
 
 const filteredData = computed(() => {
   // #1 First filter data from active filters
@@ -39,6 +34,7 @@ const filteredData = computed(() => {
     return filters.isPassingFilter('author', q.author)
       && filters.isPassingFilter('quotee', quotees)
       && filters.isPassingFilter('tag', q.tags)
+      && !(filters.getFiltersByKey('excludedTags').length > 0 && filters.isPassingFilter('excludedTags', q.tags))
   })
 
   // #2 Apply search string

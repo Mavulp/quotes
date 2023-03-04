@@ -2,6 +2,7 @@
   @include flex(0, $align: flex-start);
   padding-top: 5em;
   z-index: 1;
+  min-height: 100vh;
   position: relative;
 
   .bg {

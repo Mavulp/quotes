@@ -11,6 +11,7 @@
     "@chenfengyuan/vue-countdown": "^2.1.0",
     "@dolanske/v-valid": "github:dolanske/v-valid",
     "@types/chart.js": "^2.9.37",
+    "@vuepic/vue-datepicker": "^4.2.0",
     "@vueuse/core": "^9.6.0",
     "chart.js": "^4.2.0",
     "dayjs": "^1.11.7",

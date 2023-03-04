@@ -2,7 +2,7 @@
   @include t(0.1s);
   @include radius(var(--radius-sm));
   position: absolute;
-  padding: 10px;
+  padding: 5px;
   top: 100%;
   left: 0;
   width: 256px;
@@ -36,7 +36,7 @@
     width: 100%;
     padding: 12px 20px;
     padding-left: 60px;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
     color: var(--color-text);
 
     .material-icons {

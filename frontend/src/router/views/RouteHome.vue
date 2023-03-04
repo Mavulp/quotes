@@ -51,9 +51,15 @@ const open = useLocalStorage('quotes_funny_prompt', true)
         <h1>Hivecom Quotes</h1>
         <p>Said something very funny, unfunny, or didn't say it in that way at all? It'll probably end up posted here anyway.</p>
         <br>
-        <button class="button btn-large btn-highlight" @click="random">
-          Random Quote
-        </button>
+        <div class="flex-wrap start">
+          <router-link class="button btn-large btn-highlight" :to="{ name: 'RouteQuoteAdd' }">
+            <Icon code="e745" />
+            Add Quote
+          </router-link>
+          <button class="button btn-large btn-gray" @click="random">
+            Random Quote
+          </button>
+        </div>
       </div>
       <router-link :to="{ name: 'RouteQuoteList' }" class="quote-example">
         <div class="example-header">

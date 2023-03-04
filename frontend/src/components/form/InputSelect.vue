@@ -187,7 +187,7 @@ defineExpose({
           </template> -->
         </button>
       </template>
-      <span v-else class="select-no-options">Nothing to select.</span>
+      <span v-else class="select-no-options">Empty.</span>
     </div>
     <template v-if="props.error?.invalid">
       <p v-for="item in props.error.errors" :key="item" class="error-item">

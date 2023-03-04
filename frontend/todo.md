@@ -5,6 +5,7 @@
 ## List
 
 - [] date range selector
+- [] split tags into include x exclude dropdowns, selecting exclude will HIDE results which fall into that
 
 ---
 

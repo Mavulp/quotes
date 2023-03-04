@@ -20,6 +20,10 @@
     background-color: var(--color-highlight-tint);
   }
 
+  &:is(a) {
+    text-decoration: none;
+  }
+
   &:disabled {
     filter: grayscale(1);
     pointer-events: none;
@@ -48,6 +52,10 @@
     line-height: 48px;
     padding: 0 20px;
     font-size: 1.8rem;
+  }
+
+  &.btn-full {
+    width: 100%;
   }
 
   &.wide {

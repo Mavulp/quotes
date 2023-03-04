@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useEventListener, useLocalStorage } from '@vueuse/core'
+import VueDatePicker from '@vuepic/vue-datepicker'
 import { useFilters } from '../../../store/filters'
 
 import InputCheckbox from '../../../components/form/InputCheckbox.vue'
@@ -25,7 +26,6 @@ const filters = useFilters()
  */
 const quoteeOptions = computed(() => filters.getOptionsByKey('quotee'))
 const authorOptions = computed(() => filters.getOptionsByKey('author'))
-const tagOptions = computed(() => filters.getOptionsByKey('tag'))
 
 const quotee = computed({
   get: () => filters.getFiltersByKey('quotee'),
@@ -42,9 +42,31 @@ const tag = computed({
   set: (value: string[]) => filters.setFilter('tag', value),
 })
 
+const excludedTags = computed({
+  get: () => filters.getFiltersByKey('excludedTags'),
+  set: (value: string[]) => {
+    localStorage.setItem('quotes_excluded_tags', JSON.stringify(value))
+    filters.setFilter('excludedTags', value)
+  },
+})
+
 const search = computed({
   get: () => filters.search,
   set: value => filters.setSearch(value),
+})
+
+const tagOptions = computed(() => {
+  const options = filters.getOptionsByKey('tag')
+  if (excludedTags.value.length === 0)
+    return options
+  return options.filter(option => !excludedTags.value.includes(option.value))
+})
+
+const excludedTagOptions = computed(() => {
+  const options = filters.getOptionsByKey('tag')
+  if (tag.value.length === 0)
+    return options
+  return options.filter(option => !tag.value.includes(option.value))
 })
 
 /**
@@ -68,10 +90,14 @@ function scrollUp() {
 <template>
   <div class="quote-filters">
     <div class="quote-filters-sticky">
-      <strong>Filters</strong>
-
+      <div class="filters-title">
+        <strong>Filters</strong>
+        <button v-show="filters.active" class="button btn-white" @click="filters.clear()">
+          Clear
+          <Icon code="e5cd" size="1.8" />
+        </button>
+      </div>
       <Search v-model:value="search" placeholder="Search for a quote" />
-
       <InputSelect
         v-model:selected="quotee"
         :options="quoteeOptions"
@@ -88,26 +114,30 @@ function scrollUp() {
         multiple
         :cantclear="false"
       />
-      <InputSelect
-        v-model:selected="tag"
-        :options="tagOptions"
-        placeholder="Filter by Tags"
-        icon="e867"
-        multiple
-        :cantclear="false"
-      />
-
-      <!-- <div style="width:10px" /> -->
-
       <hr>
+      <strong>Tags</strong>
+      <div class="filters-between">
+        <InputSelect
+          v-model:selected="tag"
+          :options="tagOptions"
+          placeholder="Include"
+          icon="e892"
+          multiple
+          :cantclear="false"
+        />
 
+        <InputSelect
+          v-model:selected="excludedTags"
+          :options="excludedTagOptions"
+          placeholder="Exclude"
+          icon="e9b6"
+          multiple
+          :cantclear="false"
+        />
+      </div>
+      <hr>
       <InputCheckbox v-model:check="filters.offensive" label="Offensive Content" />
-
-      <button v-show="filters.active" data-title-bottom="Clear Filters" class="filters-clear button btn-round btn-white" @click="filters.clear()">
-        <Icon code="e5cd" size="1.8" />
-      </button>
     </div>
-
     <Transition name="page" mode="out-in">
       <button v-if="stickHeader" data-title-top="Scroll Up" class="button btn-round btn-go-up btn-white" @click="scrollUp">
         <Icon code="e5d8" size="2" />
