@@ -37,6 +37,7 @@ export default async function (to: RouteLocationNormalized, from: RouteLocationN
         }
         else {
           await fetch(`${rootUrl}/account/login`, {
+            method: 'GET',
             redirect: 'follow',
             credentials: 'same-origin',
           })
