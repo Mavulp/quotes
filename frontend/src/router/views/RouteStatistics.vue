@@ -64,7 +64,7 @@ const tab = ref('Summary')
 <template>
   <div class="route-statistics">
     <section class="quote-page-header">
-      <div class="quote-container">
+      <div class="quote-container quote-smaller">
         <h1>Statistics</h1>
         <Spinner v-if="loading.get('quotes', 'users')" />
         <Tabs v-else v-model="tab" :tabs="['Summary', 'Quotees', 'Authors', 'Users']" />
@@ -72,7 +72,7 @@ const tab = ref('Summary')
     </section>
 
     <template v-if="quote.quotes.length > 0 && user.users.length > 0">
-      <div v-show="tab === 'Summary'" class="quote-container">
+      <div v-show="tab === 'Summary'" class="quote-container quote-smaller">
         <div class="stats-grid">
           <StatCell label="Quotes" :data="toNum(totalQuotes)" :to="{ name: 'RouteQuoteList' }" />
           <StatCell label="Offensive quotes" :data="toNum(offensiveQuotes)" :to="{ name: 'RouteQuoteList' }" />
@@ -104,10 +104,10 @@ const tab = ref('Summary')
 
         <StatBreakdown />
       </div>
-      <div v-show="tab === 'Quotees'" class="quote-container container-header">
+      <div v-show="tab === 'Quotees'" class="quote-container">
         <QuoteeBreakdown />
       </div>
-      <div v-show="tab === 'Authors'" class="quote-container container-header">
+      <div v-show="tab === 'Authors'" class="quote-container">
         <AuthorBreakdown />
       </div>
       <UserBreakdown v-show="tab === 'Users'" />

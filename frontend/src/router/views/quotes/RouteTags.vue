@@ -62,7 +62,7 @@ const isFormActive = computed(() => create.form.fragments.length > 0)
 <template>
   <div class="route-tags">
     <section id="header" class="quote-page-header">
-      <div class="quote-container">
+      <div class="quote-container quote-smaller">
         <div class="quote-title-wrap text">
           <h1>Tags</h1>
 
@@ -85,7 +85,7 @@ const isFormActive = computed(() => create.form.fragments.length > 0)
       </div>
     </section>
 
-    <div class="quote-container">
+    <div class="quote-container quote-smaller">
       <Spinner v-if="loading.get('tags', 'quote-list')" />
       <template v-else>
         <p class="list-amount">

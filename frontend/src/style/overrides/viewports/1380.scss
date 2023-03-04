@@ -1,0 +1,33 @@
+@media only screen and (max-width: 1380px) {
+  /* styles for browsers larger than 960px; */
+
+  .quote-container {
+    margin: unset;
+    max-width: 100%;
+    padding: 0 2em;
+  }
+
+  .quote-navigation {
+    padding: 0 2em;
+
+    .logo {
+      position: relative;
+      left: unset;
+      top: unset;
+      transform: unset;
+      margin-right: 10px;
+    }
+
+    .quote-container {
+      padding: 0;
+      gap: 20px;
+    }
+  }
+
+  .quote-route-list {
+    .quote-container {
+      grid-template-columns: 1fr 256px;
+      gap: 0 20px;
+    }
+  }
+}

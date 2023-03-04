@@ -1,13 +1,11 @@
 .quote-container {
   display: block;
   margin-left: $from-left;
-  max-width: 920px;
+  max-width: 1200px;
   width: 100%;
 
-  &.container-header {
-    max-width: 1920px;
-    padding: 0 15em;
-    margin: 0;
+  &.quote-smaller {
+    max-width: 920px;
   }
 }
 

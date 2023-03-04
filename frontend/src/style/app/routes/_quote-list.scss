@@ -1,149 +1,138 @@
+.quote-route-list {
+  .quote-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(516px, 896px) 324px;
+    gap: 0 40px;
+
+    grid-template-areas:
+      "title ."
+      "list filters";
+
+    .quote-title-wrap {
+      padding-top: 20px;
+      grid-area: title;
+      padding-right: 20px;
+      padding-bottom: 20px;
+      margin: 0;
+      border-right: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+      position: relative;
+
+      &:before {
+        content: "";
+        display: block;
+        position: absolute;
+        border-bottom: 1px solid var(--color-border);
+        bottom: -1px;
+        right: 100%;
+        width: 1000px;
+      }
+
+      .title {
+        @include flex(0, $justify: space-between);
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      .quote-list-context {
+        @include flex($gap: 40px);
+        margin-bottom: 20px;
+
+        p {
+          flex: 1;
+          color: var(--color-text-light);
+          font-size: 1.4rem;
+
+          b {
+            font-size: inherit;
+          }
+        }
+
+        .quote-list-display-switch {
+          @include flex($gap: 8px);
+
+          .type-title {
+            margin-right: 1px;
+            color: var(--color-text-light);
+          }
+        }
+      }
+    }
+
+    .quote-list {
+      grid-area: list;
+      padding-right: 20px;
+      position: relative;
+      padding-top: 30px;
+      min-height: calc(100vh - 160px);
+      border-right: 1px solid var(--color-border);
+    }
+
+    .quote-filters {
+      grid-area: filters;
+      padding-top: 30px;
+
+      .btn-go-up {
+        // position: fixed;
+        // bottom: 20px;
+        // position: fixed;
+        // bottom: 20px;
+        // left: calc(15em + 920px + 60px);
+        position: sticky;
+        top: calc(100vh - 80px);
+
+        .material-icons {
+          color: var(--color-highlight);
+        }
+      }
+
+      .quote-filters-sticky {
+        position: sticky;
+        top: calc($header + 20px);
+      }
+
+      hr {
+        margin: 25px 0;
+        border: none;
+        border-bottom: 1px solid var(--color-border);
+      }
+
+      strong {
+        display: block;
+        text-transform: uppercase;
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+        color: var(--color-text-light);
+      }
+
+      .form-search,
+      .form-select {
+        margin-bottom: 15px;
+      }
+
+      .form-search {
+        margin-bottom: 30px;
+      }
+    }
+  }
+}
+
 .quote-page-header {
   width: 100%;
   padding-bottom: 20px;
   margin-bottom: 30px;
   border-bottom: 1px solid var(--color-border-light);
-
-  &.sticky {
-    @include t();
-    position: fixed;
-    top: $header;
-    left: 0;
-    width: 100%;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    backdrop-filter: blur(30px);
-    background-color: rgba(#181818, 0.85);
-    box-shadow: var(--shadow);
-
-    opacity: 0;
-    transform: translateY(-32px);
-    visibility: hidden;
-    z-index: -1;
-
-    &.active {
-      opacity: 1;
-      transform: translateY(0);
-      visibility: visible;
-      z-index: 1000;
-    }
-  }
-}
-
-.quote-route-list {
-  padding-bottom: 156px;
-  padding-top: 2em;
-
-  .quote-list {
-    .btn-go-up {
-      position: fixed;
-      bottom: 20px;
-      // right: 40px;
-      left: calc(15em + 920px + 60px);
-
-      .material-icons {
-        color: var(--color-highlight);
-      }
-    }
-
-    .quote-list-context {
-      @include flex($gap: 40px);
-      margin-bottom: 20px;
-
-      p {
-        flex: 1;
-        color: var(--color-text-light);
-        font-size: 1.4rem;
-
-        b {
-          font-size: inherit;
-        }
-      }
-
-      .quote-list-display-switch {
-        @include flex($gap: 8px);
-
-        .type-title {
-          margin-right: 1px;
-          color: var(--color-text-light);
-        }
-      }
-    }
-
-    // .quote-list-items {
-    //   @include grid(20px, repeat(2, 1fr));
-    // }
-  }
 }
 
 .quote-title-wrap {
-  & > * {
-    margin-bottom: 0 !important;
-  }
-
   &.text {
     @include flex($align: center, $gap: 40px);
     margin-bottom: 20px;
   }
 
-  &.quote-filters {
-    @include grid(10px, repeat(5, 1fr));
-    // @include flex(10px);
-    position: relative;
-    align-items: center;
-
-    .form-search {
-      // width: 256px;
-
-      input {
-        height: 48px;
-        line-height: 48px;
-      }
-
-      & > .material-icons {
-        top: 13px;
-        left: 18px;
-      }
-    }
-
-    .form-select {
-      // width: 256px;
-
-      .dropdown-icon {
-        top: 10px;
-      }
-
-      .select-button {
-        height: 48px;
-        line-height: 48px;
-
-        input {
-          height: 48px;
-          line-height: 48px;
-        }
-      }
-
-      label {
-        top: 13px;
-      }
-    }
-
-    .filters-clear {
-      // @include radius(50%);
-      position: absolute;
-      left: calc(100% + 10px);
-      top: 50%;
-      transform: translateY(-50%);
-      // width: 36px !important;
-      // min-width: unset;
-      // height: 36px;
-      color: var(--color-highlight);
-
-      &:hover {
-        background-color: var(--color-highlight-shade);
-        // color: var(--color-text);
-      }
-    }
+  & > * {
+    margin-bottom: 0 !important;
   }
 }
 

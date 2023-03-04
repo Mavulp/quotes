@@ -66,66 +66,35 @@ useEventListener(window, 'scroll', useThrottleFn(() => {
     displayedRows.value += 20
 }, 100))
 
-/**
- * Header scrolling
- */
-
-const stickHeader = ref(false)
-const height = ref(0)
-
-onMounted(() => {
-  height.value = $('#header')?.clientHeight ?? 0
-})
-
-useEventListener('scroll', () => {
-  stickHeader.value = window.scrollY > height.value
-})
-
 // Get random quote
 function random() {
   const id = quote.getRandomQuoteId()
   router.push({ name: 'RouteQuoteDetail', params: { id } })
 }
-
-function scrollUp() {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth',
-  })
-}
 </script>
 
 <template>
   <div :key="route.path" class="quote-route-list">
-    <section id="header" class="quote-page-header">
-      <div class="quote-container container-header">
-        <div class="quote-title-wrap text">
+    <div class="quote-container">
+      <div class="quote-title-wrap">
+        <div class="title">
           <h1>Quote list</h1>
           <button v-if="filteredData.length > 1" class="button btn-gray semiwide" @click="random()">
             Random
           </button>
         </div>
-        <QuoteFilters />
-      </div>
-    </section>
 
-    <section :class="{ active: stickHeader }" class="quote-page-header sticky">
-      <div class="quote-container container-header">
-        <QuoteFilters />
+        <div class="quote-list-context">
+          <p>
+            <b>{{ filteredData.length }}</b> {{ filteredData.length === 1 ? "quote" : "quotes" }} posted by
+            <b>{{ authors.length }}</b> {{ authors.length === 1 ? "person" : "people" }}
+          </p>
+        </div>
       </div>
-    </section>
 
-    <section class="quote-list">
-      <div class="quote-container">
+      <section class="quote-list">
         <Spinner v-if="loading.get('quote-list')" />
         <template v-else>
-          <div class="quote-list-context ">
-            <p>
-              <b>{{ filteredData.length }}</b> {{ filteredData.length === 1 ? "quote" : "quotes" }} posted by
-              <b>{{ authors.length }}</b> {{ authors.length === 1 ? "person" : "people" }}
-            </p>
-          </div>
-
           <div class="quote-list-items">
             <QuoteListItem v-for="item in displayedData" :key="item.id" :data="item" />
           </div>
@@ -134,13 +103,9 @@ function scrollUp() {
             That's it. No more quotes.
           </p>
         </template>
-      </div>
+      </section>
 
-      <Transition name="page" mode="out-in">
-        <button v-if="stickHeader" data-title-top="Scroll Up" class="button btn-round btn-go-up btn-white" @click="scrollUp">
-          <Icon code="e5d8" size="2" />
-        </button>
-      </Transition>
-    </section>
+      <QuoteFilters />
+    </div>
   </div>
 </template>

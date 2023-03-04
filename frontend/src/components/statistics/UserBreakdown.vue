@@ -88,7 +88,7 @@ const ratio = computed(() => {
 </script>
 
 <template>
-  <div class="quote-container">
+  <div class="quote-container quote-smaller">
     <InputSelect v-model:selected="activeUser" icon="e7fd" :options="userOptions" />
     <div class="stats-grid user">
       <StatCell str label="Got quoted" :data="`${toNum(quoted.length)} - ${percent(quoted.length, quote.quotes.length).toFixed(2)}%`" />

@@ -16,7 +16,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="quote-route-create">
-    <div class="quote-container">
+    <div class="quote-container quote-smaller">
       <div class="quote-title-wrap text">
         <h1>{{ create.editing ? 'Editing' : 'Add' }} a quote</h1>
 

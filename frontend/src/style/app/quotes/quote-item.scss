@@ -3,7 +3,7 @@
   @include radius(var(--radius-lg));
   display: block;
   border: 1px solid var(--color-border);
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   cursor: pointer;
 
   &:last-of-type {
