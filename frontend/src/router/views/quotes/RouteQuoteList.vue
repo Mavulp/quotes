@@ -99,7 +99,7 @@ function random() {
             <QuoteListItem v-for="item in displayedData" :key="item.id" :data="item" />
           </div>
 
-          <p class="no-more-quotes">
+          <p v-if="displayedData.length === 0 || filteredData.length === displayedData.length" class="no-more-quotes">
             That's it. No more quotes.
           </p>
         </template>
