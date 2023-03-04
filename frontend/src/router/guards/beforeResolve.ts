@@ -41,6 +41,12 @@ export default async function (to: RouteLocationNormalized, from: RouteLocationN
             redirect: 'follow',
             credentials: 'same-origin',
           })
+            .then((res: any) => {
+              if (res.redirected) {
+                const redirectedToUrl = res.url
+                window.location.replace(redirectedToUrl)
+              }
+            })
         }
       }
       else {
