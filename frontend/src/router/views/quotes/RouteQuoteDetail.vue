@@ -235,7 +235,7 @@ async function toggleOffensive() {
             v-if="user.isRole(['moderator'])"
             class="button btn-white red btn-round"
             :class="{ 'is-active': quote.offensive }"
-            :data-title-top="quote.offensive ? 'Mark is NOT offensive' : 'Mark as offensive'"
+            :data-title-top="quote.offensive ? 'Mark as NOT offensive' : 'Mark as offensive'"
             @click="toggleOffensive()"
           >
             <Icon code="e002" size="2" />

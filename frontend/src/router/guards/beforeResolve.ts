@@ -36,7 +36,7 @@ export default async function (to: RouteLocationNormalized, from: RouteLocationN
           window.location.replace('https://account.hivecom.net/login?service=quotes-dev&redirect_to=%2F')
         }
         else {
-          await fetch(`${rootUrl}/account/login`, {
+          fetch(`${rootUrl}/account/login`, {
             method: 'GET',
             redirect: 'follow',
             credentials: 'same-origin',
