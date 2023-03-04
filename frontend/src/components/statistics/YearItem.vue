@@ -3,10 +3,12 @@ import { computed } from 'vue'
 import dayjs from 'dayjs'
 import { useCssVar } from '@vueuse/core'
 import { fill } from 'lodash'
-import { displayDateLong, displayDateShort } from '../../bin/time'
-import { date, diffPercent, getKey, getVal, objectToArray, padTo2Digits, percent } from '../../bin/utils'
+import { useRouter } from 'vue-router'
+import { displayDateShort } from '../../bin/time'
+import { getVal, percent } from '../../bin/utils'
 import { hexToRgb } from '../../bin/color'
 import type { DateCount } from '../../types/quote-types'
+import { useFilters } from '../../store/filters'
 
 const props = defineProps<{
   data: DateCount[]
@@ -65,6 +67,23 @@ const yearModel = computed(() => {
 
   return model
 })
+
+// Redirects to quote list and sets date range
+const router = useRouter()
+const filters = useFilters()
+
+function filterOnQuotes(date: string) {
+  const parsed = dayjs(date)
+
+  filters.$patch({
+    date: {
+      from: parsed.startOf('day').valueOf(),
+      to: parsed.endOf('day').valueOf(),
+    },
+  })
+
+  router.push({ name: 'RouteQuoteList' })
+}
 </script>
 
 <template>
@@ -78,12 +97,14 @@ const yearModel = computed(() => {
     <div v-for="(days, month) in yearModel" :key="month" class="month-row">
       <span class="month-title">{{ dayjs.utc(month).format('MMMM') }}</span>
 
-      <div
+      <button
         v-for="tile in days"
         :key="tile.date"
         class="month-tile"
+        :class="{ 'tile-ignore': tile.count === 0 }"
         :style="{ backgroundColor: tile.color }"
         :data-title-top="tile.count > 0 ? `${tile.count} ${tile.count === 1 ? 'Quote' : 'Quotes'} | ${tile.date}` : null"
+        @click="filterOnQuotes(tile.date)"
       />
     </div>
 

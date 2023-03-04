@@ -91,6 +91,16 @@ function scrollUp() {
     behavior: 'smooth',
   })
 }
+
+// Reset date range
+function resetDateRange() {
+  filters.$patch({
+    date: {
+      from: 0,
+      to: Date.now(),
+    },
+  })
+}
 </script>
 
 <template>
@@ -122,7 +132,12 @@ function scrollUp() {
       />
       <hr>
       <div>
-        <strong>Date</strong>
+        <div class="filters-title date">
+          <strong>Date</strong>
+          <button class="button btn-white" @click="resetDateRange">
+            Reset
+          </button>
+        </div>
 
         <VueDatePicker
           v-model="date"
@@ -148,10 +163,6 @@ function scrollUp() {
             </button>
           </template>
         </VueDatePicker>
-
-        <!-- <pre>
-          {{ filters.date }}
-        </pre> -->
       </div>
       <hr>
       <strong>Tags</strong>
@@ -175,7 +186,7 @@ function scrollUp() {
         />
       </div>
       <hr>
-      <InputCheckbox v-model:check="filters.offensive" label="Offensive Content" />
+      <InputCheckbox v-model:check="filters.offensive" label="Show Offensive Content" />
     </div>
     <Transition name="page" mode="out-in">
       <button v-if="stickHeader" data-title-top="Scroll Up" class="button btn-round btn-go-up btn-white" @click="scrollUp">

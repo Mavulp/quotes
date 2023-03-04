@@ -130,9 +130,19 @@
         }
 
         .month-tile {
+          @include t(0.025s);
           @include radius(var(--radius-tn));
           width: 16px;
           height: 16px;
+          outline: 0px solid var(--color-border) !important;
+
+          &.tile-ignore {
+            pointer-events: none !important;
+          }
+
+          &:hover {
+            outline-width: 2px !important;
+          }
         }
       }
 
