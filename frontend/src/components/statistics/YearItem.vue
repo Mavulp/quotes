@@ -72,8 +72,9 @@ const yearModel = computed(() => {
 const router = useRouter()
 const filters = useFilters()
 
-function filterOnQuotes(date: string) {
-  const parsed = dayjs(date)
+function filterOnQuotes(dayBase: string, monthBase: string) {
+  const day = Number(dayBase.split('/')[0])
+  const parsed = dayjs.utc(monthBase).set('date', day).set('year', props.year)
 
   filters.$patch({
     date: {
@@ -104,7 +105,7 @@ function filterOnQuotes(date: string) {
         :class="{ 'tile-ignore': tile.count === 0 }"
         :style="{ backgroundColor: tile.color }"
         :data-title-top="tile.count > 0 ? `${tile.count} ${tile.count === 1 ? 'Quote' : 'Quotes'} | ${tile.date}` : null"
-        @click="filterOnQuotes(tile.date)"
+        @click="filterOnQuotes(tile.date, month)"
       />
     </div>
 

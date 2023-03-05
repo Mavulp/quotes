@@ -32,6 +32,7 @@ const loading = useLoading()
 const filters = useFilters()
 const user = useUser()
 const create = useCreate()
+const toast = useToast()
 
 const { copy } = useClipboard()
 
@@ -176,11 +177,23 @@ async function toggleOffensive() {
     return
 
   await put(`/quote/${quote.value.id}`, { offensive: !quote.value.offensive })
+    .then(() => {
+      toast.push({
+        type: 'success',
+        message: `Set quote as ${!quote.value?.offensive ? 'NOT' : ''} offensive`,
+      })
+    })
+    .catch((e: Error) => {
+      toast.push({
+        type: 'error',
+        message: `Error updating quote type: ${e.message}`,
+      })
+    })
 }
 </script>
 
 <template>
-  <div class="quote-detail" :class="{ 'is-offensive': quote?.offensive }">
+  <div :key="String(quote?.offensive)" class="quote-detail" :class="{ 'is-offensive': quote?.offensive }">
     <Transition name="tab" mode="out-in">
       <Spinner v-if="loading.get('quote-detail')" class="mg" />
 

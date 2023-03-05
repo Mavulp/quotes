@@ -57,8 +57,8 @@ export const useFilters = defineStore('filters', {
     expand: useLocalStorage('quotes_expanded', false),
     offensive: useLocalStorage('quotes_expanded', false),
     date: {
-      from: dayjs(0).valueOf(),
-      to: dayjs().valueOf(),
+      from: dayjs.utc(0).valueOf(),
+      to: dayjs.utc().valueOf(),
     },
   } as State),
   actions: {

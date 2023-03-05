@@ -49,8 +49,8 @@ const date = computed({
   set([from, to]) {
     filters.$patch({
       date: {
-        from: dayjs(from).valueOf(),
-        to: dayjs(to).valueOf(),
+        from: dayjs.utc(from).valueOf(),
+        to: dayjs.utc(to).valueOf(),
       },
     })
   },
@@ -148,17 +148,18 @@ function resetDateRange() {
           position="center"
           dark
           :enable-time-picker="false"
+          min-range="1"
         >
           <template #trigger>
             <button class="date-picker">
               <span>
                 <Icon code="e8df" size="1.8" />
-                {{ dayjs(filters.date.from).format(displayDateShort) }}
+                {{ dayjs.utc(filters.date.from).format(displayDateShort) }}
               </span>
               -
               <span>
                 <Icon code="e8df" size="1.8" />
-                {{ dayjs(filters.date.to).format(displayDateShort) }}
+                {{ dayjs.utc(filters.date.to).format(displayDateShort) }}
               </span>
             </button>
           </template>
