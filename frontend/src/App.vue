@@ -38,18 +38,21 @@ onBeforeMount(async () => {
 
 <template>
   <div class="quote-app">
-    <Header />
+    <Spinner v-if="loading.get('app-loading')" />
+    <template v-else>
+      <Header />
 
-    <div class="quote-content-wrap">
-      <router-view v-slot="{ Component }">
-        <transition name="tab" mode="out-in">
-          <component :is="Component" />
-        </transition>
-      </router-view>
-    </div>
+      <div class="quote-content-wrap">
+        <router-view v-slot="{ Component }">
+          <transition name="tab" mode="out-in">
+            <component :is="Component" />
+          </transition>
+        </router-view>
+      </div>
 
-    <Teleport to="body">
-      <ToastWrap />
-    </Teleport>
+      <Teleport to="body">
+        <ToastWrap />
+      </Teleport>
+    </template>
   </div>
 </template>

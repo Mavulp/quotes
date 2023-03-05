@@ -4,6 +4,7 @@ import { get, rootUrl } from '../../bin/fetch'
 import { parseJwt } from '../../bin/utils'
 import { useUser } from '../../store/user'
 import { __LOCALHOST__ } from '../../bin/env'
+import { useLoading } from '../../store/loading'
 
 const key = 'quotes_bearer_token'
 
@@ -27,6 +28,7 @@ export default async function (to: RouteLocationNormalized, from: RouteLocationN
 
   if (to.meta.requiresAuth || to.name === 'RouteAuthorize') {
     if (!token) {
+      const loading = useLoading()
       const { token, redirect_uri } = to.query as { token: string; redirect_uri: string }
 
       if (isEmpty(token)) {
@@ -36,6 +38,8 @@ export default async function (to: RouteLocationNormalized, from: RouteLocationN
           window.location.replace('https://account.hivecom.net/login?service=quotes-dev&redirect_to=%2F')
         }
         else {
+          loading.add('app-loading')
+
           fetch(`${rootUrl}/account/login`, {
             method: 'GET',
             redirect: 'follow',
@@ -50,11 +54,14 @@ export default async function (to: RouteLocationNormalized, from: RouteLocationN
         }
       }
       else {
+        loading.add('app-loading')
+
         localStorage.setItem(key, token)
         setupUser(token)
 
         await get(`/auth/authorize?redirect_uri=${redirect_uri}&token=${token}`)
           .finally(() => {
+            loading.del('app-loading')
             return next({ name: 'RouteHome' })
           })
       }
