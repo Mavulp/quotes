@@ -1,6 +1,5 @@
 import RouteHomeVue from '../views/RouteHome.vue'
 import RouteAdminVue from '../views/RouteAdmin.vue'
-import RouteGuessVue from '../views/RouteGuess.vue'
 import RouteStatisticsVue from '../views/RouteStatistics.vue'
 import RouteUsersVue from '../views/RouteUsers.vue'
 
@@ -18,15 +17,7 @@ export default [
       requiresAuth: true,
     },
   },
-  {
-    path: '/guess',
-    name: 'RouteGuessQuote',
-    component: RouteGuessVue,
-    meta: {
-      title: 'Guess the Quotee',
-      requiresAuth: true,
-    },
-  },
+
   {
     path: '/statistics',
     name: 'RouteStatistics',
