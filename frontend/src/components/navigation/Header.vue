@@ -44,7 +44,7 @@ document.addEventListener('scroll', () => {
         Users
       </router-link>
 
-      <router-link class="header-link" :to="{ name: 'RouteGuessQuote' }">
+      <router-link class="header-link" :to="{ name: 'RouteGame' }">
         Game
       </router-link>
       <!-- <router-link class="header-link" :to="{ name: 'RouteAdmin' }">

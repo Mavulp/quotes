@@ -90,6 +90,16 @@
     }
   }
 
+  &.btn-highlight-text {
+    color: var(--color-highlight);
+    background-color: var(--color-bg-light);
+
+    &:focus,
+    &:hover {
+      background-color: var(--color-bg-light-hover);
+    }
+  }
+
   &.btn-gray-dark {
     color: var(--color-text);
     background-color: var(--color-bg);
