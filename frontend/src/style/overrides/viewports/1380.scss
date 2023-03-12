@@ -28,16 +28,16 @@
     .quote-container {
       grid-template-columns: 1fr 256px;
       gap: 0 20px;
+    }
+  }
 
-      .quote-filters .date-picker {
-        gap: 5px;
-        span {
-          font-size: 1.3rem;
+  .quote-filters .date-picker {
+    gap: 5px;
+    span {
+      font-size: 1.3rem;
 
-          .material-icons {
-            font-size: 1.4rem !important;
-          }
-        }
+      .material-icons {
+        font-size: 1.4rem !important;
       }
     }
   }

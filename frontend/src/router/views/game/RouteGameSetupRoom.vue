@@ -1,9 +1,35 @@
 <script setup lang='ts'>
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { getRndGradient } from '../../../bin/color'
+import InputSelect from '../../../components/form/InputSelect.vue'
+import InputText from '../../../components/form/InputText.vue'
+import QuoteFilters from '../../../components/quotes/filters/QuoteFilters.vue'
+import InputSwitch from '../../../components/form/InputSwitch.vue'
+
+import { useToast } from '../../../store/toast'
 import { useUser } from '../../../store/user'
 
 const users = useUser()
+const toast = useToast()
+
+function inviteUser() {
+  toast.push({
+    type: 'info',
+    message: 'Invite link copied to clipboard.',
+  })
+}
+
+const useCustomPool = ref(false)
+
+const cfg = reactive({
+  players: 8,
+  roundLength: 30,
+  difficulty: 'Easy',
+})
+
+const difficultyOptions = ['Easy', 'Medium', 'Hard', 'Insane']
+
+const useCustomGame = ref(false)
 </script>
 
 <template>
@@ -12,7 +38,7 @@ const users = useUser()
       <div class="col-header">
         <strong>Players</strong>
 
-        <button class="button btn-highlight-text">
+        <button class="button btn-highlight-text" @click="inviteUser">
           <Icon code="e7fe" size="1.6" />
           Invite
         </button>
@@ -48,6 +74,37 @@ const users = useUser()
         <button class="button btn-white">
           Reset
         </button>
+      </div>
+
+      <div class="col-content">
+        <div class="content-cell">
+          <label>Max players</label>
+          <InputText v-model="cfg.players" type="number" min="2" />
+        </div>
+        <div class="content-cell">
+          <label>Round Length (seconds)</label>
+          <InputText v-model="cfg.roundLength" type="number" min="5" />
+        </div>
+        <div class="content-cell">
+          <label>Game Difficulty</label>
+          <InputSelect v-model:selected="cfg.difficulty" :options="difficultyOptions" />
+        </div>
+      </div>
+
+      <div class="col-content">
+        <div class="col-title">
+          <strong>Quote Pool</strong>
+          <InputSwitch v-model="useCustomPool" off="Use all quotes" on="Custom pool" />
+        </div>
+
+        <QuoteFilters v-if="useCustomPool" />
+      </div>
+
+      <div class="col-content">
+        <div class="col-title">
+          <strong>Rounds</strong>
+          <InputSwitch v-model="useCustomGame" off="Randomize game" on="Custom game" />
+        </div>
       </div>
     </div>
     game created (in of game in url), waiting to start

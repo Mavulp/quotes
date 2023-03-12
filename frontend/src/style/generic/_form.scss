@@ -11,6 +11,16 @@
 input {
   background-color: unset;
   border: unset;
+
+  -moz-appearance: textfield;
+  appearance: textfield;
+
+  &:-webkit-outer-spin-button,
+  &:-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+  }
 }
 
 .form-textarea,
@@ -323,5 +333,61 @@ input:-webkit-autofill:active {
   &:only-of-type,
   &:last-of-type {
     margin-bottom: 0;
+  }
+}
+
+.form-switch {
+  @include flex(20px);
+
+  &.no-label-highlight {
+    span {
+      color: var(--color-text) !important;
+    }
+  }
+
+  &.is-on {
+    .switch-handle {
+      background-color: var(--color-highlight);
+      left: calc(100% - 26px - 4px);
+    }
+
+    span {
+      color: var(--color-highlight);
+
+      &:first-of-type {
+        color: var(--color-text);
+      }
+    }
+  }
+
+  .switch-bg {
+    height: 32px;
+    border-radius: 16px;
+    width: 56px;
+    position: relative;
+    background-color: var(--color-bg-light);
+  }
+
+  .switch-handle {
+    @include t();
+    border-radius: 50%;
+    height: 26px;
+    width: 26px;
+    position: absolute;
+    left: 4px;
+    top: 3px;
+    background-color: var(--color-highlight);
+  }
+
+  span {
+    flex: 1;
+    font-size: 1.4rem;
+    color: var(--color-text);
+    text-align: left;
+
+    &:first-of-type {
+      text-align: right;
+      color: var(--color-highlight);
+    }
   }
 }
