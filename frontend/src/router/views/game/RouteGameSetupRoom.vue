@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 import { reactive, ref } from 'vue'
 import { getRndGradient } from '../../../bin/color'
+import type { Difficulty } from '../../../types/game-types'
 import InputSelect from '../../../components/form/InputSelect.vue'
 import InputText from '../../../components/form/InputText.vue'
 import QuoteFilters from '../../../components/quotes/filters/QuoteFilters.vue'
@@ -8,9 +9,14 @@ import InputSwitch from '../../../components/form/InputSwitch.vue'
 
 import { useToast } from '../../../store/toast'
 import { useUser } from '../../../store/user'
+import { useFilters } from '../../../store/filters'
+import { useGame } from '../../../store/game'
+import Player from '../../../components/game/Player.vue'
 
 const users = useUser()
 const toast = useToast()
+const game = useGame()
+// const filters = useFilters()
 
 function inviteUser() {
   toast.push({
@@ -20,50 +26,25 @@ function inviteUser() {
 }
 
 const useCustomPool = ref(false)
-
-const cfg = reactive({
-  players: 8,
-  roundLength: 30,
-  difficulty: 'Easy',
-})
-
-const difficultyOptions = ['Easy', 'Medium', 'Hard', 'Insane']
-
-const useCustomGame = ref(false)
+const difficultyOptions: Difficulty[] = ['Easy', 'Medium', 'Hard']
+// const useCustomGame = ref(false)
 </script>
 
 <template>
   <div class="game-configure">
-    <div class="col col-players">
-      <div class="col-header">
-        <strong>Players</strong>
+    <div>
+      <div class="col col-players">
+        <div class="col-header">
+          <strong>Players</strong>
 
-        <button class="button btn-highlight-text" @click="inviteUser">
-          <Icon code="e7fe" size="1.6" />
-          Invite
-        </button>
-      </div>
+          <button class="button btn-highlight-text" @click="inviteUser">
+            <Icon code="e7fe" size="1.6" />
+            Invite
+          </button>
+        </div>
 
-      <div class="col-content">
-        <div v-for="user in users.users.slice(0, 10)" :key="user.username" class="game-user">
-          <div class="image-wrap">
-            <img v-if="user.profilePicture" :src="user.profilePicture">
-            <div v-else :style="{ backgroundColor: getRndGradient() }">
-              {{ user.username[0] }}
-            </div>
-          </div>
-
-          <span>{{ user.username }}</span>
-
-          <div class="user-attrs">
-            <button class="button btn-gray btn-round" data-title-top="Kick user">
-              <Icon code="ef66" size="2" />
-            </button>
-
-            <button class="button btn-gray btn-round" data-title-top="Make Admin">
-              <Icon code="ea3d" size="2" />
-            </button>
-          </div>
+        <div class="col-content">
+          <Player v-for="user in game.players" :key="user.username" :username="user.username" />
         </div>
       </div>
     </div>
@@ -79,15 +60,15 @@ const useCustomGame = ref(false)
       <div class="col-content">
         <div class="content-cell">
           <label>Max players</label>
-          <InputText v-model="cfg.players" type="number" min="2" />
+          <InputText v-model:value="game.cfg.maxPlayerCount" type="number" min="2" />
         </div>
         <div class="content-cell">
           <label>Round Length (seconds)</label>
-          <InputText v-model="cfg.roundLength" type="number" min="5" />
+          <InputText v-model:value="game.cfg.globalRoundLength" type="number" min="5" />
         </div>
         <div class="content-cell">
           <label>Game Difficulty</label>
-          <InputSelect v-model:selected="cfg.difficulty" :options="difficultyOptions" />
+          <InputSelect v-model:selected="game.cfg.difficulty" :options="difficultyOptions" />
         </div>
       </div>
 
@@ -97,13 +78,13 @@ const useCustomGame = ref(false)
           <InputSwitch v-model="useCustomPool" off="Use all quotes" on="Custom pool" />
         </div>
 
-        <QuoteFilters v-if="useCustomPool" />
+        <QuoteFilters v-if="game.cfg.useCustomPool" />
       </div>
 
       <div class="col-content">
         <div class="col-title">
           <strong>Rounds</strong>
-          <InputSwitch v-model="useCustomGame" off="Randomize game" on="Custom game" />
+          <InputSwitch v-model="game.cfg.useCustomComposition" off="Randomize game" on="Custom game" />
         </div>
       </div>
     </div>

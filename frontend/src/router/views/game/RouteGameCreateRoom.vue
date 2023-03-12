@@ -1,16 +1,21 @@
 <script setup lang='ts'>
 import { useRouter } from 'vue-router'
+import { useGame } from '../../../store/game'
+import { useUser } from '../../../store/user'
 
 const router = useRouter()
+const game = useGame()
+const user = useUser()
 
 function initCreateRoom() {
   // Call API endpoint to start a game session which will return the room ID
-
-  const id = /** Some API request */ 1
+  const gameId = /** Some API request */ '1fBA01Fz'
+  game.initGameState(gameId, user.username)
+  // game.addPlayer(user.username)
 
   router.push({
     name: 'RouteGameSetupRoom',
-    params: { id },
+    params: { id: gameId },
   })
 }
 </script>

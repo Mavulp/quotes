@@ -1,24 +1,29 @@
 import type { Quote } from './quote-types'
 
 export interface GameState {
-  admin: number
+  gameId: string
+  admin: string
   paused: boolean
   stage: 'setup' | 'running' | 'ended'
-  pool: Quote[]
+  quotePool: Quote[]
 }
 
 export interface Player {
-  id: number
+  username: string
   score: number
-  admin?: boolean
+  ready: boolean
 }
 
-type Gamemode = 'guess-the-quote' | 'guess-the-author' | 'fill-the-quote'
-type Difficulty = 'easy' | 'medium' | 'hard'
+export type Gamemode = 'guess-the-quote' | 'guess-the-author' | 'fill-the-quote'
+export type Difficulty = 'Easy' | 'Medium' | 'Hard'
 
-export interface Fragment<T extends Gamemode> {
-  type: T
+export interface Fragment {
+  type: Gamemode
   repeats: number
+  // By default inherits the global round length
+  // Can be specifically set for a fragment
+  // Implementation: If global length is changed afterwards, do not change it
+  // this can be achieved by just checking if they are matching (before the change)
   roundLength: number
 
   /**
