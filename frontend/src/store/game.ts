@@ -1,9 +1,14 @@
 import { defineStore } from 'pinia'
 import { computed, reactive, ref, unref } from 'vue'
-import type { Difficulty, Fragment, GameState, Player } from '../types/game-types'
+import { chunk, shuffle } from 'lodash'
+import type { Difficulty, Fragment, GameState, Gamemode, Player, RoundTypes } from '../types/game-types'
+import { useQuote } from '../store/quote'
+import { getRanMinMax } from '../bin/utils'
+import type { Quote } from '../types/quote-types'
 
 // TODO: properly document
 // TODO: sort exports
+// TODO: figure out formula for counting points
 
 export const difficultyOptions: Difficulty[] = ['Easy', 'Medium', 'Hard']
 export const gamemodeOptions = [
@@ -11,6 +16,8 @@ export const gamemodeOptions = [
   { value: 'guess-the-author', label: 'Guess The Author' },
   { value: 'fill-the-quote', label: 'Fill The Quote' },
 ]
+const gamemodeIds = Object.values(gamemodeOptions).map(g => g.value) as Gamemode[]
+const gamemodeAmount = Object.keys(gamemodeOptions).length
 
 export const useGame = defineStore('game', () => {
   const state = reactive<GameState>({} as GameState)
@@ -19,7 +26,7 @@ export const useGame = defineStore('game', () => {
     // Global Settings
     maxPlayerCount: 8,
     globalRoundLength: 30,
-    difficulty: 'Medium',
+    difficulty: 'Medium' as Difficulty,
     // Quote pool settings
     useCustomPool: false,
     // Game composition settings
@@ -36,7 +43,8 @@ export const useGame = defineStore('game', () => {
       admin,
       paused: false,
       stage: 'setup',
-      quotePool: [],
+      quotePool: new Set(),
+      transformedPool: [],
     })
 
     addPlayer(admin)
@@ -58,6 +66,7 @@ export const useGame = defineStore('game', () => {
       username,
       score: 0,
       ready: false,
+      _input: null,
     })
   }
 
@@ -75,43 +84,80 @@ export const useGame = defineStore('game', () => {
   }
 
   function createQuotePool() {
+    const quotes = useQuote()
     //
-    const quotesAmount = cfg.useCustomPool
+    const quoteCount = cfg.useCustomPool
       ? fragments.value.reduce((count, fragment) => count += fragment.rounds, 0)
       : cfg.rounds
 
     // To make generating easier, just use set to store N amount of quotes
-    const quoteSet: Set<number> = new Set()
+    const quoteIdPool: Set<number> = new Set()
+
+    while (quoteIdPool.size < quoteCount) {
+      const index = getRanMinMax(0, quotes.quotes.length)
+      const quote = quotes.quotes[index]
+      quoteIdPool.add(quote.id)
+    }
+
+    state.quotePool = quoteIdPool
+    return quoteIdPool
+  }
+
+  // Takes in a quote pool and returns task pool
+  function transformQuotes() {
+    const quotes = useQuote()
+    const transformed: RoundTypes[] = []
+
+    if (cfg.useCustomComposition) {
+      // Iterate over fragments
+    }
+    else {
+      // Split amount of rounds by the amount of gamemodes
+
+      const gamemdes = shuffle(gamemodeIds)
+
+      const groups = chunk(
+        [...state.quotePool],
+        gamemodeAmount,
+      )
+
+      const difficulty = cfg.difficulty
+
+      groups.forEach((group, index) => {
+        for (const quoteId of group) {
+          const quote = quotes.getQuoteById(quoteId)
+
+          if (!quote)
+            continue
+
+          transformed.push(transformQuote(
+            quote,
+            gamemdes[index],
+            difficulty,
+          ))
+        }
+      })
+    }
+  }
+
+  // Takes in a raw quote and returns a transformed Task
+  function transformQuote(quote: Quote, type: Gamemode, difficulty: Difficulty): RoundTypes {
+
   }
 
   /**
    * Computed properties
    */
   const isEveryoneReady = computed(() => players.value.every(p => p.ready))
-  const isGameReady = computed(() => {
-    /**
-     * Condition for game to begin
-     *
-     * Pool must contain at least 1 quote
-     * All players are ready
-     * There must be less or equal players than max players
-     *
-     * There must be at least 1 fragment and they must be validated
-     *
-     */
-    // const quotes = useQuote()
-
-    return false
-  })
 
   return {
-    state,
     cfg,
+    state,
     players,
-    addPlayer,
     fragments,
-    resetConfig,
+    addPlayer,
     resetState,
+    resetConfig,
     insertFragment,
     removeFragment,
     createQuotePool,

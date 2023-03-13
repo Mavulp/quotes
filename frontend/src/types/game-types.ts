@@ -5,13 +5,15 @@ export interface GameState {
   admin: string
   paused: boolean
   stage: 'setup' | 'running' | 'ended'
-  quotePool: Quote[]
+  quotePool: Set<number>
 }
 
 export interface Player {
   username: string
   score: number
   ready: boolean
+  // Is reset after each round
+  _input: string | null
 }
 
 export interface GameQuote {
@@ -37,3 +39,27 @@ export interface Fragment {
    */
   difficulty: Difficulty
 }
+
+export interface Round {
+  readonly originalQuote: Quote
+  time: number
+}
+
+export interface RoundGuessQuotee extends Round {
+  answer: number
+  options: number[]
+  type: 'guess-the-quotee'
+}
+
+export interface RoundGuessAuthor extends Round {
+  answer: number
+  options: number[]
+  type: 'guess-the-author'
+}
+
+export interface RoundFillQuote extends Round {
+  answers: []
+  type: 'fill-the-quote'
+}
+
+export type RoundTypes = RoundGuessQuotee | RoundGuessAuthor | RoundFillQuote
