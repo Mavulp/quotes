@@ -30,7 +30,7 @@ export const useGame = defineStore('game', () => {
   // This contains the game
   const fragments = ref<Fragment[]>([])
 
-  function initGameState(gameId: string, admin: string) {
+  function resetState(gameId: string, admin: string) {
     Object.assign(state, {
       gameId,
       admin,
@@ -74,6 +74,16 @@ export const useGame = defineStore('game', () => {
     fragments.value.splice(index, 1)
   }
 
+  function createQuotePool() {
+    //
+    const quotesAmount = cfg.useCustomPool
+      ? fragments.value.reduce((count, fragment) => count += fragment.rounds, 0)
+      : cfg.rounds
+
+    // To make generating easier, just use set to store N amount of quotes
+    const quoteSet: Set<number> = new Set()
+  }
+
   /**
    * Computed properties
    */
@@ -101,9 +111,10 @@ export const useGame = defineStore('game', () => {
     addPlayer,
     fragments,
     resetConfig,
-    initGameState,
+    resetState,
     insertFragment,
     removeFragment,
+    createQuotePool,
     isEveryoneReady,
   }
 })

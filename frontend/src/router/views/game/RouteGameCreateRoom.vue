@@ -10,7 +10,7 @@ const user = useUser()
 function initCreateRoom() {
   // Call API endpoint to start a game session which will return the room ID
   const gameId = /** Some API request */ '1fBA01Fz'
-  game.initGameState(gameId, user.username)
+  game.resetState(gameId, user.username)
   // game.addPlayer(user.username)
 
   router.push({
