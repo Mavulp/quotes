@@ -44,6 +44,7 @@ async function startGame() {
   isStarting.value = true
 
   // Get the quote pool
+  game.createQuotePool()
 
   // If composition is not custom, generate a game
 

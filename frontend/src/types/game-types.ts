@@ -14,6 +14,11 @@ export interface Player {
   ready: boolean
 }
 
+export interface GameQuote {
+  id: number
+  played: boolean
+}
+
 export type Gamemode = 'guess-the-quote' | 'guess-the-author' | 'fill-the-quote'
 export type Difficulty = 'Easy' | 'Medium' | 'Hard'
 
