@@ -79,5 +79,27 @@ export const useQuote = defineStore('quotes', {
       return state.quotes.filter(quote => quote.indices.some(indice => indice.quotee === username))
     },
     getQuoteById: state => (id?: number) => state.quotes.find(quote => quote.id === id),
+    getFilteredQuotes(): Quote[] {
+      const filters = useFilters()
+
+      let filtered = this.quotes.filter((q) => {
+        const timestamp = q.createdAt * 1000
+        return filters.date.from <= timestamp && filters.date.to >= timestamp
+      })
+
+      filtered = filtered.filter((q) => {
+        const quotees = q.indices.map(indice => indice.quotee)
+
+        if (!filters.offensive && q.offensive)
+          return false
+
+        return filters.isPassingFilter('author', q.author)
+          && filters.isPassingFilter('quotee', quotees)
+          && filters.isPassingFilter('tag', q.tags)
+          && !(filters.getFiltersByKey('excludedTags').length > 0 && filters.isPassingFilter('excludedTags', q.tags))
+      })
+
+      return filtered
+    },
   },
 })

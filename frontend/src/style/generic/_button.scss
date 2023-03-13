@@ -27,6 +27,7 @@
   &:disabled {
     filter: grayscale(1);
     pointer-events: none;
+    cursor: not-allowed;
   }
 
   &.btn-round {

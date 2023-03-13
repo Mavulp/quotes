@@ -24,24 +24,7 @@ onBeforeMount(quote.fetchQuotes)
 onBeforeUnmount(filters.clear)
 
 const filteredData = computed(() => {
-  // #0 date filter
-  let filtered = quote.quotes.filter((q) => {
-    const timestamp = q.createdAt * 1000
-    return filters.date.from <= timestamp && filters.date.to >= timestamp
-  })
-
-  // #1 First filter data from active filters
-  filtered = filtered.filter((q) => {
-    const quotees = q.indices.map(indice => indice.quotee)
-
-    if (!filters.offensive && q.offensive)
-      return false
-
-    return filters.isPassingFilter('author', q.author)
-      && filters.isPassingFilter('quotee', quotees)
-      && filters.isPassingFilter('tag', q.tags)
-      && !(filters.getFiltersByKey('excludedTags').length > 0 && filters.isPassingFilter('excludedTags', q.tags))
-  })
+  const filtered = quote.getFilteredQuotes
 
   // #2 Apply search string
   return filtered.filter((q) => {

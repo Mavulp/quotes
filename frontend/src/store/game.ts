@@ -35,6 +35,17 @@ export const useGame = defineStore('game', () => {
     addPlayer(admin)
   }
 
+  function resetConfig() {
+    Object.assign(cfg, {
+      maxPlayerCount: 8,
+      globalRoundLength: 30,
+      difficulty: 'Medium',
+      useCustomPool: false,
+      useCustomComposition: false,
+      rounds: 10,
+    })
+  }
+
   function addPlayer(username: string) {
     players.value.push({
       username,
@@ -51,6 +62,7 @@ export const useGame = defineStore('game', () => {
     players,
     addPlayer,
     fragments,
+    resetConfig,
     initGameState,
     isEveryoneReady,
   }

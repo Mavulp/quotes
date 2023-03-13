@@ -30,6 +30,7 @@
 
       .col-title {
         @include flex(32px, $justify: space-between);
+        margin-bottom: 16px;
 
         .form-switch {
           span {
@@ -38,12 +39,19 @@
         }
       }
 
+      p {
+        font-size: 1.4rem;
+        color: var(--color-text-light);
+      }
+
       &:not(:only-child, :last-child) {
         border-bottom: 1px solid var(--color-border);
       }
 
       .quote-filters {
-        padding-top: 20px;
+        // width: 75%;
+        // margin: 0 auto;
+        padding-top: 0;
 
         .form-search {
           display: none;
@@ -77,6 +85,10 @@
         .form-select {
           width: 156px;
 
+          .dropdown-icon {
+            top: 4px !important;
+          }
+
           input,
           .select-button {
             height: 36px;
@@ -91,6 +103,7 @@
 
             input {
               padding: 0;
+              height: 34px;
             }
           }
         }
