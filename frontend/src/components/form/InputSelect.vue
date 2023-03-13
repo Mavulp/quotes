@@ -9,13 +9,6 @@ interface Option {
   value: any
 }
 
-// REVIEW: possible syntax like this?
-// const _options = {
-//   kilmanio: "Kilmanoi",
-//   "dolanske_!": "JANSKEPANSKE",
-//   "zeals-prince 420": "ANDRUSHKLA"
-// }
-
 interface Props {
   icon?: string
   placeholder?: string

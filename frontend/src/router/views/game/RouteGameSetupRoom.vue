@@ -1,4 +1,6 @@
 <script setup lang='ts'>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import type { Difficulty } from '../../../types/game-types'
 import InputSelect from '../../../components/form/InputSelect.vue'
 import InputText from '../../../components/form/InputText.vue'
@@ -6,17 +8,20 @@ import QuoteFilters from '../../../components/quotes/filters/QuoteFilters.vue'
 
 import { useToast } from '../../../store/toast'
 import { useUser } from '../../../store/user'
-import { useGame } from '../../../store/game'
+import { difficultyOptions, useGame } from '../../../store/game'
 import Player from '../../../components/game/Player.vue'
 import InputCheckbox from '../../../components/form/InputCheckbox.vue'
 import { useQuote } from '../../../store/quote'
 import { useFilters } from '../../../store/filters'
+import Fragment from '../../../components/game/Fragment.vue'
+import { delay } from '../../../bin/utils'
 
 const users = useUser()
 const quote = useQuote()
 const toast = useToast()
 const game = useGame()
 const filters = useFilters()
+const router = useRouter()
 
 function inviteUser() {
   toast.push({
@@ -30,7 +35,33 @@ function resetGameSettings() {
   game.resetConfig()
 }
 
-const difficultyOptions: Difficulty[] = ['Easy', 'Medium', 'Hard']
+const countdown = ref(10)
+const isStarting = ref(false)
+async function startGame() {
+  if (isStarting.value)
+    return
+
+  isStarting.value = true
+
+  // Get the quote pool
+
+  for (let i = 10; i > 0; i--) {
+    await delay(100)
+    countdown.value--
+
+    if (countdown.value === 0) {
+      // Redirect to new game and stuff
+      game.state.stage = 'running'
+
+      router.push({
+        name: 'RouteGameInProgress',
+        params: {
+          id: game.state.gameId,
+        },
+      })
+    }
+  }
+}
 </script>
 
 <template>
@@ -80,7 +111,7 @@ const difficultyOptions: Difficulty[] = ['Easy', 'Medium', 'Hard']
 
         <QuoteFilters v-if="game.cfg.useCustomPool" />
         <p v-else>
-          Using all existing quotes.
+          Using all ({{ quote.quotes.length }}) existing quotes.
         </p>
       </div>
 
@@ -90,7 +121,23 @@ const difficultyOptions: Difficulty[] = ['Easy', 'Medium', 'Hard']
           <InputCheckbox v-model:check="game.cfg.useCustomComposition" label="Customize" class="reversed button btn-white" />
         </div>
 
-        <template v-if="game.cfg.useCustomComposition" />
+        <div v-if="game.cfg.useCustomComposition" class="composition">
+          <div v-if="game.fragments.length > 0" class="composition-list">
+            <Fragment
+              v-for="(fragment, index) in game.fragments"
+              :key="index + fragment.type"
+              :fragment="fragment"
+              :index="index"
+            />
+          </div>
+
+          <div class="flex-wrap ">
+            <button class="button btn-gray regular" @click="game.insertFragment()">
+              <Icon code="e145" size="1.4" />
+              Add Round
+            </button>
+          </div>
+        </div>
 
         <template v-else>
           <div class="content-cell">
@@ -98,18 +145,24 @@ const difficultyOptions: Difficulty[] = ['Easy', 'Medium', 'Hard']
             <InputText v-model:value="game.cfg.rounds" type="number" min="1" />
           </div>
           <div class="content-cell">
-            <label>Round Length (seconds)</label>
+            <label>Time limit per round (seconds)</label>
             <InputText v-model:value="game.cfg.globalRoundLength" type="number" min="5" />
           </div>
         </template>
       </div>
 
       <div class="col-content">
-        <div class="flex-wrap right">
-          <button class="button btn-highlight btn-full btn-large" disabled>
-            Start Game
-          </button>
-        </div>
+        <!-- Game summary -->
+        <ul>
+          <li>Total amount of rounds</li>
+          <li>Total play time (+ delay seconds between rounds)</li>
+          <li>Amount of players</li>
+        </ul>
+        <br><br>
+        <button class="button btn-highlight btn-full btn-large" @click="startGame()">
+          {{ isStarting ? `Starting in ${countdown}` : 'Start Game' }}
+        </button>
+        <br><br>
       </div>
     </div>
   </div>

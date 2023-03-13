@@ -15,7 +15,7 @@
   font-size: 1.4rem;
   letter-spacing: 0.01em;
 
-  &:focus,
+  &:focus-visible,
   &:hover {
     background-color: var(--color-highlight-tint);
   }
@@ -72,7 +72,7 @@
     color: var(--color-text);
     background-color: var(--color-bg-light);
 
-    &:focus,
+    &:focus-visible,
     &:hover {
       background-color: var(--color-bg-light-hover);
     }
@@ -84,7 +84,7 @@
     // box-shadow: 0 2px 12px rgba(#f29b41, 0.2);
     box-shadow: var(--shadow);
 
-    &:focus,
+    &:focus-visible,
     &:hover {
       background-color: var(--color-highlight);
       color: var(--color-text-dark);
@@ -95,7 +95,7 @@
     color: var(--color-highlight);
     background-color: var(--color-bg-light);
 
-    &:focus,
+    &:focus-visible,
     &:hover {
       background-color: var(--color-bg-light-hover);
     }
@@ -110,7 +110,7 @@
     color: var(--color-text);
     background-color: transparent;
 
-    &:focus,
+    &:focus-visible,
     &:hover {
       background-color: var(--color-bg-light-hover);
     }
@@ -120,7 +120,7 @@
     color: var(--color-text);
     background-color: transparent;
 
-    &:focus,
+    &:focus-visible,
     &:hover {
       background-color: var(--color-bg-light);
     }
@@ -130,7 +130,7 @@
     color: var(--color-red);
     background-color: var(--color-bg-light);
 
-    &:focus,
+    &:focus-visible,
     &:hover {
       background-color: var(--color-bg-light-hover);
     }

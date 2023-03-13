@@ -1,6 +1,16 @@
 import { defineStore } from 'pinia'
-import { computed, reactive, ref } from 'vue'
-import type { Fragment, GameState, Player } from '../types/game-types'
+import { computed, reactive, ref, unref } from 'vue'
+import type { Difficulty, Fragment, GameState, Player } from '../types/game-types'
+
+// TODO: properly document
+// TODO: sort exports
+
+export const difficultyOptions: Difficulty[] = ['Easy', 'Medium', 'Hard']
+export const gamemodeOptions = [
+  { value: 'guess-the-quote', label: 'Guess The Quote' },
+  { value: 'guess-the-author', label: 'Guess The Author' },
+  { value: 'fill-the-quote', label: 'Fill The Quote' },
+]
 
 export const useGame = defineStore('game', () => {
   const state = reactive<GameState>({} as GameState)
@@ -10,13 +20,10 @@ export const useGame = defineStore('game', () => {
     maxPlayerCount: 8,
     globalRoundLength: 30,
     difficulty: 'Medium',
-
     // Quote pool settings
     useCustomPool: false,
-
     // Game composition settings
     useCustomComposition: false,
-
     // Thse settings are only used if customComposition is OFF
     rounds: 10,
   })
@@ -54,7 +61,38 @@ export const useGame = defineStore('game', () => {
     })
   }
 
+  function insertFragment() {
+    fragments.value.push({
+      type: 'guess-the-quote',
+      rounds: 8,
+      roundTime: 30,
+      difficulty: unref(cfg.difficulty) as Difficulty,
+    })
+  }
+
+  function removeFragment(index: number) {
+    fragments.value.splice(index, 1)
+  }
+
+  /**
+   * Computed properties
+   */
   const isEveryoneReady = computed(() => players.value.every(p => p.ready))
+  const isGameReady = computed(() => {
+    /**
+     * Condition for game to begin
+     *
+     * Pool must contain at least 1 quote
+     * All players are ready
+     * There must be less or equal players than max players
+     *
+     * There must be at least 1 fragment and they must be validated
+     *
+     */
+    // const quotes = useQuote()
+
+    return false
+  })
 
   return {
     state,
@@ -64,6 +102,8 @@ export const useGame = defineStore('game', () => {
     fragments,
     resetConfig,
     initGameState,
+    insertFragment,
+    removeFragment,
     isEveryoneReady,
   }
 })

@@ -19,13 +19,8 @@ export type Difficulty = 'Easy' | 'Medium' | 'Hard'
 
 export interface Fragment {
   type: Gamemode
-  repeats: number
-  // By default inherits the global round length
-  // Can be specifically set for a fragment
-  // Implementation: If global length is changed afterwards, do not change it
-  // this can be achieved by just checking if they are matching (before the change)
-  roundLength: number
-
+  rounds: number
+  roundTime: number
   /**
    * For each gamemode, the difficulty means something else.
    * Some of the core indicators of difficulty should be
@@ -36,5 +31,4 @@ export interface Fragment {
    * - hardest for fill: write the whole quote except one word
    */
   difficulty: Difficulty
-
 }
