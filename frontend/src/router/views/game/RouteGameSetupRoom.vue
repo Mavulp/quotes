@@ -45,6 +45,8 @@ async function startGame() {
 
   // Get the quote pool
 
+  // If composition is not custom, generate a game
+
   for (let i = 10; i > 0; i--) {
     await delay(100)
     countdown.value--
