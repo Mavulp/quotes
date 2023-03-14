@@ -150,7 +150,7 @@ export function diffPercent(partial: number, total: number, returnInfinity = fal
 /**
  * Splits array into equally large chunks
  */
-export function arrayIntoChunks<T>(items: Array<T>, columns = 3) {
+export function arrayIntoChunks<T = any>(items: Array<T>, columns = 3) {
   if (!items)
     return []
 
@@ -173,3 +173,11 @@ export function arrayIntoChunks<T>(items: Array<T>, columns = 3) {
 
   return chunks
 }
+
+// function splitToChunks<T>(array, parts) {
+//   const result = []
+//   for (let i = parts; i > 0; i--)
+//     result.push(array.splice(0, Math.ceil(array.length / i)))
+
+//   return result as [T[]]
+// }

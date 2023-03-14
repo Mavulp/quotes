@@ -6,6 +6,8 @@ export interface GameState {
   paused: boolean
   stage: 'setup' | 'running' | 'ended'
   quotePool: Set<number>
+  transformedPool: RoundTypes[]
+  roundIndex: number
 }
 
 export interface Player {
@@ -21,7 +23,7 @@ export interface GameQuote {
   played: boolean
 }
 
-export type Gamemode = 'guess-the-quote' | 'guess-the-author' | 'fill-the-quote'
+export type Gamemode = 'guess-the-quotee' | 'guess-the-author' | 'fill-the-quote'
 export type Difficulty = 'Easy' | 'Medium' | 'Hard'
 
 export interface Fragment {
@@ -47,14 +49,14 @@ export interface Round {
 }
 
 export interface RoundGuessQuotee extends Round {
-  answer: number
-  options: number[]
+  answer: string
+  options: string[]
   type: 'guess-the-quotee'
 }
 
 export interface RoundGuessAuthor extends Round {
-  answer: number
-  options: number[]
+  answer: string
+  options: string[]
   type: 'guess-the-author'
 }
 

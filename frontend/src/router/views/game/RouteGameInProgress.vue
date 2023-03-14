@@ -1,9 +1,11 @@
 <script setup lang='ts'>
-import { ref } from 'vue'
+import { useGame } from '../../../store/game'
+
+const game = useGame()
 </script>
 
 <template>
   <div>
-    the main game component, THE GAME IS ON
+    <pre>{{ game.state.transformedPool }}</pre>
   </div>
 </template>

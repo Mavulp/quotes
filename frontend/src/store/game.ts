@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
 import { computed, reactive, ref, unref } from 'vue'
-import { chunk, orderBy, shuffle } from 'lodash'
-import type { Difficulty, Fragment, GameState, Gamemode, Player, RoundFillQuote, RoundGuessAuthor, RoundGuessQuotee, RoundTypes } from '../types/game-types'
+import { orderBy, shuffle } from 'lodash'
+import type { Difficulty, Fragment, GameState, Gamemode, Player, RoundTypes } from '../types/game-types'
 import { useQuote } from '../store/quote'
-import { getRanMinMax } from '../bin/utils'
+import { arrayIntoChunks, getRanMinMax } from '../bin/utils'
 import type { Quote } from '../types/quote-types'
+import { useUser } from './user'
 
 // TODO: properly document
 // TODO: sort exports
@@ -12,7 +13,7 @@ import type { Quote } from '../types/quote-types'
 
 export const difficultyOptions: Difficulty[] = ['Easy', 'Medium', 'Hard']
 export const gamemodeOptions = [
-  { value: 'guess-the-quote', label: 'Guess The Quote' },
+  { value: 'guess-the-quotee', label: 'Guess The Quote' },
   { value: 'guess-the-author', label: 'Guess The Author' },
   { value: 'fill-the-quote', label: 'Fill The Quote' },
 ]
@@ -45,6 +46,7 @@ export const useGame = defineStore('game', () => {
       stage: 'setup',
       quotePool: new Set(),
       transformedPool: [],
+      roundIndex: 0,
     })
 
     addPlayer(admin)
@@ -72,7 +74,7 @@ export const useGame = defineStore('game', () => {
 
   function insertFragment() {
     fragments.value.push({
-      type: 'guess-the-quote',
+      type: 'guess-the-quotee',
       rounds: 8,
       roundTime: 30,
       difficulty: unref(cfg.difficulty) as Difficulty,
@@ -115,7 +117,7 @@ export const useGame = defineStore('game', () => {
       // Split amount of rounds by the amount of gamemodes
       const gamemdes = shuffle(gamemodeIds)
 
-      const groups = chunk(
+      const groups = arrayIntoChunks(
         [...state.quotePool],
         gamemodeAmount,
       )
@@ -138,31 +140,28 @@ export const useGame = defineStore('game', () => {
         }
       })
     }
+
+    state.transformedPool = transformed
+
+    return transformed
   }
 
   // Takes in a raw quote and returns a transformed Task
   function transformQuote(quote: Quote, type: Gamemode, difficulty: Difficulty, time: number): RoundTypes {
-    // const round = {
-    //   time,
-    // }
+    // Select relevant quote fragment
+    const orderedFragments = orderBy(quote.fragments, ['type', 'highlight'], ['desc', 'desc'])[0]
+    const { content, quotee } = orderedFragments
+
+    // Based on difficulty
+    // index of Easy is 0 (+1) deems 1 iteration and so on
+    let len = difficultyOptions.indexOf(difficulty) + 1
 
     switch (type) {
       case 'fill-the-quote': {
-        // Select relevant quote fragment
-        const orderedFragments = orderBy(quote.fragments, ['type', 'highlight'], ['desc', 'desc'])[0]
         // Take the quote and based on difficulty extract 1-3 words from it
-        const { content } = orderedFragments
-
-        // Based on difficulty
-        const len = difficulty === 'Easy'
-          ? 1
-          : difficulty === 'Medium'
-            ? 2
-            : 3
-
         const answers: string[] = []
         const words = new Set(content.split(/(\s+)/))
-        for (let i = 0; i <= len; i++) {
+        for (let i = 0; i < len; i++) {
           const index = getRanMinMax(0, words.size - 1)
           const word = [...words][index]
           answers.push(word)
@@ -177,11 +176,54 @@ export const useGame = defineStore('game', () => {
         }
       }
       case 'guess-the-author': {
-        return {} as RoundGuessAuthor
+        const users = useUser()
+        const answer = quote.author
+
+        // Slightly increase difficulty when you only have to choose a user
+        len += 2
+
+        const options = new Set<string>()
+        const cloned = [...users.users].filter(user => user.username !== answer)
+
+        // Add the answer
+        options.add(answer)
+
+        while (options.size !== len)
+          options.add(cloned[getRanMinMax(0, cloned.length - 1)].username)
+
+        return {
+          answer,
+          options: shuffle([...options]),
+          originalQuote: quote,
+          time,
+          difficulty,
+          type: 'guess-the-author',
+        }
       }
 
-      case 'guess-the-quote': {
-        return {} as RoundGuessQuotee
+      case 'guess-the-quotee': {
+        const users = useUser()
+
+        // Slightly increase difficulty when you only have to choose a user
+        len += 2
+
+        const options = new Set<string>()
+        const cloned = [...users.users].filter(user => user.username !== quotee)
+
+        // Add the answer
+        options.add(quotee)
+
+        while (options.size !== len)
+          options.add(cloned[getRanMinMax(0, cloned.length - 1)].username)
+
+        return {
+          options: shuffle([...options]),
+          answer: quotee,
+          originalQuote: quote,
+          time,
+          difficulty,
+          type: 'guess-the-quotee',
+        }
       }
     }
   }
@@ -201,6 +243,7 @@ export const useGame = defineStore('game', () => {
     resetConfig,
     insertFragment,
     removeFragment,
+    transformQuotes,
     createQuotePool,
     isEveryoneReady,
   }

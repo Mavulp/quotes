@@ -1,13 +1,11 @@
 <script setup lang='ts'>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import type { Difficulty } from '../../../types/game-types'
 import InputSelect from '../../../components/form/InputSelect.vue'
 import InputText from '../../../components/form/InputText.vue'
 import QuoteFilters from '../../../components/quotes/filters/QuoteFilters.vue'
 
 import { useToast } from '../../../store/toast'
-import { useUser } from '../../../store/user'
 import { difficultyOptions, useGame } from '../../../store/game'
 import Player from '../../../components/game/Player.vue'
 import InputCheckbox from '../../../components/form/InputCheckbox.vue'
@@ -16,7 +14,6 @@ import { useFilters } from '../../../store/filters'
 import Fragment from '../../../components/game/Fragment.vue'
 import { delay } from '../../../bin/utils'
 
-const users = useUser()
 const quote = useQuote()
 const toast = useToast()
 const game = useGame()
@@ -45,6 +42,7 @@ async function startGame() {
 
   // Get the quote pool
   game.createQuotePool()
+  game.transformQuotes()
 
   // If composition is not custom, generate a game
 
