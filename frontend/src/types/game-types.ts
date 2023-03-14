@@ -43,6 +43,7 @@ export interface Fragment {
 export interface Round {
   readonly originalQuote: Quote
   time: number
+  difficulty: Difficulty
 }
 
 export interface RoundGuessQuotee extends Round {
@@ -58,7 +59,7 @@ export interface RoundGuessAuthor extends Round {
 }
 
 export interface RoundFillQuote extends Round {
-  answers: []
+  answers: string[]
   type: 'fill-the-quote'
 }
 

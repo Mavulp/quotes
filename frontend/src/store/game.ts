@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, reactive, ref, unref } from 'vue'
-import { chunk, shuffle } from 'lodash'
-import type { Difficulty, Fragment, GameState, Gamemode, Player, RoundTypes } from '../types/game-types'
+import { chunk, orderBy, shuffle } from 'lodash'
+import type { Difficulty, Fragment, GameState, Gamemode, Player, RoundFillQuote, RoundGuessAuthor, RoundGuessQuotee, RoundTypes } from '../types/game-types'
 import { useQuote } from '../store/quote'
 import { getRanMinMax } from '../bin/utils'
 import type { Quote } from '../types/quote-types'
@@ -113,7 +113,6 @@ export const useGame = defineStore('game', () => {
     }
     else {
       // Split amount of rounds by the amount of gamemodes
-
       const gamemdes = shuffle(gamemodeIds)
 
       const groups = chunk(
@@ -134,6 +133,7 @@ export const useGame = defineStore('game', () => {
             quote,
             gamemdes[index],
             difficulty,
+            cfg.globalRoundLength,
           ))
         }
       })
@@ -141,8 +141,49 @@ export const useGame = defineStore('game', () => {
   }
 
   // Takes in a raw quote and returns a transformed Task
-  function transformQuote(quote: Quote, type: Gamemode, difficulty: Difficulty): RoundTypes {
+  function transformQuote(quote: Quote, type: Gamemode, difficulty: Difficulty, time: number): RoundTypes {
+    // const round = {
+    //   time,
+    // }
 
+    switch (type) {
+      case 'fill-the-quote': {
+        // Select relevant quote fragment
+        const orderedFragments = orderBy(quote.fragments, ['type', 'highlight'], ['desc', 'desc'])[0]
+        // Take the quote and based on difficulty extract 1-3 words from it
+        const { content } = orderedFragments
+
+        // Based on difficulty
+        const len = difficulty === 'Easy'
+          ? 1
+          : difficulty === 'Medium'
+            ? 2
+            : 3
+
+        const answers: string[] = []
+        const words = new Set(content.split(/(\s+)/))
+        for (let i = 0; i <= len; i++) {
+          const index = getRanMinMax(0, words.size - 1)
+          const word = [...words][index]
+          answers.push(word)
+        }
+
+        return {
+          originalQuote: quote,
+          time,
+          answers,
+          difficulty,
+          type: 'fill-the-quote',
+        }
+      }
+      case 'guess-the-author': {
+        return {} as RoundGuessAuthor
+      }
+
+      case 'guess-the-quote': {
+        return {} as RoundGuessQuotee
+      }
+    }
   }
 
   /**
