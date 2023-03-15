@@ -1,0 +1,70 @@
+.game-fragment {
+  @include flex(0, $dir: column);
+  padding: 80px 40px;
+
+  .gamemode-title {
+    font-size: 1.4rem;
+    color: var(--color-text-light);
+    margin-bottom: 40px;
+  }
+
+  &.fill-the-quote {
+  }
+
+  &.guess-the-quotee,
+  &.guess-the-author {
+    .fragment-parts {
+      display: block;
+      margin-bottom: 40px;
+
+      p {
+        font-size: 3.2rem;
+        margin-bottom: 10px;
+        color: var(--color-text);
+      }
+
+      span {
+        @include flex(8px, $justify: flex-end);
+        font-size: 1.4rem;
+        text-align: right;
+        color: var(--color-text-light);
+
+        .material-icons {
+          transform: scaleX(-1);
+        }
+      }
+    }
+
+    .fragment-options {
+      @include flex(16px);
+      margin-bottom: 40px;
+
+      &.is-locked {
+        pointer-events: none !important;
+
+        .button:not(.btn-highlight) {
+          opacity: 0.3;
+        }
+
+        & + .button {
+          pointer-events: none !important;
+        }
+      }
+
+      .button {
+        &.btn-highlight {
+          color: var(--color-highlight) !important;
+          background-color: var(--color-highlight-shade) !important;
+        }
+      }
+    }
+
+    .btn-ready {
+      @include font(400);
+
+      &.btn-white {
+        color: var(--color-text-light);
+      }
+    }
+  }
+}

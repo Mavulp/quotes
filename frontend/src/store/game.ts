@@ -3,6 +3,7 @@ import { computed, reactive, ref, unref } from 'vue'
 import { orderBy, shuffle } from 'lodash'
 import type { Difficulty, FillAnswer, Fragment, GameState, Gamemode, Player, RoundTypes } from '../types/game-types'
 import { useQuote } from '../store/quote'
+import type { ValueOf } from '../bin/utils'
 import { arrayIntoChunks, getRanMinMax } from '../bin/utils'
 import type { Quote } from '../types/quote-types'
 import { useUser } from './user'
@@ -14,6 +15,16 @@ import { useUser } from './user'
 //          - save their answer (and if it was correct)
 //          - how many points they goet
 //          - how long it took to answer
+
+// FIXME []
+// Exclude quotes which are less than 4 words long and or contain a url for fill-the-quote
+
+// FIXME []
+// Filtering quotes down crashes
+
+// TODO
+// For GuessTheQuotee, include the fragment index, so it can highlight it when rendering the quote
+// This is crucial, because quotee should be matched against a fragment, not the entire quote
 
 export const difficultyOptions: Difficulty[] = ['Easy', 'Medium', 'Hard']
 export const gamemodeOptions = [
@@ -74,6 +85,11 @@ export const useGame = defineStore('game', () => {
       ready: false,
       _input: null,
     })
+  }
+
+  function setPlayerState(username: string, key: keyof Player, value: ValueOf<Player>) {
+    const index = players.value.findIndex(p => p.username === username)
+    Reflect.set(players.value[index], key, value)
   }
 
   function insertFragment() {
@@ -210,7 +226,7 @@ export const useGame = defineStore('game', () => {
         const answer = quote.author
 
         // Slightly increase difficulty when you only have to choose a user
-        len += 2
+        len *= 2
 
         const options = new Set<string>()
         const cloned = [...users.users].filter(user => user.username !== answer)
@@ -235,7 +251,7 @@ export const useGame = defineStore('game', () => {
         const users = useUser()
 
         // Slightly increase difficulty when you only have to choose a user
-        len += 2
+        len *= 2
 
         const options = new Set<string>()
         const cloned = [...users.users].filter(user => user.username !== quotee)
@@ -261,6 +277,11 @@ export const useGame = defineStore('game', () => {
   /**
    * Computed properties
    */
+
+  // This is used to check if players are ready to start the game
+  // Same property can also be used in game, if everyone answers before time runs out
+  // and clicks the "final answer" button, it will lock in their answer and set them as ready
+  // TODO: make sure the ready state is cleared after 'setup' and also after each round ends
   const isEveryoneReady = computed(() => players.value.every(p => p.ready))
 
   return {
@@ -273,6 +294,7 @@ export const useGame = defineStore('game', () => {
     resetConfig,
     insertFragment,
     removeFragment,
+    setPlayerState,
     transformQuotes,
     createQuotePool,
     isEveryoneReady,

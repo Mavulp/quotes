@@ -1,6 +1,5 @@
 .game-running {
   @include grid(20px, 1fr 294px);
-  // display: grid();
 
   .title {
     @include font(600);
@@ -47,8 +46,8 @@
       }
     }
 
-    .task {
-      height: 680px;
+    .fragment {
+      // height: 680px;
     }
   }
 }
