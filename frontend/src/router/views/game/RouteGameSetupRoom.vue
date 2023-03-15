@@ -126,7 +126,7 @@ async function startGame() {
           <div v-if="game.fragments.length > 0" class="composition-list">
             <Fragment
               v-for="(fragment, index) in game.fragments"
-              :key="index + fragment.type"
+              :key="index + fragment.gamemode"
               :fragment="fragment"
               :index="index"
             />

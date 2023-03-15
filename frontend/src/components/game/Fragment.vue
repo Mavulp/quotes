@@ -24,7 +24,7 @@ function editKey(key: keyof Fragment) {
   })
 }
 
-const type = editKey('type')
+const gamemode = editKey('gamemode')
 const rounds = editKey('rounds')
 const roundTime = editKey('roundTime')
 const difficulty = editKey('difficulty')
@@ -40,7 +40,7 @@ const difficulty = editKey('difficulty')
 
     <div class="content-cell">
       <label>Gamemode</label>
-      <InputSelect v-model:selected="type" :options="gamemodeOptions" />
+      <InputSelect v-model:selected="gamemode" :options="gamemodeOptions" />
     </div>
 
     <div class="content-cell">

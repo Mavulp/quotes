@@ -4,7 +4,7 @@ export interface GameState {
   gameId: string
   admin: string
   paused: boolean
-  stage: 'setup' | 'running' | 'ended'
+  stage: 'setup' | 'running' | 'ended' | 'transition'
   quotePool: Set<number>
   transformedPool: RoundTypes[]
   roundIndex: number
@@ -27,7 +27,7 @@ export type Gamemode = 'guess-the-quotee' | 'guess-the-author' | 'fill-the-quote
 export type Difficulty = 'Easy' | 'Medium' | 'Hard'
 
 export interface Fragment {
-  type: Gamemode
+  gamemode: Gamemode
   rounds: number
   roundTime: number
   /**

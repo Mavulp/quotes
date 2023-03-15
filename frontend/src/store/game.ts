@@ -10,6 +10,10 @@ import { useUser } from './user'
 // TODO: properly document
 // TODO: sort exports
 // TODO: figure out formula for counting points
+// TODO: Add round history, per player
+//          - save their answer (and if it was correct)
+//          - how many points they goet
+//          - how long it took to answer
 
 export const difficultyOptions: Difficulty[] = ['Easy', 'Medium', 'Hard']
 export const gamemodeOptions = [
@@ -74,7 +78,7 @@ export const useGame = defineStore('game', () => {
 
   function insertFragment() {
     fragments.value.push({
-      type: 'guess-the-quotee',
+      gamemode: 'guess-the-quotee',
       rounds: 8,
       roundTime: 30,
       difficulty: unref(cfg.difficulty) as Difficulty,
@@ -111,7 +115,28 @@ export const useGame = defineStore('game', () => {
     const transformed: RoundTypes[] = []
 
     if (cfg.useCustomComposition) {
+      const pool = [...state.quotePool]
+
       // Iterate over fragments
+      for (const fragment of fragments.value) {
+        for (let i = 0; i < fragment.rounds; i++) {
+          // Get first quote from the pool
+          const quoteId = pool.shift()
+          const quote = quotes.getQuoteById(quoteId)
+
+          if (!quote)
+            continue
+
+          transformed.push(
+            transformQuote(
+              quote,
+              fragment.gamemode,
+              fragment.difficulty,
+              fragment.roundTime,
+            ),
+          )
+        }
+      }
     }
     else {
       // Split amount of rounds by the amount of gamemodes
@@ -131,12 +156,14 @@ export const useGame = defineStore('game', () => {
           if (!quote)
             continue
 
-          transformed.push(transformQuote(
-            quote,
-            gamemdes[index],
-            difficulty,
-            cfg.globalRoundLength,
-          ))
+          transformed.push(
+            transformQuote(
+              quote,
+              gamemdes[index],
+              difficulty,
+              cfg.globalRoundLength,
+            ),
+          )
         }
       })
     }
