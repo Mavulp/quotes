@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, reactive, ref, unref } from 'vue'
 import { orderBy, shuffle } from 'lodash'
-import type { Difficulty, Fragment, GameState, Gamemode, Player, RoundTypes } from '../types/game-types'
+import type { Difficulty, FillAnswer, Fragment, GameState, Gamemode, Player, RoundTypes } from '../types/game-types'
 import { useQuote } from '../store/quote'
 import { arrayIntoChunks, getRanMinMax } from '../bin/utils'
 import type { Quote } from '../types/quote-types'
@@ -186,12 +186,15 @@ export const useGame = defineStore('game', () => {
     switch (type) {
       case 'fill-the-quote': {
         // Take the quote and based on difficulty extract 1-3 words from it
-        const answers: string[] = []
+        const answers: FillAnswer[] = []
         const words = new Set(content.split(/(\s+)/))
         for (let i = 0; i < len; i++) {
           const index = getRanMinMax(0, words.size - 1)
           const word = [...words][index]
-          answers.push(word)
+          answers.push({
+            index,
+            answer: word,
+          })
         }
 
         return {

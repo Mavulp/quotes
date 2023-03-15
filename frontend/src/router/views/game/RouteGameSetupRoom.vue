@@ -32,7 +32,9 @@ function resetGameSettings() {
   game.resetConfig()
 }
 
-const countdown = ref(10)
+const START_IN = 3
+
+const countdown = ref(START_IN)
 const isStarting = ref(false)
 async function startGame() {
   if (isStarting.value)
@@ -46,8 +48,8 @@ async function startGame() {
 
   // If composition is not custom, generate a game
 
-  for (let i = 10; i > 0; i--) {
-    await delay(100)
+  for (let i = START_IN; i > 0; i--) {
+    await delay(1000)
     countdown.value--
 
     if (countdown.value === 0) {

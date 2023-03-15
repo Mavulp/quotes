@@ -23,6 +23,11 @@ export interface GameQuote {
   played: boolean
 }
 
+export interface FillAnswer {
+  index: number
+  answer: string
+}
+
 export type Gamemode = 'guess-the-quotee' | 'guess-the-author' | 'fill-the-quote'
 export type Difficulty = 'Easy' | 'Medium' | 'Hard'
 
@@ -61,7 +66,7 @@ export interface RoundGuessAuthor extends Round {
 }
 
 export interface RoundFillQuote extends Round {
-  answers: string[]
+  answers: FillAnswer[]
   type: 'fill-the-quote'
 }
 
