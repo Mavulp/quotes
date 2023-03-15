@@ -26,6 +26,10 @@ import { useUser } from './user'
 // For GuessTheQuotee, include the fragment index, so it can highlight it when rendering the quote
 // This is crucial, because quotee should be matched against a fragment, not the entire quote
 
+// TODO
+// Figure out how to split state between the host and all the guests
+// https://github.com/antfu/vite-plugin-vue-server-ref
+
 export const difficultyOptions: Difficulty[] = ['Easy', 'Medium', 'Hard']
 export const gamemodeOptions = [
   { value: 'guess-the-quotee', label: 'Guess The Quote' },
