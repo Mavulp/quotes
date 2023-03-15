@@ -1,0 +1,54 @@
+.game-running {
+  @include grid(20px, 1fr 294px);
+  // display: grid();
+
+  .title {
+    @include font(600);
+    display: block;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+
+    &.highlight {
+      color: var(--color-highlight);
+    }
+  }
+
+  .game-players,
+  .game-container {
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+  }
+
+  .game-players {
+    padding: 20px;
+
+    .title {
+      margin-bottom: 16px;
+    }
+  }
+
+  .game-container {
+    .header {
+      @include grid(0, 3);
+      padding: 20px;
+      border-bottom: 1px solid var(--color-border);
+
+      .title {
+        font-size: 1.6rem;
+
+        &:nth-child(2) {
+          text-align: center;
+        }
+      }
+
+      span {
+        text-align: right;
+        color: var(--color-text-light);
+      }
+    }
+
+    .task {
+      height: 680px;
+    }
+  }
+}

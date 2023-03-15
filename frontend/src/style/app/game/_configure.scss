@@ -173,8 +173,26 @@
   padding: 8px 16px;
   position: relative;
 
-  span {
-    font-size: 1.8rem;
+  &.in-game {
+    @include flex(8px);
+    margin-bottom: 16px;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
+    padding: 0;
+    background-color: var(--color-bg) !important;
+
+    .image-wrap {
+      width: 24px;
+      height: 24px;
+    }
+
+    span {
+      flex: 1;
+      font-size: 1.4rem;
+    }
   }
 
   &:hover {
@@ -182,6 +200,10 @@
     .user-attrs {
       @include flex(4px);
     }
+  }
+
+  span {
+    font-size: 1.8rem;
   }
 
   .user-attrs {
