@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, reactive, ref, unref } from 'vue'
 import { orderBy, shuffle } from 'lodash'
-import type { Difficulty, FillAnswer, Fragment, GameState, Gamemode, Player, RoundTypes } from '../types/game-types'
+import type { Difficulty, Fragment, GameState, Gamemode, Player, RoundTypes } from '../types/game-types'
 import { useQuote } from '../store/quote'
 import type { ValueOf } from '../bin/utils'
 import { arrayIntoChunks, getRanMinMax } from '../bin/utils'
@@ -16,6 +16,8 @@ import { useUser } from './user'
 //          - how many points they goet
 //          - how long it took to answer
 
+// TODO [refactor] Instead of pasting in originalQuote, use the ID
+
 // FIXME []
 // Exclude quotes which are less than 4 words long and or contain a url for fill-the-quote
 
@@ -23,16 +25,12 @@ import { useUser } from './user'
 // Filtering quotes down crashes
 
 // TODO
-// For GuessTheQuotee, include the fragment index, so it can highlight it when rendering the quote
-// This is crucial, because quotee should be matched against a fragment, not the entire quote
-
-// TODO
 // Figure out how to split state between the host and all the guests
 // https://github.com/antfu/vite-plugin-vue-server-ref
 
 export const difficultyOptions: Difficulty[] = ['Easy', 'Medium', 'Hard']
 export const gamemodeOptions = [
-  { value: 'guess-the-quotee', label: 'Guess The Quote' },
+  { value: 'guess-the-quotee', label: 'Guess The Quotee' },
   { value: 'guess-the-author', label: 'Guess The Author' },
   { value: 'fill-the-quote', label: 'Fill The Quote' },
 ]
@@ -196,8 +194,10 @@ export const useGame = defineStore('game', () => {
   // Takes in a raw quote and returns a transformed Task
   function transformQuote(quote: Quote, type: Gamemode, difficulty: Difficulty, time: number): RoundTypes {
     // Select relevant quote fragment
-    const orderedFragments = orderBy(quote.fragments, ['type', 'highlight'], ['desc', 'desc'])[0]
-    const { content, quotee } = orderedFragments
+    const selectedFragment = orderBy(quote.fragments, ['type', 'highlight'], ['desc', 'desc'])[0]
+    const { content, quotee } = selectedFragment
+    // Index of the selected fragment in the original quote
+    const fragmentIndex = quote.fragments.findIndex(f => f.content === selectedFragment.content)
 
     // Based on difficulty
     // index of Easy is 0 (+1) deems 1 iteration and so on
@@ -206,21 +206,18 @@ export const useGame = defineStore('game', () => {
     switch (type) {
       case 'fill-the-quote': {
         // Take the quote and based on difficulty extract 1-3 words from it
-        const answers: FillAnswer[] = []
-        const words = new Set(content.split(/(\s+)/))
-        for (let i = 0; i < len; i++) {
-          const index = getRanMinMax(0, words.size - 1)
-          const word = [...words][index]
-          answers.push({
-            index,
-            answer: word,
-          })
-        }
+        const answers: Set<number> = new Set()
+        const words = content.trim().split(/\s+/)
+
+        while (answers.size !== len)
+          answers.add(getRanMinMax(0, words.length - 1))
 
         return {
           originalQuote: quote,
+          fragmentIndex,
           time,
-          answers,
+          answers: [...answers],
+          words,
           difficulty,
           type: 'fill-the-quote',
         }
@@ -269,6 +266,7 @@ export const useGame = defineStore('game', () => {
         return {
           options: shuffle([...options]),
           answer: quotee,
+          fragmentIndex,
           originalQuote: quote,
           time,
           difficulty,

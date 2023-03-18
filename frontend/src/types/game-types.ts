@@ -15,17 +15,12 @@ export interface Player {
   score: number
   ready: boolean
   // Is reset after each round
-  _input: string | null
+  _input: any
 }
 
 export interface GameQuote {
   id: number
   played: boolean
-}
-
-export interface FillAnswer {
-  index: number
-  answer: string
 }
 
 export type Gamemode = 'guess-the-quotee' | 'guess-the-author' | 'fill-the-quote'
@@ -55,6 +50,7 @@ export interface Round {
 
 export interface RoundGuessQuotee extends Round {
   answer: string
+  fragmentIndex: number
   options: string[]
   type: 'guess-the-quotee'
 }
@@ -65,9 +61,21 @@ export interface RoundGuessAuthor extends Round {
   type: 'guess-the-author'
 }
 
+// export interface FillAnswer {
+//   index: number
+//   word: string
+// }
+
 export interface RoundFillQuote extends Round {
-  answers: FillAnswer[]
+  answers: number[]
+  words: string[]
+  fragmentIndex: number
   type: 'fill-the-quote'
 }
 
 export type RoundTypes = RoundGuessQuotee | RoundGuessAuthor | RoundFillQuote
+
+export interface History {
+  id: string
+  players: Omit<Player, '_input'>[]
+}

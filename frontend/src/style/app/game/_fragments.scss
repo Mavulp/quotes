@@ -8,12 +8,10 @@
     margin-bottom: 40px;
   }
 
-  &.fill-the-quote {
-  }
-
+  &.fill-the-quote,
   &.guess-the-quotee,
   &.guess-the-author {
-    .fragment-parts {
+    .fragment-part {
       display: block;
       margin-bottom: 40px;
 
@@ -21,17 +19,19 @@
         font-size: 3.2rem;
         margin-bottom: 10px;
         color: var(--color-text);
+        min-width: 128px;
       }
+    }
 
-      span {
-        @include flex(8px, $justify: flex-end);
-        font-size: 1.4rem;
-        text-align: right;
-        color: var(--color-text-light);
+    .fragment-quotee {
+      @include flex(8px, $justify: flex-end);
+      font-size: 1.4rem;
+      text-align: right;
+      // width: 100%;
+      color: var(--color-text-light);
 
-        .material-icons {
-          transform: scaleX(-1);
-        }
+      .material-icons {
+        transform: scaleX(-1);
       }
     }
 
@@ -64,6 +64,53 @@
 
       &.btn-white {
         color: var(--color-text-light);
+      }
+    }
+  }
+
+  &.guess-the-quotee {
+    .fragment-part {
+      &.fragment-highlight {
+        p {
+          font-size: 3.2rem;
+          color: var(--color-text);
+          margin-bottom: 16px;
+        }
+      }
+
+      p {
+        font-size: 2.2rem;
+        color: var(--color-text-light);
+      }
+    }
+  }
+
+  &.fill-the-quote {
+    .task {
+      &.is-locked {
+        pointer-events: none !important;
+      }
+
+      .task-wrap {
+        @include flex(8px, wrap);
+        margin-bottom: 16px;
+
+        span {
+          font-size: 4.8rem;
+          line-height: 64px;
+        }
+
+        input {
+          height: 64px;
+          line-height: 64px;
+          margin: 0 10px;
+          text-align: center;
+          font-size: 3.6rem;
+          // width: auto;
+          color: var(--color-highlight);
+          width: 164px;
+          border-bottom: 10px solid var(--color-highlight);
+        }
       }
     }
   }

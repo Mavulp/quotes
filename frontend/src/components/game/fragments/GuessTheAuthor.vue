@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { useGame } from '../../../store/game'
 import { useUser } from '../../../store/user'
 import type { Player, RoundGuessAuthor } from '../../../types/game-types'
@@ -18,9 +18,9 @@ const player = computed(() => game.players.find(p => p.username === user.usernam
       Guess who posted this quote?
     </p>
 
-    <div v-for="fragment in props.round.originalQuote.fragments" :key="fragment.content" class="fragment-parts">
+    <div v-for="fragment in props.round.originalQuote.fragments" :key="fragment.content" class="fragment-part">
       <p>{{ fragment.content }}</p>
-      <span>
+      <span class="fragment-quotee">
         <Icon code="e244" size="1.4" />
         {{ fragment.quotee }}
       </span>

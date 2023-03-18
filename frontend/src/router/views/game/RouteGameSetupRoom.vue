@@ -46,10 +46,9 @@ async function startGame() {
   game.createQuotePool()
   game.transformQuotes()
 
-  // If composition is not custom, generate a game
-
+  // Count down
   for (let i = START_IN; i > 0; i--) {
-    await delay(1000)
+    await delay(10)
     countdown.value--
 
     if (countdown.value === 0) {
