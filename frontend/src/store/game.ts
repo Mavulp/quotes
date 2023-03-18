@@ -86,11 +86,18 @@ export const useGame = defineStore('game', () => {
       score: 0,
       ready: false,
       _input: null,
+      _inputTimestamp: null,
     })
   }
 
   function setPlayerState(username: string, key: keyof Player, value: ValueOf<Player>) {
     const index = players.value.findIndex(p => p.username === username)
+
+    // If input is being updated, set the input timestamp as well to track
+    // when player has answered
+    if (key === '_input')
+      Reflect.set(players.value[index], '_inputTimestamp', Date.now())
+
     Reflect.set(players.value[index], key, value)
   }
 
@@ -276,6 +283,51 @@ export const useGame = defineStore('game', () => {
     }
   }
 
+  // Iterates over players and checks their input against
+  function validatePlayerAnswers() {
+    const round = state.transformedPool[state.roundIndex]
+
+    // 1. Iterate over players and check answers as correct or incorrect
+
+    const results = players.value.map((p) => {
+      return validatePlayerAnswer(p, round)
+    })
+
+    // 2. Iterate again, and sort players by correct answer & their time.
+    // We use the order as a multiplier for the point distribution
+    for (const result of results) {
+
+    }
+  }
+
+  // Compare player input to the round answers
+  function validatePlayerAnswer(player: Player, round: RoundTypes) {
+    const diff = difficultyOptions.indexOf(round.difficulty) + 1
+
+    switch (round.type) {
+      case 'guess-the-quotee':
+      case 'guess-the-author': {
+        if (player._input.toLowerCase() === round.answer.toLowerCase()) {
+          // If answwer is correct, assign points, if not
+          // points = diff * 100
+        }
+
+        break
+      }
+
+      case 'fill-the-quote': {
+        break
+      }
+    }
+
+    // player.score += points
+
+    // return {
+    //   points,
+    //   player: player.username,
+    // }
+  }
+
   /**
    * Computed properties
    */
@@ -283,8 +335,12 @@ export const useGame = defineStore('game', () => {
   // This is used to check if players are ready to start the game
   // Same property can also be used in game, if everyone answers before time runs out
   // and clicks the "final answer" button, it will lock in their answer and set them as ready
-  // TODO: make sure the ready state is cleared after 'setup' and also after each round ends
-  const isEveryoneReady = computed(() => players.value.every(p => p.ready))
+  const arePlayersReady = computed(() => players.value.every(p => p.ready))
+
+  function setPlayersNotReady() {
+    for (const player of players.value)
+      player.ready = false
+  }
 
   return {
     cfg,
@@ -299,6 +355,8 @@ export const useGame = defineStore('game', () => {
     setPlayerState,
     transformQuotes,
     createQuotePool,
-    isEveryoneReady,
+    arePlayersReady,
+    setPlayersNotReady,
+    validatePlayerAnswers,
   }
 })

@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import Countdown from '@chenfengyuan/vue-countdown'
 import dayjs from 'dayjs'
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type { Component } from 'vue'
 import { padTo2Digits } from '../../../bin/utils'
 import { gamemodeOptions, useGame } from '../../../store/game'
@@ -21,16 +21,6 @@ const components: Record<Gamemode, Component> = {
 const game = useGame()
 
 /**
- * 1. Round starts
- * 2. Wait for round length or until everyone's ready
- * 3. Enter transition round
- * 4. Show everyone's score and the right answer
- * 4.5 Count points
- * 5. Reset round state and user inputs, user ready state
- * 6. Increment round index
- */
-
-/**
  * UI
  *
  * Have a wrapper (this route)
@@ -41,8 +31,33 @@ const round = computed(() => game.state.transformedPool[game.state.roundIndex])
 const sortedPlayers = computed(() => [...game.players].sort((a, b) => a.score > b.score ? -1 : 1))
 const gamemodeName = computed(() => gamemodeOptions.find(option => option.value === round.value.type))
 
+/**
+ * Round ended
+ */
+const roundEndInProgress = ref(false)
+
+watch(() => game.arePlayersReady, endRound)
+
 function endRound() {
-  // TODO: oh bnoy
+  // This check is here because when timer runs out, it will try to call this method even
+  // if the round end has already been called before
+  if (roundEndInProgress.value)
+    return
+
+  roundEndInProgress.value = true
+
+  // 1. Count all player score
+  game.validatePlayerAnswers()
+
+  // 2. Save round to history
+
+  // 3. Display result modal
+  // Wait 10 seconds
+
+  // 4. Reset everything and start a new round
+  //  reset player input
+  //  increment round index
+  //  save
 }
 </script>
 

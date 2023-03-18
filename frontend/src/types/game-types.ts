@@ -14,8 +14,8 @@ export interface Player {
   username: string
   score: number
   ready: boolean
-  // Is reset after each round
   _input: any
+  _inputTimestamp: null | number
 }
 
 export interface GameQuote {
