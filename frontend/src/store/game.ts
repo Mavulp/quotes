@@ -290,7 +290,7 @@ export const useGame = defineStore('game', () => {
     // 1. Iterate over players and check answers as correct or incorrect
 
     const results = players.value.map((p) => {
-      return validatePlayerAnswer(p, round)
+      return validateAnswer(p, round)
     })
 
     // 2. Iterate again, and sort players by correct answer & their time.
@@ -301,18 +301,11 @@ export const useGame = defineStore('game', () => {
   }
 
   // Compare player input to the round answers
-  function validatePlayerAnswer(player: Player, round: RoundTypes) {
-    const diff = difficultyOptions.indexOf(round.difficulty) + 1
-
+  function validateAnswer(player: Player, round: RoundTypes) {
     switch (round.type) {
       case 'guess-the-quotee':
       case 'guess-the-author': {
-        if (player._input.toLowerCase() === round.answer.toLowerCase()) {
-          // If answwer is correct, assign points, if not
-          // points = diff * 100
-        }
-
-        break
+        return player._input.toLowerCase() === round.answer.toLowerCase()
       }
 
       case 'fill-the-quote': {
