@@ -15,7 +15,7 @@ export interface Player {
   score: number
   ready: boolean
   _input: any
-  _inputTimestamp: null | number
+  _inputTimestamp: number
 }
 
 export interface GameQuote {
@@ -61,11 +61,6 @@ export interface RoundGuessAuthor extends Round {
   type: 'guess-the-author'
 }
 
-// export interface FillAnswer {
-//   index: number
-//   word: string
-// }
-
 export interface RoundFillQuote extends Round {
   answers: number[]
   words: string[]
@@ -77,5 +72,5 @@ export type RoundTypes = RoundGuessQuotee | RoundGuessAuthor | RoundFillQuote
 
 export interface History {
   id: string
-  players: Omit<Player, '_input'>[]
+  players: Omit<Omit<Player, '_input'>, '_inputTimestamp'>[]
 }

@@ -34,24 +34,24 @@ const gamemodeName = computed(() => gamemodeOptions.find(option => option.value 
 /**
  * Round ended
  */
-const roundEndInProgress = ref(false)
-
 watch(() => game.arePlayersReady, endRound)
 
 function endRound() {
   // This check is here because when timer runs out, it will try to call this method even
   // if the round end has already been called before
-  if (roundEndInProgress.value)
+  if (game.state.stage === 'transition')
     return
 
-  roundEndInProgress.value = true
+  game.state.stage = 'transition'
 
   // 1. Count all player score
-  game.validatePlayerAnswers()
+  const results = game.validatePlayerAnswers()
 
   // 2. Save round to history
 
   // 3. Display result modal
+
+  // Show modal with results
   // Wait 10 seconds
 
   // 4. Reset everything and start a new round

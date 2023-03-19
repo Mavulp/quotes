@@ -27,7 +27,6 @@ watch(input, (value) => {
     <div class="task" :class="{ 'is-locked': player.ready }">
       <div class="task-wrap">
         <template v-for="(word, index) in props.round.words" :key="word">
-          <!-- <span v-if=""></span> -->
           <input v-if="props.round.answers.includes(index)" v-model="input[index]" type="text">
           <span v-else>{{ word }}</span>
         </template>

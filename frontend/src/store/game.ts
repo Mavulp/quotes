@@ -38,6 +38,9 @@ const gamemodeIds = Object.values(gamemodeOptions).map(g => g.value) as Gamemode
 const gamemodeAmount = Object.keys(gamemodeOptions).length
 
 export const useGame = defineStore('game', () => {
+  // Constants
+  const BASE_POINTS = 100
+
   const state = reactive<GameState>({} as GameState)
   const players = ref<Player[]>([])
   const cfg = reactive({
@@ -86,7 +89,7 @@ export const useGame = defineStore('game', () => {
       score: 0,
       ready: false,
       _input: null,
-      _inputTimestamp: null,
+      _inputTimestamp: -1,
     })
   }
 
@@ -287,31 +290,60 @@ export const useGame = defineStore('game', () => {
   function validatePlayerAnswers() {
     const round = state.transformedPool[state.roundIndex]
 
-    // 1. Iterate over players and check answers as correct or incorrect
+    // FIXME: return sorted + uncluding other players
 
-    const results = players.value.map((p) => {
-      return validateAnswer(p, round)
-    })
+    const formattedResults = players.value
+      // 1. Iterate over players and check answers as correct or incorrect
+      .map(p => ({
+        result: validateAnswer(p, round),
+        player: p,
+      }))
 
-    // 2. Iterate again, and sort players by correct answer & their time.
-    // We use the order as a multiplier for the point distribution
-    for (const result of results) {
+    // 2. Remove players with the wrong result, automatically 0 points
+    const withPoints = formattedResults.filter(p => p.result)
+      // 3. Iterate again, and sort players by correct answer & their time.
+      // We use the order as a multiplier for the point distribution
+      // Sort them so the best player is in the last place so we can use the index
+      // as a multiplier
+      .sort((a, b) => a.player._inputTimestamp > b.player._inputTimestamp ? -1 : 1)
+      .map((result, index) => {
+        const points = index * BASE_POINTS
+        const pointsBefore = result.player.score
+        result.player.score += points
 
-    }
+        return {
+          pointsBefore,
+          points,
+          diff: points - pointsBefore,
+          username: result.player.username,
+        }
+      })
+
+    const withoutPoints = formattedResults
+      .filter(p => !p.result)
+      .map(result => ({
+        pointsBefore: result.player.score,
+        points: result.player.score,
+        diff: 0,
+        username: result.player.username,
+      }))
+
+    return [
+      ...withPoints,
+      ...withoutPoints,
+    ]
   }
 
   // Compare player input to the round answers
-  function validateAnswer(player: Player, round: RoundTypes) {
-    switch (round.type) {
-      case 'guess-the-quotee':
-      case 'guess-the-author': {
-        return player._input.toLowerCase() === round.answer.toLowerCase()
-      }
-
-      case 'fill-the-quote': {
-        break
-      }
+  function validateAnswer(player: Player, round: RoundTypes): boolean {
+    if (round.type === 'fill-the-quote') {
+      const input = player._input as Record<number, string>
+      return Object.entries(input).every(([index, value]) => {
+        return round.words[Number(index)].toLowerCase() === value.toLowerCase()
+      })
     }
+
+    return player._input.toLowerCase() === round.answer.toLowerCase()
 
     // player.score += points
 
