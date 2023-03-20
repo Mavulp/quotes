@@ -34,7 +34,7 @@ const gamemodeName = computed(() => gamemodeOptions.find(option => option.value 
 /**
  * Round ended
  */
-watch(() => game.arePlayersReady, endRound)
+// watch(() => game.arePlayersReady, endRound)
 
 function endRound() {
   // This check is here because when timer runs out, it will try to call this method even
@@ -45,7 +45,7 @@ function endRound() {
   game.state.stage = 'transition'
 
   // 1. Count all player score
-  const results = game.validatePlayerAnswers()
+  // const results = game.validatePlayerAnswers(game.players, round.value)
 
   // 2. Save round to history
 
@@ -82,6 +82,10 @@ function endRound() {
           :round="round"
         />
       </div>
+
+      <pre>
+        {{ round }}
+      </pre>
     </div>
     <div>
       <div class="game-players">

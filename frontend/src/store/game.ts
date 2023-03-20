@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed, reactive, ref, unref } from 'vue'
-import { orderBy, shuffle } from 'lodash'
+import { isNil, orderBy, shuffle } from 'lodash'
 import type { Difficulty, Fragment, GameState, Gamemode, Player, RoundTypes } from '../types/game-types'
 import { useQuote } from '../store/quote'
 import type { ValueOf } from '../bin/utils'
@@ -24,9 +24,7 @@ import { useUser } from './user'
 // FIXME []
 // Filtering quotes down crashes
 
-// TODO
-// Figure out how to split state between the host and all the guests
-// https://github.com/antfu/vite-plugin-vue-server-ref
+// TODO Split all defaults (mainly in reset functions) into separate exported variables or defaults.ts file
 
 export const difficultyOptions: Difficulty[] = ['Easy', 'Medium', 'Hard']
 export const gamemodeOptions = [
@@ -287,12 +285,9 @@ export const useGame = defineStore('game', () => {
   }
 
   // Iterates over players and checks their input against
-  function validatePlayerAnswers() {
-    const round = state.transformedPool[state.roundIndex]
-
-    // FIXME: return sorted + uncluding other players
-
-    const formattedResults = players.value
+  function validatePlayerAnswers(players: Player[], round: RoundTypes) {
+    // const round = state.transformedPool[state.roundIndex]
+    const formattedResults = players
       // 1. Iterate over players and check answers as correct or incorrect
       .map(p => ({
         result: validateAnswer(p, round),
@@ -307,7 +302,7 @@ export const useGame = defineStore('game', () => {
       // as a multiplier
       .sort((a, b) => a.player._inputTimestamp > b.player._inputTimestamp ? -1 : 1)
       .map((result, index) => {
-        const points = index * BASE_POINTS
+        const points = (index + 1) * BASE_POINTS
         const pointsBefore = result.player.score
         result.player.score += points
 
@@ -339,18 +334,17 @@ export const useGame = defineStore('game', () => {
     if (round.type === 'fill-the-quote') {
       const input = player._input as Record<number, string>
       return Object.entries(input).every(([index, value]) => {
+        if (isNil(value))
+          return false
+
         return round.words[Number(index)].toLowerCase() === value.toLowerCase()
       })
     }
 
+    if (isNil(player._input))
+      return false
+
     return player._input.toLowerCase() === round.answer.toLowerCase()
-
-    // player.score += points
-
-    // return {
-    //   points,
-    //   player: player.username,
-    // }
   }
 
   /**
@@ -383,5 +377,6 @@ export const useGame = defineStore('game', () => {
     arePlayersReady,
     setPlayersNotReady,
     validatePlayerAnswers,
+    validateAnswer,
   }
 })

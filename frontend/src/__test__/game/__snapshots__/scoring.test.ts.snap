@@ -1,0 +1,30 @@
+// Vitest Snapshot v1
+
+exports[`Iterate over provided answers and assign poinst to plays > Validate player answers 1`] = `
+[
+  {
+    "diff": 100,
+    "points": 100,
+    "pointsBefore": 0,
+    "username": "Jeniffer",
+  },
+  {
+    "diff": 150,
+    "points": 200,
+    "pointsBefore": 50,
+    "username": "Anna",
+  },
+  {
+    "diff": 0,
+    "points": 200,
+    "pointsBefore": 200,
+    "username": "Pamela",
+  },
+  {
+    "diff": 0,
+    "points": 100,
+    "pointsBefore": 100,
+    "username": "Daniel",
+  },
+]
+`;
