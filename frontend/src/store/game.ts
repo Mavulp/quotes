@@ -39,6 +39,7 @@ const gamemodeAmount = Object.keys(gamemodeOptions).length
 export const useGame = defineStore('game', () => {
   // Constants
   const BASE_POINTS = 100
+  const TRANSITION_DELAY_S = 15
 
   // Manage history
   const state = reactive<GameState>({} as GameState)
@@ -96,7 +97,7 @@ export const useGame = defineStore('game', () => {
     })
   }
 
-  function resetPlayrsAtRoundEnd() {
+  function resetPlayersAtRoundEnd() {
     for (const player of players.value) {
       player._input = null
       player._inputTimestamp = -1
@@ -408,6 +409,10 @@ export const useGame = defineStore('game', () => {
     arePlayersReady,
     setPlayersNotReady,
     validatePlayerAnswers,
-    resetPlayrsAtRoundEnd,
+    resetPlayersAtRoundEnd,
+
+    // Constants
+    BASE_POINTS,
+    TRANSITION_DELAY_S,
   }
 })

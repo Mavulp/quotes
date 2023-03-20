@@ -17,7 +17,6 @@ const form = reactive<Omit<Settings, 'colorTheme'>>({
 
 onBeforeMount(async () => {
   await user.fetchSettings()
-
   // Assign to form
   form.bio = user.settings.bio
   form.profilePicture = user.settings.profilePicture

@@ -16,4 +16,9 @@
     background-color: var(--color-bg-light);
     color: var(--color-highlight);
   }
+
+  &.green {
+    background-color: var(--color-bg-light-hover);
+    color: var(--color-green);
+  }
 }

@@ -8,8 +8,10 @@ const props = withDefaults(defineProps<{
    * or clicking outside of the main container.
    */
   close?: boolean
+  disableCloseButton?: boolean
 }>(), {
   close: true,
+  disableCloseButton: false,
 })
 
 const emit = defineEmits<{ (e: 'close'): void }>()
@@ -36,7 +38,7 @@ function tryClose() {
 <template>
   <Teleport to="body">
     <div class="modal" @click.self="tryClose()">
-      <button v-if="props.close" class="modal-close" @click="tryClose()">
+      <button v-if="props.close && !props.disableCloseButton" class="modal-close" @click="tryClose()">
         <Icon code="e5cd" />
       </button>
 
