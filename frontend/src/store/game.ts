@@ -310,14 +310,13 @@ export const useGame = defineStore('game', () => {
       // as a multiplier
       .sort((a, b) => a.player._inputTimestamp > b.player._inputTimestamp ? -1 : 1)
       .map((result, index) => {
-        const points = (index + 1) * BASE_POINTS
-        const pointsBefore = result.player.score
-        result.player.score += points
+        const score = (index + 1) * BASE_POINTS
+        const scoreBefore = result.player.score
+        result.player.score += score
 
         return {
-          pointsBefore,
-          points,
-          diff: points - pointsBefore,
+          scoreBefore,
+          score,
           username: result.player.username,
         }
       })
@@ -325,9 +324,8 @@ export const useGame = defineStore('game', () => {
     const withoutPoints = formattedResults
       .filter(p => !p.result)
       .map(result => ({
-        pointsBefore: result.player.score,
-        points: result.player.score,
-        diff: 0,
+        scoreBefore: result.player.score,
+        score: result.player.score,
         username: result.player.username,
       }))
 

@@ -3,27 +3,23 @@
 exports[`Iterate over provided answers and assign poinst to plays > Validate player answers 1`] = `
 [
   {
-    "diff": 100,
-    "points": 100,
-    "pointsBefore": 0,
+    "score": 100,
+    "scoreBefore": 0,
     "username": "Jeniffer",
   },
   {
-    "diff": 150,
-    "points": 200,
-    "pointsBefore": 50,
+    "score": 200,
+    "scoreBefore": 50,
     "username": "Anna",
   },
   {
-    "diff": 0,
-    "points": 200,
-    "pointsBefore": 200,
+    "score": 200,
+    "scoreBefore": 200,
     "username": "Pamela",
   },
   {
-    "diff": 0,
-    "points": 100,
-    "pointsBefore": 100,
+    "score": 100,
+    "scoreBefore": 100,
     "username": "Daniel",
   },
 ]

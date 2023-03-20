@@ -45,7 +45,6 @@ async function startGame() {
   // Get the quote pool
   game.createQuotePool()
   game.transformQuotes()
-  game.setPlayersNotReady()
 
   // Count down
   for (let i = START_IN; i > 0; i--) {
@@ -53,6 +52,9 @@ async function startGame() {
     countdown.value--
 
     if (countdown.value === 0) {
+      // Reset ready state
+      game.setPlayersNotReady()
+
       // Redirect to new game and stuff
       game.state.stage = 'running'
 

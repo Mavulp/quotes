@@ -68,7 +68,7 @@ function endRound() {
   // 4. Reset everything and start a new round
   //  reset player input
   game.resetPlayrsAtRoundEnd()
-  //  increment round index
+  //  Update game state
   game.state.roundIndex++
   game.state.stage = 'running'
 }

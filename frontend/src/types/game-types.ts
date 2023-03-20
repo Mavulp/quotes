@@ -73,4 +73,14 @@ export type RoundTypes = RoundGuessQuotee | RoundGuessAuthor | RoundFillQuote
 export interface History {
   id: string
   players: Omit<Omit<Player, '_input'>, '_inputTimestamp'>[]
+  timestamps: {
+    start: number
+    end: number
+  }
+  rounds: RoundTypes & {
+    scores: Record<Player['username'], {
+      score: number
+      previousScore: number
+    }>[]
+  }
 }
