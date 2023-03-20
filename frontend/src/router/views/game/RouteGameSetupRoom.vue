@@ -45,6 +45,7 @@ async function startGame() {
   // Get the quote pool
   game.createQuotePool()
   game.transformQuotes()
+  game.setPlayersNotReady()
 
   // Count down
   for (let i = START_IN; i > 0; i--) {

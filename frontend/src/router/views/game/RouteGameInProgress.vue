@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import Countdown from '@chenfengyuan/vue-countdown'
 import dayjs from 'dayjs'
-import { computed, ref, watch } from 'vue'
+import { computed, onBeforeMount, onMounted, ref, watch } from 'vue'
 import type { Component } from 'vue'
 import { padTo2Digits } from '../../../bin/utils'
 import { gamemodeOptions, useGame } from '../../../store/game'
@@ -34,9 +34,20 @@ const gamemodeName = computed(() => gamemodeOptions.find(option => option.value 
 /**
  * Round ended
  */
-// watch(() => game.arePlayersReady, endRound)
+watch(() => game.arePlayersReady, endRound)
+
+const timer = ref<number>()
+
+function resetTimer() {
+  timer.value = dayjs.utc().add(round.value.time, 'second').diff(Date.now())
+}
+
+onMounted(() => {
+  resetTimer()
+})
 
 function endRound() {
+  console.log('Called end round')
   // This check is here because when timer runs out, it will try to call this method even
   // if the round end has already been called before
   if (game.state.stage === 'transition')
@@ -45,7 +56,7 @@ function endRound() {
   game.state.stage = 'transition'
 
   // 1. Count all player score
-  // const results = game.validatePlayerAnswers(game.players, round.value)
+  const results = game.validatePlayerAnswers(game.players, round.value)
 
   // 2. Save round to history
 
@@ -56,8 +67,10 @@ function endRound() {
 
   // 4. Reset everything and start a new round
   //  reset player input
+  game.resetPlayrsAtRoundEnd()
   //  increment round index
-  //  save
+  game.state.roundIndex++
+  game.state.stage = 'running'
 }
 </script>
 
@@ -69,7 +82,7 @@ function endRound() {
         <strong class="title">Round {{ game.state.roundIndex + 1 }} / {{ game.state.quotePool.size }}</strong>
         <Countdown
           v-slot="{ minutes, seconds }"
-          :time="dayjs.utc().add(round.time, 'second').diff(Date.now())"
+          :time="timer"
           @end="endRound()"
         >
           {{ padTo2Digits(minutes) }}:{{ padTo2Digits(seconds) }}
@@ -82,10 +95,6 @@ function endRound() {
           :round="round"
         />
       </div>
-
-      <pre>
-        {{ round }}
-      </pre>
     </div>
     <div>
       <div class="game-players">

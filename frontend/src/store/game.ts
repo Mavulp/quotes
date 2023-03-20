@@ -91,6 +91,14 @@ export const useGame = defineStore('game', () => {
     })
   }
 
+  function resetPlayrsAtRoundEnd() {
+    for (const player of players.value) {
+      player._input = null
+      player._inputTimestamp = -1
+      player.ready = false
+    }
+  }
+
   function setPlayerState(username: string, key: keyof Player, value: ValueOf<Player>) {
     const index = players.value.findIndex(p => p.username === username)
 
@@ -378,5 +386,6 @@ export const useGame = defineStore('game', () => {
     setPlayersNotReady,
     validatePlayerAnswers,
     validateAnswer,
+    resetPlayrsAtRoundEnd,
   }
 })
