@@ -8,11 +8,13 @@ import LoadingBar from '../../../loading/LoadingBar.vue'
 import InputText from '../../../form/InputText.vue'
 import FragmentButtons from '../FragmentButtons.vue'
 
+/**
+ * If this component is ever re-introduced. Make sure to update the data / id / indexing props to how the other
+ * two fragments are handled. There have been some changes and simplifications in the process.
+ */
+
 const props = defineProps<{
   data: ImageFragment
-  // FIXME: Should only use index of the map, but for some reason that went to -2 before
-  // so I am using the _actual_ iteration index as well as the supposed ID of the block
-  // In perfect world both would be the same
   id: number
   index: number
 }>()
@@ -88,7 +90,7 @@ async function submit(e: any) {
 
   loading.value = true
 
-  // TODO: Handle file upload here
+  // Handle file upload here
   await delay(1500)
 
   // Create a thumbnail to show after file has been uploaded

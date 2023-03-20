@@ -1,30 +1,31 @@
 import { defineStore } from 'pinia'
 import { computed, reactive, ref, unref } from 'vue'
 import { isNil, orderBy, shuffle } from 'lodash'
-import type { Difficulty, Fragment, GameState, Gamemode, Player, RoundTypes } from '../types/game-types'
+import type { Difficulty, Fragment, GameState, Gamemode, Player, RoundPoints, RoundTypes } from '../types/game-types'
 import { useQuote } from '../store/quote'
 import type { ValueOf } from '../bin/utils'
 import { arrayIntoChunks, getRanMinMax } from '../bin/utils'
 import type { Quote } from '../types/quote-types'
 import { useUser } from './user'
 
-// TODO: properly document
-// TODO: sort exports
-// TODO: figure out formula for counting points
-// TODO: Add round history, per player
+// TODO properly document
+// TODO sort exports
+// TODO figure out formula for counting points
+// TODO Add round history, per player
 //          - save their answer (and if it was correct)
 //          - how many points they goet
 //          - how long it took to answer
 
 // TODO [refactor] Instead of pasting in originalQuote, use the ID
 
-// FIXME []
+// FIXME
 // Exclude quotes which are less than 4 words long and or contain a url for fill-the-quote
 
-// FIXME []
+// FIXME
 // Filtering quotes down crashes
 
 // TODO Split all defaults (mainly in reset functions) into separate exported variables or defaults.ts file
+// TODO in endRound(); detect if it was the last round and perform game end func
 
 export const difficultyOptions: Difficulty[] = ['Easy', 'Medium', 'Hard']
 export const gamemodeOptions = [
@@ -39,6 +40,7 @@ export const useGame = defineStore('game', () => {
   // Constants
   const BASE_POINTS = 100
 
+  // Manage history
   const state = reactive<GameState>({} as GameState)
   const players = ref<Player[]>([])
   const cfg = reactive({
@@ -65,6 +67,9 @@ export const useGame = defineStore('game', () => {
       quotePool: new Set(),
       transformedPool: [],
       roundIndex: 0,
+      startTime: -1,
+      endTime: -1,
+      history: [],
     })
 
     addPlayer(admin)
@@ -97,6 +102,24 @@ export const useGame = defineStore('game', () => {
       player._inputTimestamp = -1
       player.ready = false
     }
+  }
+
+  /**
+   * History methods
+   */
+
+  function addHistoryEntry(round: RoundTypes, points: RoundPoints[]) {
+    const item = {
+      ...round,
+      points,
+    }
+    state.history.push(item)
+  }
+
+  function saveHistory() {
+    // Collect relevant information from the game states into an object
+
+    // Makes an API call at the end of the game, sending the whole game object
   }
 
   function setPlayerState(username: string, key: keyof Player, value: ValueOf<Player>) {
@@ -181,8 +204,6 @@ export const useGame = defineStore('game', () => {
         gamemodeAmount,
       )
 
-      const difficulty = cfg.difficulty
-
       groups.forEach((group, index) => {
         for (const quoteId of group) {
           const quote = quotes.getQuoteById(quoteId)
@@ -194,7 +215,7 @@ export const useGame = defineStore('game', () => {
             transformQuote(
               quote,
               gamemdes[index],
-              difficulty,
+              cfg.difficulty,
               cfg.globalRoundLength,
             ),
           )
@@ -293,6 +314,7 @@ export const useGame = defineStore('game', () => {
   }
 
   // Iterates over players and checks their input against
+  // REVIEW Should validation also store which answers players got right and wrong? (with attached inputs)
   function validatePlayerAnswers(players: Player[], round: RoundTypes) {
     // const round = state.transformedPool[state.roundIndex]
     const formattedResults = players
@@ -375,15 +397,17 @@ export const useGame = defineStore('game', () => {
     addPlayer,
     resetState,
     resetConfig,
+    saveHistory,
+    validateAnswer,
     insertFragment,
     removeFragment,
     setPlayerState,
+    addHistoryEntry,
     transformQuotes,
     createQuotePool,
     arePlayersReady,
     setPlayersNotReady,
     validatePlayerAnswers,
-    validateAnswer,
     resetPlayrsAtRoundEnd,
   }
 })

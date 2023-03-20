@@ -238,35 +238,3 @@ export const sameAs = (compared: any, leanient = false) => {
     },
   }
 }
-
-/**
- * TODO methods
- *
- * isNum
- * isStr
- * isUrl
- *
- */
-
-// SECTION: Unfinished functions
-
-// const matchRegex = (regex: RegExp) => {
-//   return {
-//     _validate(value: any) { },
-//     _message() {
-//       return 'Value does not match the provided rule.'
-//     },
-//   }
-// }
-
-// IMPLEMENT
-// const asyncValidation = (executable: Function) => {
-//   return {
-//     async _validate(value: any) {
-//       return await executable(value)
-//     },
-//     _message() {
-//       return 'not implemented'
-//     },
-//   }
-// }

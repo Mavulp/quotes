@@ -50,8 +50,6 @@ export function formatCommentContent(text: string) {
 export function formatCommentUsers(text: string) {
   const _regex = /@(\w+)/g
   return text.replaceAll(_regex, (original: string, parsed: string) => {
-    // console.log(one, two, three)
-    // const user = userStore.getUser(parsed)
     const users = useUser()
     const user = users.users.find(u => u.username === parsed)
 

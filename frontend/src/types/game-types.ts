@@ -8,6 +8,9 @@ export interface GameState {
   quotePool: Set<number>
   transformedPool: RoundTypes[]
   roundIndex: number
+  startTime: number
+  endTime: number
+  history: HistoryEntry[]
 }
 
 export interface Player {
@@ -70,17 +73,18 @@ export interface RoundFillQuote extends Round {
 
 export type RoundTypes = RoundGuessQuotee | RoundGuessAuthor | RoundFillQuote
 
-export interface History {
+export interface RoundPoints {
+  scoreBefore: number
+  score: number
+  username: string
+}
+
+export type HistoryEntry = RoundTypes & { points: RoundPoints[] }
+
+export interface GameHistory {
   id: string
   players: Omit<Omit<Player, '_input'>, '_inputTimestamp'>[]
-  timestamps: {
-    start: number
-    end: number
-  }
-  rounds: RoundTypes & {
-    scores: Record<Player['username'], {
-      score: number
-      previousScore: number
-    }>[]
-  }
+  startTime: number
+  endTime: number
+  entries: HistoryEntry[]
 }

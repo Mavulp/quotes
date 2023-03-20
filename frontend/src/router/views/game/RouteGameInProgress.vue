@@ -59,16 +59,21 @@ function endRound() {
   const results = game.validatePlayerAnswers(game.players, round.value)
 
   // 2. Save round to history
+  game.addHistoryEntry(round.value, results)
+
+  // End of the game, perform different logic
+  if (game.state.roundIndex === game.state.quotePool.size - 1) {
+    console.log('GAME ENDED LOL')
+    return
+  }
 
   // 3. Display result modal
-
   // Show modal with results
   // Wait 10 seconds
 
   // 4. Reset everything and start a new round
-  //  reset player input
   game.resetPlayrsAtRoundEnd()
-  //  Update game state
+  resetTimer()
   game.state.roundIndex++
   game.state.stage = 'running'
 }

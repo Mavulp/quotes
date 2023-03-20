@@ -99,8 +99,6 @@ onMounted(() => {
 // The name "fusion" is an idea for a generic library used for Mavulp / Personal
 // projects. It will be composed at some point in the future from these little
 // crumbs of fusion component used in various project
-
-// TODO: the mixin folder for the fusion framework would contain the relevant mixins as well
 @import "../style/setup/mixins";
 
 .fusion-tabs {

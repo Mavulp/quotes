@@ -57,6 +57,7 @@ async function startGame() {
 
       // Redirect to new game and stuff
       game.state.stage = 'running'
+      game.state.startTime = Date.now()
 
       router.push({
         name: 'RouteGameInProgress',

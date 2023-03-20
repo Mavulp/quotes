@@ -19,14 +19,10 @@ onBeforeMount(async () => {
   await user.fetchSettings()
 
   // Assign to form
-  // TODO: once we implement color theme, just use Object.assign()
   form.bio = user.settings.bio
   form.profilePicture = user.settings.profilePicture
   form.highlightedQuoteId = user.settings.highlightedQuoteId
 })
-
-// onBeforeUnmount(() => {
-// })
 
 // Submit form
 async function submit() {
