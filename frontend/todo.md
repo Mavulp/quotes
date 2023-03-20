@@ -2,6 +2,8 @@
 
 [https://quotes.hivecom.net/swagger/]
 
+- [] Remove validate.ts and use the library from github
+
 ## Stats
 
 - [] chart showing all authors and their uploads overtime
