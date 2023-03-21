@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed, reactive, ref, unref } from 'vue'
-import { isNil, orderBy, partition, result, shuffle } from 'lodash'
+import { orderBy, partition, shuffle } from 'lodash'
 import type { Difficulty, Fragment, GameState, Gamemode, Player, RoundAnswer, RoundResults, RoundTypes } from '../types/game-types'
 import { useQuote } from '../store/quote'
 import type { ValueOf } from '../bin/utils'
@@ -22,12 +22,11 @@ import { useUser } from './user'
 // FIXME
 // Filtering quotes down crashes
 
+// FIXME
+// Sometimes starting a game freezes the browser (most likely a while loop problem)
+
 // TODO Split all defaults (mainly in reset functions) into separate exported variables or defaults.ts file
 // TODO in endRound(); detect if it was the last round and perform game end func
-
-// TODO support for validating multiple answers (validateAnswer should not
-// return a simple boolean). Also save user inputs
-// This implementation was started with RoundAnswer & RoundResults
 
 export const difficultyOptions: Difficulty[] = ['Easy', 'Medium', 'Hard']
 export const gamemodeOptions = [
@@ -111,10 +110,10 @@ export const useGame = defineStore('game', () => {
    * History methods
    */
 
-  function addHistoryEntry(round: RoundTypes, points: RoundResults[]) {
+  function addHistoryEntry(round: RoundTypes, userAnswers: RoundResults[]) {
     const item = {
       ...round,
-      points,
+      userAnswers,
     }
     state.history.push(item)
   }
@@ -340,9 +339,11 @@ export const useGame = defineStore('game', () => {
           const totalAnswers = result.results.length
           const correctAnswers = result.results.filter(r => r.correct).length
           // Additional points
-          // TODO: make better
           const bonusScore = BASE_POINTS * (correctAnswers / totalAnswers)
 
+          // Calculate score based on players with correct answers & their tiem
+          // of submission. Then we add the bonus after it, which is the base points
+          // multiplied by the fraction of correct vs total answers
           const score = (index + 1) * BASE_POINTS + bonusScore
 
           const scoreBefore = result.player.score
