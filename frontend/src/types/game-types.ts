@@ -73,13 +73,18 @@ export interface RoundFillQuote extends Round {
 
 export type RoundTypes = RoundGuessQuotee | RoundGuessAuthor | RoundFillQuote
 
-export interface RoundPoints {
+export interface RoundAnswer {
+  input: any
+  correct: boolean
+}
+export interface RoundResults {
   scoreBefore: number
   score: number
   username: string
+  answers: RoundAnswer[]
 }
 
-export type HistoryEntry = RoundTypes & { points: RoundPoints[] }
+export type HistoryEntry = RoundTypes & { userAnswers: RoundResults[] }
 
 export interface GameHistory {
   id: string

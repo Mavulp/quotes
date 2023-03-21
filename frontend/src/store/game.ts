@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, reactive, ref, unref } from 'vue'
-import { isNil, orderBy, shuffle } from 'lodash'
-import type { Difficulty, Fragment, GameState, Gamemode, Player, RoundPoints, RoundTypes } from '../types/game-types'
+import { isNil, orderBy, partition, result, shuffle } from 'lodash'
+import type { Difficulty, Fragment, GameState, Gamemode, Player, RoundAnswer, RoundResults, RoundTypes } from '../types/game-types'
 import { useQuote } from '../store/quote'
 import type { ValueOf } from '../bin/utils'
 import { arrayIntoChunks, getRanMinMax } from '../bin/utils'
@@ -27,6 +27,7 @@ import { useUser } from './user'
 
 // TODO support for validating multiple answers (validateAnswer should not
 // return a simple boolean). Also save user inputs
+// This implementation was started with RoundAnswer & RoundResults
 
 export const difficultyOptions: Difficulty[] = ['Easy', 'Medium', 'Hard']
 export const gamemodeOptions = [
@@ -110,7 +111,7 @@ export const useGame = defineStore('game', () => {
    * History methods
    */
 
-  function addHistoryEntry(round: RoundTypes, points: RoundPoints[]) {
+  function addHistoryEntry(round: RoundTypes, points: RoundResults[]) {
     const item = {
       ...round,
       points,
@@ -322,63 +323,66 @@ export const useGame = defineStore('game', () => {
     const formattedResults = players
       // 1. Iterate over players and check answers as correct or incorrect
       .map(p => ({
-        result: validateAnswer(p, round),
+        results: validateAnswer(p, round),
         player: p,
       }))
 
-    // 2. Remove players with the wrong result, automatically 0 points
-    const withPoints = formattedResults.filter(p => p.result)
-      // 3. Iterate again, and sort players by correct answer & their time.
-      // We use the order as a multiplier for the point distribution
-      // Sort them so the best player is in the last place so we can use the index
-      // as a multiplier
-      .sort((a, b) => a.player._inputTimestamp > b.player._inputTimestamp ? -1 : 1)
-      .map((result, index) => {
-        const score = (index + 1) * BASE_POINTS
-        const scoreBefore = result.player.score
-        result.player.score += score
+    const [correctResults, wrongResults] = partition(formattedResults, r => r.results.some(res => res.correct))
 
-        return {
-          scoreBefore,
-          score,
-          username: result.player.username,
-        }
-      })
+    // The return order matters because it already determines the order of
+    // players in the post-round screen
+    return [
+      // ----- CORRECT results
+      ...correctResults
+        .sort((a, b) => a.player._inputTimestamp > b.player._inputTimestamp ? -1 : 1)
+        .map((result, index) => {
+          // Calculate score based on results
+          const totalAnswers = result.results.length
+          const correctAnswers = result.results.filter(r => r.correct).length
+          // Additional points
+          // TODO: make better
+          const bonusScore = BASE_POINTS * (correctAnswers / totalAnswers)
 
-    const withoutPoints = formattedResults
-      .filter(p => !p.result)
-      .map(result => ({
+          const score = (index + 1) * BASE_POINTS + bonusScore
+
+          const scoreBefore = result.player.score
+          result.player.score += score
+
+          return {
+            scoreBefore,
+            score,
+            username: result.player.username,
+          }
+        }),
+      // ----- WRONG results
+      ...wrongResults.map(result => ({
         scoreBefore: result.player.score,
         score: result.player.score,
         username: result.player.username,
-      }))
-
-    return [
-      ...withPoints,
-      ...withoutPoints,
+      })),
     ]
   }
 
   // Compare player input to the round answers
-  function validateAnswer(player: Player, round: RoundTypes): boolean {
+  function validateAnswer(player: Player, round: RoundTypes): RoundAnswer[] {
     if (round.type === 'fill-the-quote') {
       const input = player._input as Record<number, string> | null
 
       if (!input)
-        return false
+        return [{ input: null, correct: false }]
 
-      return Object.entries(input).every(([index, value]) => {
-        if (isNil(value))
-          return false
-
-        return round.words[Number(index)].toLowerCase() === value.toLowerCase()
+      return Object.entries(input).map(([index, value]) => {
+        return {
+          input: value,
+          correct: value ? round.words[Number(index)].toLowerCase() === value.toLowerCase() : false,
+        }
       })
     }
 
-    if (isNil(player._input))
-      return false
-
-    return player._input.toLowerCase() === round.answer.toLowerCase()
+    return [{
+      input: player._input,
+      correct: player?._input?.toLowerCase() === round.answer.toLowerCase() ?? false,
+    }]
   }
 
   /**

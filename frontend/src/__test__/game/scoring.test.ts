@@ -15,7 +15,10 @@ describe('Iterate over provided answers and assign poinst to plays', () => {
       _input: 'tmtu',
     }
     const result = game.validateAnswer(player, MOCK_ROUND_QUOTEE)
-    expect(result).toBeTruthy()
+    expect(result).toStrictEqual([{
+      input: 'tmtu',
+      correct: true,
+    }])
   })
 
   test('Validate complex answer', () => {
@@ -24,11 +27,20 @@ describe('Iterate over provided answers and assign poinst to plays', () => {
       ...MOCK_PLAYER,
       _input: {
         4: 'what',
-        10: 'what',
+        10: 'that',
       },
     }
     const result = game.validateAnswer(player, MOCK_ROUND_FILL)
-    expect(result).toBeTruthy()
+    expect(result).toStrictEqual([
+      {
+        input: 'what',
+        correct: true,
+      },
+      {
+        input: 'that',
+        correct: false,
+      },
+    ])
   })
 
   test('Validate player answers', () => {
