@@ -9,8 +9,6 @@ import type { Quote } from '../types/quote-types'
 import { useUser } from './user'
 
 // TODO properly document
-// TODO sort exports
-// TODO figure out formula for counting points
 // TODO Add round history, per player
 //          - save their answer (and if it was correct)
 //          - how many points they goet
@@ -27,6 +25,9 @@ import { useUser } from './user'
 // TODO Split all defaults (mainly in reset functions) into separate exported variables or defaults.ts file
 // TODO in endRound(); detect if it was the last round and perform game end func
 
+// TODO support for validating multiple answers (validateAnswer should not
+// return a simple boolean). Also save user inputs
+
 export const difficultyOptions: Difficulty[] = ['Easy', 'Medium', 'Hard']
 export const gamemodeOptions = [
   { value: 'guess-the-quotee', label: 'Guess The Quotee' },
@@ -39,7 +40,7 @@ const gamemodeAmount = Object.keys(gamemodeOptions).length
 export const useGame = defineStore('game', () => {
   // Constants
   const BASE_POINTS = 100
-  const TRANSITION_DELAY_S = 15
+  const TRANSITION_DELAY_S = 8
 
   // Manage history
   const state = reactive<GameState>({} as GameState)
@@ -361,7 +362,11 @@ export const useGame = defineStore('game', () => {
   // Compare player input to the round answers
   function validateAnswer(player: Player, round: RoundTypes): boolean {
     if (round.type === 'fill-the-quote') {
-      const input = player._input as Record<number, string>
+      const input = player._input as Record<number, string> | null
+
+      if (!input)
+        return false
+
       return Object.entries(input).every(([index, value]) => {
         if (isNil(value))
           return false

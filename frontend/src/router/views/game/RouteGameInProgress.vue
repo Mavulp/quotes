@@ -4,6 +4,7 @@ import Countdown from '@chenfengyuan/vue-countdown'
 import dayjs from 'dayjs'
 import { computed, onBeforeMount, onMounted, ref, watch } from 'vue'
 import type { Component } from 'vue'
+import { whenever } from '@vueuse/shared'
 import { delay, padTo2Digits } from '../../../bin/utils'
 import { gamemodeOptions, useGame } from '../../../store/game'
 import PlayerIngame from '../../../components/game/PlayerIngame.vue'
@@ -14,6 +15,7 @@ import GuessTheQuotee from '../../../components/game/fragments/GuessTheQuotee.vu
 import type { Gamemode, RoundPoints } from '../../../types/game-types'
 import Modal from '../../../components/Modal.vue'
 import ModalRoundEnd from '../../../components/game/ModalRoundEnd.vue'
+import ModalGameEnd from '../../../components/game/ModalGameEnd.vue'
 
 const components: Record<Gamemode, Component> = {
   'fill-the-quote': FillTheQuote,
@@ -37,26 +39,16 @@ const gamemodeName = computed(() => gamemodeOptions.find(option => option.value 
 /**
  * Round ended
  */
-watch(() => game.arePlayersReady, endRound)
+whenever(() => game.arePlayersReady, endRound)
 
 const timer = ref<number>()
-
 function resetTimer() {
   timer.value = dayjs.utc().add(round.value.time, 'second').diff(Date.now())
 }
-
 onBeforeMount(resetTimer)
 
 const storedResults = ref<RoundPoints[]>()
-
 function endRound() {
-  // This check is here because when timer runs out, it will try to call this method even
-  // if the round end has already been called before
-  if (game.state.stage === 'transition')
-    return
-
-  game.state.stage = 'transition'
-
   // 1. Count all player score
   const results = game.validatePlayerAnswers(game.players, round.value)
   storedResults.value = results
@@ -65,11 +57,16 @@ function endRound() {
   game.addHistoryEntry(round.value, results)
 
   // End of the game, perform different logic
-  // TODO: enable later
-  // if (game.state.roundIndex === game.state.quotePool.size - 1) {
-  //   console.log('GAME ENDED LOL')
-  //   return
-  // }
+  if (game.state.roundIndex === game.state.quotePool.size - 1) {
+    game.state.stage = 'ended'
+    game.state.endTime = Date.now()
+    console.log('GAME ENDED LOL')
+
+    game.resetPlayersAtRoundEnd()
+    return
+  }
+
+  game.state.stage = 'transition'
 
   // 3. Display result modal
   // Show modal with results and wait the transition delay
@@ -88,17 +85,20 @@ function endRound() {
 
 <template>
   <div class="game-running">
-    <Transition name="fade" mode="out-in">
-      <Modal v-if="game.state.stage === 'transition' && storedResults" :disable-close-button="true">
-        <ModalRoundEnd :results="storedResults" />
-      </Modal>
-    </Transition>
+    <Modal v-if="game.state.stage === 'transition' && storedResults" :disable-close-button="true">
+      <ModalRoundEnd :results="storedResults" />
+    </Modal>
+
+    <Modal v-if="game.state.stage === 'ended'">
+      <ModalGameEnd />
+    </Modal>
 
     <div class="game-container">
       <div class="header">
         <strong class="title highlight">{{ gamemodeName?.label }}</strong>
         <strong class="title">Round {{ game.state.roundIndex + 1 }} / {{ game.state.quotePool.size }}</strong>
         <Countdown
+          v-if="game.state.stage === 'running'"
           v-slot="{ minutes, seconds }"
           :time="timer"
           @end="endRound()"

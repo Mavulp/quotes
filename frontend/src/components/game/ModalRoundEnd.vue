@@ -28,7 +28,7 @@ const timer = dayjs.utc().add(game.TRANSITION_DELAY_S - 1, 'second').diff(Date.n
               // Considering PlayerInagme only uses score and username
               //we can type cast it here
             } as Player"
-            :difference="item.score - item.scoreBefore"
+            :difference="item.score === item.scoreBefore ? 0 : item.score - item.scoreBefore"
           />
         </template>
       </div>
@@ -38,7 +38,7 @@ const timer = dayjs.utc().add(game.TRANSITION_DELAY_S - 1, 'second').diff(Date.n
       <p>
         Next round in
         <Countdown v-slot="{ seconds }" :time="timer">
-          {{ seconds }}
+          {{ seconds + 1 }}
         </Countdown> seconds
       </p>
 

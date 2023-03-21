@@ -21,4 +21,9 @@
     background-color: var(--color-bg-light-hover);
     color: var(--color-green);
   }
+
+  &.red {
+    background-color: var(--color-bg-light-hover);
+    color: var(--color-red);
+  }
 }

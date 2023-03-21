@@ -1,4 +1,5 @@
 <script setup lang='ts'>
+import { isNil } from 'lodash'
 import { computed } from 'vue'
 import { getRndGradient } from '../../bin/color'
 import { useUser } from '../../store/user'
@@ -27,7 +28,11 @@ const user = computed(() => users.users.find(u => u.username === props.player.us
     <strong>
       {{ props.player.score }}
     </strong>
-    <span v-if="props.difference && props.difference > 0" class="tag green">
+    <span
+      v-if="!isNil(props.difference)"
+      class="tag"
+      :class="[props.difference === 0 ? 'red' : 'green']"
+    >
       +{{ props.difference }}
     </span>
   </div>
