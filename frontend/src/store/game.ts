@@ -8,7 +8,6 @@ import { arrayIntoChunks, getRanMinMax } from '../bin/utils'
 import type { Quote } from '../types/quote-types'
 import { useUser } from './user'
 
-// TODO properly document
 // TODO Add round history, per player
 //          - save their answer (and if it was correct)
 //          - how many points they goet
@@ -23,7 +22,19 @@ import { useUser } from './user'
 // Filtering quotes down crashes
 
 // FIXME
-// Sometimes starting a game freezes the browser (most likely a while loop problem)
+// Sometimes starting a game freezes the browser (most likely a while loop
+// problem)
+
+// FIXME
+// score calculation is wrong
+// do NOT give bonus points if the amount of answers === 1
+// before score goes to minus sometimes
+
+// TODO
+// Show what players have answered in transitioning screen
+
+// TODO
+// Make transitioning screen timer dynamic based on amount of players
 
 // TODO Split all defaults (mainly in reset functions) into separate exported variables or defaults.ts file
 // TODO in endRound(); detect if it was the last round and perform game end func
@@ -73,6 +84,7 @@ export const useGame = defineStore('game', () => {
       endTime: -1,
       history: [],
     })
+    players.value = []
 
     addPlayer(admin)
   }
@@ -317,7 +329,7 @@ export const useGame = defineStore('game', () => {
 
   // Iterates over players and checks their input against
   // REVIEW Should validation also store which answers players got right and wrong? (with attached inputs)
-  function validatePlayerAnswers(players: Player[], round: RoundTypes) {
+  function validatePlayerAnswers(players: Player[], round: RoundTypes): RoundResults[] {
     // const round = state.transformedPool[state.roundIndex]
     const formattedResults = players
       // 1. Iterate over players and check answers as correct or incorrect
@@ -353,6 +365,7 @@ export const useGame = defineStore('game', () => {
             scoreBefore,
             score,
             username: result.player.username,
+            answers: result.results,
           }
         }),
       // ----- WRONG results
@@ -360,6 +373,7 @@ export const useGame = defineStore('game', () => {
         scoreBefore: result.player.score,
         score: result.player.score,
         username: result.player.username,
+        answers: result.results,
       })),
     ]
   }

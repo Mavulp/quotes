@@ -5,6 +5,7 @@ import dayjs from 'dayjs'
 import { computed, onBeforeMount, onMounted, ref, watch } from 'vue'
 import type { Component } from 'vue'
 import { whenever } from '@vueuse/shared'
+import { useRouter } from 'vue-router'
 import { delay, padTo2Digits } from '../../../bin/utils'
 import { gamemodeOptions, useGame } from '../../../store/game'
 import PlayerIngame from '../../../components/game/PlayerIngame.vue'
@@ -12,10 +13,9 @@ import PlayerIngame from '../../../components/game/PlayerIngame.vue'
 import FillTheQuote from '../../../components/game/fragments/FillTheQuote.vue'
 import GuessTheAuthor from '../../../components/game/fragments/GuessTheAuthor.vue'
 import GuessTheQuotee from '../../../components/game/fragments/GuessTheQuotee.vue'
-import type { Gamemode, RoundPoints } from '../../../types/game-types'
+import type { Gamemode, RoundResults } from '../../../types/game-types'
 import Modal from '../../../components/Modal.vue'
 import ModalRoundEnd from '../../../components/game/ModalRoundEnd.vue'
-import ModalGameEnd from '../../../components/game/ModalGameEnd.vue'
 
 const components: Record<Gamemode, Component> = {
   'fill-the-quote': FillTheQuote,
@@ -23,6 +23,7 @@ const components: Record<Gamemode, Component> = {
   'guess-the-quotee': GuessTheQuotee,
 }
 
+const router = useRouter()
 const game = useGame()
 
 /**
@@ -47,7 +48,7 @@ function resetTimer() {
 }
 onBeforeMount(resetTimer)
 
-const storedResults = ref<RoundPoints[]>()
+const storedResults = ref<RoundResults[]>()
 function endRound() {
   // 1. Count all player score
   const results = game.validatePlayerAnswers(game.players, round.value)
@@ -60,9 +61,12 @@ function endRound() {
   if (game.state.roundIndex === game.state.quotePool.size - 1) {
     game.state.stage = 'ended'
     game.state.endTime = Date.now()
-    console.log('GAME ENDED LOL')
 
     game.resetPlayersAtRoundEnd()
+    router.push({
+      name: 'RouteGameEnded',
+      params: { id: game.state.gameId },
+    })
     return
   }
 
@@ -87,10 +91,6 @@ function endRound() {
   <div class="game-running">
     <Modal v-if="game.state.stage === 'transition' && storedResults" :disable-close-button="true">
       <ModalRoundEnd :results="storedResults" />
-    </Modal>
-
-    <Modal v-if="game.state.stage === 'ended'">
-      <ModalGameEnd />
     </Modal>
 
     <div class="game-container">

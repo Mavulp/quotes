@@ -2,11 +2,11 @@
 import Countdown from '@chenfengyuan/vue-countdown'
 import dayjs from 'dayjs'
 import { Player } from '../../types/game-types'
-import type { RoundPoints } from '../../types/game-types'
+import type { RoundResults } from '../../types/game-types'
 import { useGame } from '../../store/game'
 import PlayerIngame from './PlayerIngame.vue'
 
-const props = defineProps<{ results: RoundPoints[] }>()
+const props = defineProps<{ results: RoundResults[] }>()
 const game = useGame()
 
 const timer = dayjs.utc().add(game.TRANSITION_DELAY_S - 1, 'second').diff(Date.now())

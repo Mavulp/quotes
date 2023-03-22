@@ -1,3 +1,26 @@
 // Vitest Snapshot v1
 
-exports[`Iterate over provided answers and assign poinst to plays > Validate player answers 1`] = `undefined`;
+exports[`Iterate over provided answers and assign poinst to plays > Validate player answers 1`] = `
+[
+  {
+    "score": 200,
+    "scoreBefore": 0,
+    "username": "Jeniffer",
+  },
+  {
+    "score": 300,
+    "scoreBefore": 50,
+    "username": "Anna",
+  },
+  {
+    "score": 200,
+    "scoreBefore": 200,
+    "username": "Pamela",
+  },
+  {
+    "score": 100,
+    "scoreBefore": 100,
+    "username": "Daniel",
+  },
+]
+`;
