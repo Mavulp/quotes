@@ -23,14 +23,17 @@ const user = computed(() => users.users.find(u => u.username === props.player.us
       </div>
     </div>
 
-    <span>{{ user.username }}</span>
+    <div class="game-context">
+      <span>{{ user.username }}</span>
+      <slot />
+    </div>
 
     <strong>
       {{ props.player.score }}
     </strong>
     <span
       v-if="!isNil(props.difference)"
-      class="tag"
+      class="tag small"
       :class="[props.difference === 0 ? 'red' : 'green']"
     >
       +{{ props.difference }}

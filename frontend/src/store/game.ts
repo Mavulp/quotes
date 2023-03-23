@@ -31,13 +31,13 @@ import { useUser } from './user'
 // before score goes to minus sometimes
 
 // TODO
-// Show what players have answered in transitioning screen
-
-// TODO
 // Make transitioning screen timer dynamic based on amount of players
 
 // TODO Split all defaults (mainly in reset functions) into separate exported variables or defaults.ts file
 // TODO in endRound(); detect if it was the last round and perform game end func
+
+// FIXME
+// When comparing answers, ignore punctuation & special characters
 
 export const difficultyOptions: Difficulty[] = ['Easy', 'Medium', 'Hard']
 export const gamemodeOptions = [

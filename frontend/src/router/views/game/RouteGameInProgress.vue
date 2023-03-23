@@ -49,6 +49,7 @@ function resetTimer() {
 onBeforeMount(resetTimer)
 
 const storedResults = ref<RoundResults[]>()
+
 function endRound() {
   // 1. Count all player score
   const results = game.validatePlayerAnswers(game.players, round.value)

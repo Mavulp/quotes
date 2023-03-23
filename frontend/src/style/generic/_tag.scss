@@ -17,13 +17,19 @@
     color: var(--color-highlight);
   }
 
+  &.small {
+    height: 24px;
+    line-height: 22px;
+    padding: 0 8px;
+  }
+
   &.green {
-    background-color: var(--color-bg-light-hover);
+    border: 1px solid var(--color-green);
     color: var(--color-green);
   }
 
   &.red {
-    background-color: var(--color-bg-light-hover);
+    border: 1px solid var(--color-red);
     color: var(--color-red);
   }
 }
