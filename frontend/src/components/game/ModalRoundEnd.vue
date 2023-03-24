@@ -64,13 +64,15 @@ const timer = dayjs.utc().add(game.TRANSITION_DELAY_S - 1, 'second').diff(Date.n
           >
             <div class="game-user-answer">
               <span>Answered:</span>
-              <p>
+              <span v-for="answer in item.answers" :key="answer.input" :class="[answer.correct ? 'green' : 'red']">
+                {{ answer.input }}
+              </span>
+              <!-- <p>
                 {{ item.answers.length > 1
-                  // ? item.answers.map((answer, index) => `${index + 1}. ${answer.input}&nbsp;`).join(' ')
                   ? item.answers.map((answer, index) => `'${answer.input}'&nbsp;`).join(' ')
                   : item.answers[0].input
                 }}
-              </p>
+              </p> -->
             </div>
           </PlayerIngame>
         </div>

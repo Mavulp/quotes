@@ -26,6 +26,10 @@ import { useUser } from './user'
 // problem)
 
 // FIXME
+// Show round transition modal even in last round (just change the "next round
+// begins in x" text)
+
+// FIXME
 // score calculation is wrong
 // do NOT give bonus points if the amount of answers === 1
 // before score goes to minus sometimes
@@ -37,7 +41,10 @@ import { useUser } from './user'
 // TODO in endRound(); detect if it was the last round and perform game end func
 
 // FIXME
-// When comparing answers, ignore punctuation & special characters
+// Tweak scoring with jokler's help
+
+// TODO
+// Color answer red or green based on if it's correct or not
 
 export const difficultyOptions: Difficulty[] = ['Easy', 'Medium', 'Hard']
 export const gamemodeOptions = [

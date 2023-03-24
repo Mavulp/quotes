@@ -21,7 +21,7 @@ function initCreateRoom() {
 </script>
 
 <template>
-  <div>
+  <div class="quote-container">
     <button class="button btn-highlight btn-large" @click="initCreateRoom()">
       Create a room!
     </button>

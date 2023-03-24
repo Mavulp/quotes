@@ -139,15 +139,29 @@
 
       span {
         // @include font(400);
-        font-weight: 400 !important;
+        font-weight: 400;
         font-size: 1.4rem;
         color: var(--color-text-lighter);
+
+        &:not(:first-child) {
+          &:after:not(:only-child) {
+            content: ", ";
+          }
+
+          &.red {
+            color: var(--color-red);
+          }
+
+          &.green {
+            color: var(--color-green);
+          }
+        }
       }
 
-      p {
-        font-size: 1.4rem;
-        color: var(--color-text);
-      }
+      // p {
+      //   font-size: 1.4rem;
+      //   color: var(--color-text);
+      // }
     }
   }
 

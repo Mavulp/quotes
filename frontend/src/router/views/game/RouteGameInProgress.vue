@@ -89,36 +89,38 @@ function endRound() {
 </script>
 
 <template>
-  <div class="game-running">
-    <Modal v-if="game.state.stage === 'transition' && storedResults" :disable-close-button="true">
-      <ModalRoundEnd :results="storedResults" />
-    </Modal>
+  <div class="quote-container">
+    <div class="game-running">
+      <Modal v-if="game.state.stage === 'transition' && storedResults" :disable-close-button="true">
+        <ModalRoundEnd :results="storedResults" />
+      </Modal>
 
-    <div class="game-container">
-      <div class="header">
-        <strong class="title highlight">{{ gamemodeName?.label }}</strong>
-        <strong class="title">Round {{ game.state.roundIndex + 1 }} / {{ game.state.quotePool.size }}</strong>
-        <Countdown
-          v-if="game.state.stage === 'running'"
-          v-slot="{ minutes, seconds }"
-          :time="timer"
-          @end="endRound()"
-        >
-          {{ padTo2Digits(minutes) }}:{{ padTo2Digits(seconds) }}
-        </Countdown>
-      </div>
+      <div class="game-container">
+        <div class="header">
+          <strong class="title highlight">{{ gamemodeName?.label }}</strong>
+          <strong class="title">Round {{ game.state.roundIndex + 1 }} / {{ game.state.quotePool.size }}</strong>
+          <Countdown
+            v-if="game.state.stage === 'running'"
+            v-slot="{ minutes, seconds }"
+            :time="timer"
+            @end="endRound()"
+          >
+            {{ padTo2Digits(minutes) }}:{{ padTo2Digits(seconds) }}
+          </Countdown>
+        </div>
 
-      <div class="fragment">
-        <component
-          :is="components[round.type]"
-          :round="round"
-        />
+        <div class="fragment">
+          <component
+            :is="components[round.type]"
+            :round="round"
+          />
+        </div>
       </div>
-    </div>
-    <div>
-      <div class="game-players">
-        <strong class="title highlight">Players</strong>
-        <PlayerIngame v-for="player in sortedPlayers" :key="player.username" class="in-game" :player="player" />
+      <div>
+        <div class="game-players">
+          <strong class="title highlight">Players</strong>
+          <PlayerIngame v-for="player in sortedPlayers" :key="player.username" class="in-game" :player="player" />
+        </div>
       </div>
     </div>
   </div>
