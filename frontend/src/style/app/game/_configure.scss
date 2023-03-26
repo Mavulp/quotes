@@ -193,11 +193,19 @@
     .image-wrap {
       width: 24px;
       height: 24px;
+
+      div {
+        font-size: 1.8rem;
+      }
     }
 
     span {
-      flex: 1;
       font-size: 1.4rem;
+      flex: 1;
+    }
+
+    .game-context {
+      flex: 1;
     }
   }
 

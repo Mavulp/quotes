@@ -7,6 +7,7 @@ import type { ValueOf } from '../bin/utils'
 import { arrayIntoChunks, getRanMinMax } from '../bin/utils'
 import type { Quote } from '../types/quote-types'
 import { useUser } from './user'
+import { useToast } from './toast'
 
 // TODO Add round history, per player
 //          - save their answer (and if it was correct)
@@ -54,7 +55,7 @@ const gamemodeAmount = Object.keys(gamemodeOptions).length
 export const useGame = defineStore('game', () => {
   // Constants
   const BASE_POINTS = 100
-  const TRANSITION_DELAY_S = 8 // make at least 16 in the complete game
+  const TRANSITION_DELAY_S = 100000 // make at least 16 in the complete game
 
   // Manage history
   const state = reactive<GameState>({} as GameState)
@@ -90,6 +91,15 @@ export const useGame = defineStore('game', () => {
     players.value = []
 
     addPlayer(admin)
+
+    // FIXME
+    // testing stuff, remove
+    const user = useUser()
+    for (const player of user.users) {
+      if (player.username === admin)
+        continue
+      addPlayer(player.username)
+    }
   }
 
   function resetConfig() {
@@ -104,6 +114,16 @@ export const useGame = defineStore('game', () => {
   }
 
   function addPlayer(username: string) {
+    if (players.value.length >= cfg.maxPlayerCount) {
+      const toast = useToast()
+      toast.push({
+        type: 'error',
+        message: 'Too many players in the room. Increase room size or remove someone else.',
+      })
+
+      return
+    }
+
     players.value.push({
       username,
       score: 0,

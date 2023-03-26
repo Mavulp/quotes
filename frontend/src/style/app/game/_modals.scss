@@ -89,23 +89,29 @@
   }
 
   .game-user-wrap {
+    &:first-child .game-user-wrap-inner .rank {
+      @include font(700);
+      font-size: 2.6rem;
+      color: var(--color-highlight);
+    }
+
+    &:nth-of-type(2) .game-user-wrap-inner .rank {
+      font-size: 2.2rem;
+      color: var(--color-text);
+    }
+
+    &:nth-of-type(3) .game-user-wrap-inner .rank {
+      font-size: 1.8rem;
+      color: var(--color-text);
+    }
+
     .game-user-wrap-inner {
       @include flex(4px, nowrap);
       // @include grid(4px, 32px 1fr);
       align-items: center;
 
-      &:first-of-type .rank {
-        @include font(700);
-        font-size: 2.2rem;
-        color: var(--color-highlight);
-      }
-
-      &:nth-of-type(2) .rank {
-        font-size: 1.8rem;
-        color: var(--color-text);
-      }
-
       .rank {
+        width: 28px;
         font-size: 1.6rem;
         color: var(--color-text-light);
       }

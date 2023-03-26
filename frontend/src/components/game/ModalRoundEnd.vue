@@ -49,32 +49,38 @@ const timer = dayjs.utc().add(game.TRANSITION_DELAY_S - 1 + game.players.length,
         </template>
       </div>
 
-      <div v-for="(item, index) in props.results" :key="item.username" class="game-user-wrap">
-        <div class="game-user-wrap-inner">
-          <span class="rank">#{{ index + 1 }}</span>
-          <PlayerIngame
-            class="in-modal"
-            :player="{
-              score: item.score,
-              username: item.username,
+      <div class="player-list">
+        <div v-for="(item, index) in props.results" :key="item.username" class="game-user-wrap">
+          <div class="game-user-wrap-inner">
+            <span class="rank">#{{ index + 1 }}</span>
+            <PlayerIngame
+              class="in-modal"
+              :player="{
+                score: item.score,
+                username: item.username,
               // Considering PlayerInagme only uses score and username
               //we can type cast it here
-            } as Player"
-            :difference="item.score === item.scoreBefore ? 0 : item.score - item.scoreBefore"
-          >
-            <div class="game-user-answer">
-              <span>Answered:</span>
-              <span v-for="answer in item.answers" :key="answer.input" :class="[answer.correct ? 'green' : 'red']">
-                {{ answer.input }}
-              </span>
+              } as Player"
+              :difference="item.score === item.scoreBefore ? 0 : item.score - item.scoreBefore"
+            >
+              <div class="game-user-answer">
+                <span v-if="item.answers.every(a => !a.input)">No answer</span>
+                <template v-else>
+                  <span>Answered:</span>
+                  <span v-for="answer in item.answers" :key="answer.input" :class="[answer.correct ? 'green' : 'red']">
+                    {{ answer.input }}
+                  </span>
+                </template>
+
               <!-- <p>
                 {{ item.answers.length > 1
                   ? item.answers.map((answer, index) => `'${answer.input}'&nbsp;`).join(' ')
                   : item.answers[0].input
                 }}
               </p> -->
-            </div>
-          </PlayerIngame>
+              </div>
+            </PlayerIngame>
+          </div>
         </div>
       </div>
       <hr>
