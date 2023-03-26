@@ -112,13 +112,16 @@ async function startGame() {
 
         <div class="col-content">
           <div class="col-title">
-            <strong>Quote Pool</strong>
+            <strong>Quote Pool ({{ quote.getFilteredQuotes.length }})</strong>
             <InputCheckbox v-model:check="game.cfg.useCustomPool" label="Customize" class="reversed button btn-white" />
           </div>
 
           <QuoteFilters v-if="game.cfg.useCustomPool" />
-          <p v-else>
-            Using all ({{ quote.quotes.length }}) existing quotes.
+          <p
+            v-if="quote.getFilteredQuotes.length < game.cfg.rounds"
+            class="setup-error"
+          >
+            The amount of quotes in the pool is lesser than the amount of rounds expected. Please update the filters to yield more quotes or decrease the amount of rounds to <b>{{ quote.getFilteredQuotes.length }}</b> or less.
           </p>
         </div>
 
@@ -149,7 +152,12 @@ async function startGame() {
           <template v-else>
             <div class="content-cell">
               <label>Rounds</label>
-              <InputText v-model:value="game.cfg.rounds" type="number" min="1" />
+              <InputText
+                v-model:value="game.cfg.rounds"
+                :class="{ 'has-error': quote.getFilteredQuotes.length < game.cfg.rounds }"
+                type="number"
+                min="1"
+              />
             </div>
             <div class="content-cell">
               <label>Time limit per round (seconds)</label>
@@ -159,17 +167,9 @@ async function startGame() {
         </div>
 
         <div class="col-content">
-          <!-- Game summary -->
-          <ul>
-            <li>Total amount of rounds</li>
-            <li>Total play time (+ delay seconds between rounds)</li>
-            <li>Amount of players</li>
-          </ul>
-          <br><br>
           <button class="button btn-highlight btn-full btn-large" @click="startGame()">
             {{ isStarting ? `Starting in ${countdown}` : 'Start Game' }}
           </button>
-          <br><br>
         </div>
       </div>
     </div>

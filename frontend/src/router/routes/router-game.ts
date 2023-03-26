@@ -14,8 +14,9 @@ export default [
       requiresAuth: true,
     },
     redirect: {
-      name: 'RouteGameEnded',
-      params: { id: 'whatever' },
+      name: 'RouteGameCreateRoom',
+      // name: 'RouteGameEnded',
+      // params: { id: 'whatever' },
     },
     children: [
       {

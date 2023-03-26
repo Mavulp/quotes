@@ -9,7 +9,7 @@ import PlayerIngame from './PlayerIngame.vue'
 const props = defineProps<{ results: RoundResults[] }>()
 const game = useGame()
 const round = game.state.transformedPool[game.state.roundIndex]
-const timer = dayjs.utc().add(game.TRANSITION_DELAY_S - 1, 'second').diff(Date.now())
+const timer = dayjs.utc().add(game.TRANSITION_DELAY_S - 1 + game.players.length, 'second').diff(Date.now())
 </script>
 
 <template>

@@ -19,13 +19,6 @@ import { useUser } from './user'
 // Exclude quotes which are less than 4 words long and or contain a url for fill-the-quote
 
 // FIXME
-// Filtering quotes down crashes
-
-// FIXME
-// Sometimes starting a game freezes the browser (most likely a while loop
-// problem)
-
-// FIXME
 // Show round transition modal even in last round (just change the "next round
 // begins in x" text)
 
@@ -45,6 +38,9 @@ import { useUser } from './user'
 
 // TODO
 // Color answer red or green based on if it's correct or not
+
+// TODO
+//  before game begins, show the time estimate of the whole game (above or under the "start game" button)
 
 export const difficultyOptions: Difficulty[] = ['Easy', 'Medium', 'Hard']
 export const gamemodeOptions = [
@@ -170,7 +166,7 @@ export const useGame = defineStore('game', () => {
   function createQuotePool() {
     const quotes = useQuote()
     //
-    const quoteCount = cfg.useCustomPool
+    const quoteCount = cfg.useCustomComposition
       ? fragments.value.reduce((count, fragment) => count += fragment.rounds, 0)
       : cfg.rounds
 
@@ -178,8 +174,11 @@ export const useGame = defineStore('game', () => {
     const quoteIdPool: Set<number> = new Set()
 
     while (quoteIdPool.size < quoteCount) {
-      const index = getRanMinMax(0, quotes.quotes.length)
-      const quote = quotes.quotes[index]
+      const index = getRanMinMax(0, quotes.getFilteredQuotes.length)
+      if (quoteIdPool.has(index))
+        continue
+
+      const quote = quotes.getFilteredQuotes[index]
       quoteIdPool.add(quote.id)
     }
 

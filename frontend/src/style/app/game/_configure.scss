@@ -162,6 +162,12 @@
           }
         }
       }
+
+      .setup-error {
+        padding-top: 10px;
+        font-size: 1.4rem;
+        color: var(--color-red);
+      }
     }
   }
 }

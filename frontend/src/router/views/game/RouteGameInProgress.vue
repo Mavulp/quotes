@@ -57,33 +57,32 @@ function endRound() {
 
   // 2. Save round to history
   game.addHistoryEntry(round.value, results)
-
-  // End of the game, perform different logic
-  if (game.state.roundIndex === game.state.quotePool.size - 1) {
-    game.state.stage = 'ended'
-    game.state.endTime = Date.now()
-
-    game.resetPlayersAtRoundEnd()
-    router.push({
-      name: 'RouteGameEnded',
-      params: { id: game.state.gameId },
-    })
-    return
-  }
-
   game.state.stage = 'transition'
 
   // 3. Display result modal
   // Show modal with results and wait the transition delay
-  delay(1000 * game.TRANSITION_DELAY_S)
+  delay(1000 * game.TRANSITION_DELAY_S + game.players.length)
     .then(() => {
-      // Execute all code which goes to the next round
-      // 4. Reset everything and start a new round
-      game.resetPlayersAtRoundEnd()
-      resetTimer()
-      game.state.roundIndex++
-      game.state.stage = 'running'
-      storedResults.value = undefined
+      // End of the game, perform different logic
+      if (game.state.roundIndex === game.state.quotePool.size - 1) {
+        game.state.stage = 'ended'
+        game.state.endTime = Date.now()
+
+        game.resetPlayersAtRoundEnd()
+        router.push({
+          name: 'RouteGameEnded',
+          params: { id: game.state.gameId },
+        })
+      }
+      else {
+        // Execute all code which goes to the next round
+        // 4. Reset everything and start a new round
+        game.resetPlayersAtRoundEnd()
+        resetTimer()
+        game.state.roundIndex++
+        game.state.stage = 'running'
+        storedResults.value = undefined
+      }
     })
 }
 </script>

@@ -1,7 +1,6 @@
 import { shuffle } from 'lodash'
 import { defineStore } from 'pinia'
 import { get } from '../bin/fetch'
-// import type { FetchError } from '../types/fetch-types'
 import type { Quote } from '../types/quote-types'
 import { useFilters } from './filters'
 import { useLoading } from './loading'
