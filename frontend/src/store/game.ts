@@ -58,7 +58,7 @@ const gamemodeAmount = Object.keys(gamemodeOptions).length
 export const useGame = defineStore('game', () => {
   // Constants
   const BASE_POINTS = 100
-  const TRANSITION_DELAY_S = 8
+  const TRANSITION_DELAY_S = 8 // make at least 16 in the complete game
 
   // Manage history
   const state = reactive<GameState>({} as GameState)

@@ -1,2 +1,32 @@
 .game-end {
+  h1 {
+    margin-bottom: 16px;
+  }
+
+  .game-information {
+    @include flex(32px);
+
+    .cell {
+      padding-right: 32px;
+      border-right: 1px solid var(--color-border);
+
+      &.last {
+        border-right: 0;
+        padding-right: 0;
+      }
+    }
+
+    strong {
+      @include font(600);
+      display: block;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      color: var(--color-text-light);
+    }
+
+    p {
+      font-size: 1.6rem;
+    }
+  }
 }
