@@ -13,12 +13,14 @@ import { useQuote } from '../../../store/quote'
 import { useFilters } from '../../../store/filters'
 import Fragment from '../../../components/game/Fragment.vue'
 import { delay } from '../../../bin/utils'
+import { useUser } from '../../../store/user'
 
 const quote = useQuote()
 const toast = useToast()
 const game = useGame()
 const filters = useFilters()
 const router = useRouter()
+const user = useUser()
 
 function inviteUser() {
   toast.push({
@@ -92,8 +94,8 @@ async function startGame() {
 
       <div class="col col-configure">
         <div class="col-header">
-          <strong>Gamae Settings</strong>
-          <button class="button btn-white" @click="resetGameSettings()">
+          <strong>Configuration</strong>
+          <button v-if="game.isMeAdmin" class="button btn-white" @click="resetGameSettings()">
             Reset
           </button>
         </div>
@@ -101,34 +103,49 @@ async function startGame() {
         <div class="col-content">
           <div class="content-cell">
             <label>Max players</label>
-            <InputText v-model:value="game.cfg.maxPlayerCount" type="number" min="2" />
+            <InputText v-if="game.isMeAdmin" v-model:value="game.cfg.maxPlayerCount" type="number" min="2" />
+            <strong v-else>{{ game.cfg.maxPlayerCount }}</strong>
           </div>
+
+          <br v-if="!game.isMeAdmin">
 
           <div class="content-cell">
             <label>Game Difficulty</label>
-            <InputSelect v-model:selected="game.cfg.difficulty" :options="difficultyOptions" />
+            <InputSelect v-if="game.isMeAdmin" v-model:selected="game.cfg.difficulty" :options="difficultyOptions" />
+            <strong v-else>{{ game.cfg.difficulty }}</strong>
           </div>
         </div>
 
         <div class="col-content">
-          <div class="col-title">
-            <strong>Quote Pool ({{ quote.getFilteredQuotes.length }})</strong>
-            <InputCheckbox v-model:check="game.cfg.useCustomPool" label="Customize" class="reversed button btn-white" />
-          </div>
+          <template v-if="game.isMeAdmin">
+            <div class="col-title">
+              <strong>Quote Pool ({{ quote.getFilteredQuotes.length }})</strong>
+              <InputCheckbox v-model:check="game.cfg.useCustomPool" label="Customize" class="reversed button btn-white" />
+            </div>
 
-          <QuoteFilters v-if="game.cfg.useCustomPool" />
-          <p
-            v-if="quote.getFilteredQuotes.length < game.cfg.rounds"
-            class="setup-error"
-          >
-            The amount of quotes in the pool is lesser than the amount of rounds expected. Please update the filters to yield more quotes or decrease the amount of rounds to <b>{{ quote.getFilteredQuotes.length }}</b> or less.
-          </p>
+            <QuoteFilters v-if="game.cfg.useCustomPool" />
+            <p
+              v-if="quote.getFilteredQuotes.length < game.cfg.rounds"
+              class="setup-error"
+            >
+              The amount of quotes in the pool is lesser than the amount of rounds expected. Please update the filters to yield more quotes or decrease the amount of rounds to <b>{{ quote.getFilteredQuotes.length }}</b> or less.
+            </p>
+          </template>
+          <template v-else>
+            <div class="col-title">
+              <strong>Quote Pool</strong>
+            </div>
+            <div class="content-cell">
+              <label>Amount of quotes the game will pick from</label>
+              <strong>{{ quote.getFilteredQuotes.length }}</strong>
+            </div>
+          </template>
         </div>
 
         <div class="col-content">
           <div class="col-title">
             <strong>Composition</strong>
-            <InputCheckbox v-model:check="game.cfg.useCustomComposition" label="Customize" class="reversed button btn-white" />
+            <InputCheckbox v-if="game.isMeAdmin" v-model:check="game.cfg.useCustomComposition" label="Customize" class="reversed button btn-white" />
           </div>
 
           <div v-if="game.cfg.useCustomComposition" class="composition">
@@ -153,22 +170,36 @@ async function startGame() {
             <div class="content-cell">
               <label>Rounds</label>
               <InputText
+                v-if="game.isMeAdmin"
                 v-model:value="game.cfg.rounds"
                 :class="{ 'has-error': quote.getFilteredQuotes.length < game.cfg.rounds }"
                 type="number"
                 min="1"
               />
+              <strong v-else>{{ game.cfg.rounds }}</strong>
             </div>
+
+            <br v-if="!game.isMeAdmin">
+
             <div class="content-cell">
               <label>Time limit per round (seconds)</label>
-              <InputText v-model:value="game.cfg.globalRoundLength" type="number" min="5" />
+              <InputText v-if="game.isMeAdmin" v-model:value="game.cfg.globalRoundLength" type="number" min="5" />
+              <strong v-else>{{ game.cfg.globalRoundLength }} seconds</strong>
             </div>
           </template>
         </div>
 
         <div class="col-content">
-          <button class="button btn-highlight btn-full btn-large" @click="startGame()">
+          <button v-if="game.isMeAdmin" class="button btn-highlight btn-full btn-large" @click="startGame()">
             {{ isStarting ? `Starting in ${countdown}` : 'Start Game' }}
+          </button>
+          <button
+            v-else
+            class="button btn-highlight btn-full btn-large"
+            :class="{ 'soft-disabled': game.me.ready }"
+            @click="game.setPlayerState(user.username, 'ready', true)"
+          >
+            {{ game.me.ready ? `${game.players.filter(p => p.ready).length}/${game.players.length} Players Ready` : 'I am ready' }}
           </button>
         </div>
       </div>

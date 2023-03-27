@@ -29,11 +29,11 @@ const isAdmin = computed(() => props.username === game.state.admin)
 
     <!-- Display admin controls on all users only for admin & and not on admin themselves -->
     <div v-if="users.username === game.state.admin && props.username !== users.username" class="user-attrs">
-      <button class="button btn-gray btn-round" data-title-top="Kick user">
+      <button class="button btn-gray btn-round" data-title-top="Kick user" @click="game.removePlayer(props.username)">
         <Icon code="ef66" size="2" />
       </button>
 
-      <button class="button btn-gray btn-round" data-title-top="Make Admin">
+      <button class="button btn-gray btn-round" data-title-top="Make Admin" @click="game.state.admin = props.username">
         <Icon code="ea3d" size="2" />
       </button>
     </div>

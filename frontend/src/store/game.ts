@@ -133,6 +133,10 @@ export const useGame = defineStore('game', () => {
     })
   }
 
+  function removePlayer(username: string) {
+    players.value = players.value.filter(p => p.username !== username)
+  }
+
   function resetPlayersAtRoundEnd() {
     for (const player of players.value) {
       player._input = null
@@ -440,12 +444,25 @@ export const useGame = defineStore('game', () => {
       player.ready = false
   }
 
+  const isMeAdmin = computed(() => {
+    const user = useUser()
+    return user.username === state.admin
+  })
+
+  const me = computed(() => {
+    const user = useUser()
+    return players.value.find(p => p.username === user.username) as Player
+  })
+
   return {
+    me,
     cfg,
     state,
     players,
     fragments,
+    isMeAdmin,
     addPlayer,
+    removePlayer,
     resetState,
     resetConfig,
     saveHistory,

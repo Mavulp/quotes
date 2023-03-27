@@ -30,6 +30,10 @@
     cursor: not-allowed;
   }
 
+  &.soft-disabled {
+    pointer-events: none;
+  }
+
   &.btn-round {
     @include radius(50%);
     width: 36px !important;
