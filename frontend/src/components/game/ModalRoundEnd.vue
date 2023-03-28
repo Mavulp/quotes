@@ -21,11 +21,12 @@ const timer = dayjs.utc().add(game.TRANSITION_DELAY_S - 1 + game.players.length,
         <!-- Fill the quote -->
         <template v-if="round.type === 'fill-the-quote'">
           <span>What {{ round.originalQuote.fragments[round.fragmentIndex].quotee }} actually said...</span>
-          <p>
+          <div class="quote-fill-wrap">
             <template v-for="(word, index) in round.words" :key="word">
-              <div v-html="round.answers.includes(index) ? `<b>${word}</b>` : word" />
+              <b v-if="round.answers.includes(index)" v-text="word" />
+              <span v-else>{{ word }}</span>
             </template>
-          </p>
+          </div>
         </template>
 
         <!-- Guess the author -->

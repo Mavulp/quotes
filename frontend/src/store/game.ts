@@ -55,7 +55,7 @@ const gamemodeAmount = Object.keys(gamemodeOptions).length
 export const useGame = defineStore('game', () => {
   // Constants
   const BASE_POINTS = 100
-  const TRANSITION_DELAY_S = 100000 // make at least 16 in the complete game
+  const TRANSITION_DELAY_S = 5 // make at least 16 in the complete game
 
   // Manage history
   const state = reactive<GameState>({} as GameState)
@@ -94,12 +94,12 @@ export const useGame = defineStore('game', () => {
 
     // FIXME
     // testing stuff, remove
-    const user = useUser()
-    for (const player of user.users) {
-      if (player.username === admin)
-        continue
-      addPlayer(player.username)
-    }
+    // const user = useUser()
+    // for (const player of user.users) {
+    //   if (player.username === admin)
+    //     continue
+    //   addPlayer(player.username)
+    // }
   }
 
   function resetConfig() {
@@ -138,10 +138,17 @@ export const useGame = defineStore('game', () => {
   }
 
   function resetPlayersAtRoundEnd() {
-    for (const player of players.value) {
-      player._input = null
-      player._inputTimestamp = -1
-      player.ready = false
+    for (let i = 0; i < players.value.length; i++) {
+      console.log(players.value[i])
+
+      Object.assign(
+        players.value[i],
+        {
+          _input: null,
+          _inputTimestamp: -1,
+          ready: false,
+        },
+      )
     }
   }
 
@@ -290,8 +297,23 @@ export const useGame = defineStore('game', () => {
         const answers: Set<number> = new Set()
         const words = content.trim().split(/\s+/)
 
-        while (answers.size !== len)
-          answers.add(getRanMinMax(0, words.length - 1))
+        // FIXME
+        // Stuck in a loop if there are less words than the length
+        // TODO: this should be handled during quote pool creation
+        // If gamemode is fill the quote, it should filter out:
+        // - links
+        // - quotes with less words than the minimum difficulty
+        if (words.length < len || len < 1)
+          // len = words.length
+          console.error('Insufficient amount of words in a quote', { words: words.length, requiredLength: len })
+
+        while (answers.size !== len) {
+          const index = getRanMinMax(0, words.length - 1)
+          if (answers.has(index))
+            continue
+
+          answers.add(index)
+        }
 
         return {
           originalQuote: quote,
@@ -316,8 +338,13 @@ export const useGame = defineStore('game', () => {
         // Add the answer
         options.add(answer)
 
-        while (options.size !== len)
-          options.add(cloned[getRanMinMax(0, cloned.length - 1)].username)
+        while (options.size !== len) {
+          const user = cloned[getRanMinMax(0, cloned.length - 1)].username
+          if (options.has(user))
+            continue
+
+          options.add(user)
+        }
 
         return {
           answer,
@@ -341,8 +368,13 @@ export const useGame = defineStore('game', () => {
         // Add the answer
         options.add(quotee)
 
-        while (options.size !== len)
-          options.add(cloned[getRanMinMax(0, cloned.length - 1)].username)
+        while (options.size !== len) {
+          const user = cloned[getRanMinMax(0, cloned.length - 1)].username
+          if (options.has(user))
+            continue
+
+          options.add(user)
+        }
 
         return {
           options: shuffle([...options]),

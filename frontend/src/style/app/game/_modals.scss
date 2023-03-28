@@ -32,11 +32,13 @@
 
       p {
         margin: 0;
+        word-wrap: break-word;
+        white-space: pre-wrap;
         margin-bottom: 8px;
       }
 
       .fragment-quotee {
-        @include flex(8px, $justify: flex-end);
+        @include flex(4px, $justify: flex-end);
         font-size: 1.4rem;
         text-align: right;
         // width: 100%;
@@ -48,6 +50,7 @@
       }
     }
 
+    .quote-fill-wrap,
     p {
       font-size: 2.8rem;
       text-align: center;
@@ -57,17 +60,27 @@
         margin: 0;
       }
 
+      span,
       b,
       div {
-        padding: 0 3px;
+        // padding: 0 3px;
         display: inline !important;
         font-size: inherit !important;
+      }
+
+      span {
+        margin: 0 !important;
+        color: var(--color-text);
       }
 
       b {
         padding: 0;
         color: var(--color-highlight);
       }
+    }
+
+    .quote-fill-wrap {
+      @include flex(5px, wrap, center);
     }
 
     span {
@@ -96,12 +109,11 @@
     }
 
     &:nth-of-type(2) .game-user-wrap-inner .rank {
-      font-size: 2.2rem;
+      font-size: 2rem;
       color: var(--color-text);
     }
 
     &:nth-of-type(3) .game-user-wrap-inner .rank {
-      font-size: 1.8rem;
       color: var(--color-text);
     }
 
