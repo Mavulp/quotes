@@ -22,11 +22,11 @@ document.addEventListener('scroll', () => {
       'disable-navigation': route.name === 'RouteHome' || !user.signedIn,
     }"
   >
-    <router-link class="logo" :to="{ name: 'RouteHome' }">
-      <img src="/logo.svg" alt="">
-    </router-link>
-
     <div class="quote-container container-header">
+      <router-link class="logo" :to="{ name: 'RouteHome' }">
+        <img src="/logo.svg" alt="">
+      </router-link>
+
       <router-link class="header-link" :to="{ name: 'RouteHome' }">
         Home
       </router-link>

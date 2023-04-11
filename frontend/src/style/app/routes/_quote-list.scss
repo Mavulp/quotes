@@ -26,7 +26,7 @@
         border-bottom: 1px solid var(--color-border);
         bottom: -1px;
         right: 100%;
-        width: 1000px;
+        width: 4000px;
       }
 
       .title {
@@ -64,14 +64,14 @@
       grid-area: list;
       padding-right: 20px;
       position: relative;
-      padding-top: 30px;
+      padding-top: 20px;
       min-height: calc(100vh - 160px);
       border-right: 1px solid var(--color-border);
     }
 
     .quote-filters {
       grid-area: filters;
-      padding-top: 30px;
+      padding-top: 20px;
 
       .btn-go-up {
         position: sticky;
