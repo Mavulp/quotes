@@ -27,23 +27,20 @@
     // backdrop-filter: none;
   }
 
-  .logo {
-    position: absolute;
-    left: calc($from-left - 30px);
-    top: 50%;
-    transform: translate(-100%, -50%);
-
-    img {
-      display: block;
-      height: 26px;
-      // max-height: 40px;
-      object-fit: contain;
-      object-position: center;
-    }
-  }
-
   .quote-container {
     @include flex(35px);
+
+    .logo {
+      margin-right: -10px;
+
+      img {
+        display: block;
+        height: 22px;
+        // max-height: 40px;
+        object-fit: contain;
+        object-position: center;
+      }
+    }
 
     .header-link {
       @include flex(8px, $align: center);
