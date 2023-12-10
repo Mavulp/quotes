@@ -72,13 +72,6 @@ const timer = dayjs.utc().add(game.TRANSITION_DELAY_S - 1 + game.players.length,
                     {{ answer.input }}
                   </span>
                 </template>
-
-              <!-- <p>
-                {{ item.answers.length > 1
-                  ? item.answers.map((answer, index) => `'${answer.input}'&nbsp;`).join(' ')
-                  : item.answers[0].input
-                }}
-              </p> -->
               </div>
             </PlayerIngame>
           </div>
@@ -88,7 +81,7 @@ const timer = dayjs.utc().add(game.TRANSITION_DELAY_S - 1 + game.players.length,
       <p>
         Next round in
         <Countdown v-slot="{ seconds }" :time="timer">
-          {{ seconds + 1 }}
+          {{ seconds }}
         </Countdown> seconds
       </p>
     </div>

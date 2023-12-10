@@ -50,7 +50,7 @@ async function startGame() {
 
   // Count down
   for (let i = START_IN; i > 0; i--) {
-    await delay(10)
+    await delay(1000)
     countdown.value--
 
     if (countdown.value === 0) {
@@ -87,7 +87,7 @@ async function startGame() {
           </div>
 
           <div class="col-content">
-            <Player v-for="user in game.players" :key="user.username" :username="user.username" />
+            <Player v-for="_user in game.players" :key="_user.username" :username="_user.username" />
           </div>
         </div>
       </div>

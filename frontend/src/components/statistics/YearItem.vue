@@ -109,13 +109,6 @@ function filterOnQuotes(dayBase: string, monthBase: string) {
       />
     </div>
 
-    <!-- <div class="month-row days-count">
-      <span class="month-title" />
-      <div v-for="day in 31" :key="day" class="month-tile">
-        {{ day % 7 === 0 || day === 1 ? day : null }}
-      </div>
-    </div> -->
-
     <div class="year-top-level">
       <hr>
 
@@ -137,8 +130,6 @@ function filterOnQuotes(dayBase: string, monthBase: string) {
         </tr>
         <tr>
           <th>Active Hours</th>
-          <!-- <td> {{ activeHour }} </td> -->
-
           <div class="hour-breakdown">
             <div v-for="hour in 24" :key="hour" class="hour-item" :data-title-bottom="`${hour}:00 - ${activeHours[hour - 1]} Quotes`">
               <div

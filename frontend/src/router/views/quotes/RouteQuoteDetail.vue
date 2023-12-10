@@ -180,7 +180,7 @@ async function toggleOffensive() {
     .then(() => {
       toast.push({
         type: 'success',
-        message: `Set quote as ${!quote.value?.offensive ? 'NOT' : ''} offensive`,
+        message: `Set quote as ${!quote.value?.offensive ? '' : 'NOT'} offensive`,
       })
     })
     .catch((e: Error) => {

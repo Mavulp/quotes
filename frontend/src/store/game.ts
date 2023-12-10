@@ -55,7 +55,7 @@ const gamemodeAmount = Object.keys(gamemodeOptions).length
 export const useGame = defineStore('game', () => {
   // Constants
   const BASE_POINTS = 100
-  const TRANSITION_DELAY_S = 5 // make at least 16 in the complete game
+  const TRANSITION_DELAY_S = 7 // make at least 16 in the complete game
 
   // Manage history
   const state = reactive<GameState>({} as GameState)
@@ -139,7 +139,7 @@ export const useGame = defineStore('game', () => {
 
   function resetPlayersAtRoundEnd() {
     for (let i = 0; i < players.value.length; i++) {
-      console.log(players.value[i])
+      // console.log(players.value[i])
 
       Object.assign(
         players.value[i],
@@ -196,7 +196,6 @@ export const useGame = defineStore('game', () => {
 
   function createQuotePool() {
     const quotes = useQuote()
-    //
     const quoteCount = cfg.useCustomComposition
       ? fragments.value.reduce((count, fragment) => count += fragment.rounds, 0)
       : cfg.rounds
@@ -248,7 +247,7 @@ export const useGame = defineStore('game', () => {
     }
     else {
       // Split amount of rounds by the amount of gamemodes
-      const gamemdes = shuffle(gamemodeIds)
+      const gamemodes = shuffle(gamemodeIds)
 
       const groups = arrayIntoChunks(
         [...state.quotePool],
@@ -265,7 +264,7 @@ export const useGame = defineStore('game', () => {
           transformed.push(
             transformQuote(
               quote,
-              gamemdes[index],
+              gamemodes[index],
               cfg.difficulty,
               cfg.globalRoundLength,
             ),
@@ -291,6 +290,8 @@ export const useGame = defineStore('game', () => {
     // index of Easy is 0 (+1) deems 1 iteration and so on
     let len = difficultyOptions.indexOf(difficulty) + 1
 
+    console.log('here?')
+
     switch (type) {
       case 'fill-the-quote': {
         // Take the quote and based on difficulty extract 1-3 words from it
@@ -307,7 +308,14 @@ export const useGame = defineStore('game', () => {
           // len = words.length
           console.error('Insufficient amount of words in a quote', { words: words.length, requiredLength: len })
 
+        let failsafe = 0
         while (answers.size !== len) {
+          failsafe++
+          if (failsafe >= 1000) {
+            console.warn('[transform > fill-the-quote] while failsafe was hit')
+            break
+          }
+
           const index = getRanMinMax(0, words.length - 1)
           if (answers.has(index))
             continue
@@ -338,7 +346,14 @@ export const useGame = defineStore('game', () => {
         // Add the answer
         options.add(answer)
 
+        let failsafe = 0
         while (options.size !== len) {
+          failsafe++
+          if (failsafe >= 1000) {
+            console.warn('[transform > guess-the-author] while failsafe was hit')
+            break
+          }
+
           const user = cloned[getRanMinMax(0, cloned.length - 1)].username
           if (options.has(user))
             continue
@@ -368,7 +383,14 @@ export const useGame = defineStore('game', () => {
         // Add the answer
         options.add(quotee)
 
+        let failsafe = 0
         while (options.size !== len) {
+          failsafe++
+          if (failsafe >= 1000) {
+            console.warn('[transform > guess-the-quotee] while failsafe was hit')
+            break
+          }
+
           const user = cloned[getRanMinMax(0, cloned.length - 1)].username
           if (options.has(user))
             continue
@@ -405,8 +427,9 @@ export const useGame = defineStore('game', () => {
     // The return order matters because it already determines the order of
     // players in the post-round screen
     return [
-      // ----- CORRECT results
+      /// //////////////// CORRECT results
       ...correctResults
+        // Sort by the fastest players (descneding, lowest at the start)
         .sort((a, b) => a.player._inputTimestamp > b.player._inputTimestamp ? -1 : 1)
         .map((result, index) => {
           // Calculate score based on results
@@ -425,12 +448,12 @@ export const useGame = defineStore('game', () => {
 
           return {
             scoreBefore,
-            score,
+            score: result.player.score,
             username: result.player.username,
             answers: result.results,
           }
         }),
-      // ----- WRONG results
+      /// ///////////// WRONG results
       ...wrongResults.map(result => ({
         scoreBefore: result.player.score,
         score: result.player.score,
