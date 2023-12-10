@@ -1,5 +1,3 @@
-use std::ops::Deref;
-
 use crate::error::Error;
 use serde::{Deserialize, Deserializer};
 
@@ -30,7 +28,7 @@ pub fn check_length(
     maximum_length: u64,
 ) -> Result<(), Error> {
     if let Some(field) = field {
-        let field = &field.deref();
+        let field = &field;
         if field.len() as u64 > maximum_length {
             return Err(Error::TooManyCharacters {
                 field: field_name,

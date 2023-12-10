@@ -82,7 +82,7 @@ pub async fn get_tags(
         .wrap_future(async move {
             state
                 .db
-                .call(move |conn| get_all(conn).map(|u| Json(u)))
+                .call_unwrap(move |conn| get_all(conn).map(|u| Json(u)))
                 .await
         })
         .await
@@ -143,7 +143,7 @@ pub async fn get_tag_by_id(
         .wrap_future(async move {
             state
                 .db
-                .call(move |conn| get_by_id(conn, id).map(|u| Json(u)))
+                .call_unwrap(move |conn| get_by_id(conn, id).map(|u| Json(u)))
                 .await
         })
         .await
@@ -216,7 +216,7 @@ pub async fn post_tag(
             let name = request.name.clone();
             let tag_exists = state
                 .db
-                .call(move |conn| {
+                .call_unwrap(move |conn| {
                     conn.query_row(
                         "SELECT 1
                         FROM tags
@@ -235,7 +235,7 @@ pub async fn post_tag(
 
             state
                 .db
-                .call(move |conn| {
+                .call_unwrap(move |conn| {
                     conn.execute(
                         &format!(
                             "INSERT INTO tags (name, description, author, created_at)
@@ -311,7 +311,7 @@ pub async fn put_tag_by_id(
 
             let tag_exists = state
                 .db
-                .call(move |conn| {
+                .call_unwrap(move |conn| {
                     conn.query_row(
                         "SELECT 1 FROM tags
                         WHERE id = ?",
@@ -331,7 +331,7 @@ pub async fn put_tag_by_id(
             if !update_str.is_empty() {
                 state
                     .db
-                    .call(move |conn| {
+                    .call_unwrap(move |conn| {
                         let mut params = request.update_params();
                         params.push(Box::new(id));
                         conn.query_row(
@@ -407,7 +407,7 @@ pub async fn delete_tag_by_id(
         .wrap_future(async move {
             state
                 .db
-                .call(move |conn| {
+                .call_unwrap(move |conn| {
                     conn.query_row(
                         &format!("DELETE FROM tags WHERE id = ?"),
                         params![id],

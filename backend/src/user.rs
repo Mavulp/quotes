@@ -97,7 +97,7 @@ pub async fn get_users(
         .wrap_future(async move {
             state
                 .db
-                .call(move |conn| get_all(conn).map(|u| Json(u)))
+                .call_unwrap(move |conn| get_all(conn).map(|u| Json(u)))
                 .await
         })
         .await
@@ -125,7 +125,7 @@ pub async fn get_user_by_username(
         .wrap_future(async move {
             let user = state
                 .db
-                .call(move |conn| {
+                .call_unwrap(move |conn| {
                     conn.query_row(
                         "SELECT
                             username,
@@ -151,7 +151,7 @@ pub async fn create_user_if_missing(
     db: tokio_rusqlite::Connection,
     name: String,
 ) -> anyhow::Result<()> {
-    db.call(move |conn| {
+    db.call_unwrap(move |conn| {
         if user_exists(&name, conn)? {
             debug!("User already existed for {name}");
         } else {

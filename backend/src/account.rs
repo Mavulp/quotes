@@ -87,7 +87,7 @@ pub async fn get_settings(
             let username = payload.name;
             let result = state
                 .db
-                .call(move |conn| {
+                .call_unwrap(move |conn| {
                     conn.query_row(
                         "SELECT
                             profile_picture, \
@@ -169,7 +169,7 @@ pub async fn put_settings(
             if !update_str.is_empty() {
                 if let Err(rusqlite::Error::SqliteFailure(e, _)) = state
                     .db
-                    .call(move |conn| {
+                    .call_unwrap(move |conn| {
                         let mut params = request.update_params();
                         params.push(Box::new(username));
                         conn.query_row(

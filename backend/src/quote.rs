@@ -92,9 +92,9 @@ impl Quote {
             .query_map(params![self.id], |row| {
                 Ok(QuoteIndex::from(from_row::<QuoteIndex>(row).unwrap()))
             })
-            .context("Failed to query quote fragments")?
+            .context("Failed to query quote indices")?
             .collect::<Result<Vec<_>, _>>()
-            .context("Failed to collect quote fragments")?;
+            .context("Failed to collect quote indices")?;
 
         self.indices = indices;
 
@@ -212,7 +212,7 @@ pub async fn get_quotes(
         .wrap_future(async move {
             state
                 .db
-                .call(move |conn| get_all(conn).map(|u| Json(u)))
+                .call_unwrap(move |conn| get_all(conn).map(|u| Json(u)))
                 .await
         })
         .await
@@ -267,7 +267,7 @@ pub async fn get_quote_by_id(
         .wrap_future(async move {
             state
                 .db
-                .call(move |conn| get_by_id(conn, id).map(|u| Json(u)))
+                .call_unwrap(move |conn| get_by_id(conn, id).map(|u| Json(u)))
                 .await
         })
         .await
@@ -316,7 +316,7 @@ pub async fn post_quote(
 
             state
                 .db
-                .call(move |conn| insert_quote(conn, quote, &payload.name).map(|u| Json(u)))
+                .call_unwrap(move |conn| insert_quote(conn, quote, &payload.name).map(|u| Json(u)))
                 .await
         })
         .await
@@ -412,7 +412,7 @@ pub async fn put_quote_by_id(
 
             let (author, created) = state
                 .db
-                .call(move |conn| {
+                .call_unwrap(move |conn| {
                     conn.query_row(
                         "SELECT author, created_at
                         FROM quotes
@@ -446,7 +446,7 @@ pub async fn put_quote_by_id(
 
             state
                 .db
-                .call(move |conn| {
+                .call_unwrap(move |conn| {
                     let tx = conn.transaction().context("Failed to create transaction")?;
 
                     if let Some(offensive) = request.offensive {

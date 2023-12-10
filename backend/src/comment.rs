@@ -79,7 +79,7 @@ pub async fn get_comments(
         .wrap_future(async move {
             state
                 .db
-                .call(move |conn| get_all_by_quote_id(quote_id, conn).map(|u| Json(u)))
+                .call_unwrap(move |conn| get_all_by_quote_id(quote_id, conn).map(|u| Json(u)))
                 .await
         })
         .await
@@ -152,7 +152,7 @@ pub(super) async fn post_comment(
 
             let quote_exists = state
                 .db
-                .call(move |conn| {
+                .call_unwrap(move |conn| {
                     conn.query_row(
                         "SELECT 1 FROM quotes
                         WHERE id = ?",
@@ -172,7 +172,7 @@ pub(super) async fn post_comment(
             let db_text = text.clone();
             let id = state
                 .db
-                .call(move |conn| {
+                .call_unwrap(move |conn| {
                     conn.query_row(
                         "INSERT INTO comments (author, quote_id, created_at, text)
                         VALUES (?1, ?2, ?3, ?4)
@@ -218,7 +218,7 @@ pub(super) async fn delete_comment(
         .wrap_future(async move {
             let author = state
                 .db
-                .call(move |conn| {
+                .call_unwrap(move |conn| {
                     conn.query_row(
                         "SELECT author FROM comments
                         WHERE id = ?",
@@ -240,7 +240,7 @@ pub(super) async fn delete_comment(
 
             state
                 .db
-                .call(move |conn| {
+                .call_unwrap(move |conn| {
                     conn.execute(
                         "DELETE FROM comments
                         WHERE id = ?",

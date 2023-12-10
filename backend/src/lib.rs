@@ -104,8 +104,6 @@ pub async fn api_route(db: tokio_rusqlite::Connection) -> anyhow::Result<Router>
     let secret_key = SecretKey::from_env()?;
     let variables = Variables::from_env()?;
 
-    let idp_client = IdpClient::default();
-
     let cdb = db.clone();
     let auth_callback = AuthCallback(Arc::new(Box::new(move |name| {
         crate::user::create_user_if_missing(cdb.clone(), name).boxed()
@@ -132,10 +130,7 @@ pub async fn api_route(db: tokio_rusqlite::Connection) -> anyhow::Result<Router>
         .route("/api/tag/:id", put(tag::put_tag_by_id))
         .route("/api/tag/:id", delete(tag::delete_tag_by_id))
         .route("/api/stats/quotee", get(stats::get_quotee_stats))
-        .nest(
-            "/api/auth",
-            idlib::api_route(idp_client, Some(auth_callback)),
-        )
+        .nest("/api/auth", idlib::api_route(Some(auth_callback)))
         .layer(CorsLayer::permissive())
         .layer(TraceLayer::new_for_http())
         .layer(Extension(Arc::new(AppState { db })))
@@ -163,7 +158,7 @@ pub async fn setup_database(path: &Path) -> anyhow::Result<tokio_rusqlite::Conne
 
     let migrations = Migrations::new(MIGRATIONS.to_vec());
 
-    db.call(move |conn| {
+    db.call_unwrap(move |conn| {
         conn.pragma_update(None, "foreign_keys", &"OFF")?;
         migrations.to_latest(conn)?;
         conn.pragma_update(None, "foreign_keys", &"ON")?;

@@ -7,6 +7,7 @@ use rusqlite::{params, Connection};
 use serde::Serialize;
 use serde_rusqlite::from_row;
 use time::{format_description, OffsetDateTime};
+use unicase::UniCase;
 use utoipa::ToSchema;
 
 use std::collections::HashMap;
@@ -65,7 +66,7 @@ pub async fn get_quotee_stats(
         .wrap_future(async move {
             state
                 .db
-                .call(move |conn| quotee_stats(conn))
+                .call_unwrap(move |conn| quotee_stats(conn))
                 .await
                 .map(Json)
         })
@@ -93,6 +94,7 @@ pub fn quotee_stats(conn: &Connection) -> Result<QuoteeStats, Error> {
             Ok(from_row::<(i64, i64, String)>(row).unwrap())
         })
         .context("Failed to query quotee stats")?
+        .map(|r| r.map(|(t, c, quotee)| (t, c, UniCase::from(quotee))))
         .collect::<Result<Vec<_>, _>>()
         .context("Failed to collect quotee stats")?;
 
@@ -142,7 +144,7 @@ pub fn quotee_stats(conn: &Connection) -> Result<QuoteeStats, Error> {
         assert_eq!(timestamps.len(), counts.len());
 
         datasets.push(Dataset {
-            label: user,
+            label: user.into_inner(),
             total: counts.iter().max().copied().flatten().unwrap_or(0),
             data: counts,
         });
@@ -157,7 +159,7 @@ pub fn quotee_stats(conn: &Connection) -> Result<QuoteeStats, Error> {
     })
 }
 
-fn quotees(conn: &Connection) -> Result<Vec<String>, Error> {
+fn quotees(conn: &Connection) -> Result<Vec<UniCase<String>>, Error> {
     let mut stmt = conn
         .prepare(
             "SELECT DISTINCT quotee
@@ -167,11 +169,12 @@ fn quotees(conn: &Connection) -> Result<Vec<String>, Error> {
         )
         .context("Failed to prepare statement for quotees query")?;
 
-    let authors = stmt
+    let quotees = stmt
         .query_map(params![], |row| Ok(from_row::<String>(row).unwrap()))
         .context("Failed to query quotees")?
+        .map(|r| r.map(|quotee| UniCase::from(quotee)))
         .collect::<Result<Vec<_>, _>>()
         .context("Failed to collect quotees")?;
 
-    Ok(authors)
+    Ok(quotees)
 }
