@@ -16,9 +16,7 @@ const hoveredUser = ref<string | null>(null)
 const showingOnly = reactive<{ value: string[] }>({ value: [] })
 const quotee = computed(() => stats.quotee)
 
-onBeforeMount(() => {
-  stats.fetchQuoteeStats()
-})
+onBeforeMount(() => stats.fetchQuoteeStats())
 
 function setShowingUsers(user?: string) {
   if (!user)

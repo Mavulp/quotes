@@ -91,17 +91,17 @@ const ratio = computed(() => {
   <div class="quote-container quote-smaller">
     <InputSelect v-model:selected="activeUser" icon="e7fd" :options="userOptions" />
     <div class="stats-grid user">
-      <StatCell str label="Got quoted" :data="`${toNum(quoted.length)} - ${percent(quoted.length, quote.quotes.length).toFixed(2)}%`" />
-      <StatCell str label="Most quoted by" :data="!isEmpty(quotedBy) ? `${getKey(quotedBy[0])} - ${getVal(quotedBy[0])}` : '<Nobody>'" />
+      <StatCell str label="Got quoted" :data="`${toNum(quoted.length)} (${percent(quoted.length, quote.quotes.length).toFixed(2)}%)`" />
+      <StatCell str label="Most quoted by" :data="!isEmpty(quotedBy) ? `${getKey(quotedBy[0])} (${getVal(quotedBy[0])})` : '<Nobody>'" />
       <StatCell str label="First time quoted" :data="firstQuoted ? date.timeShort(firstQuoted.createdAt) : '<Never>'" />
 
-      <StatCell str label="Posted quotes" :data="`${toNum(authored.length)} - ${percent(authored.length, quote.quotes.length).toFixed(2)}%`" />
-      <StatCell str label="Most quoting" :data="!isEmpty(quoting) ? `${getKey(quoting[0])} - ${getVal(quoting[0])}` : '<Nobody>'" />
+      <StatCell str label="Posted quotes" :data="`${toNum(authored.length)} (${percent(authored.length, quote.quotes.length).toFixed(2)}%)`" />
+      <StatCell str label="Most quoting" :data="!isEmpty(quoting) ? `${getKey(quoting[0])} (${getVal(quoting[0])})` : '<Nobody>'" />
       <StatCell str label="First time posted" :data="firstPosted ? date.timeShort(firstPosted.createdAt) : '<Never>'" />
     </div>
 
     <div class="user-list-stats">
-      <ul class="user-ratio">
+      <ul class="user-ratio" :class="{ 'list-quoted': sort.type === 'quoted' }">
         <li>
           <div />
           <div class="header">
@@ -115,7 +115,12 @@ const ratio = computed(() => {
             </button>
           </div>
         </li>
-        <RatioCell v-for="value in ratio" :key="value.user" :class="{ 'is-highlight': value.user === activeUser }" :data="value" />
+        <RatioCell
+          v-for="value in ratio"
+          :key="value.user"
+          :class="{ 'is-highlight': value.user === activeUser }"
+          :data="value"
+        />
       </ul>
       <div />
     </div>

@@ -2,6 +2,10 @@
   padding-top: 2em;
   padding-bottom: 156px;
 
+  &:has(.chart-breakdown) {
+    padding-bottom: 0;
+  }
+
   .quote-page-header {
     padding-bottom: 0;
 
@@ -253,27 +257,21 @@
       position: absolute;
       top: 25px;
       right: calc(156px + 30px);
-      // color: var(--color-text-lighter);
     }
 
     .chart-wrapper {
       @include grid(10px, 1fr 156px);
-    }
-
-    .chart-graph {
-      height: 85vh;
-      position: sticky;
-      top: calc($header + 24px);
+      height: 70vh;
     }
 
     .chart-legend {
       display: block;
       width: 100%;
-      // padding-top: 40px;
-      // overflow-y: auto;
+      height: 70vh;
+      overflow-y: auto;
+      // max-height: 65vh;
 
       .legend-item {
-        // @include t();
         @include radius(var(--radius-tn));
         @include flex(5px);
         font-size: 1.3rem;
@@ -336,6 +334,16 @@
     .user-ratio {
       list-style: none;
       width: 75%;
+
+      &.list-quoted li .bar-wrap .bar .bar-item {
+        &:first-of-type {
+          background-color: var(--color-border);
+        }
+
+        &:last-of-type {
+          background-color: var(--color-secondary);
+        }
+      }
 
       li {
         @include grid(20px, 156px 1fr);
@@ -446,7 +454,7 @@
               &:last-of-type {
                 border-top-right-radius: var(--radius-sm);
                 border-bottom-right-radius: var(--radius-sm);
-                background-color: var(--color-secondary);
+                background-color: var(--color-border);
               }
             }
           }

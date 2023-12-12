@@ -54,16 +54,16 @@ const title = titles[getRanMinMax(0, titles.length - 1)]
       </div>
     </section>
 
-    <div class="quote-container" />
+    <div class="quote-container">
+      <h1>GG</h1>
 
-    <h1>GG</h1>
-
-    <ul>
-      <li>
-        score (big player lsit)
-      </li>
-      <li>option to analyze answers</li>
-    </ul>
+      <ul>
+        <li>
+          score (big player lsit)
+        </li>
+        <li>button or dropdown to show each round with answers, and all the info about the game (when players answered etc)</li>
+      </ul>
+    </div>
 
     <!-- <pre>
       {{ game.state }}

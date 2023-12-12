@@ -25,19 +25,13 @@ const quotedRatio = computed(() => percent(props.data.quoted, total.value))
           v-if="postedRatio > 0"
           class="bar-item"
           :data-title-top="`${postedRatio.toFixed(1)}%`"
-          :style="{
-            width: `${Math.round(postedRatio)}%`,
-            // backgroundColor: gradient[5],
-          }"
+          :style="{ width: `${Math.round(postedRatio)}%` }"
         />
         <div
           v-if="quotedRatio > 0"
           class="bar-item"
           :data-title-top="`${quotedRatio.toFixed(1)}%`"
-          :style="{
-            width: `${Math.round(quotedRatio)}%`,
-            // backgroundColor: gradient[18],
-          }"
+          :style="{ width: `${Math.round(quotedRatio)}%` }"
         />
       </div>
 

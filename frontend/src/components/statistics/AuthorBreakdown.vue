@@ -4,6 +4,6 @@ import { ref } from 'vue'
 
 <template>
   <div class="ladder-breakdown chart-breakdown">
-    Chart of how many time
+    <h1>Work in progress</h1>
   </div>
 </template>
